@@ -24,16 +24,6 @@ try:
 except ImportError:
     _LZMA_SUPPORTED = False
 
-try:
-    from pwd import getpwnam
-except ImportError:
-    getpwnam = None
-
-try:
-    from grp import getgrnam
-except ImportError:
-    getgrnam = None
-
 CompressTyping = Literal['', 'gzip', 'bzip2', 'xz']
 
 
