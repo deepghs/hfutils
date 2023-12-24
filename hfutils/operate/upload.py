@@ -58,7 +58,7 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
             pre_exist_files.remove(segments)
         operations.append(CommitOperationAdd(
             path_or_fileobj=os.path.join(local_directory, file),
-            path_in_repo=f'{path_in_repo}/{file}',
+            path_in_repo=f'{path_in_repo}/{"/".join(segments)}',
         ))
 
     for segments in sorted(pre_exist_files):
