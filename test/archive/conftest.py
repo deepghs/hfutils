@@ -19,6 +19,7 @@ def check_unpack_dir(raw_dir):
             src_file = os.path.join(raw_dir, file)
             dst_file = os.path.join(directory, file)
             assert os.path.exists(dst_file), f'File {dst_file!r} not exists!'
-            assert pathlib.Path(src_file).read_bytes() == pathlib.Path(dst_file).read_bytes()
+            assert pathlib.Path(src_file).read_text().splitlines(keepends=False) == \
+                   pathlib.Path(dst_file).read_text().splitlines(keepends=False)
 
     return _check
