@@ -1,7 +1,7 @@
 Installation
 ===================
 
-hfutils is currently hosted on PyPI. It required python >= 3.7.
+hfutils is currently hosted on PyPI. It required python >= 3.8.
 
 You can simply install hfutils from PyPI with the following command:
 
