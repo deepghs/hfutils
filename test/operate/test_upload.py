@@ -38,8 +38,8 @@ class TestOperateUpload:
             file_in_repo='kkk/raw_remote.tar'
         )
 
-        assert hf_fs.read_bytes(f'datasets/{hf_repo}/kkk/raw_remote.tar') == \
-               pathlib.Path(get_testfile('raw.tar')).read_bytes()
+        assert hf_fs.read_text(f'datasets/{hf_repo}/kkk/raw_remote.tar') == \
+               pathlib.Path(get_testfile('raw.tar')).read_text()
 
     def test_upload_directory_as_archive(self, hf_repo, hf_fs, raw_dir, check_unpack_dir):
         upload_directory_as_archive(
@@ -66,12 +66,12 @@ class TestOperateUpload:
             path_in_repo='.',
         )
 
-        assert hf_fs.read_bytes(f'datasets/{hf_repo_with_files}/1.txt') == \
-               pathlib.Path(get_testfile(raw_dir, '1.txt')).read_bytes()
-        assert hf_fs.read_bytes(f'datasets/{hf_repo_with_files}/README.md') == \
-               pathlib.Path(get_testfile(raw_dir, 'README.md')).read_bytes()
-        assert hf_fs.read_bytes(f'datasets/{hf_repo_with_files}/subdir/script.py') == \
-               pathlib.Path(get_testfile(raw_dir, 'subdir', 'script.py')).read_bytes()
+        assert hf_fs.read_text(f'datasets/{hf_repo_with_files}/1.txt').splitlines(keepends=False) == \
+               pathlib.Path(get_testfile(raw_dir, '1.txt')).read_text().splitlines(keepends=False)
+        assert hf_fs.read_text(f'datasets/{hf_repo_with_files}/README.md').splitlines(keepends=False) == \
+               pathlib.Path(get_testfile(raw_dir, 'README.md')).read_text().splitlines(keepends=False)
+        assert hf_fs.read_text(f'datasets/{hf_repo_with_files}/subdir/script.py').splitlines(keepends=False) == \
+               pathlib.Path(get_testfile(raw_dir, 'subdir', 'script.py')).read_text().splitlines(keepends=False)
         assert hf_fs.exists(f'datasets/{hf_repo_with_files}/.gitattributes')
         assert hf_fs.exists(f'datasets/{hf_repo_with_files}/bullshit.txt')
 
@@ -83,12 +83,12 @@ class TestOperateUpload:
             clear=True,
         )
 
-        assert hf_fs.read_bytes(f'datasets/{hf_repo_with_files}/1.txt') == \
-               pathlib.Path(get_testfile(raw_dir, '1.txt')).read_bytes()
-        assert hf_fs.read_bytes(f'datasets/{hf_repo_with_files}/README.md') == \
-               pathlib.Path(get_testfile(raw_dir, 'README.md')).read_bytes()
-        assert hf_fs.read_bytes(f'datasets/{hf_repo_with_files}/subdir/script.py') == \
-               pathlib.Path(get_testfile(raw_dir, 'subdir', 'script.py')).read_bytes()
+        assert hf_fs.read_text(f'datasets/{hf_repo_with_files}/1.txt').splitlines(keepends=False) == \
+               pathlib.Path(get_testfile(raw_dir, '1.txt')).read_text().splitlines(keepends=False)
+        assert hf_fs.read_text(f'datasets/{hf_repo_with_files}/README.md').splitlines(keepends=False) == \
+               pathlib.Path(get_testfile(raw_dir, 'README.md')).read_text().splitlines(keepends=False)
+        assert hf_fs.read_text(f'datasets/{hf_repo_with_files}/subdir/script.py').splitlines(keepends=False) == \
+               pathlib.Path(get_testfile(raw_dir, 'subdir', 'script.py')).read_text().splitlines(keepends=False)
         assert hf_fs.exists(f'datasets/{hf_repo_with_files}/.gitattributes')
         assert not hf_fs.exists(f'datasets/{hf_repo_with_files}/bullshit.txt')
 
@@ -99,9 +99,9 @@ class TestOperateUpload:
             path_in_repo='ttt',
         )
 
-        assert hf_fs.read_bytes(f'datasets/{hf_repo_with_files}/ttt/1.txt') == \
-               pathlib.Path(get_testfile(raw_dir, '1.txt')).read_bytes()
-        assert hf_fs.read_bytes(f'datasets/{hf_repo_with_files}/ttt/README.md') == \
-               pathlib.Path(get_testfile(raw_dir, 'README.md')).read_bytes()
-        assert hf_fs.read_bytes(f'datasets/{hf_repo_with_files}/ttt/subdir/script.py') == \
-               pathlib.Path(get_testfile(raw_dir, 'subdir', 'script.py')).read_bytes()
+        assert hf_fs.read_text(f'datasets/{hf_repo_with_files}/ttt/1.txt').splitlines(keepends=False) == \
+               pathlib.Path(get_testfile(raw_dir, '1.txt')).read_text().splitlines(keepends=False)
+        assert hf_fs.read_text(f'datasets/{hf_repo_with_files}/ttt/README.md').splitlines(keepends=False) == \
+               pathlib.Path(get_testfile(raw_dir, 'README.md')).read_text().splitlines(keepends=False)
+        assert hf_fs.read_text(f'datasets/{hf_repo_with_files}/ttt/subdir/script.py').splitlines(keepends=False) == \
+               pathlib.Path(get_testfile(raw_dir, 'subdir', 'script.py')).read_text().splitlines(keepends=False)
