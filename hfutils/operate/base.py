@@ -64,6 +64,6 @@ def list_files_in_repository(repo_id: str, repo_type: RepoTypeTyping = 'dataset'
             continue
         if file != '.':
             if not _is_file_ignored(segments, ignore_patterns):
-                retval.append(file)
+                retval.append('/'.join(segments))
 
     return retval

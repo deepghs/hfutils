@@ -58,12 +58,12 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
             pre_exist_files.remove(segments)
         operations.append(CommitOperationAdd(
             path_or_fileobj=os.path.join(local_directory, file),
-            path_in_repo=os.path.join(path_in_repo, file),
+            path_in_repo=f'{path_in_repo}/{file}',
         ))
 
     for segments in sorted(pre_exist_files):
         operations.append(CommitOperationDelete(
-            path_in_repo=os.path.join(path_in_repo, '/'.join(segments))
+            path_in_repo=f'{path_in_repo}/{"/".join(segments)}',
         ))
 
     current_time = datetime.datetime.now().astimezone().strftime('%Y-%m-%d %H:%M:%S %Z')
