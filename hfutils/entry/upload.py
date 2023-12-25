@@ -1,0 +1,90 @@
+import warnings
+from typing import Optional
+
+import click
+
+from .base import CONTEXT_SETTINGS, command_wrap, ClickErrorException
+from ..operate import upload_file_to_file, upload_directory_as_archive, upload_directory_as_directory
+from ..operate.base import REPO_TYPES, RepoTypeTyping, get_hf_client
+
+
+class NoRemotePathAssigned(ClickErrorException):
+    exit_code = 0x21
+
+
+def _add_upload_subcommand(cli: click.Group) -> click.Group:
+    @cli.command('upload', help='Upload data from HuggingFace.\n\n'
+                                'Set environment $HF_TOKEN to use your own access token.',
+                 context_settings=CONTEXT_SETTINGS)
+    @click.option('-r', '--repository', 'repo_id', type=str, required=True,
+                  help='Repository to upload to.')
+    @click.option('-t', '--type', 'repo_type', type=click.Choice(REPO_TYPES), default='dataset',
+                  help='Type of the HuggingFace repository.', show_default=True)
+    @click.option('-f', '--filename', 'file_in_repo', type=str, default=None,
+                  help='File in repository to upload.')
+    @click.option('-a', '--archive', 'archive_in_repo', type=str, default=None,
+                  help='Archive file in repository to upload and extract from')
+    @click.option('-d', '--directory', 'dir_in_repo', type=str, default=None,
+                  help='Directory in repository to upload the full directory tree.')
+    @click.option('-i', '--input', 'input_path', type=str, required=True,
+                  help='Input path for upload.')
+    @click.option('-R', '--revision', 'revision', type=str, default='main',
+                  help='Revision of repository.', show_default=True)
+    @click.option('-c', '--clear', 'clear', is_flag=True, type=bool, default=False,
+                  help='Clear the remote directory before uploading.\n'
+                       'Only applied when -d is used.', show_default=True)
+    @click.option('-p', '--private', 'private', is_flag=True, type=bool, default=False,
+                  help='Use private repository when created.', show_default=True)
+    @command_wrap()
+    def upload(repo_id: str, repo_type: RepoTypeTyping,
+               file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
+               input_path: str, revision: str, clear: bool, private: bool):
+        if not file_in_repo and not archive_in_repo and not dir_in_repo:
+            raise NoRemotePathAssigned('No remote path in repository assigned.\n'
+                                       'One of the -f, -a or -d option is required.')
+
+        hf_client = get_hf_client()
+        if not hf_client.repo_exists(repo_id, repo_type=repo_type):
+            hf_client.create_repo(repo_id, repo_type=repo_type, exist_ok=True, private=private)
+        if bool(hf_client.repo_info(repo_id, repo_type=repo_type).private) != bool(private):
+            hf_client.update_repo_visibility(private=bool(private))
+
+        if file_in_repo:
+            if archive_in_repo:
+                warnings.warn('File in repository assigned, value of -a option will be ignored.')
+            if dir_in_repo:
+                warnings.warn('File in repository assigned, value of -d option will be ignored.')
+            upload_file_to_file(
+                local_file=input_path,
+                repo_id=repo_id,
+                file_in_repo=file_in_repo,
+                repo_type=repo_type,
+                revision=revision,
+            )
+
+        elif archive_in_repo:
+            if dir_in_repo:
+                warnings.warn('Archive in repository assigned, value of -d option will be ignored.')
+            upload_directory_as_archive(
+                local_directory=input_path,
+                repo_id=repo_id,
+                archive_in_repo=archive_in_repo,
+                repo_type=repo_type,
+                revision=revision,
+                silent=False,
+            )
+
+        elif dir_in_repo:
+            upload_directory_as_directory(
+                local_directory=input_path,
+                repo_id=repo_id,
+                path_in_repo=dir_in_repo,
+                repo_type=repo_type,
+                revision=revision,
+                clear=clear,
+            )
+
+        else:
+            assert False, 'Should not reach this line, it must be a bug!'  # pragma: no cover
+
+    return cli
