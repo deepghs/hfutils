@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.utils &mdash; hfutils 0.0.1 documentation</title>
+  <title>hfutils.operate &mdash; hfutils 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -24,8 +24,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="hfutils.utils.binary" href="binary.html" />
-    <link rel="prev" title="hfutils.operate.upload" href="../operate/upload.html" /> 
+    <link rel="next" title="hfutils.operate.base" href="base.html" />
+    <link rel="prev" title="hfutils.config.meta" href="../config/meta.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -63,14 +63,13 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../archive/index.html">hfutils.archive</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../config/index.html">hfutils.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">hfutils.operate</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">hfutils.utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="binary.html">hfutils.utils.binary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="download.html">hfutils.utils.download</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tqdm_.html">hfutils.utils.tqdm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="walk.html">hfutils.utils.walk</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hfutils.operate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base.html">hfutils.operate.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download.html">hfutils.operate.download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">hfutils.operate.upload</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">hfutils.utils</a></li>
 </ul>
 
         </div>
@@ -87,9 +86,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">hfutils.utils</li>
+      <li class="breadcrumb-item active">hfutils.operate</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/api_doc/utils/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/api_doc/operate/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -99,34 +98,51 @@
              
     
     
-  <section id="module-hfutils.utils">
-<span id="hfutils-utils"></span><h1>hfutils.utils<a class="headerlink" href="#module-hfutils.utils" title="Permalink to this heading"></a></h1>
+  <section id="module-hfutils.operate">
+<span id="hfutils-operate"></span><h1>hfutils.operate<a class="headerlink" href="#module-hfutils.operate" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="binary.html">hfutils.utils.binary</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="binary.html#is-binary-file">is_binary_file</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="binary.html#hfutils.utils.binary.is_binary_file"><code class="docutils literal notranslate"><span class="pre">is_binary_file()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">hfutils.operate.base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base.html#get-hf-client">get_hf_client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="base.html#hfutils.operate.base.get_hf_client"><code class="docutils literal notranslate"><span class="pre">get_hf_client()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="base.html#get-hf-fs">get_hf_fs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="base.html#hfutils.operate.base.get_hf_fs"><code class="docutils literal notranslate"><span class="pre">get_hf_fs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="base.html#list-files-in-repository">list_files_in_repository</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="base.html#hfutils.operate.base.list_files_in_repository"><code class="docutils literal notranslate"><span class="pre">list_files_in_repository()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="download.html">hfutils.utils.download</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="download.html#download-file">download_file</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="download.html#hfutils.utils.download.download_file"><code class="docutils literal notranslate"><span class="pre">download_file()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="download.html">hfutils.operate.download</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download.html#download-file-to-file">download_file_to_file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="download.html#hfutils.operate.download.download_file_to_file"><code class="docutils literal notranslate"><span class="pre">download_file_to_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="download.html#download-archive-as-directory">download_archive_as_directory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="download.html#hfutils.operate.download.download_archive_as_directory"><code class="docutils literal notranslate"><span class="pre">download_archive_as_directory()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="download.html#download-directory-as-directory">download_directory_as_directory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="download.html#hfutils.operate.download.download_directory_as_directory"><code class="docutils literal notranslate"><span class="pre">download_directory_as_directory()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tqdm_.html">hfutils.utils.tqdm</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tqdm_.html#tqdm">tqdm</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tqdm_.html#hfutils.utils.tqdm_.tqdm"><code class="docutils literal notranslate"><span class="pre">tqdm()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="upload.html">hfutils.operate.upload</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upload.html#upload-file-to-file">upload_file_to_file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="upload.html#hfutils.operate.upload.upload_file_to_file"><code class="docutils literal notranslate"><span class="pre">upload_file_to_file()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html#upload-directory-as-archive">upload_directory_as_archive</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="upload.html#hfutils.operate.upload.upload_directory_as_archive"><code class="docutils literal notranslate"><span class="pre">upload_directory_as_archive()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="walk.html">hfutils.utils.walk</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="walk.html#walk-files">walk_files</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="walk.html#hfutils.utils.walk.walk_files"><code class="docutils literal notranslate"><span class="pre">walk_files()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html#upload-directory-as-directory">upload_directory_as_directory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="upload.html#hfutils.operate.upload.upload_directory_as_directory"><code class="docutils literal notranslate"><span class="pre">upload_directory_as_directory()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -140,8 +156,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../operate/upload.html" class="btn btn-neutral float-left" title="hfutils.operate.upload" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="binary.html" class="btn btn-neutral float-right" title="hfutils.utils.binary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../config/meta.html" class="btn btn-neutral float-left" title="hfutils.config.meta" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="base.html" class="btn btn-neutral float-right" title="hfutils.operate.base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
