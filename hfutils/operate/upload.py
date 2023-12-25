@@ -14,6 +14,22 @@ from ..utils import walk_files
 def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
                         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                         message: Optional[str] = None):
+    """
+    Upload a local file to a specified path in a Hugging Face repository.
+
+    :param local_file: The local file path to be uploaded.
+    :type local_file: str
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param file_in_repo: The file path within the repository.
+    :type file_in_repo: str
+    :param repo_type: The type of the repository ('dataset', 'model', 'space').
+    :type repo_type: RepoTypeTyping
+    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :type revision: str
+    :param message: The commit message for the upload.
+    :type message: Optional[str]
+    """
     hf_client = get_hf_client()
     hf_client.upload_file(
         repo_id=repo_id,
@@ -28,6 +44,24 @@ def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
 def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: str,
                                 repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                 message: Optional[str] = None, silent: bool = False):
+    """
+    Upload a local directory as an archive file to a specified path in a Hugging Face repository.
+
+    :param local_directory: The local directory path to be uploaded.
+    :type local_directory: str
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param archive_in_repo: The archive file path within the repository.
+    :type archive_in_repo: str
+    :param repo_type: The type of the repository ('dataset', 'model', 'space').
+    :type repo_type: RepoTypeTyping
+    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :type revision: str
+    :param message: The commit message for the upload.
+    :type message: Optional[str]
+    :param silent: If True, suppress progress bar output.
+    :type silent: bool
+    """
     archive_type = get_archive_type(archive_in_repo)
     with TemporaryDirectory() as td:
         local_archive_file = os.path.join(td, os.path.basename(archive_in_repo))
@@ -42,6 +76,28 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
                                   repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                   message: Optional[str] = None, time_suffix: bool = True,
                                   clear: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET):
+    """
+    Upload a local directory and its files to a specified path in a Hugging Face repository.
+
+    :param local_directory: The local directory path to be uploaded.
+    :type local_directory: str
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param path_in_repo: The directory path within the repository.
+    :type path_in_repo: str
+    :param repo_type: The type of the repository ('dataset', 'model', 'space').
+    :type repo_type: RepoTypeTyping
+    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :type revision: str
+    :param message: The commit message for the upload.
+    :type message: Optional[str]
+    :param time_suffix: If True, append a timestamp to the commit message.
+    :type time_suffix: bool
+    :param clear: If True, remove files in the repository not present in the local directory.
+    :type clear: bool
+    :param ignore_patterns: List of file patterns to ignore.
+    :type ignore_patterns: List[str]
+    """
     hf_client = get_hf_client()
     if clear:
         pre_exist_files = {

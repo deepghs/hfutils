@@ -30,6 +30,7 @@ configuration file's structure and their versions.
 
     api_doc/archive/index
     api_doc/config/index
+    api_doc/operate/index
     api_doc/utils/index
 
 .. toctree::

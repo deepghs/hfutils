@@ -12,6 +12,22 @@ from ..utils import download_file, tqdm
 
 def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
                           repo_type: RepoTypeTyping = 'dataset', revision: str = 'main', silent: bool = False):
+    """
+    Download a file from a Hugging Face repository and save it to a local file.
+
+    :param local_file: The local file path to save the downloaded file.
+    :type local_file: str
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param file_in_repo: The file path within the repository.
+    :type file_in_repo: str
+    :param repo_type: The type of the repository ('dataset', 'model', 'space').
+    :type repo_type: RepoTypeTyping
+    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :type revision: str
+    :param silent: If True, suppress progress bar output.
+    :type silent: bool
+    """
     headers = {}
     token = _get_hf_token()
     if token:
@@ -30,6 +46,22 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
 
 def download_archive_as_directory(local_directory: str, repo_id: str, file_in_repo: str,
                                   repo_type: RepoTypeTyping = 'dataset', revision: str = 'main', silent: bool = False):
+    """
+    Download an archive file from a Hugging Face repository and extract it to a local directory.
+
+    :param local_directory: The local directory path to extract the downloaded archive.
+    :type local_directory: str
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param file_in_repo: The file path within the repository.
+    :type file_in_repo: str
+    :param repo_type: The type of the repository ('dataset', 'model', 'space').
+    :type repo_type: RepoTypeTyping
+    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :type revision: str
+    :param silent: If True, suppress progress bar output.
+    :type silent: bool
+    """
     with TemporaryDirectory() as td:
         archive_file = os.path.join(td, os.path.basename(file_in_repo))
         download_file_to_file(archive_file, repo_id, file_in_repo, repo_type, revision, silent=silent)
@@ -39,6 +71,24 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
 def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_repo: str = '.',
                                     repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                     silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET):
+    """
+    Download all files in a directory from a Hugging Face repository to a local directory.
+
+    :param local_directory: The local directory path to save the downloaded files.
+    :type local_directory: str
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param dir_in_repo: The directory path within the repository.
+    :type dir_in_repo: str
+    :param repo_type: The type of the repository ('dataset', 'model', 'space').
+    :type repo_type: RepoTypeTyping
+    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :type revision: str
+    :param silent: If True, suppress progress bar output.
+    :type silent: bool
+    :param ignore_patterns: List of file patterns to ignore.
+    :type ignore_patterns: List[str]
+    """
     files = list_files_in_repository(repo_id, repo_type, dir_in_repo, revision, ignore_patterns)
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
 
