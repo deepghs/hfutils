@@ -23,8 +23,11 @@ COV_TYPES ?= xml term-missing
 
 package:
 	$(PYTHON) -m build --sdist --wheel --outdir ${DIST_DIR}
+build:
+	pyinstaller -D -F -n hfutils -c hfutils_cli.py
 clean:
 	rm -rf ${DIST_DIR} ${BUILD_DIR} *.egg-info
+	rm -rf build dist hfutils.spec
 
 test: unittest
 
