@@ -8,11 +8,23 @@ from ..operate import upload_file_to_file, upload_directory_as_archive, upload_d
 from ..operate.base import REPO_TYPES, RepoTypeTyping, get_hf_client
 
 
-class NoRemotePathAssigned(ClickErrorException):
+class NoRemotePathAssignedWithUpload(ClickErrorException):
+    """
+    Custom exception class for indicating that no remote path in the repository is assigned.
+    """
     exit_code = 0x21
 
 
 def _add_upload_subcommand(cli: click.Group) -> click.Group:
+    """
+    Add the 'upload' subcommand to the CLI.
+
+    :param cli: The Click CLI application.
+    :type cli: click.Group
+    :return: The modified Click CLI application.
+    :rtype: click.Group
+    """
+
     @cli.command('upload', help='Upload data from HuggingFace.\n\n'
                                 'Set environment $HF_TOKEN to use your own access token.',
                  context_settings=CONTEXT_SETTINGS)
@@ -39,9 +51,32 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
     def upload(repo_id: str, repo_type: RepoTypeTyping,
                file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
                input_path: str, revision: str, clear: bool, private: bool):
+        """
+        Upload data to HuggingFace repositories.
+
+        :param repo_id: Repository to upload to.
+        :type repo_id: str
+        :param repo_type: Type of the HuggingFace repository.
+        :type repo_type: RepoTypeTyping
+        :param file_in_repo: File in repository to upload.
+        :type file_in_repo: Optional[str]
+        :param archive_in_repo: Archive file in repository to upload and extract from.
+        :type archive_in_repo: Optional[str]
+        :param dir_in_repo: Directory in repository to upload the full directory tree.
+        :type dir_in_repo: Optional[str]
+        :param input_path: Input path for upload.
+        :type input_path: str
+        :param revision: Revision of repository.
+        :type revision: str
+        :param clear: Clear the remote directory before uploading.
+                      Only applied when -d is used.
+        :type clear: bool
+        :param private: Use private repository when created.
+        :type private: bool
+        """
         if not file_in_repo and not archive_in_repo and not dir_in_repo:
-            raise NoRemotePathAssigned('No remote path in repository assigned.\n'
-                                       'One of the -f, -a or -d option is required.')
+            raise NoRemotePathAssignedWithUpload('No remote path in repository assigned.\n'
+                                       'One of the -f, -a, or -d option is required.')
 
         hf_client = get_hf_client()
         if not hf_client.repo_exists(repo_id, repo_type=repo_type):

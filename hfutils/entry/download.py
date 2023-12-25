@@ -8,11 +8,23 @@ from ..operate import download_file_to_file, download_archive_as_directory, down
 from ..operate.base import REPO_TYPES, RepoTypeTyping
 
 
-class NoRemotePathAssigned(ClickErrorException):
+class NoRemotePathAssignedWithDownload(ClickErrorException):
+    """
+    Custom exception class for indicating that no remote path in the repository is assigned.
+    """
     exit_code = 0x11
 
 
 def _add_download_subcommand(cli: click.Group) -> click.Group:
+    """
+    Add the 'download' subcommand to the CLI.
+
+    :param cli: The Click CLI application.
+    :type cli: click.Group
+    :return: The modified Click CLI application.
+    :rtype: click.Group
+    """
+
     @cli.command('download', help='Download data from HuggingFace.\n\n'
                                   'Set environment $HF_TOKEN to use your own access token.',
                  context_settings=CONTEXT_SETTINGS)
@@ -34,9 +46,27 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
     def download(repo_id: str, repo_type: RepoTypeTyping,
                  file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
                  output_path: str, revision: str):
+        """
+        Download data from HuggingFace repositories.
+
+        :param repo_id: Repository to download from.
+        :type repo_id: str
+        :param repo_type: Type of the HuggingFace repository.
+        :type repo_type: RepoTypeTyping
+        :param file_in_repo: File in repository to download.
+        :type file_in_repo: Optional[str]
+        :param archive_in_repo: Archive file in repository to download and extract from.
+        :type archive_in_repo: Optional[str]
+        :param dir_in_repo: Directory in repository to download the full directory tree.
+        :type dir_in_repo: Optional[str]
+        :param output_path: Output path for download.
+        :type output_path: str
+        :param revision: Revision of repository.
+        :type revision: str
+        """
         if not file_in_repo and not archive_in_repo and not dir_in_repo:
-            raise NoRemotePathAssigned('No remote path in repository assigned.\n'
-                                       'One of the -f, -a or -d option is required.')
+            raise NoRemotePathAssignedWithDownload('No remote path in repository assigned.\n'
+                                       'One of the -f, -a, or -d option is required.')
 
         if file_in_repo:
             if archive_in_repo:

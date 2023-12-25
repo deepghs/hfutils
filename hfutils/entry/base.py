@@ -15,18 +15,50 @@ CONTEXT_SETTINGS = dict(
 
 
 class ClickWarningException(ClickException):
+    """
+    Custom exception class for displaying warnings in yellow color.
+
+    :param message: The error message.
+    :type message: str
+    """
+
     def show(self, file: Optional[IO] = None) -> None:
+        """
+        Display the warning message in yellow.
+
+        :param file: File to write the output to.
+        :type file: Optional[IO]
+        """
         click.secho(self.format_message(), fg='yellow', file=sys.stderr)
 
 
 class ClickErrorException(ClickException):
+    """
+    Custom exception class for displaying errors in red color.
+
+    :param message: The error message.
+    :type message: str
+    """
+
     def show(self, file: Optional[IO] = None) -> None:
+        """
+        Display the error message in red.
+
+        :param file: File to write the output to.
+        :type file: Optional[IO]
+        """
         click.secho(self.format_message(), fg='red', file=sys.stderr)
 
 
-# noinspection PyShadowingBuiltins
 def print_exception(err: BaseException, print: Optional[Callable] = None):
-    # noinspection PyShadowingBuiltins
+    """
+    Print exception information, including traceback.
+
+    :param err: The exception object.
+    :type err: BaseException
+    :param print: Custom print function. If not provided, uses built-in print.
+    :type print: Optional[Callable]
+    """
     print = print or builtins.print
 
     lines = list(itertools.chain(*map(
@@ -47,13 +79,34 @@ def print_exception(err: BaseException, print: Optional[Callable] = None):
 
 
 class KeyboardInterrupted(ClickWarningException):
+    """
+    Exception class for handling keyboard interruptions.
+
+    :param msg: Custom message to display.
+    :type msg: Optional[str]
+    """
     exit_code = 0x7
 
     def __init__(self, msg=None):
+        """
+        Initialize the exception.
+
+        :param msg: Custom message to display.
+        :type msg: Optional[str]
+        """
         ClickWarningException.__init__(self, msg or 'Interrupted.')
 
 
 def command_wrap():
+    """
+    Decorator for wrapping Click commands.
+
+    This decorator catches exceptions and provides consistent error handling.
+
+    :return: Decorator function.
+    :rtype: Callable
+    """
+
     def _decorator(func):
         @wraps(func)
         def _new_func(*args, **kwargs):
