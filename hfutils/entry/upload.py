@@ -82,7 +82,7 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
         if not hf_client.repo_exists(repo_id, repo_type=repo_type):
             hf_client.create_repo(repo_id, repo_type=repo_type, exist_ok=True, private=private)
         if bool(hf_client.repo_info(repo_id, repo_type=repo_type).private) != bool(private):
-            hf_client.update_repo_visibility(private=bool(private))
+            hf_client.update_repo_visibility(repo_id, repo_type=repo_type, private=bool(private))
 
         if file_in_repo:
             if archive_in_repo:
