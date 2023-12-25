@@ -1,7 +1,7 @@
 import fnmatch
 import os
 from functools import lru_cache
-from typing import Literal, List
+from typing import Literal, List, Optional
 
 from huggingface_hub import HfApi, HfFileSystem
 
@@ -9,15 +9,20 @@ RepoTypeTyping = Literal['dataset', 'model', 'space']
 
 
 @lru_cache()
+def _get_hf_token() -> Optional[str]:
+    return os.environ.get('HF_TOKEN')
+
+
+@lru_cache()
 def get_hf_client() -> HfApi:
-    return HfApi(token=os.environ.get('HF_TOKEN'))
+    return HfApi(token=_get_hf_token())
 
 
 @lru_cache()
 def get_hf_fs() -> HfFileSystem:
     # use_listings_cache=False is necessary
     # or the result of glob and ls will be cached, the unittest will down
-    return HfFileSystem(token=os.environ.get('HF_TOKEN'), use_listings_cache=False)
+    return HfFileSystem(token=_get_hf_token(), use_listings_cache=False)
 
 
 _DEFAULT_IGNORE_PATTERNS = ['.git*']
