@@ -28,6 +28,7 @@ configuration file's structure and their versions.
     :maxdepth: 2
     :caption: API Documentation
 
+    api_doc/archive/index
     api_doc/config/index
     api_doc/utils/index
 
