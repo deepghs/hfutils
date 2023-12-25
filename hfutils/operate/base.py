@@ -6,6 +6,7 @@ from typing import Literal, List, Optional
 from huggingface_hub import HfApi, HfFileSystem
 
 RepoTypeTyping = Literal['dataset', 'model', 'space']
+REPO_TYPES = ['dataset', 'model', 'space']
 
 
 @lru_cache()

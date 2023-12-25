@@ -8,6 +8,6 @@ from hfutils.entry import hfutilscli
 @pytest.mark.unittest
 class TestEntryDispatch:
     def test_version(self):
-        result = simulate_entry(hfutilscli, ['hfutilscli', '-v'])
+        result = simulate_entry(hfutilscli, ['hfutils', '-v'])
         assert result.exitcode == 0
         assert __VERSION__ in result.stdout
