@@ -6,8 +6,32 @@ import requests
 from .tqdm_ import tqdm
 
 
-def download_file(url, filename, expected_size: int = None, desc=None,
-                  session: Optional[requests.Session] = None, silent: bool = False, **kwargs):
+def download_file(url: str, filename: str, expected_size: Optional[int] = None, desc: Optional[str] = None,
+                  session: Optional[requests.Session] = None, silent: bool = False, **kwargs) -> str:
+    """
+    Download a file from the given URL and save it to the specified filename.
+
+    This function uses the requests library to download a file from the given URL
+    and provides a progress bar using tqdm. It also performs checks to ensure that
+    the downloaded file has the expected size.
+
+    :param url: The URL of the file to download.
+    :type url: str
+    :param filename: The local path where the file should be saved.
+    :type filename: str
+    :param expected_size: The expected size of the file in bytes (optional).
+    :type expected_size: int, optional
+    :param desc: Description for the tqdm progress bar (optional).
+    :type desc: str, optional
+    :param session: An optional requests.Session object to use for the download.
+    :type session: requests.Session, optional
+    :param silent: If True, suppress tqdm output, otherwise display it.
+    :type silent: bool
+    :param kwargs: Additional keyword arguments to pass to requests.get().
+
+    :return: The path to the downloaded file.
+    :rtype: str
+    """
     session = session or requests.session()
     response = session.get(url, stream=True, allow_redirects=True, **kwargs)
     expected_size = expected_size or response.headers.get('Content-Length', None)
