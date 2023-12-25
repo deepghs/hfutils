@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.config &mdash; hfutils 0.0.1 documentation</title>
+  <title>hfutils.utils &mdash; hfutils 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -24,8 +24,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="hfutils.config.meta" href="meta.html" />
-    <link rel="prev" title="Run Environment Information" href="../../information/environment.result.html" /> 
+    <link rel="next" title="hfutils.utils.binary" href="binary.html" />
+    <link rel="prev" title="hfutils.config.meta" href="../config/meta.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -61,11 +61,14 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">hfutils.config</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="meta.html">hfutils.config.meta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">hfutils.config</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hfutils.utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="binary.html">hfutils.utils.binary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download.html">hfutils.utils.download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tqdm_.html">hfutils.utils.tqdm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="walk.html">hfutils.utils.walk</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">hfutils.utils</a></li>
 </ul>
 
         </div>
@@ -82,9 +85,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">hfutils.config</li>
+      <li class="breadcrumb-item active">hfutils.utils</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/api_doc/config/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/api_doc/utils/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -94,29 +97,34 @@
              
     
     
-  <section id="module-hfutils.config">
-<span id="hfutils-config"></span><h1>hfutils.config<a class="headerlink" href="#module-hfutils.config" title="Permalink to this heading"></a></h1>
+  <section id="module-hfutils.utils">
+<span id="hfutils-utils"></span><h1>hfutils.utils<a class="headerlink" href="#module-hfutils.utils" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="meta.html">hfutils.config.meta</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="meta.html#title">__TITLE__</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="meta.html#hfutils.config.meta.__TITLE__"><code class="docutils literal notranslate"><span class="pre">__TITLE__</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="binary.html">hfutils.utils.binary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="binary.html#is-binary-file">is_binary_file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="binary.html#hfutils.utils.binary.is_binary_file"><code class="docutils literal notranslate"><span class="pre">is_binary_file()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="meta.html#version">__VERSION__</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="meta.html#hfutils.config.meta.__VERSION__"><code class="docutils literal notranslate"><span class="pre">__VERSION__</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="meta.html#description">__DESCRIPTION__</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="meta.html#hfutils.config.meta.__DESCRIPTION__"><code class="docutils literal notranslate"><span class="pre">__DESCRIPTION__</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="download.html">hfutils.utils.download</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download.html#download-file">download_file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="download.html#hfutils.utils.download.download_file"><code class="docutils literal notranslate"><span class="pre">download_file()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="meta.html#author">__AUTHOR__</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="meta.html#hfutils.config.meta.__AUTHOR__"><code class="docutils literal notranslate"><span class="pre">__AUTHOR__</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="meta.html#author-email">__AUTHOR_EMAIL__</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="meta.html#hfutils.config.meta.__AUTHOR_EMAIL__"><code class="docutils literal notranslate"><span class="pre">__AUTHOR_EMAIL__</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="tqdm_.html">hfutils.utils.tqdm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tqdm_.html#tqdm">tqdm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tqdm_.html#hfutils.utils.tqdm_.tqdm"><code class="docutils literal notranslate"><span class="pre">tqdm()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="walk.html">hfutils.utils.walk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="walk.html#walk-files">walk_files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="walk.html#hfutils.utils.walk.walk_files"><code class="docutils literal notranslate"><span class="pre">walk_files()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -130,8 +138,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../../information/environment.result.html" class="btn btn-neutral float-left" title="Run Environment Information" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="meta.html" class="btn btn-neutral float-right" title="hfutils.config.meta" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../config/meta.html" class="btn btn-neutral float-left" title="hfutils.config.meta" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="binary.html" class="btn btn-neutral float-right" title="hfutils.utils.binary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
