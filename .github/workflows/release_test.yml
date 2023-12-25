@@ -42,3 +42,131 @@ jobs:
         with:
           name: build-artifacts-source-pack
           path: ./dist/*
+
+  release_cli:
+    name: CLI Build And Release
+    runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - 'ubuntu-20.04'
+          - 'windows-2019'
+          - 'macos-11'
+        python-version:
+          - '3.8.0'
+
+    steps:
+      - name: Get system version for Linux
+        if: ${{ contains(matrix.os, 'ubuntu') }}
+        shell: bash
+        run: |
+          echo "OS_NAME=Linux" >> $GITHUB_ENV
+          echo "IS_WIN=" >> $GITHUB_ENV
+          echo "IS_MAC=" >> $GITHUB_ENV
+      - name: Get system version for Windows
+        if: ${{ contains(matrix.os, 'windows') }}
+        shell: bash
+        run: |
+          echo "OS_NAME=Windows" >> $GITHUB_ENV
+          echo "IS_WIN=1" >> $GITHUB_ENV
+          echo "IS_MAC=" >> $GITHUB_ENV
+      - name: Get system version for MacOS
+        if: ${{ contains(matrix.os, 'macos') }}
+        shell: bash
+        run: |
+          echo "OS_NAME=MacOS" >> $GITHUB_ENV
+          echo "IS_WIN=" >> $GITHUB_ENV
+          echo "IS_MAC=1" >> $GITHUB_ENV
+      - name: Set environment for Cpython
+        if: ${{ !contains(matrix.python-version, 'pypy') }}
+        shell: bash
+        run: |
+          echo "IS_PYPY=" >> $GITHUB_ENV
+      - name: Set environment for PyPy
+        if: ${{ contains(matrix.python-version, 'pypy') }}
+        shell: bash
+        run: |
+          echo "IS_PYPY=1" >> $GITHUB_ENV
+      - name: Checkout code
+        uses: actions/checkout@v3.3.0
+        with:
+          fetch-depth: 20
+          submodules: 'recursive'
+      - name: Set up system dependencies on Linux
+        if: ${{ env.OS_NAME == 'Linux' }}
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tree cloc wget curl make zip
+      - name: Set up system dependencies on Windows
+        if: ${{ env.OS_NAME == 'Windows' }}
+        shell: bash
+        run: |
+          choco install tree cloc wget curl make zip
+      - name: Set up system dependencies on MacOS
+        if: ${{ env.OS_NAME == 'MacOS' }}
+        run: |
+          brew install tree cloc wget curl make zip
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-build.txt
+      - name: Test the basic environment
+        shell: bash
+        run: |
+          python -V
+          pip --version
+          pip list
+          tree .
+      - name: Get package version
+        shell: bash
+        run: |
+          python -c 'from hfutils.config.meta import __VERSION__;print(__VERSION__)'
+          echo "PACKAGE_VERSION=$(python -c 'from hfutils.config.meta import __VERSION__;print(__VERSION__)')" >> $GITHUB_ENV
+          echo "GIT_COMMIT_ID=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
+          echo "PYTHON_VERSION=$(python -V | xargs -n 1 | tail -1)" >> $GITHUB_ENV
+          echo "CPU_ARCH=$(uname -m)" >> $GITHUB_ENV
+      - name: Get CLI name
+        shell: bash
+        run: |
+          echo "ZIP_NAME=hfutils-v${{ env.PACKAGE_VERSION }}-${{ env.OS_NAME }}-${{ env.CPU_ARCH }}-${{ env.GIT_COMMIT_ID }}-standalone" >> $GITHUB_ENV
+          echo "CLI_NAME=hfutils-v${{ env.PACKAGE_VERSION }}-${{ env.OS_NAME }}-${{ env.CPU_ARCH }}" >> $GITHUB_ENV
+      - name: Build standalone cli on Linux and MacOS
+        if: ${{ env.OS_NAME != 'Windows' }}
+        shell: bash
+        run: |
+          make build
+          mkdir -p dist/${{ env.CLI_NAME }}
+          cp dist/hfutils dist/${{ env.CLI_NAME }}/hfutils
+          cd dist
+          zip -r ${{ env.ZIP_NAME }}.zip ${{ env.CLI_NAME }}
+          cd ..
+          ls -al dist
+          dist/hfutils -v
+          dist/hfutils -h
+      - name: Build standalone CLI on Windows
+        if: ${{ env.OS_NAME == 'Windows' }}
+        shell: bash
+        run: |
+          make build
+          mkdir -p dist/${{ env.CLI_NAME }}
+          cp dist/hfutils.exe dist/${{ env.CLI_NAME }}/hfutils.exe
+          cd dist
+          zip -r ${{ env.ZIP_NAME }}.zip ${{ env.CLI_NAME }}
+          cd ..
+          ls -al dist
+          dist/hfutils -v
+          dist/hfutils -h
+      - name: Upload packed files to artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: hfutils-v${{ env.PACKAGE_VERSION }}-${{ env.OS_NAME }}-${{ env.CPU_ARCH }}-${{ env.GIT_COMMIT_ID }}
+          path: ./dist/*

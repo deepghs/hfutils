@@ -3,6 +3,7 @@ name: Code Test
 
 on:
   - push
+  - workflow_dispatch
 
 jobs:
   unittest:
