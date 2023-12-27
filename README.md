@@ -155,3 +155,21 @@ Explore additional options for downloading:
 hfutils download -h
 
 ```
+
+## How to Access Private Repositories
+
+Simply configure the `HF_TOKEN` environment variable by using your HuggingFace access token.
+Note that write permissions are required if you plan to upload any content.
+
+## How to Use Hf-Transfer for Acceleration
+
+If you are using the PyPI CLI, you need to install `hfutils` with the following command:
+
+```shell
+pip install hfutils[transfer]
+
+```
+
+If you are using a precompiled executable file, the transfer module is integrated inside; simply use it.
+
+Enable Hf-Transfer acceleration by setting the environment variable `HF_HUB_ENABLE_HF_TRANSFER` to `1`.

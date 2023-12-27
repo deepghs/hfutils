@@ -3,12 +3,11 @@ import os.path
 import re
 from typing import Optional, List
 
-from hbutils.system import TemporaryDirectory
 from huggingface_hub import CommitOperationAdd, CommitOperationDelete
 
 from .base import RepoTypeTyping, get_hf_client, list_files_in_repository, _IGNORE_PATTERN_UNSET
 from ..archive import get_archive_type, archive_pack
-from ..utils import walk_files
+from ..utils import walk_files, TemporaryDirectory
 
 
 def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,

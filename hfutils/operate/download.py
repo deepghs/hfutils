@@ -1,13 +1,11 @@
 import os.path
+import shutil
 from concurrent.futures import ThreadPoolExecutor
 from typing import List
 
-from hbutils.system import TemporaryDirectory
-from huggingface_hub import hf_hub_url
-
-from .base import RepoTypeTyping, _get_hf_token, list_files_in_repository, _IGNORE_PATTERN_UNSET
+from .base import RepoTypeTyping, list_files_in_repository, _IGNORE_PATTERN_UNSET, get_hf_client
 from ..archive import archive_unpack
-from ..utils import download_file, tqdm
+from ..utils import tqdm, TemporaryDirectory
 
 
 def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
@@ -28,20 +26,26 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
     :param silent: If True, suppress progress bar output.
     :type silent: bool
     """
-    headers = {}
-    token = _get_hf_token()
-    if token:
-        headers['Authorization'] = f'Bearer {token}'
+    hf_client = get_hf_client()
+    relative_filename = os.path.join(*file_in_repo.split("/"))
+    with TemporaryDirectory() as td:
+        temp_path = os.path.join(td, relative_filename)
+        if os.path.exists(local_file):
+            shutil.move(local_file, temp_path)
+        if os.path.dirname(local_file):
+            os.makedirs(os.path.dirname(local_file), exist_ok=True)
 
-    parent_dir = os.path.dirname(local_file)
-    if parent_dir:
-        os.makedirs(parent_dir, exist_ok=True)
-    download_file(hf_hub_url(
-        repo_id=repo_id,
-        repo_type=repo_type,
-        filename=file_in_repo,
-        revision=revision,
-    ), local_file, headers=headers, silent=silent)
+        try:
+            hf_client.hf_hub_download(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                filename=file_in_repo,
+                revision=revision,
+                local_dir=td,
+                local_dir_use_symlinks=False,
+            )
+        finally:
+            shutil.move(temp_path, local_file)
 
 
 def download_archive_as_directory(local_directory: str, repo_id: str, file_in_repo: str,
