@@ -97,12 +97,11 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">hbutils.system</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">CommitOperationAdd</span><span class="p">,</span> <span class="n">CommitOperationDelete</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">RepoTypeTyping</span><span class="p">,</span> <span class="n">get_hf_client</span><span class="p">,</span> <span class="n">list_files_in_repository</span><span class="p">,</span> <span class="n">_IGNORE_PATTERN_UNSET</span>
 <span class="kn">from</span> <span class="nn">..archive</span> <span class="kn">import</span> <span class="n">get_archive_type</span><span class="p">,</span> <span class="n">archive_pack</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">walk_files</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">walk_files</span><span class="p">,</span> <span class="n">TemporaryDirectory</span>
 
 
 <div class="viewcode-block" id="upload_file_to_file"><a class="viewcode-back" href="../../../api_doc/operate/upload.html#hfutils.operate.upload.upload_file_to_file">[docs]</a><span class="k">def</span> <span class="nf">upload_file_to_file</span><span class="p">(</span><span class="n">local_file</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_in_repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
