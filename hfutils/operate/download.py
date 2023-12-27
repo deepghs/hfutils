@@ -10,7 +10,7 @@ from ..utils import tqdm, TemporaryDirectory
 
 def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
                           repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                          resume_download: bool = False):
+                          resume_download: bool = True):
     """
     Download a file from a Hugging Face repository and save it to a local file.
 
@@ -31,11 +31,6 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
     relative_filename = os.path.join(*file_in_repo.split("/"))
     with TemporaryDirectory() as td:
         temp_path = os.path.join(td, relative_filename)
-        if os.path.exists(local_file):
-            shutil.move(local_file, temp_path)
-        if os.path.dirname(local_file):
-            os.makedirs(os.path.dirname(local_file), exist_ok=True)
-
         try:
             hf_client.hf_hub_download(
                 repo_id=repo_id,
@@ -43,11 +38,15 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
                 filename=file_in_repo,
                 revision=revision,
                 local_dir=td,
+                force_download=True,
                 local_dir_use_symlinks=False,
                 resume_download=resume_download,
             )
         finally:
-            shutil.move(temp_path, local_file)
+            if os.path.exists(temp_path):
+                if os.path.dirname(local_file):
+                    os.makedirs(os.path.dirname(local_file), exist_ok=True)
+                shutil.move(temp_path, local_file)
 
 
 def download_archive_as_directory(local_directory: str, repo_id: str, file_in_repo: str,
@@ -75,7 +74,7 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
 def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_repo: str = '.',
                                     repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                     silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
-                                    resume_download: bool = False, max_workers: int = 8):
+                                    resume_download: bool = True, max_workers: int = 8):
     """
     Download all files in a directory from a Hugging Face repository to a local directory.
 
