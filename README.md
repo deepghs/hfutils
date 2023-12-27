@@ -173,3 +173,11 @@ pip install hfutils[transfer]
 If you are using a precompiled executable file, the transfer module is integrated inside; simply use it.
 
 Enable Hf-Transfer acceleration by setting the environment variable `HF_HUB_ENABLE_HF_TRANSFER` to `1`.
+
+## How to Change the Temporary Directory
+
+The temporary directory is utilized for storing partially downloaded files, consuming a considerable amount of disk
+space.
+
+If your disk, especially the C drive on Windows, does not have sufficient space, simply set the `TMPDIR` to designate
+another directory as the temporary directory.
