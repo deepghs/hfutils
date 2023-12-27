@@ -74,7 +74,8 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
 
 def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_repo: str = '.',
                                     repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                                    silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET):
+                                    silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+                                    max_workers: int = 8):
     """
     Download all files in a directory from a Hugging Face repository to a local directory.
 
@@ -92,6 +93,8 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
     :type silent: bool
     :param ignore_patterns: List of file patterns to ignore.
     :type ignore_patterns: List[str]
+    :param max_workers: Max workers when downloading. Default is ``8``.
+    :type max_workers: int
     """
     files = list_files_in_repository(repo_id, repo_type, dir_in_repo, revision, ignore_patterns)
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
@@ -107,7 +110,7 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
         )
         progress.update()
 
-    tp = ThreadPoolExecutor()
+    tp = ThreadPoolExecutor(max_workers=max_workers)
     for file in files:
         tp.submit(_download_one_file, file)
     tp.shutdown(wait=True)

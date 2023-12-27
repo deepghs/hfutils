@@ -6,7 +6,8 @@ from hbutils.system import TemporaryDirectory as _OriginTemporaryDirectory
 
 @lru_cache()
 def _create_tmp_dir(dir_):
-    os.makedirs(dir_, exist_ok=True)
+    if dir_:
+        os.makedirs(dir_, exist_ok=True)
 
 
 class TemporaryDirectory(_OriginTemporaryDirectory):
