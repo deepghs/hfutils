@@ -9,7 +9,8 @@ from ..utils import tqdm, TemporaryDirectory
 
 
 def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
-                          repo_type: RepoTypeTyping = 'dataset', revision: str = 'main', silent: bool = False):
+                          repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                          resume_download: bool = False):
     """
     Download a file from a Hugging Face repository and save it to a local file.
 
@@ -23,8 +24,8 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
     :type revision: str
-    :param silent: If True, suppress progress bar output.
-    :type silent: bool
+    :param resume_download: Resume the existing download.
+    :type resume_download: bool
     """
     hf_client = get_hf_client()
     relative_filename = os.path.join(*file_in_repo.split("/"))
@@ -43,13 +44,14 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
                 revision=revision,
                 local_dir=td,
                 local_dir_use_symlinks=False,
+                resume_download=resume_download,
             )
         finally:
             shutil.move(temp_path, local_file)
 
 
 def download_archive_as_directory(local_directory: str, repo_id: str, file_in_repo: str,
-                                  repo_type: RepoTypeTyping = 'dataset', revision: str = 'main', silent: bool = False):
+                                  repo_type: RepoTypeTyping = 'dataset', revision: str = 'main'):
     """
     Download an archive file from a Hugging Face repository and extract it to a local directory.
 
@@ -63,19 +65,17 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
     :type revision: str
-    :param silent: If True, suppress progress bar output.
-    :type silent: bool
     """
     with TemporaryDirectory() as td:
         archive_file = os.path.join(td, os.path.basename(file_in_repo))
-        download_file_to_file(archive_file, repo_id, file_in_repo, repo_type, revision, silent=silent)
-        archive_unpack(archive_file, local_directory, silent=silent)
+        download_file_to_file(archive_file, repo_id, file_in_repo, repo_type, revision)
+        archive_unpack(archive_file, local_directory)
 
 
 def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_repo: str = '.',
                                     repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                     silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
-                                    max_workers: int = 8):
+                                    resume_download: bool = False, max_workers: int = 8):
     """
     Download all files in a directory from a Hugging Face repository to a local directory.
 
@@ -95,6 +95,8 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
     :type ignore_patterns: List[str]
     :param max_workers: Max workers when downloading. Default is ``8``.
     :type max_workers: int
+    :param resume_download: Resume the existing download.
+    :type resume_download: bool
     """
     files = list_files_in_repository(repo_id, repo_type, dir_in_repo, revision, ignore_patterns)
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
@@ -106,7 +108,7 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
             file_in_repo=f'{dir_in_repo}/{rel_file}',
             repo_type=repo_type,
             revision=revision,
-            silent=silent
+            resume_download=resume_download,
         )
         progress.update()
 

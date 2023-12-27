@@ -42,10 +42,14 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                   help='Output path for download.')
     @click.option('-R', '--revision', 'revision', type=str, default='main',
                   help='Revision of repository.', show_default=True)
+    @click.option('-n', '--max_workers', 'max_workers', type=int, default=8,
+                  help='Max threads to download.', show_default=True)
+    @click.option('-s', '--resume', 'resume', is_flag=True, type=bool, default=False,
+                  help='Resume previous download.', show_default=True)
     @command_wrap()
     def download(repo_id: str, repo_type: RepoTypeTyping,
                  file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
-                 output_path: str, revision: str):
+                 output_path: str, revision: str, max_workers: int, resume: bool):
         """
         Download data from HuggingFace repositories.
 
@@ -63,10 +67,14 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
         :type output_path: str
         :param revision: Revision of repository.
         :type revision: str
+        :param max_workers: Max workers to download
+        :type max_workers: int
+        :param resume: Resume previous download
+        :type resume: bool
         """
         if not file_in_repo and not archive_in_repo and not dir_in_repo:
             raise NoRemotePathAssignedWithDownload('No remote path in repository assigned.\n'
-                                       'One of the -f, -a, or -d option is required.')
+                                                   'One of the -f, -a, or -d option is required.')
 
         if file_in_repo:
             if archive_in_repo:
@@ -79,7 +87,7 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                 file_in_repo=file_in_repo,
                 repo_type=repo_type,
                 revision=revision,
-                silent=False,
+                resume_download=resume,
             )
 
         elif archive_in_repo:
@@ -91,7 +99,6 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                 file_in_repo=archive_in_repo,
                 repo_type=repo_type,
                 revision=revision,
-                silent=False,
             )
 
         elif dir_in_repo:
@@ -102,6 +109,8 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                 repo_type=repo_type,
                 revision=revision,
                 silent=False,
+                max_workers=max_workers,
+                resume_download=resume,
             )
 
         else:
