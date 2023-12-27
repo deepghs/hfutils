@@ -138,12 +138,10 @@
                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Revision of repository.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-n&#39;</span><span class="p">,</span> <span class="s1">&#39;--max_workers&#39;</span><span class="p">,</span> <span class="s1">&#39;max_workers&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Max threads to download.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="s1">&#39;--resume&#39;</span><span class="p">,</span> <span class="s1">&#39;resume&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Resume previous download.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nd">@command_wrap</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span><span class="p">,</span>
                  <span class="n">file_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">archive_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-                 <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">resume</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+                 <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download data from HuggingFace repositories.</span>
 
@@ -163,8 +161,6 @@
 <span class="sd">        :type revision: str</span>
 <span class="sd">        :param max_workers: Max workers to download</span>
 <span class="sd">        :type max_workers: int</span>
-<span class="sd">        :param resume: Resume previous download</span>
-<span class="sd">        :type resume: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">file_in_repo</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">archive_in_repo</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">dir_in_repo</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">NoRemotePathAssignedWithDownload</span><span class="p">(</span><span class="s1">&#39;No remote path in repository assigned.</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -181,7 +177,6 @@
                 <span class="n">file_in_repo</span><span class="o">=</span><span class="n">file_in_repo</span><span class="p">,</span>
                 <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
                 <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
-                <span class="n">resume_download</span><span class="o">=</span><span class="n">resume</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">archive_in_repo</span><span class="p">:</span>
@@ -204,7 +199,6 @@
                 <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
                 <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">,</span>
-                <span class="n">resume_download</span><span class="o">=</span><span class="n">resume</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
