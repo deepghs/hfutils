@@ -156,6 +156,19 @@ hfutils download -h
 
 ```
 
+## Supported Formats
+
+By default, we support the `zip` and `tar` formats, including `.zip`, `.tar`, `.tar.gz`, `.tar.bz2`, and `.tar.xz`.
+
+If you require support for `rar` and `7z` files, install the extra dependencies using the following command:
+
+```shell
+pip install hfutils[rar,7z]
+```
+
+**NOTE:** Creating RAR archive files is not supported. We use the [rarfile](https://github.com/markokr/rarfile) library,
+which lacks the functionality for creating RAR files.
+
 ## How to Access Private Repositories
 
 Simply configure the `HF_TOKEN` environment variable by using your HuggingFace access token.
