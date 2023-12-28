@@ -25,7 +25,7 @@ def _zip_unpack(zip_file, directory, silent: bool = False):
     directory = os.fspath(directory)
     os.makedirs(directory, exist_ok=True)
     with zipfile.ZipFile(zip_file, 'r') as zf:
-        progress = tqdm(zf.namelist(), silent=silent, desc=f'Packing {directory!r} ...')
+        progress = tqdm(zf.namelist(), silent=silent, desc=f'Unpacking {directory!r} ...')
         for zipinfo in progress:
             progress.set_description(zipinfo)
             zf.extract(zipinfo, directory)

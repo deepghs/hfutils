@@ -189,6 +189,7 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-build.txt
           pip install -r requirements-transfer.txt
+          pip install -r requirements-7z.txt
       - name: Test the basic environment
         shell: bash
         run: |

@@ -44,6 +44,8 @@ jobs:
           dot -V
           python -m pip install -r requirements.txt
           python -m pip install -r requirements-doc.txt
+          python -m pip install -r requirements-transfer.txt
+          python -m pip install -r requirements-7z.txt
       - name: Sync from ref
         if: ${{ github.event_name == 'push' }}
         run: |
