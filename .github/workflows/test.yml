@@ -73,7 +73,8 @@ jobs:
         shell: bash
         run: |
           choco install tree cloc wget curl make zip
-          choco install 7zip winrar unrar
+#          choco install 7zip winrar unrar
+          choco install 7zip winrar
       - name: Set up system dependences on MacOS
         if: ${{ env.OS_NAME == 'MacOS' }}
         run: |
