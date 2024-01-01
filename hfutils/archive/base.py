@@ -1,6 +1,6 @@
 import os.path
 import warnings
-from typing import List, Dict, Tuple, Callable
+from typing import List, Dict, Tuple, Callable, Optional
 
 _KNOWN_ARCHIVE_TYPES: Dict[str, Tuple[List[str], Callable, Callable]] = {}
 
@@ -85,7 +85,7 @@ def get_archive_type(archive_file: str) -> str:
     raise ValueError(f'Unknown type of archive file {archive_file!r}.')
 
 
-def archive_unpack(archive_file: str, directory: str, silent: bool = False):
+def archive_unpack(archive_file: str, directory: str, silent: bool = False, password: Optional[str] = None):
     """
     Unpack an archive file into a directory using the specified archive type.
 
@@ -95,10 +95,12 @@ def archive_unpack(archive_file: str, directory: str, silent: bool = False):
     :type directory: str
     :param silent: If True, suppress warnings during the unpacking process.
     :type silent: bool
+    :param password: The password to extract the archive file.
+    :type password: str, optional
 
     :return: The path to the unpacked directory.
     :rtype: str
     """
     type_name = get_archive_type(archive_file)
     _, _, fn_unpack = _KNOWN_ARCHIVE_TYPES[type_name]
-    return fn_unpack(archive_file, directory, silent=silent)
+    return fn_unpack(archive_file, directory, silent=silent, password=password)

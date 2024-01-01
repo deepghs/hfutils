@@ -13,6 +13,11 @@ def raw_zip():
     return get_testfile('raw.zip')
 
 
+@pytest.fixture()
+def raw_password_zip():
+    return get_testfile('raw-password.zip')
+
+
 @pytest.mark.unittest
 class TestArchiveZip:
     def test_get_archive_type(self):
@@ -36,4 +41,15 @@ class TestArchiveZip:
         with isolated_directory():
             with disable_output():
                 archive_unpack(raw_zip, '.')
+            check_unpack_dir('.')
+
+    def test_archive_unpack_with_password_failed(self, raw_password_zip):
+        with isolated_directory():
+            with disable_output(), pytest.raises(RuntimeError):
+                archive_unpack(raw_password_zip, '.')
+
+    def test_archive_unpack_with_password(self, raw_password_zip, check_unpack_dir):
+        with isolated_directory():
+            with disable_output():
+                archive_unpack(raw_password_zip, '.', password='password')
             check_unpack_dir('.')

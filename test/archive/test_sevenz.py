@@ -18,6 +18,11 @@ def raw_7z():
     return get_testfile('raw.7z')
 
 
+@pytest.fixture()
+def raw_password_7z():
+    return get_testfile('raw-password.7z')
+
+
 @pytest.mark.unittest
 class TestArchive7z:
     @skipUnless(py7zr, 'py7zr module required.')
@@ -57,4 +62,17 @@ class TestArchive7z:
         with isolated_directory():
             with disable_output():
                 archive_unpack(raw_7z, '.')
+            check_unpack_dir('.')
+
+    @skipUnless(py7zr, 'py7zr module required.')
+    def test_archive_unpack_with_password_failed(self, raw_password_7z):
+        with isolated_directory():
+            with disable_output(), pytest.raises(py7zr.exceptions.PasswordRequired):
+                archive_unpack(raw_password_7z, '.')
+
+    @skipUnless(py7zr, 'py7zr module required.')
+    def test_archive_unpack_with_password(self, raw_password_7z, check_unpack_dir):
+        with isolated_directory():
+            with disable_output():
+                archive_unpack(raw_password_7z, '.', password='password')
             check_unpack_dir('.')

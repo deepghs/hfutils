@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 from .base import register_archive_type
 from ..utils import tqdm, walk_files
@@ -17,10 +18,10 @@ def _7z_pack(directory, sz_file, silent: bool = False):
             zf.write(os.path.join(directory, file), file)
 
 
-def _7z_unpack(sz_file, directory, silent: bool = False):
+def _7z_unpack(sz_file, directory, silent: bool = False, password: Optional[str] = None):
     directory = os.fspath(directory)
     os.makedirs(directory, exist_ok=True)
-    with py7zr.SevenZipFile(sz_file, 'r') as zf:
+    with py7zr.SevenZipFile(sz_file, 'r', password=password) as zf:
         progress = tqdm(zf.getnames(), silent=silent, desc=f'Unpacking {directory!r} ...')
         for name in progress:
             progress.set_description(name)
