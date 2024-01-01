@@ -44,10 +44,12 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                   help='Revision of repository.', show_default=True)
     @click.option('-n', '--max_workers', 'max_workers', type=int, default=8,
                   help='Max threads to download.', show_default=True)
+    @click.option('-p', '--password', 'password', type=str, default=None,
+                  help='Password for the archive file. Only applied when -a is used.', show_default=True)
     @command_wrap()
     def download(repo_id: str, repo_type: RepoTypeTyping,
                  file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
-                 output_path: str, revision: str, max_workers: int):
+                 output_path: str, revision: str, max_workers: int, password: Optional[str]):
         """
         Download data from HuggingFace repositories.
 
@@ -67,6 +69,8 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
         :type revision: str
         :param max_workers: Max workers to download
         :type max_workers: int
+        :param password: Password for the archive file. Only applied when -a is used.
+        :type password: str, optional
         """
         if not file_in_repo and not archive_in_repo and not dir_in_repo:
             raise NoRemotePathAssignedWithDownload('No remote path in repository assigned.\n'
@@ -94,6 +98,7 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                 file_in_repo=archive_in_repo,
                 repo_type=repo_type,
                 revision=revision,
+                password=password,
             )
 
         elif dir_in_repo:
