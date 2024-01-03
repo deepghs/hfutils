@@ -215,7 +215,7 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
 <h2>archive_unpack<a class="headerlink" href="#archive-unpack" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.archive.archive_unpack">
-<span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">archive_unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">archive_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#archive_unpack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.archive_unpack" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">archive_unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">archive_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#archive_unpack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.archive_unpack" title="Permalink to this definition"></a></dt>
 <dd><p>Unpack an archive file into a directory using the specified archive type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -223,6 +223,7 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
 <li><p><strong>archive_file</strong> (<em>str</em>) – The filename of the archive.</p></li>
 <li><p><strong>directory</strong> (<em>str</em>) – The directory to unpack the contents into.</p></li>
 <li><p><strong>silent</strong> (<em>bool</em>) – If True, suppress warnings during the unpacking process.</p></li>
+<li><p><strong>password</strong> (<em>str</em><em>, </em><em>optional</em>) – The password to extract the archive file.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -325,7 +326,6 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/password/api_doc/archive/index.html">dev/password</a></dd>
                         <dd><a href="index.html">main</a></dd>
                 </dl>
         </div>

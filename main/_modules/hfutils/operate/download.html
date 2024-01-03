@@ -95,7 +95,7 @@
 <span></span><span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">RepoTypeTyping</span><span class="p">,</span> <span class="n">list_files_in_repository</span><span class="p">,</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">,</span> <span class="n">get_hf_client</span>
 <span class="kn">from</span> <span class="nn">..archive</span> <span class="kn">import</span> <span class="n">archive_unpack</span>
@@ -144,7 +144,8 @@
 
 
 <div class="viewcode-block" id="download_archive_as_directory"><a class="viewcode-back" href="../../../api_doc/operate/download.html#hfutils.operate.download.download_archive_as_directory">[docs]</a><span class="k">def</span> <span class="nf">download_archive_as_directory</span><span class="p">(</span><span class="n">local_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_in_repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                                  <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">):</span>
+                                  <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
+                                  <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download an archive file from a Hugging Face repository and extract it to a local directory.</span>
 
@@ -158,11 +159,13 @@
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
 <span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash).</span>
 <span class="sd">    :type revision: str</span>
+<span class="sd">    :param password: The password of the archive file.</span>
+<span class="sd">    :type password: str, optional</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">td</span><span class="p">:</span>
         <span class="n">archive_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_in_repo</span><span class="p">))</span>
         <span class="n">download_file_to_file</span><span class="p">(</span><span class="n">archive_file</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">,</span> <span class="n">file_in_repo</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">,</span> <span class="n">revision</span><span class="p">)</span>
-        <span class="n">archive_unpack</span><span class="p">(</span><span class="n">archive_file</span><span class="p">,</span> <span class="n">local_directory</span><span class="p">)</span></div>
+        <span class="n">archive_unpack</span><span class="p">(</span><span class="n">archive_file</span><span class="p">,</span> <span class="n">local_directory</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="download_directory_as_directory"><a class="viewcode-back" href="../../../api_doc/operate/download.html#hfutils.operate.download.download_directory_as_directory">[docs]</a><span class="k">def</span> <span class="nf">download_directory_as_directory</span><span class="p">(</span><span class="n">local_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span>
@@ -249,7 +252,6 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/password/index.html">dev/password</a></dd>
                         <dd><a href="download.html">main</a></dd>
                 </dl>
         </div>
