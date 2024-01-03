@@ -1,5 +1,6 @@
 import os.path
 import zipfile
+from typing import Optional
 
 from .base import register_archive_type
 from ..utils import tqdm, walk_files
@@ -21,10 +22,12 @@ def _zip_pack(directory, zip_file, silent: bool = False):
             zf.write(os.path.join(directory, file), file)
 
 
-def _zip_unpack(zip_file, directory, silent: bool = False):
+def _zip_unpack(zip_file, directory, silent: bool = False, password: Optional[str] = None):
     directory = os.fspath(directory)
     os.makedirs(directory, exist_ok=True)
     with zipfile.ZipFile(zip_file, 'r') as zf:
+        if password is not None:
+            zf.setpassword(password.encode(encoding='utf-8'))
         progress = tqdm(zf.namelist(), silent=silent, desc=f'Unpacking {directory!r} ...')
         for zipinfo in progress:
             progress.set_description(zipinfo)

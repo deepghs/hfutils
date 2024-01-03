@@ -1,8 +1,9 @@
 import copy
 import os.path
 import tarfile
+import warnings
 from functools import partial
-from typing import Literal
+from typing import Literal, Optional
 
 from .base import register_archive_type
 from .zip import _ZLIB_SUPPORTED
@@ -47,7 +48,10 @@ def _tarfile_pack(directory, tar_file, compress: CompressTyping = "gzip", silent
             tar.add(os.path.join(directory, file), file)
 
 
-def _tarfile_unpack(tar_file, directory, silent: bool = False, numeric_owner=False):
+def _tarfile_unpack(tar_file, directory, silent: bool = False, numeric_owner=False, password: Optional[str] = None):
+    if password is not None:
+        warnings.warn('Password is not supported in tar archive files.\n'
+                      'So assigned password will be ignored.')
     with tarfile.open(tar_file) as tar:
         directories = []
         progress = tqdm(tar, silent=silent, desc=f'Unpacking {directory!r} ...')

@@ -18,6 +18,11 @@ def raw_rar():
     return get_testfile('raw.rar')
 
 
+@pytest.fixture()
+def raw_password_rar():
+    return get_testfile('raw-password.rar')
+
+
 @pytest.mark.unittest
 class TestArchiveRar:
     @skipUnless(rarfile, 'rarfile module required.')
@@ -52,4 +57,17 @@ class TestArchiveRar:
         with isolated_directory():
             with disable_output():
                 archive_unpack(raw_rar, '.')
+            check_unpack_dir('.')
+
+    @skipUnless(rarfile, 'rarfile module required.')
+    def test_archive_unpack_with_password_failed(self, raw_password_rar):
+        with isolated_directory():
+            with disable_output(), pytest.raises(rarfile.PasswordRequired):
+                archive_unpack(raw_password_rar, '.')
+
+    @skipUnless(rarfile, 'rarfile module required.')
+    def test_archive_unpack_with_password(self, raw_password_rar, check_unpack_dir):
+        with isolated_directory():
+            with disable_output():
+                archive_unpack(raw_password_rar, '.', password='password')
             check_unpack_dir('.')

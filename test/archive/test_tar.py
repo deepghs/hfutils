@@ -49,3 +49,15 @@ class TestArchiveTar:
             with disable_output():
                 archive_unpack(get_testfile(f'raw{ext}'), '.')
             check_unpack_dir('.')
+
+    @pytest.mark.parametrize(['type_', 'ext'], [
+        ('tar', '.tar'),
+        ('gztar', '.tar.gz'),
+        ('bztar', '.tar.bz2'),
+        ('xztar', '.tar.xz'),
+    ])
+    def test_archive_unpack_password_ignore(self, check_unpack_dir, type_, ext):
+        with isolated_directory():
+            with disable_output(), pytest.warns(UserWarning):
+                archive_unpack(get_testfile(f'raw{ext}'), '.', password='password')
+            check_unpack_dir('.')

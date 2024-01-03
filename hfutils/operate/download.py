@@ -1,7 +1,7 @@
 import os.path
 import shutil
 from concurrent.futures import ThreadPoolExecutor
-from typing import List
+from typing import List, Optional
 
 from .base import RepoTypeTyping, list_files_in_repository, _IGNORE_PATTERN_UNSET, get_hf_client
 from ..archive import archive_unpack
@@ -50,7 +50,8 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
 
 
 def download_archive_as_directory(local_directory: str, repo_id: str, file_in_repo: str,
-                                  repo_type: RepoTypeTyping = 'dataset', revision: str = 'main'):
+                                  repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                                  password: Optional[str] = None):
     """
     Download an archive file from a Hugging Face repository and extract it to a local directory.
 
@@ -64,11 +65,13 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
     :type revision: str
+    :param password: The password of the archive file.
+    :type password: str, optional
     """
     with TemporaryDirectory() as td:
         archive_file = os.path.join(td, os.path.basename(file_in_repo))
         download_file_to_file(archive_file, repo_id, file_in_repo, repo_type, revision)
-        archive_unpack(archive_file, local_directory)
+        archive_unpack(archive_file, local_directory, password=password)
 
 
 def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_repo: str = '.',
