@@ -3,7 +3,7 @@ import os.path
 import re
 from typing import Optional, List
 
-from huggingface_hub import CommitOperationAdd, CommitOperationDelete
+from huggingface_hub import CommitOperationAdd, CommitOperationDelete, HfApi
 
 from .base import RepoTypeTyping, get_hf_client, list_files_in_repository, _IGNORE_PATTERN_UNSET
 from ..archive import get_archive_type, archive_pack
@@ -12,7 +12,7 @@ from ..utils import walk_files, TemporaryDirectory
 
 def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
                         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                        message: Optional[str] = None):
+                        message: Optional[str] = None, hf_client: Optional[HfApi] = None):
     """
     Upload a local file to a specified path in a Hugging Face repository.
 
@@ -28,8 +28,10 @@ def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
     :type revision: str
     :param message: The commit message for the upload.
     :type message: Optional[str]
+    :param hf_client: Huggingface client object to use. Client with ``HF_TOKEN`` will be used when not assigned.
+    :type hf_client: HfApi
     """
-    hf_client = get_hf_client()
+    hf_client = hf_client or get_hf_client()
     hf_client.upload_file(
         repo_id=repo_id,
         repo_type=repo_type,
@@ -42,7 +44,8 @@ def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
 
 def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: str,
                                 repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                                message: Optional[str] = None, silent: bool = False):
+                                message: Optional[str] = None, silent: bool = False,
+                                hf_client: Optional[HfApi] = None):
     """
     Upload a local directory as an archive file to a specified path in a Hugging Face repository.
 
@@ -60,12 +63,14 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
     :type message: Optional[str]
     :param silent: If True, suppress progress bar output.
     :type silent: bool
+    :param hf_client: Huggingface client object to use. Client with ``HF_TOKEN`` will be used when not assigned.
+    :type hf_client: HfApi
     """
     archive_type = get_archive_type(archive_in_repo)
     with TemporaryDirectory() as td:
         local_archive_file = os.path.join(td, os.path.basename(archive_in_repo))
         archive_pack(archive_type, local_directory, local_archive_file, silent=silent)
-        upload_file_to_file(local_archive_file, repo_id, archive_in_repo, repo_type, revision, message)
+        upload_file_to_file(local_archive_file, repo_id, archive_in_repo, repo_type, revision, message, hf_client)
 
 
 _PATH_SEP = re.compile(r'[/\\]+')
@@ -74,7 +79,8 @@ _PATH_SEP = re.compile(r'[/\\]+')
 def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: str,
                                   repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                   message: Optional[str] = None, time_suffix: bool = True,
-                                  clear: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET):
+                                  clear: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+                                  hf_client: Optional[HfApi] = None):
     """
     Upload a local directory and its files to a specified path in a Hugging Face repository.
 
@@ -96,8 +102,10 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
     :type clear: bool
     :param ignore_patterns: List of file patterns to ignore.
     :type ignore_patterns: List[str]
+    :param hf_client: Huggingface client object to use. Client with ``HF_TOKEN`` will be used when not assigned.
+    :type hf_client: HfApi
     """
-    hf_client = get_hf_client()
+    hf_client = hf_client or get_hf_client()
     if clear:
         pre_exist_files = {
             tuple(file.split('/')) for file in
