@@ -3,6 +3,8 @@ import shutil
 from concurrent.futures import ThreadPoolExecutor
 from typing import List, Optional
 
+from huggingface_hub import HfApi
+
 from .base import RepoTypeTyping, list_files_in_repository, _IGNORE_PATTERN_UNSET, get_hf_client
 from ..archive import archive_unpack
 from ..utils import tqdm, TemporaryDirectory
@@ -10,7 +12,7 @@ from ..utils import tqdm, TemporaryDirectory
 
 def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
                           repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                          resume_download: bool = True):
+                          resume_download: bool = True, hf_client: Optional[HfApi] = None):
     """
     Download a file from a Hugging Face repository and save it to a local file.
 
@@ -26,8 +28,10 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
     :type revision: str
     :param resume_download: Resume the existing download.
     :type resume_download: bool
+    :param hf_client: Huggingface client object to use. Client with ``HF_TOKEN`` will be used when not assigned.
+    :type hf_client: HfApi
     """
-    hf_client = get_hf_client()
+    hf_client = hf_client or get_hf_client()
     relative_filename = os.path.join(*file_in_repo.split("/"))
     with TemporaryDirectory() as td:
         temp_path = os.path.join(td, relative_filename)
@@ -51,7 +55,7 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
 
 def download_archive_as_directory(local_directory: str, repo_id: str, file_in_repo: str,
                                   repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                                  password: Optional[str] = None):
+                                  password: Optional[str] = None, hf_client: Optional[HfApi] = None):
     """
     Download an archive file from a Hugging Face repository and extract it to a local directory.
 
@@ -67,17 +71,20 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
     :type revision: str
     :param password: The password of the archive file.
     :type password: str, optional
+    :param hf_client: Huggingface client object to use. Client with ``HF_TOKEN`` will be used when not assigned.
+    :type hf_client: HfApi
     """
     with TemporaryDirectory() as td:
         archive_file = os.path.join(td, os.path.basename(file_in_repo))
-        download_file_to_file(archive_file, repo_id, file_in_repo, repo_type, revision)
+        download_file_to_file(archive_file, repo_id, file_in_repo, repo_type, revision, hf_client=hf_client)
         archive_unpack(archive_file, local_directory, password=password)
 
 
 def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_repo: str = '.',
                                     repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                     silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
-                                    resume_download: bool = True, max_workers: int = 8):
+                                    resume_download: bool = True, max_workers: int = 8,
+                                    hf_client: Optional[HfApi] = None):
     """
     Download all files in a directory from a Hugging Face repository to a local directory.
 
@@ -99,6 +106,8 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
     :type max_workers: int
     :param resume_download: Resume the existing download.
     :type resume_download: bool
+    :param hf_client: Huggingface client object to use. Client with ``HF_TOKEN`` will be used when not assigned.
+    :type hf_client: HfApi
     """
     files = list_files_in_repository(repo_id, repo_type, dir_in_repo, revision, ignore_patterns)
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
@@ -111,6 +120,7 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
             repo_type=repo_type,
             revision=revision,
             resume_download=resume_download,
+            hf_client=hf_client,
         )
         progress.update()
 
