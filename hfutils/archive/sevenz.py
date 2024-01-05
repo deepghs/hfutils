@@ -10,12 +10,14 @@ except ImportError:  # pragma: no cover
     py7zr = None
 
 
-def _7z_pack(directory, sz_file, silent: bool = False):
+def _7z_pack(directory, sz_file, silent: bool = False, clear: bool = False):
     with py7zr.SevenZipFile(sz_file, 'w') as zf:
         progress = tqdm(walk_files(directory), silent=silent, desc=f'Packing {directory!r} ...')
         for file in progress:
             progress.set_description(file)
             zf.write(os.path.join(directory, file), file)
+            if clear:
+                os.remove(os.path.join(directory, file))
 
 
 def _7z_unpack(sz_file, directory, silent: bool = False, password: Optional[str] = None):

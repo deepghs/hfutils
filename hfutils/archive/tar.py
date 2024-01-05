@@ -28,7 +28,7 @@ except ImportError:
 CompressTyping = Literal['', 'gzip', 'bzip2', 'xz']
 
 
-def _tarfile_pack(directory, tar_file, compress: CompressTyping = "gzip", silent: bool = False):
+def _tarfile_pack(directory, tar_file, compress: CompressTyping = "gzip", silent: bool = False, clear: bool = False):
     if compress is None:
         tar_compression = ''
     elif compress == 'gzip':
@@ -46,6 +46,8 @@ def _tarfile_pack(directory, tar_file, compress: CompressTyping = "gzip", silent
         for file in progress:
             progress.set_description(file)
             tar.add(os.path.join(directory, file), file)
+            if clear:
+                os.remove(os.path.join(directory, file))
 
 
 def _tarfile_unpack(tar_file, directory, silent: bool = False, numeric_owner=False, password: Optional[str] = None):

@@ -41,7 +41,7 @@ def get_archive_extname(type_name: str) -> str:
         raise ValueError(f'Unknown archive type - {type_name!r}.')
 
 
-def archive_pack(type_name: str, directory: str, archive_file: str, silent: bool = False):
+def archive_pack(type_name: str, directory: str, archive_file: str, silent: bool = False, clear: bool = False):
     """
     Pack a directory into an archive file using the specified archive type.
 
@@ -53,6 +53,8 @@ def archive_pack(type_name: str, directory: str, archive_file: str, silent: bool
     :type archive_file: str
     :param silent: If True, suppress warnings during the packing process.
     :type silent: bool
+    :param clear: If True, remove existing files when packing.
+    :type clear: bool
 
     :return: The path to the created archive file.
     :rtype: str
@@ -63,7 +65,7 @@ def archive_pack(type_name: str, directory: str, archive_file: str, silent: bool
                       f'but file name {archive_file!r} is assigned. '
                       f'We strongly recommend using a regular extension name for the archive file.')
 
-    return fn_pack(directory, archive_file, silent=silent)
+    return fn_pack(directory, archive_file, silent=silent, clear=clear)
 
 
 def get_archive_type(archive_file: str) -> str:

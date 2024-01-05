@@ -10,7 +10,7 @@ except ImportError:  # pragma: no cover
     rarfile = None
 
 
-def _rar_pack(directory, zip_file, silent: bool = False):
+def _rar_pack(directory, zip_file, silent: bool = False, clear: bool = False):
     _ = directory, zip_file, silent
     raise RuntimeError('RAR format packing is not supported.')
 

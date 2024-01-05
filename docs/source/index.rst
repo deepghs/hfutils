@@ -4,8 +4,7 @@ Welcome to hfutils's Documentation
 Overview
 -------------
 
-``hfutils`` is a module which can parse and manage the \
-configuration file's structure and their versions.
+``hfutils`` is a module with useful utilities for huggingface.
 
 .. toctree::
     :maxdepth: 2

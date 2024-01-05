@@ -5,6 +5,7 @@ import pytest
 from hbutils.testing import isolated_directory, disable_output
 
 from hfutils.archive import get_archive_type, get_archive_extname, archive_pack, archive_unpack
+from hfutils.utils import walk_files
 from test.testings import get_testfile
 
 try:
@@ -49,8 +50,11 @@ class TestArchiveRar:
     @skipUnless(rarfile, 'rarfile module required.')
     def test_archive_pack(self, raw_dir, check_unpack_dir):
         with isolated_directory():
+            origin_files = len(list(walk_files(raw_dir)))
+            assert origin_files > 0
             with disable_output(), pytest.raises(RuntimeError):
                 archive_pack('rar', raw_dir, 'pack.rar')
+            assert len(list(walk_files(raw_dir))) == origin_files
 
     @skipUnless(rarfile, 'rarfile module required.')
     def test_archive_unpack(self, raw_rar, check_unpack_dir):

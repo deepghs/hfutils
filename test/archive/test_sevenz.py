@@ -5,6 +5,7 @@ import pytest
 from hbutils.testing import isolated_directory, disable_output
 
 from hfutils.archive import get_archive_type, get_archive_extname, archive_pack, archive_unpack
+from hfutils.utils import walk_files
 from test.testings import get_testfile
 
 try:
@@ -49,8 +50,24 @@ class TestArchive7z:
     @skipUnless(py7zr, 'py7zr module required.')
     def test_archive_pack(self, raw_dir, check_unpack_dir):
         with isolated_directory():
+            origin_files = len(list(walk_files(raw_dir)))
+            assert origin_files > 0
             with disable_output():
                 archive_pack('7z', raw_dir, 'pack.7z')
+            assert len(list(walk_files(raw_dir))) == origin_files
+
+            os.makedirs('dst', exist_ok=True)
+            with py7zr.SevenZipFile('pack.7z', 'r') as zf:
+                zf.extractall('dst')
+            check_unpack_dir('dst')
+
+    @skipUnless(py7zr, 'py7zr module required.')
+    def test_archive_pack_clear(self, raw_dir, check_unpack_dir):
+        with isolated_directory({'test_dir': raw_dir}):
+            assert len(list(walk_files(raw_dir))) > 0
+            with disable_output():
+                archive_pack('7z', 'test_dir', 'pack.7z', clear=True)
+            assert len(list(walk_files('test_dir'))) == 0
 
             os.makedirs('dst', exist_ok=True)
             with py7zr.SevenZipFile('pack.7z', 'r') as zf:
