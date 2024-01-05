@@ -21,27 +21,33 @@ def _get_hf_token() -> Optional[str]:
 
 
 @lru_cache()
-def get_hf_client() -> HfApi:
+def get_hf_client(hf_token: Optional[str] = None) -> HfApi:
     """
     Get the Hugging Face API client.
+
+    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
+    :type hf_token: str, optional
 
     :return: The Hugging Face API client.
     :rtype: HfApi
     """
-    return HfApi(token=_get_hf_token())
+    return HfApi(token=hf_token or _get_hf_token())
 
 
 @lru_cache()
-def get_hf_fs() -> HfFileSystem:
+def get_hf_fs(hf_token: Optional[str] = None) -> HfFileSystem:
     """
     Get the Hugging Face file system.
+
+    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
+    :type hf_token: str, optional
 
     :return: The Hugging Face file system.
     :rtype: HfFileSystem
     """
     # use_listings_cache=False is necessary
     # or the result of glob and ls will be cached, the unittest will down
-    return HfFileSystem(token=_get_hf_token(), use_listings_cache=False)
+    return HfFileSystem(token=hf_token or _get_hf_token(), use_listings_cache=False)
 
 
 _DEFAULT_IGNORE_PATTERNS = ['.git*']
@@ -70,7 +76,8 @@ def _is_file_ignored(file_segments: List[str], ignore_patterns: List[str]) -> bo
 
 def list_files_in_repository(repo_id: str, repo_type: RepoTypeTyping = 'dataset',
                              subdir: str = '', revision: str = 'main',
-                             ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET) -> List[str]:
+                             ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+                             hf_token: Optional[str] = None) -> List[str]:
     """
     List files in a Hugging Face repository based on the given parameters.
 
@@ -84,13 +91,15 @@ def list_files_in_repository(repo_id: str, repo_type: RepoTypeTyping = 'dataset'
     :type revision: str
     :param ignore_patterns: List of file patterns to ignore.
     :type ignore_patterns: List[str]
+    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
+    :type hf_token: str, optional
 
     :return: A list of file paths.
     :rtype: List[str]
     """
     if ignore_patterns is _IGNORE_PATTERN_UNSET:
         ignore_patterns = _DEFAULT_IGNORE_PATTERNS
-    hf_fs = get_hf_fs()
+    hf_fs = get_hf_fs(hf_token)
     if repo_type == 'model':
         repo_root_path = repo_id
     elif repo_type == 'dataset':
