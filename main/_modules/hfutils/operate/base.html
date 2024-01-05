@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.operate.base &mdash; hfutils 0.0.4 documentation</title>
+  <title>hfutils.operate.base &mdash; hfutils 0.0.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
@@ -16,7 +16,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ae2dc491"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=0a554088"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -37,7 +37,7 @@
             hfutils
           </a>
               <div class="version">
-                0.0.4
+                0.0.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -115,27 +115,33 @@
 
 
 <div class="viewcode-block" id="get_hf_client"><a class="viewcode-back" href="../../../api_doc/operate/base.html#hfutils.operate.base.get_hf_client">[docs]</a><span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">get_hf_client</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">HfApi</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HfApi</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the Hugging Face API client.</span>
+
+<span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
+<span class="sd">    :type hf_token: str, optional</span>
 
 <span class="sd">    :return: The Hugging Face API client.</span>
 <span class="sd">    :rtype: HfApi</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">HfApi</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">_get_hf_token</span><span class="p">())</span></div>
+    <span class="k">return</span> <span class="n">HfApi</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">hf_token</span> <span class="ow">or</span> <span class="n">_get_hf_token</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="get_hf_fs"><a class="viewcode-back" href="../../../api_doc/operate/base.html#hfutils.operate.base.get_hf_fs">[docs]</a><span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">get_hf_fs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">HfFileSystem</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_hf_fs</span><span class="p">(</span><span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HfFileSystem</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the Hugging Face file system.</span>
+
+<span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
+<span class="sd">    :type hf_token: str, optional</span>
 
 <span class="sd">    :return: The Hugging Face file system.</span>
 <span class="sd">    :rtype: HfFileSystem</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># use_listings_cache=False is necessary</span>
     <span class="c1"># or the result of glob and ls will be cached, the unittest will down</span>
-    <span class="k">return</span> <span class="n">HfFileSystem</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">_get_hf_token</span><span class="p">(),</span> <span class="n">use_listings_cache</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">HfFileSystem</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">hf_token</span> <span class="ow">or</span> <span class="n">_get_hf_token</span><span class="p">(),</span> <span class="n">use_listings_cache</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <span class="n">_DEFAULT_IGNORE_PATTERNS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.git*&#39;</span><span class="p">]</span>
@@ -164,7 +170,8 @@
 
 <div class="viewcode-block" id="list_files_in_repository"><a class="viewcode-back" href="../../../api_doc/operate/base.html#hfutils.operate.base.list_files_in_repository">[docs]</a><span class="k">def</span> <span class="nf">list_files_in_repository</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span>
                              <span class="n">subdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
-                             <span class="n">ignore_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+                             <span class="n">ignore_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">,</span>
+                             <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    List files in a Hugging Face repository based on the given parameters.</span>
 
@@ -178,13 +185,15 @@
 <span class="sd">    :type revision: str</span>
 <span class="sd">    :param ignore_patterns: List of file patterns to ignore.</span>
 <span class="sd">    :type ignore_patterns: List[str]</span>
+<span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
+<span class="sd">    :type hf_token: str, optional</span>
 
 <span class="sd">    :return: A list of file paths.</span>
 <span class="sd">    :rtype: List[str]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ignore_patterns</span> <span class="ow">is</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">:</span>
         <span class="n">ignore_patterns</span> <span class="o">=</span> <span class="n">_DEFAULT_IGNORE_PATTERNS</span>
-    <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">get_hf_fs</span><span class="p">()</span>
+    <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">get_hf_fs</span><span class="p">(</span><span class="n">hf_token</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">repo_type</span> <span class="o">==</span> <span class="s1">&#39;model&#39;</span><span class="p">:</span>
         <span class="n">repo_root_path</span> <span class="o">=</span> <span class="n">repo_id</span>
     <span class="k">elif</span> <span class="n">repo_type</span> <span class="o">==</span> <span class="s1">&#39;dataset&#39;</span><span class="p">:</span>
@@ -253,7 +262,6 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/custom/index.html">dev/custom</a></dd>
                         <dd><a href="base.html">main</a></dd>
                 </dl>
         </div>
