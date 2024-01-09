@@ -135,7 +135,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown archive type - </span><span class="si">{</span><span class="n">type_name</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="archive_pack"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_pack">[docs]</a><span class="k">def</span> <span class="nf">archive_pack</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="archive_pack"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_pack">[docs]</a><span class="k">def</span> <span class="nf">archive_pack</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">clear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pack a directory into an archive file using the specified archive type.</span>
 
@@ -147,6 +147,8 @@
 <span class="sd">    :type archive_file: str</span>
 <span class="sd">    :param silent: If True, suppress warnings during the packing process.</span>
 <span class="sd">    :type silent: bool</span>
+<span class="sd">    :param clear: If True, remove existing files when packing.</span>
+<span class="sd">    :type clear: bool</span>
 
 <span class="sd">    :return: The path to the created archive file.</span>
 <span class="sd">    :rtype: str</span>
@@ -157,7 +159,7 @@
                       <span class="sa">f</span><span class="s1">&#39;but file name </span><span class="si">{</span><span class="n">archive_file</span><span class="si">!r}</span><span class="s1"> is assigned. &#39;</span>
                       <span class="sa">f</span><span class="s1">&#39;We strongly recommend using a regular extension name for the archive file.&#39;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">fn_pack</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">fn_pack</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_archive_type"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.get_archive_type">[docs]</a><span class="k">def</span> <span class="nf">get_archive_type</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
