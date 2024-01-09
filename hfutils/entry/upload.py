@@ -45,12 +45,14 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
     @click.option('-c', '--clear', 'clear', is_flag=True, type=bool, default=False,
                   help='Clear the remote directory before uploading.\n'
                        'Only applied when -d is used.', show_default=True)
-    @click.option('-p', '--private', 'private', is_flag=True, type=bool, default=False,
-                  help='Use private repository when created.', show_default=True)
+    @click.option('-p', '--private', 'private', is_flag=True, type=bool, default=None,
+                  help='Set private repository when created.', show_default=True)
+    @click.option('-P', '--public', 'public', is_flag=True, type=bool, default=None,
+                  help='Set public repository when created.', show_default=True)
     @command_wrap()
     def upload(repo_id: str, repo_type: RepoTypeTyping,
                file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
-               input_path: str, revision: str, clear: bool, private: bool):
+               input_path: str, revision: str, clear: bool, private: bool, public: bool):
         """
         Upload data to HuggingFace repositories.
 
@@ -71,18 +73,35 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
         :param clear: Clear the remote directory before uploading.
                       Only applied when -d is used.
         :type clear: bool
-        :param private: Use private repository when created.
+        :param private: Set private repository when created.
         :type private: bool
+        :param public: Set public repository when created.
+        :type public: bool
         """
         if not file_in_repo and not archive_in_repo and not dir_in_repo:
             raise NoRemotePathAssignedWithUpload('No remote path in repository assigned.\n'
-                                       'One of the -f, -a, or -d option is required.')
+                                                 'One of the -f, -a, or -d option is required.')
 
         hf_client = get_hf_client()
+        if private or public:
+            set_visibility = True
+            if private and public:
+                raise ValueError('Repository should have only one accessibility, '
+                                 '-p (--private) and -P (--public) should not be used together.')
+
+            is_private = False
+            if public:
+                is_private = False
+            if private:
+                is_private = True
+        else:
+            set_visibility = False
+            is_private = False
+
         if not hf_client.repo_exists(repo_id, repo_type=repo_type):
-            hf_client.create_repo(repo_id, repo_type=repo_type, exist_ok=True, private=private)
-        if bool(hf_client.repo_info(repo_id, repo_type=repo_type).private) != bool(private):
-            hf_client.update_repo_visibility(repo_id, repo_type=repo_type, private=bool(private))
+            hf_client.create_repo(repo_id, repo_type=repo_type, exist_ok=True, private=is_private)
+        if set_visibility:
+            hf_client.update_repo_visibility(repo_id, repo_type=repo_type, private=is_private)
 
         if file_in_repo:
             if archive_in_repo:
