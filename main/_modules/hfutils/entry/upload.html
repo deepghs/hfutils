@@ -139,12 +139,14 @@
     <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--clear&#39;</span><span class="p">,</span> <span class="s1">&#39;clear&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Clear the remote directory before uploading.</span><span class="se">\n</span><span class="s1">&#39;</span>
                        <span class="s1">&#39;Only applied when -d is used.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="s1">&#39;--private&#39;</span><span class="p">,</span> <span class="s1">&#39;private&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Use private repository when created.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="s1">&#39;--private&#39;</span><span class="p">,</span> <span class="s1">&#39;private&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Set private repository when created.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-P&#39;</span><span class="p">,</span> <span class="s1">&#39;--public&#39;</span><span class="p">,</span> <span class="s1">&#39;public&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Set public repository when created.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nd">@command_wrap</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span><span class="p">,</span>
                <span class="n">file_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">archive_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-               <span class="n">input_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">clear</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">private</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+               <span class="n">input_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">clear</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">private</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">public</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Upload data to HuggingFace repositories.</span>
 
@@ -165,18 +167,35 @@
 <span class="sd">        :param clear: Clear the remote directory before uploading.</span>
 <span class="sd">                      Only applied when -d is used.</span>
 <span class="sd">        :type clear: bool</span>
-<span class="sd">        :param private: Use private repository when created.</span>
+<span class="sd">        :param private: Set private repository when created.</span>
 <span class="sd">        :type private: bool</span>
+<span class="sd">        :param public: Set public repository when created.</span>
+<span class="sd">        :type public: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">file_in_repo</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">archive_in_repo</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">dir_in_repo</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">NoRemotePathAssignedWithUpload</span><span class="p">(</span><span class="s1">&#39;No remote path in repository assigned.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                                       <span class="s1">&#39;One of the -f, -a, or -d option is required.&#39;</span><span class="p">)</span>
+                                                 <span class="s1">&#39;One of the -f, -a, or -d option is required.&#39;</span><span class="p">)</span>
 
         <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">private</span> <span class="ow">or</span> <span class="n">public</span><span class="p">:</span>
+            <span class="n">set_visibility</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">private</span> <span class="ow">and</span> <span class="n">public</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Repository should have only one accessibility, &#39;</span>
+                                 <span class="s1">&#39;-p (--private) and -P (--public) should not be used together.&#39;</span><span class="p">)</span>
+
+            <span class="n">is_private</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">public</span><span class="p">:</span>
+                <span class="n">is_private</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">private</span><span class="p">:</span>
+                <span class="n">is_private</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">set_visibility</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">is_private</span> <span class="o">=</span> <span class="kc">False</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">hf_client</span><span class="o">.</span><span class="n">repo_exists</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">):</span>
-            <span class="n">hf_client</span><span class="o">.</span><span class="n">create_repo</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="n">private</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">hf_client</span><span class="o">.</span><span class="n">repo_info</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">)</span><span class="o">.</span><span class="n">private</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">private</span><span class="p">):</span>
-            <span class="n">hf_client</span><span class="o">.</span><span class="n">update_repo_visibility</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">private</span><span class="p">))</span>
+            <span class="n">hf_client</span><span class="o">.</span><span class="n">create_repo</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="n">is_private</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">set_visibility</span><span class="p">:</span>
+            <span class="n">hf_client</span><span class="o">.</span><span class="n">update_repo_visibility</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="n">is_private</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">file_in_repo</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">archive_in_repo</span><span class="p">:</span>
@@ -258,7 +277,6 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/visibility/index.html">dev/visibility</a></dd>
                         <dd><a href="upload.html">main</a></dd>
                 </dl>
         </div>
