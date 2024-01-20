@@ -2,7 +2,6 @@ import os
 from typing import Optional
 
 from .base import register_archive_type
-from ..utils import tqdm
 
 try:
     import rarfile
@@ -11,20 +10,18 @@ except ImportError:  # pragma: no cover
 
 
 def _rar_pack(directory, zip_file, silent: bool = False, clear: bool = False):
-    _ = directory, zip_file, silent
+    _ = directory, zip_file, silent, clear
     raise RuntimeError('RAR format packing is not supported.')
 
 
 def _rar_unpack(rar_file, directory, silent: bool = False, password: Optional[str] = None):
+    _ = silent
     directory = os.fspath(directory)
     os.makedirs(directory, exist_ok=True)
     with rarfile.RarFile(rar_file, 'r') as zf:
         if password is not None:
             zf.setpassword(password)
-        progress = tqdm(zf.namelist(), silent=silent, desc=f'Unpacking {directory!r} ...')
-        for rarinfo in progress:
-            progress.set_description(rarinfo)
-            zf.extract(rarinfo, directory)
+        zf.extractall(directory)
 
 
 if rarfile is not None:

@@ -21,14 +21,11 @@ def _7z_pack(directory, sz_file, silent: bool = False, clear: bool = False):
 
 
 def _7z_unpack(sz_file, directory, silent: bool = False, password: Optional[str] = None):
+    _ = silent
     directory = os.fspath(directory)
     os.makedirs(directory, exist_ok=True)
     with py7zr.SevenZipFile(sz_file, 'r', password=password) as zf:
-        progress = tqdm(zf.getnames(), silent=silent, desc=f'Unpacking {directory!r} ...')
-        for name in progress:
-            progress.set_description(name)
-            zf.extract(path=directory, targets=[name])
-            zf.reset()
+        zf.extractall(directory)
 
 
 if py7zr is not None:
