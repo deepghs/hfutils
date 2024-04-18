@@ -12,4 +12,5 @@ hfutils.operate
     base
     download
     upload
+    validate
 
