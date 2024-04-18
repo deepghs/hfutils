@@ -1,9 +1,11 @@
+import logging
 import os.path
 import shutil
 from concurrent.futures import ThreadPoolExecutor
 from typing import List, Optional
 
 from .base import RepoTypeTyping, list_files_in_repository, _IGNORE_PATTERN_UNSET, get_hf_client
+from .validate import is_local_file_ready
 from ..archive import archive_unpack
 from ..utils import tqdm, TemporaryDirectory
 
@@ -111,15 +113,26 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
 
     def _download_one_file(rel_file):
-        download_file_to_file(
-            local_file=os.path.join(local_directory, rel_file),
-            repo_id=repo_id,
-            file_in_repo=f'{dir_in_repo}/{rel_file}',
-            repo_type=repo_type,
-            revision=revision,
-            resume_download=resume_download,
-            hf_token=hf_token,
-        )
+        dst_file = os.path.join(local_directory, rel_file)
+        if os.path.exists(dst_file) and is_local_file_ready(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                local_file=dst_file,
+                file_in_repo=f'{dir_in_repo}/{rel_file}',
+                revision=revision,
+                hf_token=hf_token,
+        ):
+            logging.info(f'Local file {rel_file} is ready, download skipped.')
+        else:
+            download_file_to_file(
+                local_file=dst_file,
+                repo_id=repo_id,
+                file_in_repo=f'{dir_in_repo}/{rel_file}',
+                repo_type=repo_type,
+                revision=revision,
+                resume_download=resume_download,
+                hf_token=hf_token,
+            )
         progress.update()
 
     tp = ThreadPoolExecutor(max_workers=max_workers)
