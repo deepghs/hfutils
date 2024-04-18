@@ -9,10 +9,22 @@ from huggingface_hub.utils import EntryNotFoundError
 from .base import RepoTypeTyping, get_hf_client
 
 
-def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: int = 1 << 20):
+def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: int = 1 << 20) -> bool:
+    """
+    Checks if the local file matches the file on the Hugging Face Hub repository.
+
+    :param repo_file: The information of the file on the Hugging Face Hub repository.
+    :type repo_file: RepoFile
+    :param local_file: The path to the local file.
+    :type local_file: str
+    :param chunk_for_hash: The chunk size for calculating the hash. Default is 1 << 20.
+    :type chunk_for_hash: int
+    :return: True if the local file matches the file on the repository, False otherwise.
+    :rtype: bool
+    """
     filesize = os.path.getsize(local_file)
     if repo_file.size != filesize:
-        logging.info(f'File {local_file!r} size ({filesize}) not match '
+        logging.info(f'File {local_file!r} size ({filesize}) does not match '
                      f'the remote file {repo_file.path!r} ({repo_file.size}).')
         return False
 
@@ -25,7 +37,7 @@ def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: 
         expected_hash = repo_file.blob_id
 
     with open(local_file, 'rb') as f:
-        # make sure the big files will not cause OOM
+        # Make sure the big files will not cause out-of-memory errors
         while True:
             data = f.read(chunk_for_hash)
             if not data:
@@ -35,14 +47,32 @@ def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: 
     actual_hash = sha.hexdigest()
     is_match = actual_hash == expected_hash
     logging.info(f'Result hash of {local_file!r} ({actual_hash}) '
-                 f'{"match" if is_match else "not match"} '
-                 f'with the hash of remote file {repo_file.path!r} ({expected_hash}).')
+                 f'{"matches" if is_match else "does not match"} '
+                 f'the hash of the remote file {repo_file.path!r} ({expected_hash}).')
     return is_match
 
 
 def is_local_file_ready(local_file: str, repo_id: str, file_in_repo: str,
                         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                         hf_token: Optional[str] = None) -> bool:
+    """
+    Checks if the local file is ready by comparing it with the file on the Hugging Face Hub repository.
+
+    :param local_file: The path to the local file.
+    :type local_file: str
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param file_in_repo: The path to the file in the repository.
+    :type file_in_repo: str
+    :param repo_type: The type of the repository. Default is 'dataset'.
+    :type repo_type: RepoTypeTyping
+    :param revision: The revision of the repository. Default is 'main'.
+    :type revision: str
+    :param hf_token: The Hugging Face API token. Default is None.
+    :type hf_token: Optional[str]
+    :return: True if the local file matches the file on the repository, False otherwise.
+    :rtype: bool
+    """
     hf_client = get_hf_client(hf_token)
     infos = hf_client.get_paths_info(
         repo_id=repo_id,
