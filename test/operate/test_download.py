@@ -60,7 +60,7 @@ class TestOperateDownload:
             nonlocal call_times
             call_times += 1
             return download_file_to_file(*args, **kwargs)
-
+ 
         with patch('hfutils.operate.download.download_file_to_file', _my_download), \
                 isolated_directory({'download_dir': src_dir}):
             download_directory_as_directory(
