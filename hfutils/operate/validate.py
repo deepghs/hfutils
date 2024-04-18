@@ -24,8 +24,8 @@ def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: 
     """
     filesize = os.path.getsize(local_file)
     if repo_file.size != filesize:
-        logging.info(f'File {local_file!r} size ({filesize}) does not match '
-                     f'the remote file {repo_file.path!r} ({repo_file.size}).')
+        logging.debug(f'File {local_file!r} size ({filesize}) does not match '
+                      f'the remote file {repo_file.path!r} ({repo_file.size}).')
         return False
 
     if repo_file.lfs:
@@ -46,9 +46,9 @@ def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: 
 
     actual_hash = sha.hexdigest()
     is_match = actual_hash == expected_hash
-    logging.info(f'Result hash of {local_file!r} ({actual_hash}) '
-                 f'{"matches" if is_match else "does not match"} '
-                 f'the hash of the remote file {repo_file.path!r} ({expected_hash}).')
+    logging.debug(f'Result hash of {local_file!r} ({actual_hash}) '
+                  f'{"matches" if is_match else "does not match"} '
+                  f'the hash of the remote file {repo_file.path!r} ({expected_hash}).')
     return is_match
 
 
