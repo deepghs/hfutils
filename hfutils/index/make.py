@@ -13,6 +13,20 @@ from ..utils import TemporaryDirectory, tqdm
 
 
 def tar_get_index_info(src_tar_file, chunk_for_hash: int = 1 << 20, with_hash: bool = True, silent: bool = False):
+    """
+    Get the index information of a tar archive file.
+
+    :param src_tar_file: The path to the source tar archive file.
+    :type src_tar_file: str
+    :param chunk_for_hash: The chunk size for hashing, defaults to 1 << 20 (1 MB).
+    :type chunk_for_hash: int, optional
+    :param with_hash: Whether to include file hashes in the index, defaults to True.
+    :type with_hash: bool, optional
+    :param silent: Whether to suppress progress bars and logging messages, defaults to False.
+    :type silent: bool, optional
+    :return: The index information of the tar archive file.
+    :rtype: dict
+    """
     filesize = os.path.getsize(src_tar_file)
     sha_common = sha1()
     sha_common.update(f'blob {filesize}\0'.encode('utf-8'))
@@ -55,6 +69,22 @@ def tar_get_index_info(src_tar_file, chunk_for_hash: int = 1 << 20, with_hash: b
 
 def tar_create_index(src_tar_file, dst_index_file: Optional[str] = None,
                      chunk_for_hash: int = 1 << 20, with_hash: bool = True, silent: bool = False):
+    """
+    Create an index file for a tar archive file.
+
+    :param src_tar_file: The path to the source tar archive file.
+    :type src_tar_file: str
+    :param dst_index_file: The path to save the index file, defaults to None.
+    :type dst_index_file: str, optional
+    :param chunk_for_hash: The chunk size for hashing, defaults to 1 << 20 (1 MB).
+    :type chunk_for_hash: int, optional
+    :param with_hash: Whether to include file hashes in the index, defaults to True.
+    :type with_hash: bool, optional
+    :param silent: Whether to suppress progress bars and logging messages, defaults to False.
+    :type silent: bool, optional
+    :return: The path to the created index file.
+    :rtype: str
+    """
     body, _ = os.path.splitext(src_tar_file)
     dst_index_file = dst_index_file or f'{body}.json'
     with open(dst_index_file, 'w') as f:
@@ -66,6 +96,32 @@ def hf_tar_create_index(repo_id: str, filename: str, repo_type: RepoTypeTyping =
                         idx_repo_id: Optional[str] = None, idx_filename: Optional[str] = None,
                         idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
                         chunk_for_hash: int = 1 << 20, with_hash: bool = True, hf_token: Optional[str] = None):
+    """
+    Create an index file for a tar archive file in a Hugging Face repository.
+
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param filename: The path to the tar archive file.
+    :type filename: str
+    :param repo_type: The type of the Hugging Face repository, defaults to 'dataset'.
+    :type repo_type: RepoTypeTyping, optional
+    :param revision: The revision of the repository, defaults to 'main'.
+    :type revision: str, optional
+    :param idx_repo_id: The identifier of the index repository, defaults to None.
+    :type idx_repo_id: str, optional
+    :param idx_filename: The path to save the index file in the index repository, defaults to None.
+    :type idx_filename: str, optional
+    :param idx_repo_type: The type of the index repository, defaults to None.
+    :type idx_repo_type: RepoTypeTyping, optional
+    :param idx_revision: The revision of the index repository, defaults to None.
+    :type idx_revision: str, optional
+    :param chunk_for_hash: The chunk size for hashing, defaults to 1 << 20 (1 MB).
+    :type chunk_for_hash: int, optional
+    :param with_hash: Whether to include file hashes in the index, defaults to True.
+    :type with_hash: bool, optional
+    :param hf_token: The Hugging Face access token, defaults to None.
+    :type hf_token: str, optional
+    """
     with TemporaryDirectory() as td:
         local_tar_file = os.path.join(td, os.path.basename(filename))
         download_file_to_file(
@@ -96,6 +152,28 @@ def hf_tar_create_from_directory(
         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
         chunk_for_hash: int = 1 << 20, with_hash: bool = True,
         silent: bool = False, hf_token: Optional[str] = None):
+    """
+    Create a tar archive file from a local directory and upload it to a Hugging Face repository.
+
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param archive_in_repo: The path to save the tar archive file in the repository.
+    :type archive_in_repo: str
+    :param local_directory: The path to the local directory to be archived.
+    :type local_directory: str
+    :param repo_type: The type of the Hugging Face repository, defaults to 'dataset'.
+    :type repo_type: RepoTypeTyping, optional
+    :param revision: The revision of the repository, defaults to 'main'.
+    :type revision: str, optional
+    :param chunk_for_hash: The chunk size for hashing, defaults to 1 << 20 (1 MB).
+    :type chunk_for_hash: int, optional
+    :param with_hash: Whether to include file hashes in the index, defaults to True.
+    :type with_hash: bool, optional
+    :param silent: Whether to suppress progress bars and logging messages, defaults to False.
+    :type silent: bool, optional
+    :param hf_token: The Hugging Face access token, defaults to None.
+    :type hf_token: str, optional
+    """
     _, ext = os.path.splitext(archive_in_repo)
     with TemporaryDirectory() as td:
         local_tar_file = os.path.join(td, archive_in_repo)
