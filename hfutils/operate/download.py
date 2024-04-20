@@ -113,27 +113,30 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
 
     def _download_one_file(rel_file):
-        dst_file = os.path.join(local_directory, rel_file)
-        if os.path.exists(dst_file) and is_local_file_ready(
-                repo_id=repo_id,
-                repo_type=repo_type,
-                local_file=dst_file,
-                file_in_repo=f'{dir_in_repo}/{rel_file}',
-                revision=revision,
-                hf_token=hf_token,
-        ):
-            logging.info(f'Local file {rel_file} is ready, download skipped.')
-        else:
-            download_file_to_file(
-                local_file=dst_file,
-                repo_id=repo_id,
-                file_in_repo=f'{dir_in_repo}/{rel_file}',
-                repo_type=repo_type,
-                revision=revision,
-                resume_download=resume_download,
-                hf_token=hf_token,
-            )
-        progress.update()
+        try:
+            dst_file = os.path.join(local_directory, rel_file)
+            if os.path.exists(dst_file) and is_local_file_ready(
+                    repo_id=repo_id,
+                    repo_type=repo_type,
+                    local_file=dst_file,
+                    file_in_repo=f'{dir_in_repo}/{rel_file}',
+                    revision=revision,
+                    hf_token=hf_token,
+            ):
+                logging.info(f'Local file {rel_file} is ready, download skipped.')
+            else:
+                download_file_to_file(
+                    local_file=dst_file,
+                    repo_id=repo_id,
+                    file_in_repo=f'{dir_in_repo}/{rel_file}',
+                    repo_type=repo_type,
+                    revision=revision,
+                    resume_download=resume_download,
+                    hf_token=hf_token,
+                )
+            progress.update()
+        except Exception as err:
+            logging.error(f'Unexpected error when downloading {rel_file!r} - {err!r}')
 
     tp = ThreadPoolExecutor(max_workers=max_workers)
     for file in files:
