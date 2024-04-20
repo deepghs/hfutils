@@ -110,7 +110,7 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
     if clear:
         pre_exist_files = {
             tuple(file.split('/')) for file in
-            list_files_in_repository(repo_id, repo_type, path_in_repo, revision, ignore_patterns)
+            list_files_in_repository(repo_id, repo_type, path_in_repo, revision, ignore_patterns, hf_token=hf_token)
         }
     else:
         pre_exist_files = set()
