@@ -3,3 +3,4 @@ huggingface_hub>=0.20
 tqdm
 requests
 click>=7
+tzlocal
