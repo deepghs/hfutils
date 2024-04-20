@@ -113,7 +113,7 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
     """
-    files = list_files_in_repository(repo_id, repo_type, dir_in_repo, revision, ignore_patterns)
+    files = list_files_in_repository(repo_id, repo_type, dir_in_repo, revision, ignore_patterns, hf_token=hf_token)
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
 
     def _download_one_file(rel_file):
