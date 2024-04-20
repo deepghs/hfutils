@@ -156,6 +156,14 @@ hfutils download -h
 
 ```
 
+## List Files in Repository
+
+List files in repositories
+
+```shell
+hfutils ls -r your/repository -o /your/local/file -d subdir/in/repo
+```
+
 ## Supported Formats
 
 By default, we support the `zip` and `tar` formats, including `.zip`, `.tar`, `.tar.gz`, `.tar.bz2`, and `.tar.xz`.

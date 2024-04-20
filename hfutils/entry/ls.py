@@ -15,6 +15,10 @@ mimetypes.add_type('image/webp', '.webp')
 
 @unique
 class ListItemType(Enum):
+    """
+    Enum class representing different types of list items.
+    """
+
     FILE = 0x1
     FOLDER = 0x2
     IMAGE = 0x3
@@ -24,6 +28,12 @@ class ListItemType(Enum):
 
     @property
     def render_color(self):
+        """
+        Get the render color based on the item type.
+
+        :return: The render color for the item type.
+        :rtype: str
+        """
         if self == self.FILE:
             return None
         elif self == self.FOLDER:
@@ -41,6 +51,15 @@ class ListItemType(Enum):
 
 
 class ListItem:
+    """
+    Class representing a list item.
+
+    :param item: The item object.
+    :type item: Union[RepoFolder, RepoFile]
+    :param base_dir: The base directory.
+    :type base_dir: str
+    """
+
     def __init__(self, item: Union[RepoFolder, RepoFile], base_dir: str):
         self.item = item
         self.base_dir = base_dir
@@ -65,7 +84,7 @@ class ListItem:
 
 def _add_ls_subcommand(cli: click.Group) -> click.Group:
     """
-    Add the 'upload' subcommand to the CLI.
+    Add the 'ls' subcommand to the CLI.
 
     :param cli: The Click CLI application.
     :type cli: click.Group
@@ -89,6 +108,22 @@ def _add_ls_subcommand(cli: click.Group) -> click.Group:
     @click.option('-l', '--list', 'show_detailed', is_flag=True, type=bool, default=False,
                   help='Show detailed file information.', show_default=True)
     def ls(repo_id: str, repo_type: str, dir_in_repo, revision: str, show_all: bool, show_detailed: bool):
+        """
+        List files from a HuggingFace repository.
+
+        :param repo_id: The identifier of the repository.
+        :type repo_id: str
+        :param repo_type: The type of the HuggingFace repository.
+        :type repo_type: str
+        :param dir_in_repo: The directory in the repository to list files from.
+        :type dir_in_repo: str
+        :param revision: The revision of the repository.
+        :type revision: str
+        :param show_all: Flag to indicate whether to show all files, including hidden files.
+        :type show_all: bool
+        :param show_detailed: Flag to indicate whether to show detailed file information.
+        :type show_detailed: bool
+        """
         hf_client = get_hf_client()
         items: List[ListItem] = []
         for item in hf_client.list_repo_tree(
