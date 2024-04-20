@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.operate.download &mdash; hfutils 0.1.0 documentation</title>
+  <title>hfutils.operate.download &mdash; hfutils 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
@@ -16,7 +16,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=2389946f"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=87f11076"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -37,7 +37,7 @@
             hfutils
           </a>
               <div class="version">
-                0.1.0
+                0.1.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -207,27 +207,30 @@
     <span class="n">progress</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Downloading </span><span class="si">{</span><span class="n">dir_in_repo</span><span class="si">!r}</span><span class="s1"> ...&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_download_one_file</span><span class="p">(</span><span class="n">rel_file</span><span class="p">):</span>
-        <span class="n">dst_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_directory</span><span class="p">,</span> <span class="n">rel_file</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst_file</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_local_file_ready</span><span class="p">(</span>
-                <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
-                <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
-                <span class="n">local_file</span><span class="o">=</span><span class="n">dst_file</span><span class="p">,</span>
-                <span class="n">file_in_repo</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dir_in_repo</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">rel_file</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-                <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
-                <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">,</span>
-        <span class="p">):</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Local file </span><span class="si">{</span><span class="n">rel_file</span><span class="si">}</span><span class="s1"> is ready, download skipped.&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">download_file_to_file</span><span class="p">(</span>
-                <span class="n">local_file</span><span class="o">=</span><span class="n">dst_file</span><span class="p">,</span>
-                <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
-                <span class="n">file_in_repo</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dir_in_repo</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">rel_file</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-                <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
-                <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
-                <span class="n">resume_download</span><span class="o">=</span><span class="n">resume_download</span><span class="p">,</span>
-                <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dst_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_directory</span><span class="p">,</span> <span class="n">rel_file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst_file</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_local_file_ready</span><span class="p">(</span>
+                    <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
+                    <span class="n">local_file</span><span class="o">=</span><span class="n">dst_file</span><span class="p">,</span>
+                    <span class="n">file_in_repo</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dir_in_repo</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">rel_file</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                    <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
+                    <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Local file </span><span class="si">{</span><span class="n">rel_file</span><span class="si">}</span><span class="s1"> is ready, download skipped.&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">download_file_to_file</span><span class="p">(</span>
+                    <span class="n">local_file</span><span class="o">=</span><span class="n">dst_file</span><span class="p">,</span>
+                    <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="n">file_in_repo</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dir_in_repo</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">rel_file</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                    <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
+                    <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
+                    <span class="n">resume_download</span><span class="o">=</span><span class="n">resume_download</span><span class="p">,</span>
+                    <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unexpected error when downloading </span><span class="si">{</span><span class="n">rel_file</span><span class="si">!r}</span><span class="s1"> - </span><span class="si">{</span><span class="n">err</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="n">tp</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
@@ -276,7 +279,6 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/derr/index.html">dev/derr</a></dd>
                         <dd><a href="download.html">main</a></dd>
                 </dl>
         </div>
