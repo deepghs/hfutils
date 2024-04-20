@@ -13,5 +13,6 @@ hfutils.entry
     cli
     dispatch
     download
+    ls
     upload
 
