@@ -4,6 +4,8 @@ import shutil
 from concurrent.futures import ThreadPoolExecutor
 from typing import List, Optional
 
+import requests.exceptions
+
 from .base import RepoTypeTyping, list_files_in_repository, _IGNORE_PATTERN_UNSET, get_hf_client
 from .validate import is_local_file_ready
 from ..archive import archive_unpack
@@ -83,7 +85,7 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
 def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_repo: str = '.',
                                     repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                     silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
-                                    resume_download: bool = True, max_workers: int = 8,
+                                    resume_download: bool = True, max_workers: int = 8, max_retries: int = 5,
                                     hf_token: Optional[str] = None):
     """
     Download all files in a directory from a Hugging Face repository to a local directory.
@@ -104,6 +106,8 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
     :type ignore_patterns: List[str]
     :param max_workers: Max workers when downloading. Default is ``8``.
     :type max_workers: int
+    :param max_retries: Max retry times when downloading. Default is ``5``.
+    :type max_retries: int
     :param resume_download: Resume the existing download.
     :type resume_download: bool
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
@@ -113,6 +117,7 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
 
     def _download_one_file(rel_file):
+        current_resume_download = resume_download
         try:
             dst_file = os.path.join(local_directory, rel_file)
             if os.path.exists(dst_file) and is_local_file_ready(
@@ -125,15 +130,28 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
             ):
                 logging.info(f'Local file {rel_file} is ready, download skipped.')
             else:
-                download_file_to_file(
-                    local_file=dst_file,
-                    repo_id=repo_id,
-                    file_in_repo=f'{dir_in_repo}/{rel_file}',
-                    repo_type=repo_type,
-                    revision=revision,
-                    resume_download=resume_download,
-                    hf_token=hf_token,
-                )
+                tries = 0
+                while True:
+                    try:
+                        download_file_to_file(
+                            local_file=dst_file,
+                            repo_id=repo_id,
+                            file_in_repo=f'{dir_in_repo}/{rel_file}',
+                            repo_type=repo_type,
+                            revision=revision,
+                            resume_download=current_resume_download,
+                            hf_token=hf_token,
+                        )
+                    except requests.exceptions.RequestException as err:
+                        if tries < max_retries:
+                            tries += 1
+                            logging.warning(f'Download {rel_file!r} failed, retry ({tries}/{max_retries}) - {err!r}.')
+                            current_resume_download = True
+                        else:
+                            raise
+                    else:
+                        break
+
             progress.update()
         except Exception as err:
             logging.error(f'Unexpected error when downloading {rel_file!r} - {err!r}')
