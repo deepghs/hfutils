@@ -26,6 +26,20 @@ class TestIndexValidate:
                 archive_in_repo='mashu_skins_not_found.tar',
             )
 
+    def test_hf_tar_file_download_lfs_not_found_idx_repo(self):
+        assert not hf_tar_validate(
+            repo_id='narugo/test_cos5t_tars',
+            archive_in_repo='mashu_skins.tar',
+            idx_repo_id='narugo/repo_not_found'
+        )
+
+    def test_hf_tar_file_download_lfs_not_found_idx_index(self):
+        assert not hf_tar_validate(
+            repo_id='narugo/test_cos5t_tars',
+            archive_in_repo='mashu_skins.tar',
+            idx_file_in_repo='mashu_skins_not_found.json',
+        )
+
     def test_hf_tar_file_download_lfs_is_directory(self):
         with pytest.raises(IsADirectoryError):
             hf_tar_validate(

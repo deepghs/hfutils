@@ -1,7 +1,7 @@
 from typing import Optional
 
 from huggingface_hub.hf_api import RepoFile
-from huggingface_hub.utils import EntryNotFoundError
+from huggingface_hub.utils import EntryNotFoundError, RepositoryNotFoundError
 
 from .fetch import hf_tar_get_index
 from ..operate.base import RepoTypeTyping, get_hf_client
@@ -86,19 +86,23 @@ def hf_tar_validate(repo_id: str, archive_in_repo: str, repo_type: RepoTypeTypin
     else:
         item = items[0]
 
-    index = hf_tar_get_index(
-        repo_id=repo_id,
-        archive_in_repo=archive_in_repo,
-        repo_type=repo_type,
-        revision=revision,
+    try:
+        index = hf_tar_get_index(
+            repo_id=repo_id,
+            archive_in_repo=archive_in_repo,
+            repo_type=repo_type,
+            revision=revision,
 
-        idx_repo_id=idx_repo_id,
-        idx_file_in_repo=idx_file_in_repo,
-        idx_repo_type=idx_repo_type,
-        idx_revision=idx_revision,
+            idx_repo_id=idx_repo_id,
+            idx_file_in_repo=idx_file_in_repo,
+            idx_repo_type=idx_repo_type,
+            idx_revision=idx_revision,
 
-        hf_token=hf_token,
-    )
+            hf_token=hf_token,
+        )
+    except (EntryNotFoundError, RepositoryNotFoundError):
+        return False
+
     return hf_tar_item_validate(
         file_item=item,
         size=index['filesize'],

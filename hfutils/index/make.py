@@ -92,25 +92,27 @@ def tar_create_index(src_tar_file, dst_index_file: Optional[str] = None,
     return dst_index_file
 
 
-def hf_tar_create_index(repo_id: str, filename: str, repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                        idx_repo_id: Optional[str] = None, idx_filename: Optional[str] = None,
+def hf_tar_create_index(repo_id: str, archive_in_repo: str,
+                        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                        idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
                         idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
-                        chunk_for_hash: int = 1 << 20, with_hash: bool = True, hf_token: Optional[str] = None):
+                        chunk_for_hash: int = 1 << 20, with_hash: bool = True, skip_when_synced: bool = True,
+                        hf_token: Optional[str] = None, ):
     """
     Create an index file for a tar archive file in a Hugging Face repository.
 
     :param repo_id: The identifier of the repository.
     :type repo_id: str
-    :param filename: The path to the tar archive file.
-    :type filename: str
+    :param archive_in_repo: The path to the tar archive file.
+    :type archive_in_repo: str
     :param repo_type: The type of the Hugging Face repository, defaults to 'dataset'.
     :type repo_type: RepoTypeTyping, optional
     :param revision: The revision of the repository, defaults to 'main'.
     :type revision: str, optional
     :param idx_repo_id: The identifier of the index repository, defaults to None.
     :type idx_repo_id: str, optional
-    :param idx_filename: The path to save the index file in the index repository, defaults to None.
-    :type idx_filename: str, optional
+    :param idx_file_in_repo: The path to save the index file in the index repository, defaults to None.
+    :type idx_file_in_repo: str, optional
     :param idx_repo_type: The type of the index repository, defaults to None.
     :type idx_repo_type: RepoTypeTyping, optional
     :param idx_revision: The revision of the index repository, defaults to None.
@@ -119,31 +121,51 @@ def hf_tar_create_index(repo_id: str, filename: str, repo_type: RepoTypeTyping =
     :type chunk_for_hash: int, optional
     :param with_hash: Whether to include file hashes in the index, defaults to True.
     :type with_hash: bool, optional
+    :param skip_when_synced: Skip syncing when index is ready, defaults to True.
+    :type skip_when_synced: bool
     :param hf_token: The Hugging Face access token, defaults to None.
     :type hf_token: str, optional
     """
+    body, _ = os.path.splitext(archive_in_repo)
+    default_index_filename = f'{body}.json'
+
+    from .validate import hf_tar_validate
+    if skip_when_synced and hf_tar_validate(
+            repo_id=repo_id,
+            repo_type=repo_type,
+            archive_in_repo=archive_in_repo,
+            revision=revision,
+
+            idx_repo_id=idx_repo_id or repo_id,
+            idx_repo_type=idx_repo_type or repo_type,
+            idx_file_in_repo=idx_file_in_repo or default_index_filename,
+            idx_revision=idx_revision or revision,
+
+            hf_token=hf_token,
+    ):
+        logging.info(f'Entry {repo_type}s/{repo_id}/{archive_in_repo} already indexed, skipped.')
+        return
+
     with TemporaryDirectory() as td:
-        local_tar_file = os.path.join(td, os.path.basename(filename))
+        local_tar_file = os.path.join(td, os.path.basename(archive_in_repo))
         download_file_to_file(
             repo_id=repo_id,
             repo_type=repo_type,
-            file_in_repo=filename,
+            file_in_repo=archive_in_repo,
             local_file=local_tar_file,
             revision=revision,
             hf_token=hf_token,
         )
         dst_index_file = tar_create_index(local_tar_file, chunk_for_hash=chunk_for_hash, with_hash=with_hash)
 
-        body, _ = os.path.splitext(filename)
-        default_index_filename = f'{body}.json'
         upload_file_to_file(
             repo_id=idx_repo_id or repo_id,
             repo_type=idx_repo_type or repo_type,
-            file_in_repo=idx_filename or default_index_filename,
+            file_in_repo=idx_file_in_repo or default_index_filename,
             local_file=dst_index_file,
             revision=idx_revision or revision,
             hf_token=hf_token,
-            message=f'Create index for {repo_type}s/{repo_id}@{revision}/{filename}',
+            message=f'Create index for {repo_type}s/{repo_id}@{revision}/{archive_in_repo}',
         )
 
 
