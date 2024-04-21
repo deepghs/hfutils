@@ -240,6 +240,7 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
                                 f'in {repo_type}s/{repo_id}@{revision}/{archive_in_repo}.')
 
     info = files[_n_path(file_in_archive)]
+
     url_to_download = hf_hub_url(repo_id, archive_in_repo, repo_type=repo_type, revision=revision, endpoint=endpoint)
     headers = build_hf_headers(
         token=hf_token,
@@ -256,15 +257,16 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
         os.makedirs(os.path.dirname(local_file), exist_ok=True)
     try:
         with open(local_file, 'wb') as f:
-            http_get(
-                url_to_download,
-                f,
-                proxies=proxies,
-                resume_size=0,
-                headers=headers,
-                expected_size=info['size'],
-                displayed_filename=file_in_archive,
-            )
+            if info['size'] > 0:
+                http_get(
+                    url_to_download,
+                    f,
+                    proxies=proxies,
+                    resume_size=0,
+                    headers=headers,
+                    expected_size=info['size'],
+                    displayed_filename=file_in_archive,
+                )
 
         if os.path.getsize(local_file) != info['size']:
             raise ArchiveStandaloneFileIncompleteDownload(
