@@ -11,4 +11,5 @@ hfutils.index
 
     fetch
     make
+    validate
 
