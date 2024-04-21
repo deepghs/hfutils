@@ -1,3 +1,5 @@
+import os.path
+
 import pytest
 from hbutils.testing import isolated_directory
 from natsort import natsorted
@@ -81,3 +83,14 @@ class TestIndexFetch:
                 local_file='f/ac.jpg'
             )
             file_compare(get_testfile('sankaku_21305298.jpg'), 'f/ac.jpg')
+
+    def test_hf_tar_file_download_empty(self):
+        with isolated_directory():
+            hf_tar_file_download(
+                repo_id='nyanko7/danbooru2023',
+                idx_repo_id='deepghs/danbooru2023_index',
+                archive_in_repo='original/data-0001.tar',
+                file_in_archive='2946001.',
+                local_file='2946001.',
+            )
+            assert os.path.getsize('2946001.') == 0
