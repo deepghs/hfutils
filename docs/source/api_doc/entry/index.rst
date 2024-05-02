@@ -15,4 +15,5 @@ hfutils.entry
     download
     ls
     upload
+    whoami
 

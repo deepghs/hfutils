@@ -7,10 +7,27 @@ from ..operate.base import get_hf_client
 
 
 def _add_whoami_subcommand(cli: click.Group) -> click.Group:
+    """
+    Add the 'whoami' subcommand to the CLI.
+
+    This command displays the current identification.
+
+    :param cli: The Click CLI application.
+    :type cli: click.Group
+    :return: The modified Click CLI application.
+    :rtype: click.Group
+    """
+
     @cli.command('whoami', help='See the current identification.\n\n'
                                 'Set environment $HF_TOKEN to use your own access token.',
                  context_settings=CONTEXT_SETTINGS)
     def whoami():
+        """
+        Display the current identification.
+
+        This function retrieves the current user's identification from the Hugging Face Hub API and displays it.
+
+        """
         hf_client = get_hf_client()
         try:
             info = hf_client.whoami()
