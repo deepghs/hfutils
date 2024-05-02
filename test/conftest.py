@@ -1,12 +1,9 @@
-import os.path
-import pathlib
 import re
 
 import pytest
 from hbutils.random import random_sha1_with_timestamp
 
 from hfutils.operate.base import get_hf_fs, get_hf_client
-from hfutils.utils import walk_files
 from test.testings import get_testfile, dir_compare
 
 
