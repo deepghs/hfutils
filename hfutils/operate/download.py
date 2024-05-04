@@ -9,7 +9,7 @@ import requests.exceptions
 from .base import RepoTypeTyping, list_files_in_repository, _IGNORE_PATTERN_UNSET, get_hf_client
 from .validate import is_local_file_ready
 from ..archive import archive_unpack
-from ..utils import tqdm, TemporaryDirectory
+from ..utils import tqdm, TemporaryDirectory, hf_normpath
 
 
 def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
@@ -41,7 +41,7 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
             hf_client.hf_hub_download(
                 repo_id=repo_id,
                 repo_type=repo_type,
-                filename=file_in_repo,
+                filename=hf_normpath(file_in_repo),
                 revision=revision,
                 local_dir=td,
                 force_download=True,
@@ -120,11 +120,12 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
         current_resume_download = resume_download
         try:
             dst_file = os.path.join(local_directory, rel_file)
+            file_in_repo = hf_normpath(f'{dir_in_repo}/{rel_file}')
             if os.path.exists(dst_file) and is_local_file_ready(
                     repo_id=repo_id,
                     repo_type=repo_type,
                     local_file=dst_file,
-                    file_in_repo=f'{dir_in_repo}/{rel_file}',
+                    file_in_repo=file_in_repo,
                     revision=revision,
                     hf_token=hf_token,
             ):
@@ -136,7 +137,7 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
                         download_file_to_file(
                             local_file=dst_file,
                             repo_id=repo_id,
-                            file_in_repo=f'{dir_in_repo}/{rel_file}',
+                            file_in_repo=file_in_repo,
                             repo_type=repo_type,
                             revision=revision,
                             resume_download=current_resume_download,
