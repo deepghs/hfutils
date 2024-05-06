@@ -9,6 +9,15 @@ RepoTypeTyping = Literal['dataset', 'model', 'space']
 
 
 def hf_normpath(path) -> str:
+    """
+    Normalize a given path.
+
+    :param path: The path to normalize.
+    :type path: Any
+
+    :return: The normalized path.
+    :rtype: str
+    """
     return re.sub(
         r'[\\/]+', '/',
         os.path.relpath(os.path.normpath(os.path.join(os.sep, path)), os.sep)
@@ -17,6 +26,24 @@ def hf_normpath(path) -> str:
 
 def hf_fs_path(repo_id: str, filename: str,
                repo_type: RepoTypeTyping = 'dataset', revision: Optional[str] = None):
+    """
+    Get the huggingface filesystem path.
+
+    :param repo_id: The repository ID.
+    :type repo_id: str
+
+    :param filename: The filename.
+    :type filename: str
+
+    :param repo_type: The type of repository. (default: 'dataset')
+    :type repo_type: RepoTypeTyping
+
+    :param revision: The revision of the repository. (default: None)
+    :type revision: Optional[str]
+
+    :return: The huggingface filesystem path.
+    :rtype: str
+    """
     filename = hf_normpath(filename)
     if repo_type == 'dataset':
         prefix = 'datasets/'
@@ -35,6 +62,12 @@ def hf_fs_path(repo_id: str, filename: str,
 
 @lru_cache()
 def _irregular_repos() -> Dict[RepoTypeTyping, Set[str]]:
+    """
+    Get irregular repositories.
+
+    :return: A dictionary containing irregular repositories.
+    :rtype: Dict[RepoTypeTyping, Set[str]]
+    """
     with open(os.path.join(os.path.dirname(__file__), 'irregular_repo.json'), 'r') as f:
         data = json.load(f)
         return {
@@ -52,13 +85,38 @@ _RE_PATH = re.compile(
 
 @dataclass
 class HfFileSystemPath:
+    """
+    Huggingface FileSystem Path.
+
+    :param repo_id: The repository ID.
+    :type repo_id: str
+
+    :param filename: The filename.
+    :type filename: str
+
+    :param repo_type: The type of repository.
+    :type repo_type: RepoTypeTyping
+
+    :param revision: The revision of the repository.
+    :type revision: Optional[str]
+    """
     repo_id: str
     filename: str
     repo_type: RepoTypeTyping
     revision: Optional[str]
 
 
-def parse_hf_fs_path(path: str):
+def parse_hf_fs_path(path: str) -> HfFileSystemPath:
+    """
+    Parse the huggingface filesystem path.
+
+    :param path: The path to parse.
+    :type path: str
+
+    :return: The parsed huggingface filesystem path.
+    :rtype: HfFileSystemPath
+    :raises ValueError: If this path is invalid.
+    """
     origin_path = path
     repo_type: RepoTypeTyping
     if path.startswith('datasets/'):

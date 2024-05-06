@@ -11,6 +11,7 @@ hfutils.utils
 
     binary
     download
+    path
     tqdm_
     walk
 
