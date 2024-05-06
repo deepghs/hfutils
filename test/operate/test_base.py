@@ -21,6 +21,16 @@ class TestOperateBase:
         assert (set(should_exists) & set(files)) == set(should_exists)
         assert not (set(should_not_exists) & set(files))
 
+    def test_list_files_in_repository_revision(self):
+        files = list_files_in_repository(
+            repo_id='narugo/test_ds_repo',
+            repo_type='dataset',
+            revision='another_branch',
+        )
+        should_exists = ['cloc.sh', 'raw_text', 'surtr_dataset.zip', 'surtr_dataset.zip_x']
+        assert (set(should_exists) & set(files)) == set(should_exists)
+        assert not (set(should_not_exists) & set(files))
+
     def test_list_files_in_repository_no_ignore(self):
         files = list_files_in_repository('deepghs/highres_datasets', ignore_patterns=[])
         should_exists = [
