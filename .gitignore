@@ -1224,3 +1224,4 @@ fabric.properties
 /runs
 /YOLOv8
 .benchmarks
+!/hfutils/utils/irregular_repo.json
