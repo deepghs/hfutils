@@ -123,7 +123,7 @@ def list_files_in_repository(repo_id: str, repo_type: RepoTypeTyping = 'dataset'
     if subdir and subdir != '.':
         _exist_files = [os.path.relpath(file, subdir) for file in _exist_files]
 
-    _exist_ps = sorted([(file, file.split(os.sep)) for file in _exist_files], key=lambda x: x[1])
+    _exist_ps = sorted([(file, file.split('/')) for file in _exist_files], key=lambda x: x[1])
     retval = []
     for i, (file, segments) in enumerate(_exist_ps):
         if i < len(_exist_ps) - 1 and segments == _exist_ps[i + 1][1][:len(segments)]:
