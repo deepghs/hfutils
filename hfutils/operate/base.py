@@ -5,6 +5,8 @@ from typing import Literal, List, Optional
 
 from huggingface_hub import HfApi, HfFileSystem
 
+from hfutils.utils import parse_hf_fs_path
+
 RepoTypeTyping = Literal['dataset', 'model', 'space']
 REPO_TYPES = ['dataset', 'model', 'space']
 
@@ -113,12 +115,15 @@ def list_files_in_repository(repo_id: str, repo_type: RepoTypeTyping = 'dataset'
 
     try:
         _exist_files = [
-            os.path.relpath(file, repo_root_path)
+            parse_hf_fs_path(file).filename
             for file in hf_fs.glob(f'{repo_root_path}/**', revision=revision)
         ]
     except FileNotFoundError:
         return []
-    _exist_ps = sorted([(file, file.split(os.sep)) for file in _exist_files], key=lambda x: x[1])
+    if subdir and subdir != '.':
+        _exist_files = [os.path.relpath(file, subdir) for file in _exist_files]
+
+    _exist_ps = sorted([(file, file.split('/')) for file in _exist_files], key=lambda x: x[1])
     retval = []
     for i, (file, segments) in enumerate(_exist_ps):
         if i < len(_exist_ps) - 1 and segments == _exist_ps[i + 1][1][:len(segments)]:
