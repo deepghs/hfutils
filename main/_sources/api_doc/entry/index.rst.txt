@@ -14,6 +14,7 @@ hfutils.entry
     dispatch
     download
     ls
+    ls_repo
     upload
     whoami
 
