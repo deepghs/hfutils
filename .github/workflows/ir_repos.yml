@@ -4,7 +4,7 @@ name: Irregular Repos
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 * * * 0'
+    - cron: '0 12 * * 0'
 
 jobs:
   check_irregular_repo:
