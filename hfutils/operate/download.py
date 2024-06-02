@@ -44,8 +44,6 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
                 filename=hf_normpath(file_in_repo),
                 revision=revision,
                 local_dir=td,
-                force_download=True,
-                local_dir_use_symlinks=False,
                 resume_download=resume_download,
             )
         finally:
