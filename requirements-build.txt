@@ -1,1 +1,2 @@
 pyinstaller>=4.7,<5
+setuptools<70
