@@ -180,6 +180,105 @@ def _hf_files_process(files: Dict[str, dict]):
     return {_n_path(key): value for key, value in files.items()}
 
 
+def hf_tar_file_info(repo_id: str, archive_in_repo: str, file_in_archive: str,
+                     repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                     idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
+                     idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
+                     hf_token: Optional[str] = None) -> dict:
+    """
+    Get a file's detailed information in index tars, including offset, sha256 and size.
+
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param archive_in_repo: The path to the archive file in the repository.
+    :type archive_in_repo: str
+    :param file_in_archive: The path to the file inside the archive.
+    :type file_in_archive: str
+    :param repo_type: The type of the Hugging Face repository.
+    :type repo_type: RepoTypeTyping, optional
+    :param revision: The revision of the repository.
+    :type revision: str, optional
+    :param idx_repo_id: The identifier of the index repository.
+    :type idx_repo_id: str, optional
+    :param idx_file_in_repo: The path to the index file in the index repository.
+    :type idx_file_in_repo: str, optional
+    :param idx_repo_type: The type of the index repository.
+    :type idx_repo_type: RepoTypeTyping, optional
+    :param idx_revision: The revision of the index repository.
+    :type idx_revision: str, optional
+    :param hf_token: The Hugging Face access token.
+    :type hf_token: str, optional
+    :return: Return a dictionary object with meta information of this file.
+    :rtype: dict
+    :raises FileNotFoundError: Raise this when file not exist in tar archive.
+    """
+    index = hf_tar_get_index(
+        repo_id=repo_id,
+        archive_in_repo=archive_in_repo,
+        repo_type=repo_type,
+        revision=revision,
+
+        idx_repo_id=idx_repo_id,
+        idx_file_in_repo=idx_file_in_repo,
+        idx_repo_type=idx_repo_type,
+        idx_revision=idx_revision,
+
+        hf_token=hf_token,
+    )
+    files = _hf_files_process(index['files'])
+    if _n_path(file_in_archive) not in files:
+        raise FileNotFoundError(f'File {file_in_archive!r} not found '
+                                f'in {repo_type}s/{repo_id}@{revision}/{archive_in_repo}.')
+    else:
+        return files[_n_path(file_in_archive)]
+
+
+def hf_tar_file_size(repo_id: str, archive_in_repo: str, file_in_archive: str,
+                     repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                     idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
+                     idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
+                     hf_token: Optional[str] = None) -> int:
+    """
+    Get a file's size in index tars.
+
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param archive_in_repo: The path to the archive file in the repository.
+    :type archive_in_repo: str
+    :param file_in_archive: The path to the file inside the archive.
+    :type file_in_archive: str
+    :param repo_type: The type of the Hugging Face repository.
+    :type repo_type: RepoTypeTyping, optional
+    :param revision: The revision of the repository.
+    :type revision: str, optional
+    :param idx_repo_id: The identifier of the index repository.
+    :type idx_repo_id: str, optional
+    :param idx_file_in_repo: The path to the index file in the index repository.
+    :type idx_file_in_repo: str, optional
+    :param idx_repo_type: The type of the index repository.
+    :type idx_repo_type: RepoTypeTyping, optional
+    :param idx_revision: The revision of the index repository.
+    :type idx_revision: str, optional
+    :param hf_token: The Hugging Face access token.
+    :type hf_token: str, optional
+    :return: Return an integer which represents the size of this file.
+    :rtype: int
+    :raises FileNotFoundError: Raise this when file not exist in tar archive.
+    """
+    return hf_tar_file_info(
+        repo_id=repo_id,
+        archive_in_repo=archive_in_repo,
+        file_in_archive=file_in_archive,
+        repo_type=repo_type,
+        revision=revision,
+        idx_repo_id=idx_repo_id,
+        idx_file_in_repo=idx_file_in_repo,
+        idx_repo_type=idx_repo_type,
+        idx_revision=idx_revision,
+        hf_token=hf_token
+    )['size']
+
+
 def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: str, local_file: str,
                          repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                          idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
@@ -220,6 +319,7 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
     :type endpoint: str, optional
     :param hf_token: The Hugging Face access token.
     :type hf_token: str, optional
+    :raises FileNotFoundError: Raise this when file not exist in tar archive.
     """
     index = hf_tar_get_index(
         repo_id=repo_id,

@@ -48,4 +48,17 @@ hf_tar_file_exists
 
 
 
+hf_tar_file_size
+----------------------------------------------
+
+.. autofunction:: hf_tar_file_size
+
+
+
+hf_tar_file_info
+----------------------------------------------
+
+.. autofunction:: hf_tar_file_info
+
+
 

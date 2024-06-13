@@ -4,7 +4,8 @@ import pytest
 from hbutils.testing import isolated_directory
 from natsort import natsorted
 
-from hfutils.index import hf_tar_list_files, hf_tar_file_exists, hf_tar_file_download
+from hfutils.index import hf_tar_list_files, hf_tar_file_exists, hf_tar_file_download, hf_tar_file_info, \
+    hf_tar_file_size
 from test.testings import get_testfile, file_compare
 
 
@@ -44,6 +45,64 @@ class TestIndexFetch:
             archive_in_repo='mashu_skins.tar',
             file_in_archive='愚人节奥特瑙斯.png'
         )
+
+    def test_hf_tar_file_info(self):
+        assert hf_tar_file_info(
+            repo_id='narugo/test_cos5t_tars',
+            archive_in_repo='mashu_skins.tar',
+            file_in_archive='.meta.json'
+        ) == {
+                   'offset': 2725376,
+                   'sha256': '4585b01c251a496b73cb231d29fc711cfb1d682a84334d95f6f5b6c1cc5b5222',
+                   'size': 8968
+               }
+        assert hf_tar_file_info(
+            repo_id='narugo/test_cos5t_tars',
+            archive_in_repo='mashu_skins.tar',
+            file_in_archive='愚人节_奥特瑙斯.png'
+        ) == {
+                   'offset': 3954176,
+                   'sha256': '991497fa586f6f4529827e0f8f1f228c20ec9fb507c314ee9d20d47c46f26e89',
+                   'size': 255276
+               }
+        assert hf_tar_file_info(
+            repo_id='narugo/test_cos5t_tars',
+            archive_in_repo='mashu_skins.tar',
+            file_in_archive='./愚人节_奥特瑙斯.png'
+        ) == {
+                   'offset': 3954176,
+                   'sha256': '991497fa586f6f4529827e0f8f1f228c20ec9fb507c314ee9d20d47c46f26e89',
+                   'size': 255276
+               }
+        with pytest.raises(FileNotFoundError):
+            _ = hf_tar_file_info(
+                repo_id='narugo/test_cos5t_tars',
+                archive_in_repo='mashu_skins.tar',
+                file_in_archive='愚人节奥特瑙斯.png'
+            )
+
+    def test_hf_tar_file_size(self):
+        assert hf_tar_file_size(
+            repo_id='narugo/test_cos5t_tars',
+            archive_in_repo='mashu_skins.tar',
+            file_in_archive='.meta.json'
+        ) == 8968
+        assert hf_tar_file_size(
+            repo_id='narugo/test_cos5t_tars',
+            archive_in_repo='mashu_skins.tar',
+            file_in_archive='愚人节_奥特瑙斯.png'
+        ) == 255276
+        assert hf_tar_file_size(
+            repo_id='narugo/test_cos5t_tars',
+            archive_in_repo='mashu_skins.tar',
+            file_in_archive='./愚人节_奥特瑙斯.png'
+        ) == 255276
+        with pytest.raises(FileNotFoundError):
+            _ = hf_tar_file_size(
+                repo_id='narugo/test_cos5t_tars',
+                archive_in_repo='mashu_skins.tar',
+                file_in_archive='愚人节奥特瑙斯.png'
+            )
 
     def test_hf_tar_file_download_small(self):
         with isolated_directory():
