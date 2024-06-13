@@ -320,6 +320,8 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
     :param hf_token: The Hugging Face access token.
     :type hf_token: str, optional
     :raises FileNotFoundError: Raise this when file not exist in tar archive.
+    :raises ArchiveStandaloneFileIncompleteDownload: Raise when download incomplete.
+    :raises ArchiveStandaloneFileHashNotMatch: Raise when download hash not match.
     """
     index = hf_tar_get_index(
         repo_id=repo_id,
