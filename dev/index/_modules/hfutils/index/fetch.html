@@ -144,6 +144,36 @@
 <span class="sd">    :type hf_token: str, optional</span>
 <span class="sd">    :return: The index of the tar archive file.</span>
 <span class="sd">    :rtype: Dict</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_get_index</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; idx = hf_tar_get_index(</span>
+<span class="sd">        ...     repo_id=&#39;deepghs/danbooru_newest&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;images/0000.tar&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; idx.keys()</span>
+<span class="sd">        dict_keys([&#39;filesize&#39;, &#39;hash&#39;, &#39;hash_lfs&#39;, &#39;files&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; idx[&#39;files&#39;].keys()</span>
+<span class="sd">        dict_keys([&#39;7507000.jpg&#39;, &#39;7506000.jpg&#39;, &#39;7505000.jpg&#39;, ...])</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Besides, if the tar and index files are in different repositories, you can also use this function to</span>
+<span class="sd">        get the index information by explicitly assigning the ``idx_repo_id`` argument.</span>
+
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_get_index</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; idx = hf_tar_get_index(</span>
+<span class="sd">        ...     repo_id=&#39;nyanko7/danbooru2023&#39;,</span>
+<span class="sd">        ...     idx_repo_id=&#39;deepghs/danbooru2023_index&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;original/data-0000.tar&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; idx.keys()</span>
+<span class="sd">        dict_keys([&#39;filesize&#39;, &#39;hash&#39;, &#39;hash_lfs&#39;, &#39;files&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; idx[&#39;files&#39;].keys()</span>
+<span class="sd">        dict_keys([&#39;./1000.png&#39;, &#39;./10000.jpg&#39;, &#39;./100000.jpg&#39;, ...])</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="p">)</span>
     <span class="n">body</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">archive_in_repo</span><span class="p">)</span>
@@ -185,6 +215,30 @@
 <span class="sd">    :type hf_token: str, optional</span>
 <span class="sd">    :return: The list of files inside the tar archive.</span>
 <span class="sd">    :rtype: List[str]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_list_files</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_list_files(</span>
+<span class="sd">        ...     repo_id=&#39;deepghs/danbooru_newest&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;images/0000.tar&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        [&#39;7507000.jpg&#39;, &#39;7506000.jpg&#39;, &#39;7505000.jpg&#39;, ...]</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Besides, if the tar and index files are in different repositories, you can also use this function to</span>
+<span class="sd">        list all the files by explicitly assigning the ``idx_repo_id`` argument.</span>
+
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_list_files</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_list_files(</span>
+<span class="sd">        ...     repo_id=&#39;nyanko7/danbooru2023&#39;,</span>
+<span class="sd">        ...     idx_repo_id=&#39;deepghs/danbooru2023_index&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;original/data-0000.tar&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        [&#39;./1000.png&#39;, &#39;./10000.jpg&#39;, &#39;./100000.jpg&#39;, ...]</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">index_data</span> <span class="o">=</span> <span class="n">hf_tar_get_index</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
@@ -233,6 +287,45 @@
 <span class="sd">    :type hf_token: str, optional</span>
 <span class="sd">    :return: True if the file exists, False otherwise.</span>
 <span class="sd">    :rtype: bool</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_file_exists</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_file_exists(</span>
+<span class="sd">        ...     repo_id=&#39;deepghs/danbooru_newest&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;images/0000.tar&#39;,</span>
+<span class="sd">        ...     file_in_archive=&#39;7506000.jpg&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_file_exists(</span>
+<span class="sd">        ...     repo_id=&#39;deepghs/danbooru_newest&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;images/0000.tar&#39;,</span>
+<span class="sd">        ...     file_in_archive=&#39;17506000.jpg&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        False</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Besides, if the tar and index files are in different repositories, you can also use this function to</span>
+<span class="sd">        check the file existence by explicitly assigning the ``idx_repo_id`` argument.</span>
+
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_file_exists</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_file_exists(</span>
+<span class="sd">        ...     repo_id=&#39;nyanko7/danbooru2023&#39;,</span>
+<span class="sd">        ...     idx_repo_id=&#39;deepghs/danbooru2023_index&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;original/data-0000.tar&#39;,</span>
+<span class="sd">        ...     file_in_archive=&#39;1000.png&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_file_exists(</span>
+<span class="sd">        ...     repo_id=&#39;nyanko7/danbooru2023&#39;,</span>
+<span class="sd">        ...     idx_repo_id=&#39;deepghs/danbooru2023_index&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;original/data-0000.tar&#39;,</span>
+<span class="sd">        ...     file_in_archive=&#39;10000000001000.png&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        False</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">index</span> <span class="o">=</span> <span class="n">hf_tar_get_index</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
@@ -306,6 +399,31 @@
 <span class="sd">    :return: Return a dictionary object with meta information of this file.</span>
 <span class="sd">    :rtype: dict</span>
 <span class="sd">    :raises FileNotFoundError: Raise this when file not exist in tar archive.</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_file_info</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_file_info(</span>
+<span class="sd">        ...     repo_id=&#39;deepghs/danbooru_newest&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;images/0000.tar&#39;,</span>
+<span class="sd">        ...     file_in_archive=&#39;7506000.jpg&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        {&#39;offset&#39;: 265728, &#39;size&#39;: 435671, &#39;sha256&#39;: &#39;ef6a4e031fdffb705c8ce2c64e8cb8d993f431a887d7c1c0b1e6fa56e6107fcd&#39;}</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Besides, if the tar and index files are in different repositories, you can also use this function to</span>
+<span class="sd">        get the file information by explicitly assigning the ``idx_repo_id`` argument.</span>
+
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_file_info</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_file_info(</span>
+<span class="sd">        ...     repo_id=&#39;nyanko7/danbooru2023&#39;,</span>
+<span class="sd">        ...     idx_repo_id=&#39;deepghs/danbooru2023_index&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;original/data-0000.tar&#39;,</span>
+<span class="sd">        ...     file_in_archive=&#39;1000.png&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        {&#39;offset&#39;: 1024, &#39;size&#39;: 11966, &#39;sha256&#39;: &#39;478d3313860519372f6a75ede287d4a7c18a2d851bbc79b3dd65caff4c716858&#39;}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">index</span> <span class="o">=</span> <span class="n">hf_tar_get_index</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
@@ -359,6 +477,31 @@
 <span class="sd">    :return: Return an integer which represents the size of this file.</span>
 <span class="sd">    :rtype: int</span>
 <span class="sd">    :raises FileNotFoundError: Raise this when file not exist in tar archive.</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_file_size</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_file_size(</span>
+<span class="sd">        ...     repo_id=&#39;deepghs/danbooru_newest&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;images/0000.tar&#39;,</span>
+<span class="sd">        ...     file_in_archive=&#39;7506000.jpg&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        435671</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Besides, if the tar and index files are in different repositories, you can also use this function to</span>
+<span class="sd">        get the file size by explicitly assigning the ``idx_repo_id`` argument.</span>
+
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_file_size</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_file_size(</span>
+<span class="sd">        ...     repo_id=&#39;nyanko7/danbooru2023&#39;,</span>
+<span class="sd">        ...     idx_repo_id=&#39;deepghs/danbooru2023_index&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;original/data-0000.tar&#39;,</span>
+<span class="sd">        ...     file_in_archive=&#39;1000.png&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">        11966</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">hf_tar_file_info</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
@@ -415,6 +558,33 @@
 <span class="sd">    :param hf_token: The Hugging Face access token.</span>
 <span class="sd">    :type hf_token: str, optional</span>
 <span class="sd">    :raises FileNotFoundError: Raise this when file not exist in tar archive.</span>
+<span class="sd">    :raises ArchiveStandaloneFileIncompleteDownload: Raise when download incomplete.</span>
+<span class="sd">    :raises ArchiveStandaloneFileHashNotMatch: Raise when download hash not match.</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_file_download</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_file_download(</span>
+<span class="sd">        ...     repo_id=&#39;deepghs/danbooru_newest&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;images/0000.tar&#39;,</span>
+<span class="sd">        ...     file_in_archive=&#39;7506000.jpg&#39;,</span>
+<span class="sd">        ...     local_file=&#39;test_example.jpg&#39;  # download destination</span>
+<span class="sd">        ... )</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Besides, if the tar and index files are in different repositories, you can also use this function to</span>
+<span class="sd">        download the given file by explicitly assigning the ``idx_repo_id`` argument.</span>
+
+<span class="sd">        &gt;&gt;&gt; from hfutils.index import hf_tar_file_download</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; hf_tar_file_download(</span>
+<span class="sd">        ...     repo_id=&#39;nyanko7/danbooru2023&#39;,</span>
+<span class="sd">        ...     idx_repo_id=&#39;deepghs/danbooru2023_index&#39;,</span>
+<span class="sd">        ...     archive_in_repo=&#39;original/data-0000.tar&#39;,</span>
+<span class="sd">        ...     file_in_archive=&#39;1000.png&#39;,</span>
+<span class="sd">        ...     local_file=&#39;test_example.png&#39;  # download destination</span>
+<span class="sd">        ... )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">index</span> <span class="o">=</span> <span class="n">hf_tar_get_index</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
