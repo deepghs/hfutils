@@ -16,6 +16,9 @@ def tar_get_index_info(src_tar_file, chunk_for_hash: int = 1 << 20, with_hash: b
     """
     Get the index information of a tar archive file.
 
+    .. note::
+        The return value of this function will be directly used as the index json file.
+
     :param src_tar_file: The path to the source tar archive file.
     :type src_tar_file: str
     :param chunk_for_hash: The chunk size for hashing, defaults to 1 << 20 (1 MB).

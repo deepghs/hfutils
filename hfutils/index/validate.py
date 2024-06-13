@@ -48,6 +48,9 @@ def hf_tar_validate(repo_id: str, archive_in_repo: str, repo_type: RepoTypeTypin
 
     This function validates if the tar archive in the Hugging Face repository matches the expected size and hash.
 
+    .. note::
+        This function is based on Huggingface API and hash information in index files, no tar file will be downloaded.
+
     :param repo_id: The ID of the Hugging Face repository.
     :type repo_id: str
     :param archive_in_repo: The path to the tar archive in the repository.
@@ -70,6 +73,13 @@ def hf_tar_validate(repo_id: str, archive_in_repo: str, repo_type: RepoTypeTypin
     :raises IsADirectoryError: If the specified entry is a directory.
     :return: True if the tar archive is valid, False otherwise.
     :rtype: bool
+
+    .. note::
+
+        If this function returns `False`, it means the json index is expired and need to be re-generated.
+
+        So this function and :func:`hfutils.index.make.hf_tar_create_index` can be used together to gracefully
+        refresh an indexed tar dataset.
     """
     hf_client = get_hf_client(hf_token)
 

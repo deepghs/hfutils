@@ -19,25 +19,17 @@ ArchiveStandaloneFileHashNotMatch
 .. autoclass:: ArchiveStandaloneFileHashNotMatch
 
 
+hf_tar_get_index
+----------------------------------------------
+
+.. autofunction:: hf_tar_get_index
+
+
 
 hf_tar_list_files
 ----------------------------------------------
 
 .. autofunction:: hf_tar_list_files
-
-
-
-hf_tar_file_download
-----------------------------------------------
-
-.. autofunction:: hf_tar_file_download
-
-
-
-hf_tar_get_index
-----------------------------------------------
-
-.. autofunction:: hf_tar_get_index
 
 
 
@@ -59,6 +51,13 @@ hf_tar_file_info
 ----------------------------------------------
 
 .. autofunction:: hf_tar_file_info
+
+
+
+hf_tar_file_download
+----------------------------------------------
+
+.. autofunction:: hf_tar_file_download
 
 
 
