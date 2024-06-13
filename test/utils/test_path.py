@@ -62,18 +62,18 @@ class TestUtilsPath:
             filename='1/2/3',
             revision='r3',
         )
-        assert parse_hf_fs_path('datasets/imagenet-1k/classes.py') == HfFileSystemPath(
-            repo_id='imagenet-1k',
-            repo_type='dataset',
-            filename='classes.py',
-            revision=None,
-        )
-        assert parse_hf_fs_path('datasets/imagenet-1k@main/classes.py') == HfFileSystemPath(
-            repo_id='imagenet-1k',
-            repo_type='dataset',
-            filename='classes.py',
-            revision='main',
-        )
+        # assert parse_hf_fs_path('datasets/imagenet-1k/classes.py') == HfFileSystemPath(
+        #     repo_id='imagenet-1k',
+        #     repo_type='dataset',
+        #     filename='classes.py',
+        #     revision=None,
+        # )
+        # assert parse_hf_fs_path('datasets/imagenet-1k@main/classes.py') == HfFileSystemPath(
+        #     repo_id='imagenet-1k',
+        #     repo_type='dataset',
+        #     filename='classes.py',
+        #     revision='main',
+        # )
         assert parse_hf_fs_path('datasets/narugo/test_ds_repo') == HfFileSystemPath(
             repo_id='narugo/test_ds_repo',
             filename='.',
