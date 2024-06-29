@@ -28,6 +28,7 @@ Overview
     :caption: API Documentation
 
     api_doc/archive/index
+    api_doc/cache/index
     api_doc/config/index
     api_doc/entry/index
     api_doc/index/index
