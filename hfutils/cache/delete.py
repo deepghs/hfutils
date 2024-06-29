@@ -28,6 +28,17 @@ def _collect_revisions(fn: Callable[[CachedRepoInfo, CachedRevisionInfo], bool],
     return scan.delete_revisions(*revision_hashes)
 
 
+def _is_repo_match(repo: CachedRepoInfo, repo_id: Optional[str] = None, repo_type: Optional[str] = None) -> bool:
+    if repo_id and repo_type:
+        return repo.repo_id == repo_id and repo.repo_type == repo_type
+    elif repo_id:
+        return repo.repo_id == repo_id
+    elif repo_type:
+        return repo.repo_type == repo_type
+    else:
+        return True
+
+
 def _is_detached_revision(
         repo: CachedRepoInfo, revision: CachedRevisionInfo,
         repo_id: Optional[str] = None, repo_type: Optional[str] = None,
@@ -47,14 +58,7 @@ def _is_detached_revision(
     :rtype: bool
     """
     if len(revision.refs) == 0:
-        if repo_id and repo_type:
-            return repo.repo_id == repo_id and repo.repo_type == repo_type
-        elif repo_id:
-            return repo.repo_id == repo_id
-        elif repo_type:
-            return repo.repo_type == repo_type
-        else:
-            return True
+        return _is_repo_match(repo, repo_id, repo_type)
     else:
         return False
 
@@ -74,14 +78,16 @@ def delete_detached_cache(
     :type cache_dir: Optional[str]
     """
     # noinspection PyTypeChecker
-    _collect_revisions(
+    strategy = _collect_revisions(
         fn=partial(
             _is_detached_revision,
             repo_id=repo_id,
             repo_type=repo_type,
         ),
         cache_dir=cache_dir,
-    ).execute()
+    )
+    logging.info(f'{strategy.expected_freed_size_str} space will be freed.')
+    strategy.execute()
 
 
 def _is_selected_revision(
@@ -103,14 +109,7 @@ def _is_selected_revision(
     :rtype: bool
     """
     _ = repo, revision
-    if repo_id and repo_type:
-        return repo.repo_id == repo_id and repo.repo_type == repo_type
-    elif repo_id:
-        return repo.repo_id == repo_id
-    elif repo_type:
-        return repo.repo_type == repo_type
-    else:
-        return True
+    return _is_repo_match(repo, repo_id, repo_type)
 
 
 def delete_cache(
@@ -128,11 +127,13 @@ def delete_cache(
     :type cache_dir: Optional[str]
     """
     # noinspection PyTypeChecker
-    _collect_revisions(
+    strategy = _collect_revisions(
         fn=partial(
             _is_selected_revision,
             repo_id=repo_id,
             repo_type=repo_type,
         ),
         cache_dir=cache_dir,
-    ).execute()
+    )
+    logging.info(f'{strategy.expected_freed_size_str} space will be freed.')
+    strategy.execute()
