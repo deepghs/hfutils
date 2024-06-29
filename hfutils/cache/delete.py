@@ -8,14 +8,14 @@ from huggingface_hub import scan_cache_dir, CachedRepoInfo, CachedRevisionInfo, 
 def _collect_revisions(fn: Callable[[CachedRepoInfo, CachedRevisionInfo], bool], cache_dir: Optional[str] = None) \
         -> DeleteCacheStrategy:
     """
-    Collects revisions from the cache that match a given criterion and prepares them for deletion.
+    Collects revisions from the cache that match a specific condition defined by the function `fn`.
 
-    :param fn: A function that takes a CachedRepoInfo and CachedRevisionInfo and returns a boolean indicating
-               whether the revision should be deleted.
+    :param fn: A callable that takes a CachedRepoInfo and CachedRevisionInfo and returns a boolean.
+               If True, the revision matches the condition.
     :type fn: Callable[[CachedRepoInfo, CachedRevisionInfo], bool]
     :param cache_dir: The directory where the cache is stored. If None, uses the default directory.
     :type cache_dir: Optional[str]
-    :return: A DeleteCacheStrategy object that can be executed to delete the collected revisions.
+    :return: A strategy for deleting the collected revisions.
     :rtype: DeleteCacheStrategy
     """
     revision_hashes = set()
@@ -29,6 +29,18 @@ def _collect_revisions(fn: Callable[[CachedRepoInfo, CachedRevisionInfo], bool],
 
 
 def _is_repo_match(repo: CachedRepoInfo, repo_id: Optional[str] = None, repo_type: Optional[str] = None) -> bool:
+    """
+    Checks if a repository matches the specified ID and type.
+
+    :param repo: The repository information.
+    :type repo: CachedRepoInfo
+    :param repo_id: The ID of the repository to match. If None, matches any ID.
+    :type repo_id: Optional[str]
+    :param repo_type: The type of the repository to match. If None, matches any type.
+    :type repo_type: Optional[str]
+    :return: True if the repository matches the conditions, False otherwise.
+    :rtype: bool
+    """
     if repo_id and repo_type:
         return repo.repo_id == repo_id and repo.repo_type == repo_type
     elif repo_id:
@@ -44,17 +56,17 @@ def _is_detached_revision(
         repo_id: Optional[str] = None, repo_type: Optional[str] = None,
 ) -> bool:
     """
-    Determines if a revision is detached (i.e., not referenced by any branch or tag).
+    Determines if a revision is detached (no references) and matches the specified repository ID and type.
 
     :param repo: The repository information.
     :type repo: CachedRepoInfo
     :param revision: The revision information.
     :type revision: CachedRevisionInfo
-    :param repo_id: The ID of the repository to match. If None, matches any repository ID.
+    :param repo_id: The repository ID to match. If None, matches any ID.
     :type repo_id: Optional[str]
-    :param repo_type: The type of the repository to match. If None, matches any repository type.
+    :param repo_type: The repository type to match. If None, matches any type.
     :type repo_type: Optional[str]
-    :return: True if the revision is detached and matches the given criteria, False otherwise.
+    :return: True if the revision is detached and matches the repository conditions, False otherwise.
     :rtype: bool
     """
     if len(revision.refs) == 0:
@@ -68,11 +80,11 @@ def delete_detached_cache(
         cache_dir: Optional[str] = None
 ):
     """
-    Deletes all detached revisions from the cache that match the given repository ID and type.
+    Deletes all detached revisions from the cache that match the specified repository ID and type.
 
-    :param repo_id: The ID of the repository to filter by. If None, matches any repository ID.
+    :param repo_id: The repository ID to match. If None, matches any ID.
     :type repo_id: Optional[str]
-    :param repo_type: The type of the repository to filter by. If None, matches any repository type.
+    :param repo_type: The repository type to match. If None, matches any type.
     :type repo_type: Optional[str]
     :param cache_dir: The directory where the cache is stored. If None, uses the default directory.
     :type cache_dir: Optional[str]
@@ -101,11 +113,11 @@ def _is_selected_revision(
     :type repo: CachedRepoInfo
     :param revision: The revision information.
     :type revision: CachedRevisionInfo
-    :param repo_id: The ID of the repository to match. If None, matches any repository ID.
+    :param repo_id: The repository ID to match. If None, matches any ID.
     :type repo_id: Optional[str]
-    :param repo_type: The type of the repository to match. If None, matches any repository type.
+    :param repo_type: The repository type to match. If None, matches any type.
     :type repo_type: Optional[str]
-    :return: True if the revision matches the given criteria, False otherwise.
+    :return: True if the revision matches the repository conditions, False otherwise.
     :rtype: bool
     """
     _ = repo, revision
@@ -117,11 +129,11 @@ def delete_cache(
         cache_dir: Optional[str] = None
 ):
     """
-    Deletes all revisions from the cache that match the given repository ID and type.
+    Deletes all revisions from the cache that match the specified repository ID and type.
 
-    :param repo_id: The ID of the repository to filter by. If None, matches any repository ID.
+    :param repo_id: The repository ID to match. If None, matches any ID.
     :type repo_id: Optional[str]
-    :param repo_type: The type of the repository to filter by. If None, matches any repository type.
+    :param repo_type: The repository type to match. If None, matches any type.
     :type repo_type: Optional[str]
     :param cache_dir: The directory where the cache is stored. If None, uses the default directory.
     :type cache_dir: Optional[str]
