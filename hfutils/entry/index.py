@@ -23,8 +23,7 @@ from .base import CONTEXT_SETTINGS
 from ..index import hf_tar_validate, tar_create_index
 from ..operate import get_hf_fs, download_file_to_file, upload_directory_as_directory
 from ..operate.base import REPO_TYPES, RepoTypeTyping, get_hf_client
-from ..utils import tqdm, hf_fs_path, parse_hf_fs_path, TemporaryDirectory, hf_normpath
-from ..utils.logging import ColoredFormatter
+from ..utils import tqdm, hf_fs_path, parse_hf_fs_path, TemporaryDirectory, hf_normpath, ColoredFormatter
 
 
 def _add_index_subcommand(cli: click.Group) -> click.Group:
