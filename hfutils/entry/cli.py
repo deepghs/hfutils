@@ -1,5 +1,6 @@
 from .dispatch import hfutilcli
 from .download import _add_download_subcommand
+from .index import _add_index_subcommand
 from .ls import _add_ls_subcommand
 from .ls_repo import _add_ls_repo_subcommand
 from .upload import _add_upload_subcommand
@@ -11,6 +12,7 @@ _DECORATORS = [
     _add_ls_subcommand,
     _add_whoami_subcommand,
     _add_ls_repo_subcommand,
+    _add_index_subcommand,
 ]
 
 cli = hfutilcli
