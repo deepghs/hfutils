@@ -1,7 +1,18 @@
+"""
+Overview:
+    This module provides functionality to enhance logging output with colors for different log levels.
+    It includes a `Colors` class defining ANSI escape sequences for various colors and styles,
+    and a `ColoredFormatter` class to format log messages with these colors based on their severity level.
+"""
+
 import logging
 
 
 class Colors:
+    """
+    A collection of ANSI escape sequences for terminal text coloring and styling.
+    These constants can be used to format strings with various colors and text styles.
+    """
     RESET = "\033[0m"
     BOLD = "\033[1m"
     UNDERLINE = "\033[4m"
@@ -24,6 +35,12 @@ class Colors:
 
 
 class ColoredFormatter(logging.Formatter):
+    """
+    A logging formatter that applies colors to log messages based on their severity level.
+
+    The colors are defined in the `Colors` class and are applied to different parts of the log message
+    such as the timestamp, log level, logger name, and the message itself.
+    """
     COLORS = {
         'DEBUG': Colors.BLUE,
         'INFO': Colors.GREEN,
@@ -33,6 +50,15 @@ class ColoredFormatter(logging.Formatter):
     }
 
     def format(self, record):
+        """
+        Format the specified record as text, applying color based on the log level.
+
+        :param record: The log record to be formatted.
+        :type record: logging.LogRecord
+
+        :return: The formatted log message with appropriate colors.
+        :rtype: str
+        """
         log_color = self.COLORS.get(record.levelname, Colors.RESET)
         format_str = f"{Colors.BRIGHT_BLACK}[%(asctime)s]{Colors.RESET} "
         format_str += f"{log_color}%(levelname)-8s{Colors.RESET} "

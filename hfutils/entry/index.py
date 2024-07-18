@@ -1,3 +1,15 @@
+"""
+This module provides functionality for creating and managing index repositories for tar archives stored in Hugging Face repositories.
+
+The main features of this module include:
+- Adding an 'index' subcommand to a Click CLI application
+- Creating index files for tar archives
+- Uploading index files to a specified Hugging Face repository
+- Managing the upload process with a minimum interval between uploads
+
+The module uses the Hugging Face file system and client for interacting with repositories.
+"""
+
 import logging
 import os.path
 import shutil
@@ -19,10 +31,20 @@ def _add_index_subcommand(cli: click.Group) -> click.Group:
     """
     Add the 'index' subcommand to the CLI.
 
-    :param cli: The Click CLI application.
+    This function defines and adds the 'index' subcommand to the provided Click CLI application.
+    The subcommand is responsible for creating index files for tar archives in a Hugging Face repository
+    and uploading them to a specified index repository.
+
+    :param cli: The Click CLI application to which the 'index' subcommand will be added.
     :type cli: click.Group
-    :return: The modified Click CLI application.
+
+    :return: The modified Click CLI application with the 'index' subcommand added.
     :rtype: click.Group
+
+    Usage:
+        This function is typically called when setting up the CLI application, like this:
+        cli = click.Group()
+        cli = _add_index_subcommand(cli)
     """
 
     @cli.command('index', help='Make index repository for tar repository.\n\n'
@@ -41,6 +63,29 @@ def _add_index_subcommand(cli: click.Group) -> click.Group:
                   help='Min seconds for uploading to huggingface repository.', show_default=True)
     def index(repo_id: str, idx_repo_id: Optional[str], repo_type: RepoTypeTyping, revision: str,
               min_upload_interval: float):
+        """
+        Create index files for tar archives in a Hugging Face repository and upload them to a specified index repository.
+
+        This function sets up logging, creates the index repository if it doesn't exist, processes tar archives
+        to create index files, and manages the upload process of these index files to the specified repository.
+
+        :param repo_id: The ID of the repository containing tar archives.
+        :type repo_id: str
+        :param idx_repo_id: The ID of the repository where index files will be uploaded. If None, uses repo_id.
+        :type idx_repo_id: Optional[str]
+        :param repo_type: The type of the Hugging Face repository (e.g., 'dataset', 'model').
+        :type repo_type: RepoTypeTyping
+        :param revision: The revision of the repository to use.
+        :type revision: str
+        :param min_upload_interval: The minimum time interval (in seconds) between uploads to the Hugging Face repository.
+        :type min_upload_interval: float
+
+        :raises: Various exceptions may be raised during file system operations or API calls.
+
+        Usage:
+            This function is typically invoked through the CLI interface, like:
+            $ python script.py index -r my_repo -x my_index_repo -t dataset -R main --min_upload_interval 120
+        """
         logger = logging.getLogger()
         logger.setLevel(logging.INFO)
         console_handler = logging.StreamHandler()
@@ -61,6 +106,14 @@ def _add_index_subcommand(cli: click.Group) -> click.Group:
             last_uploaded_at: Optional[float] = None
 
             def _upload(force=False):
+                """
+                Upload index files to the Hugging Face repository.
+
+                This internal function manages the upload process of index files, respecting the minimum upload interval.
+
+                :param force: If True, upload regardless of the time since the last upload.
+                :type force: bool
+                """
                 nonlocal last_uploaded_at
 
                 if not idx_files:
@@ -83,6 +136,11 @@ def _add_index_subcommand(cli: click.Group) -> click.Group:
                 _clean_dir()
 
             def _clean_dir():
+                """
+                Clean the temporary upload directory.
+
+                This internal function removes all files and directories in the upload directory.
+                """
                 logging.info(f'Cleaning upload temporary directory {upload_dir!r} ...')
                 for item in os.listdir(upload_dir):
                     dst_file = os.path.join(upload_dir, item)
