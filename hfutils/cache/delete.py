@@ -2,7 +2,7 @@ import logging
 from functools import partial
 from typing import Optional, Callable
 
-from huggingface_hub import scan_cache_dir, CachedRepoInfo, CachedRevisionInfo, DeleteCacheStrategy
+from huggingface_hub import scan_cache_dir, CachedRepoInfo, CachedRevisionInfo, DeleteCacheStrategy, CacheNotFound
 
 
 def _collect_revisions(fn: Callable[[CachedRepoInfo, CachedRevisionInfo], bool], cache_dir: Optional[str] = None) \
@@ -89,17 +89,20 @@ def delete_detached_cache(
     :param cache_dir: The directory where the cache is stored. If None, uses the default directory.
     :type cache_dir: Optional[str]
     """
-    # noinspection PyTypeChecker
-    strategy = _collect_revisions(
-        fn=partial(
-            _is_detached_revision,
-            repo_id=repo_id,
-            repo_type=repo_type,
-        ),
-        cache_dir=cache_dir,
-    )
-    logging.info(f'{strategy.expected_freed_size_str} space will be freed.')
-    strategy.execute()
+    try:
+        # noinspection PyTypeChecker
+        strategy = _collect_revisions(
+            fn=partial(
+                _is_detached_revision,
+                repo_id=repo_id,
+                repo_type=repo_type,
+            ),
+            cache_dir=cache_dir,
+        )
+        logging.info(f'{strategy.expected_freed_size_str} space will be freed.')
+        strategy.execute()
+    except CacheNotFound:
+        logging.info('No cache file found.')
 
 
 def _is_selected_revision(
@@ -138,14 +141,17 @@ def delete_cache(
     :param cache_dir: The directory where the cache is stored. If None, uses the default directory.
     :type cache_dir: Optional[str]
     """
-    # noinspection PyTypeChecker
-    strategy = _collect_revisions(
-        fn=partial(
-            _is_selected_revision,
-            repo_id=repo_id,
-            repo_type=repo_type,
-        ),
-        cache_dir=cache_dir,
-    )
-    logging.info(f'{strategy.expected_freed_size_str} space will be freed.')
-    strategy.execute()
+    try:
+        # noinspection PyTypeChecker
+        strategy = _collect_revisions(
+            fn=partial(
+                _is_selected_revision,
+                repo_id=repo_id,
+                repo_type=repo_type,
+            ),
+            cache_dir=cache_dir,
+        )
+        logging.info(f'{strategy.expected_freed_size_str} space will be freed.')
+        strategy.execute()
+    except CacheNotFound:
+        logging.info('No cache file found.')

@@ -1,5 +1,7 @@
+import os.path
+
 import pytest
-from huggingface_hub import scan_cache_dir
+from huggingface_hub import scan_cache_dir, CacheNotFound
 
 from hfutils.cache import delete_detached_cache, delete_cache
 
@@ -14,6 +16,11 @@ class TestCacheDelete:
         repo = list(hf_cache_info.repos)[0]
         assert len(repo.revisions) == 2
 
+    def test_mock_non_exist(self, non_exist_cachedir):
+        assert not os.path.exists(non_exist_cachedir)
+        with pytest.raises(CacheNotFound):
+            scan_cache_dir(non_exist_cachedir)
+
     def test_delete_detached_cache(self, simple_cachedir):
         delete_detached_cache(cache_dir=simple_cachedir)
         hf_cache_info = scan_cache_dir(simple_cachedir)
@@ -22,6 +29,11 @@ class TestCacheDelete:
 
         repo = list(hf_cache_info.repos)[0]
         assert len(repo.revisions) == 1
+
+    def test_delete_detached_cache_non_exist(self, non_exist_cachedir):
+        delete_detached_cache(cache_dir=non_exist_cachedir)
+        with pytest.raises(CacheNotFound):
+            scan_cache_dir(non_exist_cachedir)
 
     def test_delete_detached_with_name(self, simple_cachedir):
         delete_detached_cache(cache_dir=simple_cachedir, repo_id='deepghs/hfcache_test_target_repo')
@@ -94,6 +106,11 @@ class TestCacheDelete:
         hf_cache_info = scan_cache_dir(simple_cachedir)
         assert hf_cache_info.size_on_disk == 0
         assert len(hf_cache_info.repos) == 0
+
+    def test_delete_cache_non_exist(self, non_exist_cachedir):
+        delete_cache(cache_dir=non_exist_cachedir)
+        with pytest.raises(CacheNotFound):
+            scan_cache_dir(non_exist_cachedir)
 
     def test_delete_with_name(self, simple_cachedir):
         delete_cache(cache_dir=simple_cachedir, repo_id='deepghs/hfcache_test_target_repo')

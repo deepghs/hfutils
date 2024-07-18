@@ -40,3 +40,10 @@ def simple_cachedir():
             ],
     ) as cache_dir:
         yield cache_dir
+
+
+@pytest.fixture(scope='function')
+def non_exist_cachedir():
+    with TemporaryDirectory() as td:
+        hf_home_dir = os.path.join(td, '.cache')
+        yield os.path.join(hf_home_dir, 'hub')
