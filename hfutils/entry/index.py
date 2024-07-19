@@ -20,6 +20,7 @@ import click
 from hbutils.string import plural_word
 
 from .base import CONTEXT_SETTINGS
+from ..cache import delete_detached_cache
 from ..index import hf_tar_validate, tar_create_index
 from ..operate import get_hf_fs, download_file_to_file, upload_directory_as_directory
 from ..operate.base import REPO_TYPES, RepoTypeTyping, get_hf_client
@@ -92,6 +93,8 @@ def _add_index_subcommand(cli: click.Group) -> click.Group:
         logger.addHandler(console_handler)
 
         idx_repo_id = idx_repo_id or repo_id
+        delete_detached_cache(repo_id=repo_id, repo_type=repo_type)
+
         hf_client = get_hf_client()
         if not hf_client.repo_exists(repo_id=idx_repo_id, repo_type=repo_type):
             logging.info(f'Creating repository {idx_repo_id!r}, type: {repo_type!r} ...')

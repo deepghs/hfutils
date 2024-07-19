@@ -63,7 +63,7 @@ class ColoredFormatter(logging.Formatter):
         format_str = f"{Colors.BRIGHT_BLACK}[%(asctime)s]{Colors.RESET} "
         format_str += f"{log_color}%(levelname)-8s{Colors.RESET} "
         format_str += f"{Colors.CYAN}%(name)s{Colors.RESET} - "
-        format_str += f"{Colors.WHITE}%(message)s{Colors.RESET}"
+        format_str += f"%(message)s"
 
         formatter = logging.Formatter(format_str, datefmt="%Y-%m-%d %H:%M:%S")
         return formatter.format(record)
