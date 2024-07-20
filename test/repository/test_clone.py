@@ -13,10 +13,11 @@ from ..testings import get_testfile, dir_compare
 
 @pytest.fixture()
 def no_hf_token():
-    def _get_hf_client():
+    def _get_hf_client(*args, **kwargs):
+        _ = args, kwargs
         return HfApi(token='')
 
-    with patch('hfutils.entry.whoami.get_hf_client', _get_hf_client), \
+    with patch('hfutils.repository.clone.get_hf_client', _get_hf_client), \
             patch.dict(os.environ, {'HF_TOKEN': ''}):
         yield
 
@@ -58,3 +59,19 @@ class TestRepositoryClone:
                     elif os.path.isdir(file):
                         shutil.copytree(file, os.path.join(td, f))
             dir_compare(get_testfile('clone'), td)
+
+    def test_hf_hub_clone_no_git(self, no_git):
+        with isolated_directory():
+            with pytest.raises(EnvironmentError):
+                hf_hub_clone(
+                    repo_id='deepghs/private_unittest_repo',
+                    dst_dir='repo',
+                )
+
+    def test_hf_hub_clone_no_lfs(self, no_lfs):
+        with isolated_directory():
+            with pytest.raises(EnvironmentError):
+                hf_hub_clone(
+                    repo_id='deepghs/private_unittest_repo',
+                    dst_dir='repo',
+                )

@@ -9,7 +9,6 @@ It includes functions to:
 The module uses the `git_info` function from the `hbutils.system` package and constants from `huggingface_hub`.
 """
 
-from functools import lru_cache
 from typing import Optional
 
 from hbutils.system import git_info
@@ -51,7 +50,6 @@ def hf_hub_repo_url(repo_id: str, repo_type: RepoTypeTyping = 'dataset', endpoin
         raise ValueError(f'Unknown repository type - {repo_type!r}.')
 
 
-@lru_cache()
 def _check_git(requires_lfs: bool = True) -> str:
     """
     Check Git and Git LFS installations.
