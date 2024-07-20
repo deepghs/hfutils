@@ -106,7 +106,6 @@
 <span class="sd">The module uses the `git_info` function from the `hbutils.system` package and constants from `huggingface_hub`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">hbutils.system</span> <span class="kn">import</span> <span class="n">git_info</span>
@@ -148,7 +147,6 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown repository type - </span><span class="si">{</span><span class="n">repo_type</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_check_git</span><span class="p">(</span><span class="n">requires_lfs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check Git and Git LFS installations.</span>
