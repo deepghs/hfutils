@@ -169,8 +169,8 @@ def upload_directory_as_directory(
 
         last_upload_at = None
         try:
-            for chunk_id in tqdm(range(int(math.ceil(len(operations) / operation_chunk_size))),
-                                 desc='Chunked Commits'):
+            total_chunks = int(math.ceil(len(operations) / operation_chunk_size))
+            for chunk_id in tqdm(range(total_chunks), desc='Chunked Commits'):
                 operation_chunk = operations[chunk_id * operation_chunk_size:(chunk_id + 1) * operation_chunk_size]
 
                 # sleep for the given time
@@ -181,13 +181,14 @@ def upload_directory_as_directory(
                         time.sleep(sleep_time)
 
                 last_upload_at = time.time()
-                logging.info(f'Uploading chunk #{chunk_id}, with {plural_word(len(operation_chunk), "operation")} ...')
+                logging.info(f'Uploading chunk #{chunk_id + 1}, '
+                             f'with {plural_word(len(operation_chunk), "operation")} ...')
                 hf_client.create_commit(
                     repo_id=repo_id,
                     repo_type=repo_type,
                     revision=revision,
                     operations=operation_chunk,
-                    commit_message=f'[Chunk #{chunk_id}] {commit_message}',
+                    commit_message=f'[Chunk #{chunk_id + 1}/{total_chunks}] {commit_message}',
                 )
 
 
