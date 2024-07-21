@@ -3,13 +3,15 @@ import logging
 import math
 import os.path
 import re
+import time
 from typing import Optional, List
 
+from hbutils.string import plural_word
 from huggingface_hub import CommitOperationAdd, CommitOperationDelete
 
 from .base import RepoTypeTyping, get_hf_client, list_files_in_repository, _IGNORE_PATTERN_UNSET
 from ..archive import get_archive_type, archive_pack
-from ..utils import walk_files, TemporaryDirectory
+from ..utils import walk_files, TemporaryDirectory, tqdm
 
 
 def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
@@ -79,11 +81,14 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
 _PATH_SEP = re.compile(r'[/\\]+')
 
 
-def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: str,
-                                  repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                                  message: Optional[str] = None, time_suffix: bool = True,
-                                  clear: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
-                                  hf_token: Optional[str] = None, operation_chunk_size: Optional[int] = None):
+def upload_directory_as_directory(
+        local_directory, repo_id: str, path_in_repo: str,
+        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+        message: Optional[str] = None, time_suffix: bool = True,
+        clear: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+        hf_token: Optional[str] = None, operation_chunk_size: Optional[int] = None,
+        upload_timespan: float = 5.0,
+):
     """
     Upload a local directory and its files to a specified path in a Hugging Face repository.
 
@@ -110,6 +115,8 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
     :param operation_chunk_size: Chunk size of the operations. All the operations will be
         seperated into multiple commits when this is set.
     :type operation_chunk_size: Optional[int]
+    :param upload_timespan: Upload minimal time interval when chunked uploading enabled.
+    :type upload_timespan: float
 
     .. note::
         When `operation_chunk_size` is set, multiple commits will be created. When some commits failed,
@@ -118,6 +125,11 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
     .. warning::
         When `operation_chunk_size` is set, multiple commits will be created. But HuggingFace's repository
         api cannot guarantee the atomic feature of your data. So **this function is not thread-safe**.
+
+    .. note::
+        The rate limit of HuggingFace repository commit creation is approximately 120 commits / hour.
+        So if you really have large number of chunks to create, please set the `upload_timespan` to a value
+        no less than `30.0` to make sure your uploading will not be rate-limited.
     """
     hf_client = get_hf_client(hf_token)
     if clear:
@@ -155,9 +167,21 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
             revision=revision
         )[0].commit_id
 
+        last_upload_at = None
         try:
-            for chunk_id in range(int(math.ceil(len(operations) / operation_chunk_size))):
+            for chunk_id in tqdm(range(int(math.ceil(len(operations) / operation_chunk_size))),
+                                 desc='Chunked Commits'):
                 operation_chunk = operations[chunk_id * operation_chunk_size:(chunk_id + 1) * operation_chunk_size]
+
+                # sleep for the given time
+                if last_upload_at:
+                    sleep_time = last_upload_at + upload_timespan - time.time()
+                    if sleep_time > 0:
+                        logging.info(f'Sleep for {sleep_time:.1f}s due to the timespan limitation ...')
+                        time.sleep(sleep_time)
+
+                last_upload_at = time.time()
+                logging.info(f'Uploading chunk #{chunk_id}, with {plural_word(len(operation_chunk), "operation")} ...')
                 hf_client.create_commit(
                     repo_id=repo_id,
                     repo_type=repo_type,
@@ -165,6 +189,8 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
                     operations=operation_chunk,
                     commit_message=f'[Chunk #{chunk_id}] {commit_message}',
                 )
+
+
         except Exception:
             from ..repository import hf_hub_rollback
 
