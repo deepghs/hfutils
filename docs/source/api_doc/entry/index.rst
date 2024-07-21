@@ -11,10 +11,12 @@ hfutils.entry
 
     base
     cli
+    clone
     dispatch
     download
+    index_
     ls
     ls_repo
     upload
     whoami
-
+    rollback
