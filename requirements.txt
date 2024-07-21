@@ -1,7 +1,8 @@
-hbutils>=0.9.3
+hbutils>=0.10.0
 huggingface_hub>=0.23
 tqdm
 requests
 click>=7
 tzlocal
 natsort
+urlobject
