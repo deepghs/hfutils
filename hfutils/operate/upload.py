@@ -1,4 +1,6 @@
 import datetime
+import logging
+import math
 import os.path
 import re
 from typing import Optional, List
@@ -81,7 +83,7 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
                                   repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                   message: Optional[str] = None, time_suffix: bool = True,
                                   clear: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
-                                  hf_token: Optional[str] = None):
+                                  hf_token: Optional[str] = None, operation_chunk_size: Optional[int] = None):
     """
     Upload a local directory and its files to a specified path in a Hugging Face repository.
 
@@ -105,6 +107,17 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
     :type ignore_patterns: List[str]
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
+    :param operation_chunk_size: Chunk size of the operations. All the operations will be
+        seperated into multiple commits when this is set.
+    :type operation_chunk_size: Optional[int]
+
+    .. note::
+        When `operation_chunk_size` is set, multiple commits will be created. When some commits failed,
+        it will roll back to the startup commit, using :func:`hfutils.repository.hf_hub_rollback` function..
+
+    .. warning::
+        When `operation_chunk_size` is set, multiple commits will be created. But HuggingFace's repository
+        api cannot guarantee the atomic feature of your data. So **this function is not thread-safe**.
     """
     hf_client = get_hf_client(hf_token)
     if clear:
@@ -135,10 +148,43 @@ def upload_directory_as_directory(local_directory, repo_id: str, path_in_repo: s
     if time_suffix:
         commit_message = f'{commit_message}, on {current_time}'
 
-    hf_client.create_commit(
-        repo_id=repo_id,
-        repo_type=repo_type,
-        revision=revision,
-        operations=operations,
-        commit_message=commit_message,
-    )
+    if operation_chunk_size:
+        initial_commit_id = hf_client.list_repo_commits(
+            repo_id=repo_id,
+            repo_type=repo_type,
+            revision=revision
+        )[0].commit_id
+
+        try:
+            for chunk_id in range(int(math.ceil(len(operations) / operation_chunk_size))):
+                operation_chunk = operations[chunk_id * operation_chunk_size:(chunk_id + 1) * operation_chunk_size]
+                hf_client.create_commit(
+                    repo_id=repo_id,
+                    repo_type=repo_type,
+                    revision=revision,
+                    operations=operation_chunk,
+                    commit_message=f'[Chunk #{chunk_id}] {commit_message}',
+                )
+        except Exception:
+            from ..repository import hf_hub_rollback
+
+            logging.error(f'Error found when executing chunked uploading, '
+                          f'revision {revision!r} will rollback to {initial_commit_id!r} ...')
+            hf_hub_rollback(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                revision=revision,
+                rollback_to=initial_commit_id,
+                hf_token=hf_token,
+            )
+
+            raise
+
+    else:
+        hf_client.create_commit(
+            repo_id=repo_id,
+            repo_type=repo_type,
+            revision=revision,
+            operations=operations,
+            commit_message=commit_message,
+        )
