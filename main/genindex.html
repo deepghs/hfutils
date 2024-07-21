@@ -64,6 +64,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api_doc/entry/index.html">hfutils.entry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/index/index.html">hfutils.index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/operate/index.html">hfutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/repository/index.html">hfutils.repository</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/utils/index.html">hfutils.utils</a></li>
 </ul>
 
@@ -244,6 +245,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/utils/path.html#hfutils.utils.path.hf_fs_path">hf_fs_path() (in module hfutils.utils.path)</a>
 </li>
+      <li><a href="api_doc/repository/clone.html#hfutils.repository.clone.hf_hub_clone">hf_hub_clone() (in module hfutils.repository.clone)</a>
+</li>
+      <li><a href="api_doc/repository/base.html#hfutils.repository.base.hf_hub_repo_url">hf_hub_repo_url() (in module hfutils.repository.base)</a>
+</li>
+      <li><a href="api_doc/repository/rollback.html#hfutils.repository.rollback.hf_hub_rollback">hf_hub_rollback() (in module hfutils.repository.rollback)</a>
+</li>
       <li><a href="api_doc/utils/path.html#hfutils.utils.path.hf_normpath">hf_normpath() (in module hfutils.utils.path)</a>
 </li>
       <li><a href="api_doc/index/make.html#hfutils.index.make.hf_tar_create_from_directory">hf_tar_create_from_directory() (in module hfutils.index.make)</a>
@@ -347,8 +354,6 @@
         <li><a href="api_doc/entry/ls.html#module-hfutils.entry.ls">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     hfutils.entry.ls_repo
 
@@ -356,6 +361,8 @@
         <li><a href="api_doc/entry/ls_repo.html#module-hfutils.entry.ls_repo">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     hfutils.entry.upload
 
@@ -431,6 +438,34 @@
 
       <ul>
         <li><a href="api_doc/operate/validate.html#module-hfutils.operate.validate">module</a>
+</li>
+      </ul></li>
+      <li>
+    hfutils.repository
+
+      <ul>
+        <li><a href="api_doc/repository/index.html#module-hfutils.repository">module</a>
+</li>
+      </ul></li>
+      <li>
+    hfutils.repository.base
+
+      <ul>
+        <li><a href="api_doc/repository/base.html#module-hfutils.repository.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    hfutils.repository.clone
+
+      <ul>
+        <li><a href="api_doc/repository/clone.html#module-hfutils.repository.clone">module</a>
+</li>
+      </ul></li>
+      <li>
+    hfutils.repository.rollback
+
+      <ul>
+        <li><a href="api_doc/repository/rollback.html#module-hfutils.repository.rollback">module</a>
 </li>
       </ul></li>
       <li>
@@ -566,6 +601,14 @@
         <li><a href="api_doc/operate/upload.html#module-hfutils.operate.upload">hfutils.operate.upload</a>
 </li>
         <li><a href="api_doc/operate/validate.html#module-hfutils.operate.validate">hfutils.operate.validate</a>
+</li>
+        <li><a href="api_doc/repository/index.html#module-hfutils.repository">hfutils.repository</a>
+</li>
+        <li><a href="api_doc/repository/base.html#module-hfutils.repository.base">hfutils.repository.base</a>
+</li>
+        <li><a href="api_doc/repository/clone.html#module-hfutils.repository.clone">hfutils.repository.clone</a>
+</li>
+        <li><a href="api_doc/repository/rollback.html#module-hfutils.repository.rollback">hfutils.repository.rollback</a>
 </li>
         <li><a href="api_doc/utils/index.html#module-hfutils.utils">hfutils.utils</a>
 </li>
@@ -729,9 +772,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../dev/rollback/index.html">dev/rollback</a></dd>
-                        <dd><a href="../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="genindex.html">main</a></dd>
+                        <dd><a href="../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>
