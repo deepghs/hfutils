@@ -80,7 +80,7 @@ def _irregular_repos() -> Dict[RepoTypeTyping, Set[str]]:
 _RE_IR_PATH = re.compile(
     r'^(?P<repo_id>[^@/]+)(@(?P<revision>[^@/]+))?(/(?P<filename>[\s\S]+))?$')
 _RE_PATH = re.compile(
-    r'^(?P<repo_id>[^@/]+/[^@/]+)(@(?P<revision>[^@/]+))?(/(?P<filename>[\s\S]+))?$')
+    r'^(?P<repo_id>[^@/]+/[^@/]+)(@(?P<revision>(refs/pr/\d+|[^@/]+)))?(/(?P<filename>[\s\S]+))?$')
 
 
 @dataclass

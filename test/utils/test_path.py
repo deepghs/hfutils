@@ -62,6 +62,12 @@ class TestUtilsPath:
             filename='1/2/3',
             revision='r3',
         )
+        assert parse_hf_fs_path('spaces/narugo/test_ds_repo@refs/pr/10/1/2/3') == HfFileSystemPath(
+            repo_id='narugo/test_ds_repo',
+            repo_type='space',
+            filename='1/2/3',
+            revision='refs/pr/10',
+        )
         # assert parse_hf_fs_path('datasets/imagenet-1k/classes.py') == HfFileSystemPath(
         #     repo_id='imagenet-1k',
         #     repo_type='dataset',
