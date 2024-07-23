@@ -177,7 +177,7 @@
 <span class="n">_RE_IR_PATH</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
     <span class="sa">r</span><span class="s1">&#39;^(?P&lt;repo_id&gt;[^@/]+)(@(?P&lt;revision&gt;[^@/]+))?(/(?P&lt;filename&gt;[\s\S]+))?$&#39;</span><span class="p">)</span>
 <span class="n">_RE_PATH</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s1">&#39;^(?P&lt;repo_id&gt;[^@/]+/[^@/]+)(@(?P&lt;revision&gt;[^@/]+))?(/(?P&lt;filename&gt;[\s\S]+))?$&#39;</span><span class="p">)</span>
+    <span class="sa">r</span><span class="s1">&#39;^(?P&lt;repo_id&gt;[^@/]+/[^@/]+)(@(?P&lt;revision&gt;(refs/pr/\d+|[^@/]+)))?(/(?P&lt;filename&gt;[\s\S]+))?$&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="HfFileSystemPath"><a class="viewcode-back" href="../../../api_doc/utils/path.html#hfutils.utils.path.HfFileSystemPath">[docs]</a><span class="nd">@dataclass</span>
@@ -297,9 +297,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/path/index.html">dev/path</a></dd>
-                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="path.html">main</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>
