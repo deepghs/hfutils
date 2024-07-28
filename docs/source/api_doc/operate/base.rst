@@ -20,6 +20,13 @@ get_hf_fs
 
 
 
+list_all_with_pattern
+----------------------------------------
+
+.. autofunction:: list_all_with_pattern
+
+
+
 list_files_in_repository
 ----------------------------------------
 

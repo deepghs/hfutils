@@ -6,3 +6,4 @@ click>=7
 tzlocal
 natsort
 urlobject
+fsspec>=2024
