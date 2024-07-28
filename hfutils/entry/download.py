@@ -47,12 +47,17 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                   help='Max threads to download.', show_default=True)
     @click.option('-p', '--password', 'password', type=str, default=None,
                   help='Password for the archive file. Only applied when -a is used.', show_default=True)
+    @click.option('-w', '--wildcard', 'wildcard', type=str, default=None,
+                  help='Wildcard for files to download. Only applied when -d is used.', show_default=True)
     @click.option('--tmpdir', 'tmpdir', type=str, default=None,
                   help='Use custom temporary Directory.', show_default=True)
     @command_wrap()
-    def download(repo_id: str, repo_type: RepoTypeTyping,
-                 file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
-                 output_path: str, revision: str, max_workers: int, password: Optional[str], tmpdir: Optional[str]):
+    def download(
+            repo_id: str, repo_type: RepoTypeTyping,
+            file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
+            output_path: str, revision: str, max_workers: int,
+            password: Optional[str], wildcard: Optional[str], tmpdir: Optional[str]
+    ):
         """
         Download data from HuggingFace repositories.
 
@@ -73,6 +78,8 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
         :param max_workers: Max workers to download
         :type max_workers: int
         :param password: Password for the archive file. Only applied when -a is used.
+        :type password: str, optional
+        :param wildcard: Wildcard for files to download. Only applied when -d is used.
         :type password: str, optional
         :param tmpdir: Use custom temporary Directory.
         :type tmpdir: str, optional
@@ -114,6 +121,7 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                 local_directory=output_path,
                 repo_id=repo_id,
                 dir_in_repo=dir_in_repo,
+                pattern=wildcard or '**/*',
                 repo_type=repo_type,
                 revision=revision,
                 silent=False,
