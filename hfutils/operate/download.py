@@ -80,11 +80,13 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
         archive_unpack(archive_file, local_directory, password=password)
 
 
-def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_repo: str = '.',
-                                    repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                                    silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
-                                    resume_download: bool = True, max_workers: int = 8, max_retries: int = 5,
-                                    hf_token: Optional[str] = None):
+def download_directory_as_directory(
+        local_directory: str, repo_id: str, dir_in_repo: str = '.', pattern: str = '**/*',
+        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+        silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+        resume_download: bool = True, max_workers: int = 8, max_retries: int = 5,
+        hf_token: Optional[str] = None
+):
     """
     Download all files in a directory from a Hugging Face repository to a local directory.
 
@@ -94,6 +96,8 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
     :type repo_id: str
     :param dir_in_repo: The directory path within the repository.
     :type dir_in_repo: str
+    :param pattern: Patterns for filtering.
+    :type pattern: str
     :param repo_type: The type of the repository ('dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
@@ -111,7 +115,14 @@ def download_directory_as_directory(local_directory: str, repo_id: str, dir_in_r
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
     """
-    files = list_files_in_repository(repo_id, repo_type, dir_in_repo, revision, ignore_patterns, hf_token=hf_token)
+    files = list_files_in_repository(
+        repo_id=repo_id,
+        repo_type=repo_type,
+        subdir=dir_in_repo,
+        revision=revision,
+        ignore_patterns=ignore_patterns,
+        hf_token=hf_token,
+    )
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
 
     def _download_one_file(rel_file):

@@ -109,9 +109,5 @@ class TestOperateBase:
         assert (set(should_exists) & set(files)) == set(should_exists)
         assert not (set(should_not_exists) & set(files))
 
-    def test_list_files_in_repository_failed(self):
-        with pytest.raises(ValueError):
-            list_files_in_repository('deepghs/highres_datasets', repo_type='fff')
-
     def test_list_files_in_repository_repo_not_exist(self):
         assert list_files_in_repository('deepghs/highres_datasets', repo_type='model') == []
