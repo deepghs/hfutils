@@ -1,7 +1,7 @@
 import pytest
 from natsort import natsorted
 
-from hfutils.operate import list_files_in_repository
+from hfutils.operate import list_files_in_repository, list_all_with_pattern
 
 should_not_exists = [
     '.gitignore',
@@ -120,3 +120,32 @@ class TestOperateBase:
 
     def test_list_files_in_repository_repo_not_exist(self):
         assert list_files_in_repository('deepghs/highres_datasets', repo_type='model') == []
+
+    def test_list_all_with_pattern(self):
+        vs = natsorted([
+            item.path for item in
+            list_all_with_pattern(
+                'deepghs/danbooru_newest',
+                repo_type='dataset',
+                pattern='images/*',
+            )
+        ])
+        assert vs == natsorted([
+            *[f'images/0{i:03d}.tar' for i in range(1000)],
+            *[f'images/0{i:03d}.json' for i in range(1000)],
+        ])
+
+    def test_list_all_with_pattern_with_large_startup(self):
+        vs = natsorted([
+            item.path for item in
+            list_all_with_pattern(
+                'deepghs/danbooru_newest',
+                repo_type='dataset',
+                pattern='images/*',
+                startup_batch=1500,
+            )
+        ])
+        assert vs == natsorted([
+            *[f'images/0{i:03d}.tar' for i in range(1000)],
+            *[f'images/0{i:03d}.json' for i in range(1000)],
+        ])

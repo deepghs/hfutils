@@ -196,7 +196,7 @@ def list_all_with_pattern(
         except HfHubHTTPError as err:
             if err.response.status_code == 413:
                 new_batch_size = max(1, int(round(batch_size * batch_factor)))
-                logging.info(f'Reducing batch size {batch_size} --> {new_batch_size} ...')
+                logging.warning(f'Reducing batch size {batch_size} --> {new_batch_size} ...')
                 batch_size = new_batch_size
                 continue
             raise
