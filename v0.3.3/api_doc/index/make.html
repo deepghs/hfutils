@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hfutils.index.make &mdash; hfutils 0.3.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=f7db8ab7"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="hfutils.index.validate" href="validate.html" />
+    <link rel="prev" title="hfutils.index.fetch" href="fetch.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hfutils
+          </a>
+              <div class="version">
+                0.3.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">hfutils.archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cache/index.html">hfutils.cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">hfutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../entry/index.html">hfutils.entry</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">hfutils.index</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fetch.html">hfutils.index.fetch</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">hfutils.index.make</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tar-create-index">tar_create_index</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.index.make.tar_create_index"><code class="docutils literal notranslate"><span class="pre">tar_create_index()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hf-tar-create-index">hf_tar_create_index</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.index.make.hf_tar_create_index"><code class="docutils literal notranslate"><span class="pre">hf_tar_create_index()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tar-get-index-info">tar_get_index_info</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.index.make.tar_get_index_info"><code class="docutils literal notranslate"><span class="pre">tar_get_index_info()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hf-tar-create-from-directory">hf_tar_create_from_directory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.index.make.hf_tar_create_from_directory"><code class="docutils literal notranslate"><span class="pre">hf_tar_create_from_directory()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="validate.html">hfutils.index.validate</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">hfutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../repository/index.html">hfutils.repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">hfutils.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hfutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">hfutils.index</a></li>
+      <li class="breadcrumb-item active">hfutils.index.make</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/index/make.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-hfutils.index.make">
+<span id="hfutils-index-make"></span><h1>hfutils.index.make<a class="headerlink" href="#module-hfutils.index.make" title="Permalink to this heading"></a></h1>
+<section id="tar-create-index">
+<h2>tar_create_index<a class="headerlink" href="#tar-create-index" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.index.make.tar_create_index">
+<span class="sig-prename descclassname"><span class="pre">hfutils.index.make.</span></span><span class="sig-name descname"><span class="pre">tar_create_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_tar_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_index_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_for_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1048576</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/index/make.html#tar_create_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.index.make.tar_create_index" title="Permalink to this definition"></a></dt>
+<dd><p>Create an index file for a tar archive file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_tar_file</strong> (<em>str</em>) – The path to the source tar archive file.</p></li>
+<li><p><strong>dst_index_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to save the index file, defaults to None.</p></li>
+<li><p><strong>chunk_for_hash</strong> (<em>int</em><em>, </em><em>optional</em>) – The chunk size for hashing, defaults to 1 &lt;&lt; 20 (1 MB).</p></li>
+<li><p><strong>with_hash</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to include file hashes in the index, defaults to True.</p></li>
+<li><p><strong>silent</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to suppress progress bars and logging messages, defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the created index file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="hf-tar-create-index">
+<h2>hf_tar_create_index<a class="headerlink" href="#hf-tar-create-index" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.index.make.hf_tar_create_index">
+<span class="sig-prename descclassname"><span class="pre">hfutils.index.make.</span></span><span class="sig-name descname"><span class="pre">hf_tar_create_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive_in_repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx_repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx_file_in_repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx_repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx_revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_for_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1048576</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_when_synced</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/index/make.html#hf_tar_create_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.index.make.hf_tar_create_index" title="Permalink to this definition"></a></dt>
+<dd><p>Create an index file for a tar archive file in a Hugging Face repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository.</p></li>
+<li><p><strong>archive_in_repo</strong> (<em>str</em>) – The path to the tar archive file.</p></li>
+<li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em><em>, </em><em>optional</em>) – The type of the Hugging Face repository, defaults to ‘dataset’.</p></li>
+<li><p><strong>revision</strong> (<em>str</em><em>, </em><em>optional</em>) – The revision of the repository, defaults to ‘main’.</p></li>
+<li><p><strong>idx_repo_id</strong> (<em>str</em><em>, </em><em>optional</em>) – The identifier of the index repository, defaults to None.</p></li>
+<li><p><strong>idx_file_in_repo</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to save the index file in the index repository, defaults to None.</p></li>
+<li><p><strong>idx_repo_type</strong> (<em>RepoTypeTyping</em><em>, </em><em>optional</em>) – The type of the index repository, defaults to None.</p></li>
+<li><p><strong>idx_revision</strong> (<em>str</em><em>, </em><em>optional</em>) – The revision of the index repository, defaults to None.</p></li>
+<li><p><strong>chunk_for_hash</strong> (<em>int</em><em>, </em><em>optional</em>) – The chunk size for hashing, defaults to 1 &lt;&lt; 20 (1 MB).</p></li>
+<li><p><strong>with_hash</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to include file hashes in the index, defaults to True.</p></li>
+<li><p><strong>skip_when_synced</strong> (<em>bool</em>) – Skip syncing when index is ready, defaults to True.</p></li>
+<li><p><strong>hf_token</strong> (<em>str</em><em>, </em><em>optional</em>) – The Hugging Face access token, defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="tar-get-index-info">
+<h2>tar_get_index_info<a class="headerlink" href="#tar-get-index-info" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.index.make.tar_get_index_info">
+<span class="sig-prename descclassname"><span class="pre">hfutils.index.make.</span></span><span class="sig-name descname"><span class="pre">tar_get_index_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_tar_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_for_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1048576</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/index/make.html#tar_get_index_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.index.make.tar_get_index_info" title="Permalink to this definition"></a></dt>
+<dd><p>Get the index information of a tar archive file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The return value of this function will be directly used as the index json file.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_tar_file</strong> (<em>str</em>) – The path to the source tar archive file.</p></li>
+<li><p><strong>chunk_for_hash</strong> (<em>int</em><em>, </em><em>optional</em>) – The chunk size for hashing, defaults to 1 &lt;&lt; 20 (1 MB).</p></li>
+<li><p><strong>with_hash</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to include file hashes in the index, defaults to True.</p></li>
+<li><p><strong>silent</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to suppress progress bars and logging messages, defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The index information of the tar archive file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="hf-tar-create-from-directory">
+<h2>hf_tar_create_from_directory<a class="headerlink" href="#hf-tar-create-from-directory" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.index.make.hf_tar_create_from_directory">
+<span class="sig-prename descclassname"><span class="pre">hfutils.index.make.</span></span><span class="sig-name descname"><span class="pre">hf_tar_create_from_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive_in_repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_for_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1048576</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/index/make.html#hf_tar_create_from_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.index.make.hf_tar_create_from_directory" title="Permalink to this definition"></a></dt>
+<dd><p>Create a tar archive file from a local directory and upload it to a Hugging Face repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository.</p></li>
+<li><p><strong>archive_in_repo</strong> (<em>str</em>) – The path to save the tar archive file in the repository.</p></li>
+<li><p><strong>local_directory</strong> (<em>str</em>) – The path to the local directory to be archived.</p></li>
+<li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em><em>, </em><em>optional</em>) – The type of the Hugging Face repository, defaults to ‘dataset’.</p></li>
+<li><p><strong>revision</strong> (<em>str</em><em>, </em><em>optional</em>) – The revision of the repository, defaults to ‘main’.</p></li>
+<li><p><strong>chunk_for_hash</strong> (<em>int</em><em>, </em><em>optional</em>) – The chunk size for hashing, defaults to 1 &lt;&lt; 20 (1 MB).</p></li>
+<li><p><strong>with_hash</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to include file hashes in the index, defaults to True.</p></li>
+<li><p><strong>silent</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to suppress progress bars and logging messages, defaults to False.</p></li>
+<li><p><strong>hf_token</strong> (<em>str</em><em>, </em><em>optional</em>) – The Hugging Face access token, defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="fetch.html" class="btn btn-neutral float-left" title="hfutils.index.fetch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="validate.html" class="btn btn-neutral float-right" title="hfutils.index.validate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.3.3
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.0.1/index.html">v0.0.1</a></dd>
+                        <dd><a href="../../../v0.0.2/index.html">v0.0.2</a></dd>
+                        <dd><a href="../../../v0.0.3/index.html">v0.0.3</a></dd>
+                        <dd><a href="../../../v0.0.4/index.html">v0.0.4</a></dd>
+                        <dd><a href="../../../v0.0.5/index.html">v0.0.5</a></dd>
+                        <dd><a href="../../../v0.0.6/index.html">v0.0.6</a></dd>
+                        <dd><a href="../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../v0.1.2/index.html">v0.1.2</a></dd>
+                        <dd><a href="../../../v0.2.0/api_doc/index/make.html">v0.2.0</a></dd>
+                        <dd><a href="../../../v0.2.1/api_doc/index/make.html">v0.2.1</a></dd>
+                        <dd><a href="../../../v0.2.10/api_doc/index/make.html">v0.2.10</a></dd>
+                        <dd><a href="../../../v0.2.11/api_doc/index/make.html">v0.2.11</a></dd>
+                        <dd><a href="../../../v0.2.2/api_doc/index/make.html">v0.2.2</a></dd>
+                        <dd><a href="../../../v0.2.3/api_doc/index/make.html">v0.2.3</a></dd>
+                        <dd><a href="../../../v0.2.4/api_doc/index/make.html">v0.2.4</a></dd>
+                        <dd><a href="../../../v0.2.5/api_doc/index/make.html">v0.2.5</a></dd>
+                        <dd><a href="../../../v0.2.6/api_doc/index/make.html">v0.2.6</a></dd>
+                        <dd><a href="../../../v0.2.7/api_doc/index/make.html">v0.2.7</a></dd>
+                        <dd><a href="../../../v0.2.8/api_doc/index/make.html">v0.2.8</a></dd>
+                        <dd><a href="../../../v0.2.9/api_doc/index/make.html">v0.2.9</a></dd>
+                        <dd><a href="../../../v0.3.0/api_doc/index/make.html">v0.3.0</a></dd>
+                        <dd><a href="../../../v0.3.1/api_doc/index/make.html">v0.3.1</a></dd>
+                        <dd><a href="../../../v0.3.2/api_doc/index/make.html">v0.3.2</a></dd>
+                        <dd><a href="make.html">v0.3.3</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../dev/rate/api_doc/index/make.html">dev/rate</a></dd>
+                        <dd><a href="../../../main/api_doc/index/make.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
