@@ -71,3 +71,25 @@ class TestOperateDownload:
             dir_compare(target_dir, 'download_dir')
 
         assert call_times == 6
+
+    def test_download_directory_as_directory_with_pattern(self):
+        target_dir = get_testfile('skin_mashu_pattern')
+
+        call_times = 0
+
+        def _my_download(*args, **kwargs):
+            nonlocal call_times
+            call_times += 1
+            return download_file_to_file(*args, **kwargs)
+
+        with patch('hfutils.operate.download.download_file_to_file', _my_download), \
+                isolated_directory():
+            download_directory_as_directory(
+                'download_dir',
+                repo_id='deepghs/game_character_skins',
+                dir_in_repo='fgo/1',
+                pattern='第*.png',
+            )
+            dir_compare(target_dir, 'download_dir')
+
+        assert call_times == 4

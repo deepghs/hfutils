@@ -119,6 +119,7 @@ def download_directory_as_directory(
         repo_id=repo_id,
         repo_type=repo_type,
         subdir=dir_in_repo,
+        pattern=pattern,
         revision=revision,
         ignore_patterns=ignore_patterns,
         hf_token=hf_token,
