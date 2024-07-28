@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.entry.download &mdash; hfutils 0.3.2 documentation</title>
+  <title>hfutils.entry.download &mdash; hfutils 0.3.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
@@ -16,7 +16,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=53a30eae"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=f7db8ab7"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -37,7 +37,7 @@
             hfutils
           </a>
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -144,12 +144,17 @@
                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Max threads to download.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="s1">&#39;--password&#39;</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Password for the archive file. Only applied when -a is used.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-w&#39;</span><span class="p">,</span> <span class="s1">&#39;--wildcard&#39;</span><span class="p">,</span> <span class="s1">&#39;wildcard&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Wildcard for files to download. Only applied when -d is used.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--tmpdir&#39;</span><span class="p">,</span> <span class="s1">&#39;tmpdir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Use custom temporary Directory.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nd">@command_wrap</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span><span class="p">,</span>
-                 <span class="n">file_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">archive_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-                 <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">tmpdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
+            <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span><span class="p">,</span>
+            <span class="n">file_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">archive_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">wildcard</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">tmpdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download data from HuggingFace repositories.</span>
 
@@ -170,6 +175,8 @@
 <span class="sd">        :param max_workers: Max workers to download</span>
 <span class="sd">        :type max_workers: int</span>
 <span class="sd">        :param password: Password for the archive file. Only applied when -a is used.</span>
+<span class="sd">        :type password: str, optional</span>
+<span class="sd">        :param wildcard: Wildcard for files to download. Only applied when -d is used.</span>
 <span class="sd">        :type password: str, optional</span>
 <span class="sd">        :param tmpdir: Use custom temporary Directory.</span>
 <span class="sd">        :type tmpdir: str, optional</span>
@@ -211,6 +218,7 @@
                 <span class="n">local_directory</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
                 <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
                 <span class="n">dir_in_repo</span><span class="o">=</span><span class="n">dir_in_repo</span><span class="p">,</span>
+                <span class="n">pattern</span><span class="o">=</span><span class="n">wildcard</span> <span class="ow">or</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span>
                 <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
                 <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
                 <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -281,9 +289,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/pattern/index.html">dev/pattern</a></dd>
-                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="download.html">main</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>

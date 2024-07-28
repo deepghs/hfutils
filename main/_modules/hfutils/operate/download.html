@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.operate.download &mdash; hfutils 0.3.2 documentation</title>
+  <title>hfutils.operate.download &mdash; hfutils 0.3.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
@@ -16,7 +16,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=53a30eae"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=f7db8ab7"></script>
         <script src="../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -37,7 +37,7 @@
             hfutils
           </a>
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -177,11 +177,13 @@
         <span class="n">archive_unpack</span><span class="p">(</span><span class="n">archive_file</span><span class="p">,</span> <span class="n">local_directory</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="download_directory_as_directory"><a class="viewcode-back" href="../../../api_doc/operate/download.html#hfutils.operate.download.download_directory_as_directory">[docs]</a><span class="k">def</span> <span class="nf">download_directory_as_directory</span><span class="p">(</span><span class="n">local_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span>
-                                    <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
-                                    <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">,</span>
-                                    <span class="n">resume_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
-                                    <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="download_directory_as_directory"><a class="viewcode-back" href="../../../api_doc/operate/download.html#hfutils.operate.download.download_directory_as_directory">[docs]</a><span class="k">def</span> <span class="nf">download_directory_as_directory</span><span class="p">(</span>
+        <span class="n">local_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
+        <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">,</span>
+        <span class="n">resume_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download all files in a directory from a Hugging Face repository to a local directory.</span>
 
@@ -191,6 +193,8 @@
 <span class="sd">    :type repo_id: str</span>
 <span class="sd">    :param dir_in_repo: The directory path within the repository.</span>
 <span class="sd">    :type dir_in_repo: str</span>
+<span class="sd">    :param pattern: Patterns for filtering.</span>
+<span class="sd">    :type pattern: str</span>
 <span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;).</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
 <span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash).</span>
@@ -208,7 +212,15 @@
 <span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
 <span class="sd">    :type hf_token: str, optional</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="n">list_files_in_repository</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">ignore_patterns</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">list_files_in_repository</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
+        <span class="n">subdir</span><span class="o">=</span><span class="n">dir_in_repo</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span>
+        <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
+        <span class="n">ignore_patterns</span><span class="o">=</span><span class="n">ignore_patterns</span><span class="p">,</span>
+        <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">progress</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Downloading </span><span class="si">{</span><span class="n">dir_in_repo</span><span class="si">!r}</span><span class="s1"> ...&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_download_one_file</span><span class="p">(</span><span class="n">rel_file</span><span class="p">):</span>
@@ -316,9 +328,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/pattern/index.html">dev/pattern</a></dd>
-                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="download.html">main</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>
