@@ -95,7 +95,23 @@
     
     
   <h1>Source code for hfutils.operate.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">fnmatch</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides utilities for interacting with the Hugging Face Hub API and filesystem.</span>
+<span class="sd">It includes functions for retrieving API clients, listing files in repositories, and handling</span>
+<span class="sd">file patterns and ignore rules.</span>
+
+<span class="sd">The module offers the following main functionalities:</span>
+
+<span class="sd">1. Retrieving Hugging Face API tokens and clients</span>
+<span class="sd">2. Accessing the Hugging Face filesystem</span>
+<span class="sd">3. Listing files in Hugging Face repositories with pattern matching and ignore rules</span>
+<span class="sd">4. Parsing and normalizing Hugging Face filesystem paths</span>
+
+<span class="sd">These utilities are designed to simplify working with Hugging Face repositories, especially</span>
+<span class="sd">when dealing with datasets, models, and spaces.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">fnmatch</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
@@ -117,7 +133,10 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieve the Hugging Face token from the environment variable.</span>
 
-<span class="sd">    :return: The Hugging Face token.</span>
+<span class="sd">    This function checks for the &#39;HF_TOKEN&#39; environment variable and returns its value.</span>
+<span class="sd">    It is cached to avoid repeated environment variable lookups.</span>
+
+<span class="sd">    :return: The Hugging Face token if set, otherwise None.</span>
 <span class="sd">    :rtype: Optional[str]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HF_TOKEN&#39;</span><span class="p">)</span>
@@ -128,11 +147,20 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the Hugging Face API client.</span>
 
-<span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
-<span class="sd">    :type hf_token: str, optional</span>
+<span class="sd">    This function returns an instance of the Hugging Face API client. If a token is not provided,</span>
+<span class="sd">    it attempts to use the token from the environment variable.</span>
 
-<span class="sd">    :return: The Hugging Face API client.</span>
+<span class="sd">    :param hf_token: Hugging Face token for API client. If not provided, uses the &#39;HF_TOKEN&#39; environment variable.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
+
+<span class="sd">    :return: An instance of the Hugging Face API client.</span>
 <span class="sd">    :rtype: HfApi</span>
+
+<span class="sd">    :example:</span>
+
+<span class="sd">        &gt;&gt;&gt; client = get_hf_client()</span>
+<span class="sd">        &gt;&gt;&gt; # Use client to interact with Hugging Face API</span>
+<span class="sd">        &gt;&gt;&gt; client.list_repos(organization=&quot;huggingface&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">HfApi</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">hf_token</span> <span class="ow">or</span> <span class="n">_get_hf_token</span><span class="p">())</span></div>
 
@@ -142,11 +170,21 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the Hugging Face file system.</span>
 
-<span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
-<span class="sd">    :type hf_token: str, optional</span>
+<span class="sd">    This function returns an instance of the Hugging Face file system. If a token is not provided,</span>
+<span class="sd">    it attempts to use the token from the environment variable. The file system is configured</span>
+<span class="sd">    not to use listings cache to ensure fresh results.</span>
 
-<span class="sd">    :return: The Hugging Face file system.</span>
+<span class="sd">    :param hf_token: Hugging Face token for API client. If not provided, uses the &#39;HF_TOKEN&#39; environment variable.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
+
+<span class="sd">    :return: An instance of the Hugging Face file system.</span>
 <span class="sd">    :rtype: HfFileSystem</span>
+
+<span class="sd">    :example:</span>
+
+<span class="sd">        &gt;&gt;&gt; fs = get_hf_fs()</span>
+<span class="sd">        &gt;&gt;&gt; # Use fs to interact with Hugging Face file system</span>
+<span class="sd">        &gt;&gt;&gt; fs.ls(&quot;dataset/example&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># use_listings_cache=False is necessary</span>
     <span class="c1"># or the result of glob and ls will be cached, the unittest will down</span>
@@ -161,6 +199,9 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if a file should be ignored based on the given ignore patterns.</span>
 
+<span class="sd">    This function checks each segment of the file path against the provided ignore patterns.</span>
+<span class="sd">    If any segment matches any of the patterns, the file is considered ignored.</span>
+
 <span class="sd">    :param file_segments: The segments of the file path.</span>
 <span class="sd">    :type file_segments: List[str]</span>
 <span class="sd">    :param ignore_patterns: List of file patterns to ignore.</span>
@@ -168,6 +209,13 @@
 
 <span class="sd">    :return: True if the file should be ignored, False otherwise.</span>
 <span class="sd">    :rtype: bool</span>
+
+<span class="sd">    :example:</span>
+
+<span class="sd">        &gt;&gt;&gt; _is_file_ignored([&#39;folder&#39;, &#39;file.txt&#39;], [&#39;.git*&#39;, &#39;*.log&#39;])</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; _is_file_ignored([&#39;folder&#39;, &#39;.gitignore&#39;], [&#39;.git*&#39;, &#39;*.log&#39;])</span>
+<span class="sd">        True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">file_segments</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">ignore_patterns</span><span class="p">:</span>
@@ -177,11 +225,44 @@
     <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">def</span> <span class="nf">list_all_with_pattern</span><span class="p">(</span>
+<div class="viewcode-block" id="list_all_with_pattern"><a class="viewcode-back" href="../../../api_doc/operate/base.html#hfutils.operate.base.list_all_with_pattern">[docs]</a><span class="k">def</span> <span class="nf">list_all_with_pattern</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span>
         <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">startup_batch</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="n">batch_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
         <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">RepoFile</span><span class="p">,</span> <span class="n">RepoFolder</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    List all files and folders in a Hugging Face repository matching a given pattern.</span>
+
+<span class="sd">    This function retrieves information about files and folders in a repository that match</span>
+<span class="sd">    the specified pattern. It uses batching to handle large repositories efficiently.</span>
+
+<span class="sd">    :param repo_id: The identifier of the repository.</span>
+<span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param pattern: Wildcard pattern to match files and folders. Default is `**/*` (all files and folders).</span>
+<span class="sd">    :type pattern: str</span>
+<span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;). Default is &#39;dataset&#39;.</span>
+<span class="sd">    :type repo_type: RepoTypeTyping</span>
+<span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is &#39;main&#39;.</span>
+<span class="sd">    :type revision: str</span>
+<span class="sd">    :param startup_batch: Initial batch size for retrieving path information. Default is 500.</span>
+<span class="sd">    :type startup_batch: int</span>
+<span class="sd">    :param batch_factor: Factor to reduce batch size if a request fails. Default is 0.8.</span>
+<span class="sd">    :type batch_factor: float</span>
+<span class="sd">    :param hf_token: Hugging Face token for API client. If not provided, uses the &#39;HF_TOKEN&#39; environment variable.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
+<span class="sd">    :param silent: If True, suppresses progress bar. Default is False.</span>
+<span class="sd">    :type silent: bool</span>
+
+<span class="sd">    :return: An iterator of RepoFile and RepoFolder objects matching the pattern.</span>
+<span class="sd">    :rtype: Iterator[Union[RepoFile, RepoFolder]]</span>
+
+<span class="sd">    :raises HfHubHTTPError: If there&#39;s an error in the API request that&#39;s not related to batch size.</span>
+
+<span class="sd">    :example:</span>
+
+<span class="sd">        &gt;&gt;&gt; for item in list_all_with_pattern(&quot;username/repo&quot;, pattern=&quot;*.txt&quot;):</span>
+<span class="sd">        ...     print(item.path)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">get_hf_fs</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
     <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
 
@@ -219,7 +300,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_items</span><span class="p">))</span>
             <span class="n">offset</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_items</span><span class="p">)</span>
-            <span class="k">yield from</span> <span class="n">all_items</span>
+            <span class="k">yield from</span> <span class="n">all_items</span></div>
 
 
 <div class="viewcode-block" id="list_files_in_repository"><a class="viewcode-back" href="../../../api_doc/operate/base.html#hfutils.operate.base.list_files_in_repository">[docs]</a><span class="k">def</span> <span class="nf">list_files_in_repository</span><span class="p">(</span>
@@ -230,23 +311,34 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    List files in a Hugging Face repository based on the given parameters.</span>
 
+<span class="sd">    This function retrieves a list of file paths in a specified repository that match</span>
+<span class="sd">    the given pattern and are not ignored by the ignore patterns.</span>
+
 <span class="sd">    :param repo_id: The identifier of the repository.</span>
 <span class="sd">    :type repo_id: str</span>
-<span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;).</span>
+<span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;). Default is &#39;dataset&#39;.</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
-<span class="sd">    :param subdir: The subdirectory to list files from.</span>
+<span class="sd">    :param subdir: The subdirectory to list files from. Default is an empty string (root directory).</span>
 <span class="sd">    :type subdir: str</span>
-<span class="sd">    :param pattern: Wildcard pattern of the target files.</span>
+<span class="sd">    :param pattern: Wildcard pattern of the target files. Default is `**/*` (all files).</span>
 <span class="sd">    :type pattern: str</span>
-<span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash).</span>
+<span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is &#39;main&#39;.</span>
 <span class="sd">    :type revision: str</span>
-<span class="sd">    :param ignore_patterns: List of file patterns to ignore.</span>
+<span class="sd">    :param ignore_patterns: List of file patterns to ignore. If not set, uses default ignore patterns.</span>
 <span class="sd">    :type ignore_patterns: List[str]</span>
-<span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
-<span class="sd">    :type hf_token: str, optional</span>
+<span class="sd">    :param hf_token: Hugging Face token for API client. If not provided, uses the &#39;HF_TOKEN&#39; environment variable.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
+<span class="sd">    :param silent: If True, suppresses progress bar. Default is False.</span>
+<span class="sd">    :type silent: bool</span>
 
-<span class="sd">    :return: A list of file paths.</span>
+<span class="sd">    :return: A list of file paths that match the criteria.</span>
 <span class="sd">    :rtype: List[str]</span>
+
+<span class="sd">    :example:</span>
+
+<span class="sd">        &gt;&gt;&gt; files = list_files_in_repository(&quot;username/repo&quot;, pattern=&quot;*.txt&quot;, ignore_patterns=[&quot;.git*&quot;, &quot;*.log&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; print(files)</span>
+<span class="sd">        [&#39;file1.txt&#39;, &#39;folder/file2.txt&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ignore_patterns</span> <span class="ow">is</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">:</span>
         <span class="n">ignore_patterns</span> <span class="o">=</span> <span class="n">_DEFAULT_IGNORE_PATTERNS</span>
