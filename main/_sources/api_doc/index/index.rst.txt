@@ -10,6 +10,7 @@ hfutils.index
     :maxdepth: 3
 
     fetch
+    local_fetch
     make
     validate
 
