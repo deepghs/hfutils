@@ -1,6 +1,6 @@
 import json
 import os.path
-from typing import Optional, Dict, Union
+from typing import Optional, Dict, Union, List
 
 from huggingface_hub.file_download import http_get, hf_hub_url
 from huggingface_hub.utils import build_hf_headers
@@ -96,7 +96,7 @@ def hf_tar_list_files(repo_id: str, archive_in_repo: str,
                       repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                       idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
                       idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
-                      hf_token: Optional[str] = None):
+                      hf_token: Optional[str] = None) -> List[str]:
     """
     List files inside a tar archive file in a Hugging Face repository.
 
