@@ -9,7 +9,8 @@ from huggingface_hub.utils import EntryNotFoundError
 from .base import RepoTypeTyping, get_hf_client
 
 
-def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: int = 1 << 20) -> bool:
+def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: int = 1 << 20,
+                          soft_mode: bool = False) -> bool:
     """
     Checks if the local file matches the file on the Hugging Face Hub repository.
 
@@ -19,6 +20,8 @@ def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: 
     :type local_file: str
     :param chunk_for_hash: The chunk size for calculating the hash. Default is 1 << 20.
     :type chunk_for_hash: int
+    :param soft_mode: Just check the size of the expected file when enabled. Default is False.
+    :type soft_mode: bool
     :return: True if the local file matches the file on the repository, False otherwise.
     :rtype: bool
     """
@@ -27,6 +30,9 @@ def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: 
         logging.debug(f'File {local_file!r} size ({filesize}) does not match '
                       f'the remote file {repo_file.path!r} ({repo_file.size}).')
         return False
+
+    if soft_mode:
+        return True
 
     if repo_file.lfs:
         sha = sha256()
@@ -54,7 +60,7 @@ def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: 
 
 def is_local_file_ready(local_file: str, repo_id: str, file_in_repo: str,
                         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                        hf_token: Optional[str] = None) -> bool:
+                        soft_mode: bool = False, hf_token: Optional[str] = None) -> bool:
     """
     Checks if the local file is ready by comparing it with the file on the Hugging Face Hub repository.
 
@@ -68,6 +74,8 @@ def is_local_file_ready(local_file: str, repo_id: str, file_in_repo: str,
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository. Default is 'main'.
     :type revision: str
+    :param soft_mode: Just check the size of the expected file when enabled. Default is False.
+    :type soft_mode: bool
     :param hf_token: The Hugging Face API token. Default is None.
     :type hf_token: Optional[str]
     :return: True if the local file matches the file on the repository, False otherwise.
@@ -83,6 +91,6 @@ def is_local_file_ready(local_file: str, repo_id: str, file_in_repo: str,
     if len(infos) == 0:
         raise EntryNotFoundError(f'Entry {repo_type}s/{repo_id}/{file_in_repo} not found.')
     elif len(infos) == 1:
-        return _raw_check_local_file(infos[0], local_file)
+        return _raw_check_local_file(infos[0], local_file, soft_mode=soft_mode)
     else:
         assert False, f'Should not reach here, multiple files with the same name found - {infos!r}'  # pragma: no cover
