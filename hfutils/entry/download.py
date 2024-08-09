@@ -51,6 +51,8 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                   help='Password for the archive file. Only applied when -a is used.', show_default=True)
     @click.option('-w', '--wildcard', 'wildcard', type=str, default=None,
                   help='Wildcard for files to download. Only applied when -d is used.', show_default=True)
+    @click.option('-s', '--soft_mode_when_check', 'soft_mode_when_check', is_flag=True, type=bool, default=False,
+                  help='Just check the file size when validating the downloaded files.', show_default=True)
     @click.option('--tmpdir', 'tmpdir', type=str, default=None,
                   help='Use custom temporary Directory.', show_default=True)
     @command_wrap()
@@ -58,7 +60,7 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
             repo_id: str, repo_type: RepoTypeTyping,
             file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
             output_path: str, revision: str, max_workers: int,
-            password: Optional[str], wildcard: Optional[str], tmpdir: Optional[str]
+            password: Optional[str], wildcard: Optional[str], soft_mode_when_check: bool, tmpdir: Optional[str]
     ):
         """
         Download data from HuggingFace repositories.
@@ -83,6 +85,8 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
         :type password: str, optional
         :param wildcard: Wildcard for files to download. Only applied when -d is used.
         :type password: str, optional
+        :param soft_mode_when_check: Just check the size of the expected file when enabled. Default is False.
+        :type soft_mode_when_check: bool
         :param tmpdir: Use custom temporary Directory.
         :type tmpdir: str, optional
         """
@@ -130,6 +134,7 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                 revision=revision,
                 silent=False,
                 max_workers=max_workers,
+                soft_mode_when_check=soft_mode_when_check,
             )
 
         else:

@@ -85,7 +85,7 @@ def download_directory_as_directory(
         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
         silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
         resume_download: bool = True, max_workers: int = 8, max_retries: int = 5,
-        hf_token: Optional[str] = None
+        soft_mode_when_check: bool = False, hf_token: Optional[str] = None
 ):
     """
     Download all files in a directory from a Hugging Face repository to a local directory.
@@ -112,6 +112,8 @@ def download_directory_as_directory(
     :type max_retries: int
     :param resume_download: Resume the existing download.
     :type resume_download: bool
+    :param soft_mode_when_check: Just check the size of the expected file when enabled. Default is False.
+    :type soft_mode_when_check: bool
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
     """
@@ -138,6 +140,7 @@ def download_directory_as_directory(
                     file_in_repo=file_in_repo,
                     revision=revision,
                     hf_token=hf_token,
+                    soft_mode=soft_mode_when_check,
             ):
                 logging.info(f'Local file {rel_file} is ready, download skipped.')
             else:
