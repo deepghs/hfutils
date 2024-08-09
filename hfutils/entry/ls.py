@@ -5,10 +5,12 @@ from typing import Union, List
 
 import click
 import tzlocal
+from huggingface_hub import configure_http_backend
 from huggingface_hub.hf_api import RepoFolder, RepoFile
 
 from .base import CONTEXT_SETTINGS
 from ..operate.base import REPO_TYPES, get_hf_client
+from ..utils import get_requests_session
 
 mimetypes.add_type('image/webp', '.webp')
 
@@ -124,6 +126,8 @@ def _add_ls_subcommand(cli: click.Group) -> click.Group:
         :param show_detailed: Flag to indicate whether to show detailed file information.
         :type show_detailed: bool
         """
+        configure_http_backend(get_requests_session)
+
         hf_client = get_hf_client()
         items: List[ListItem] = []
         for item in hf_client.list_repo_tree(

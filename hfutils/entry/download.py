@@ -3,10 +3,12 @@ import warnings
 from typing import Optional
 
 import click
+from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS, command_wrap, ClickErrorException
 from ..operate import download_file_to_file, download_archive_as_directory, download_directory_as_directory
 from ..operate.base import REPO_TYPES, RepoTypeTyping
+from ..utils import get_requests_session
 
 
 class NoRemotePathAssignedWithDownload(ClickErrorException):
@@ -84,6 +86,8 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
         :param tmpdir: Use custom temporary Directory.
         :type tmpdir: str, optional
         """
+        configure_http_backend(get_requests_session)
+
         if tmpdir:
             os.environ['TMPDIR'] = tmpdir
 
