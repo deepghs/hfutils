@@ -99,10 +99,12 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">click</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">configure_http_backend</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub.utils</span> <span class="kn">import</span> <span class="n">LocalTokenNotFoundError</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">CONTEXT_SETTINGS</span><span class="p">,</span> <span class="n">ClickErrorException</span>
 <span class="kn">from</span> <span class="nn">..operate.base</span> <span class="kn">import</span> <span class="n">REPO_TYPES</span><span class="p">,</span> <span class="n">get_hf_client</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">get_requests_session</span>
 
 
 <div class="viewcode-block" id="NoLocalAuthentication"><a class="viewcode-back" href="../../../api_doc/entry/ls_repo.html#hfutils.entry.ls_repo.NoLocalAuthentication">[docs]</a><span class="k">class</span> <span class="nc">NoLocalAuthentication</span><span class="p">(</span><span class="n">ClickErrorException</span><span class="p">):</span>
@@ -143,6 +145,8 @@
 <span class="sd">        :param pattern: Pattern of the repository names.</span>
 <span class="sd">        :type pattern: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">configure_http_backend</span><span class="p">(</span><span class="n">get_requests_session</span><span class="p">)</span>
+
         <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">author</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -233,9 +237,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/retry/index.html">dev/retry</a></dd>
-                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="ls_repo.html">main</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>
