@@ -13,6 +13,7 @@ hfutils.utils
     download
     number
     path
+    session
     tqdm_
     walk
 

@@ -2,10 +2,12 @@ import warnings
 from typing import Optional
 
 import click
+from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS, command_wrap, ClickErrorException
 from ..operate import upload_file_to_file, upload_directory_as_archive, upload_directory_as_directory
 from ..operate.base import REPO_TYPES, RepoTypeTyping, get_hf_client
+from ..utils import get_requests_session
 
 
 class NoRemotePathAssignedWithUpload(ClickErrorException):
@@ -78,6 +80,8 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
         :param public: Set public repository when created.
         :type public: bool
         """
+        configure_http_backend(get_requests_session)
+
         if not file_in_repo and not archive_in_repo and not dir_in_repo:
             raise NoRemotePathAssignedWithUpload('No remote path in repository assigned.\n'
                                                  'One of the -f, -a, or -d option is required.')
