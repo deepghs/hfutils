@@ -1,3 +1,22 @@
+"""
+This module provides functionalities for handling and indexing TAR archive files, especially for use with
+the Hugging Face ecosystem. It includes functions to create and retrieve index information of TAR archives,
+which is crucial for efficient data retrieval and management in large datasets. The module also integrates
+with Hugging Face's repository system, allowing for operations like uploading and downloading TAR files
+and their indices.
+
+Key functionalities include:
+
+- Extracting index information from TAR files.
+- Creating index files for TAR archives locally or in a directory.
+- Integrating with Hugging Face repositories to manage TAR archives and their indices.
+
+The module utilizes cryptographic hash functions for data integrity checks and supports operations on both local
+and remote repositories. It is designed to work seamlessly with the Hugging Face platform, enabling users to
+handle large datasets efficiently.
+"""
+
+import glob
 import json
 import logging
 import os
@@ -47,7 +66,7 @@ def tar_get_index_info(src_tar_file, chunk_for_hash: int = 1 << 20, with_hash: b
     logging.info(f'Indexing tar file {src_tar_file!r} ...')
     files = {}
     with tarfile.open(src_tar_file, mode='r|') as tar:
-        for tarinfo in tqdm(tar, desc='Indexing tar file ...', silent=silent):
+        for tarinfo in tqdm(tar, desc=f'Indexing tar file {src_tar_file!r} ...', silent=silent):
             tarinfo: tarfile.TarInfo
             if tarinfo.isreg():
                 info = {
@@ -90,9 +109,48 @@ def tar_create_index(src_tar_file, dst_index_file: Optional[str] = None,
     """
     body, _ = os.path.splitext(src_tar_file)
     dst_index_file = dst_index_file or f'{body}.json'
+    if os.path.dirname(dst_index_file):
+        os.makedirs(os.path.dirname(dst_index_file), exist_ok=True)
     with open(dst_index_file, 'w') as f:
         json.dump(tar_get_index_info(src_tar_file, chunk_for_hash, with_hash, silent), f)
     return dst_index_file
+
+
+def tar_create_index_for_directory(src_tar_directory: str, dst_index_directory: Optional[str] = None,
+                                   chunk_for_hash: int = 1 << 20, with_hash: bool = True, silent: bool = False):
+    """
+    Create index files for all tar archives in a specified directory.
+
+    This function scans through the given directory to find all tar files, generates an index for each,
+    and saves these indices to the specified destination directory. If no destination directory is provided,
+    indices are saved in the same directory as the tar files.
+
+    :param src_tar_directory: The path to the directory containing tar files.
+    :type src_tar_directory: str
+    :param dst_index_directory: The path to the directory where index files will be saved, defaults to the same as src_tar_directory.
+    :type dst_index_directory: str, optional
+    :param chunk_for_hash: The chunk size for hashing, defaults to 1 << 20 (1 MB).
+    :type chunk_for_hash: int, optional
+    :param with_hash: Whether to include file hashes in the index, defaults to True.
+    :type with_hash: bool, optional
+    :param silent: Whether to suppress progress bars and logging messages, defaults to False.
+    :type silent: bool, optional
+    :return: The path to the directory where index files are saved.
+    :rtype: str
+    """
+    dst_index_directory = dst_index_directory or src_tar_directory
+    for tar_file in tqdm(glob.glob(os.path.join(src_tar_directory, '**', '*.tar'), recursive=True), silent=silent):
+        p_idx_file = os.path.join(dst_index_directory, os.path.relpath(tar_file, src_tar_directory))
+        idx_body, _ = os.path.splitext(p_idx_file)
+        idx_file = f'{idx_body}.json'
+        tar_create_index(
+            src_tar_file=tar_file,
+            dst_index_file=idx_file,
+            chunk_for_hash=chunk_for_hash,
+            with_hash=with_hash,
+            silent=silent,
+        )
+    return dst_index_directory
 
 
 def hf_tar_create_index(repo_id: str, archive_in_repo: str,
