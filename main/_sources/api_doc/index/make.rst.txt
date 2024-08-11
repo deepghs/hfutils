@@ -13,6 +13,13 @@ tar_create_index
 
 
 
+tar_create_index_for_directory
+----------------------------------------------
+
+.. autofunction:: tar_create_index_for_directory
+
+
+
 hf_tar_create_index
 ----------------------------------------------
 
