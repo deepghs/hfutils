@@ -120,6 +120,24 @@
     
   <section id="module-hfutils.operate.download">
 <span id="hfutils-operate-download"></span><h1>hfutils.operate.download<a class="headerlink" href="#module-hfutils.operate.download" title="Permalink to this heading"></a></h1>
+<p>This module provides functions for downloading files and directories from Hugging Face repositories.</p>
+<p>It includes utilities for downloading individual files, archives, and entire directories,
+with support for concurrent downloads, retries, and progress tracking.</p>
+<p>The module interacts with the Hugging Face Hub API to fetch repository contents and
+download files, handling various repository types and revisions.</p>
+<p>Key features:</p>
+<ul class="simple">
+<li><p>Download individual files from Hugging Face repositories</p></li>
+<li><p>Download and extract archive files</p></li>
+<li><p>Download entire directories with pattern matching and ignore rules</p></li>
+<li><p>Concurrent downloads with configurable worker count</p></li>
+<li><p>Retry mechanism for failed downloads</p></li>
+<li><p>Progress tracking with tqdm</p></li>
+<li><p>Support for different repository types (dataset, model, space)</p></li>
+<li><p>Token-based authentication for accessing private repositories</p></li>
+</ul>
+<p>This module is particularly useful for managing and synchronizing local copies of
+Hugging Face repository contents, especially when dealing with large datasets or models.</p>
 <section id="download-file-to-file">
 <h2>download_file_to_file<a class="headerlink" href="#download-file-to-file" title="Permalink to this heading"></a></h2>
 <dl class="py function">

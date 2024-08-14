@@ -95,7 +95,31 @@
     
     
   <h1>Source code for hfutils.operate.download</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functions for downloading files and directories from Hugging Face repositories.</span>
+
+<span class="sd">It includes utilities for downloading individual files, archives, and entire directories,</span>
+<span class="sd">with support for concurrent downloads, retries, and progress tracking.</span>
+
+<span class="sd">The module interacts with the Hugging Face Hub API to fetch repository contents and</span>
+<span class="sd">download files, handling various repository types and revisions.</span>
+
+<span class="sd">Key features:</span>
+
+<span class="sd">- Download individual files from Hugging Face repositories</span>
+<span class="sd">- Download and extract archive files</span>
+<span class="sd">- Download entire directories with pattern matching and ignore rules</span>
+<span class="sd">- Concurrent downloads with configurable worker count</span>
+<span class="sd">- Retry mechanism for failed downloads</span>
+<span class="sd">- Progress tracking with tqdm</span>
+<span class="sd">- Support for different repository types (dataset, model, space)</span>
+<span class="sd">- Token-based authentication for accessing private repositories</span>
+
+<span class="sd">This module is particularly useful for managing and synchronizing local copies of</span>
+<span class="sd">Hugging Face repository contents, especially when dealing with large datasets or models.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
@@ -112,6 +136,26 @@
 <span class="k">def</span> <span class="nf">_raw_download_file</span><span class="p">(</span><span class="n">td</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">local_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_in_repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                        <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
                        <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download a file from a Hugging Face repository to a temporary directory and then move it to the final location.</span>
+
+<span class="sd">    This internal function handles the actual download process using the Hugging Face Hub client.</span>
+
+<span class="sd">    :param td: Temporary directory path.</span>
+<span class="sd">    :type td: str</span>
+<span class="sd">    :param local_file: The final local file path where the downloaded file will be moved.</span>
+<span class="sd">    :type local_file: str</span>
+<span class="sd">    :param repo_id: The identifier of the repository.</span>
+<span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param file_in_repo: The file path within the repository.</span>
+<span class="sd">    :type file_in_repo: str</span>
+<span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;).</span>
+<span class="sd">    :type repo_type: RepoTypeTyping</span>
+<span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash).</span>
+<span class="sd">    :type revision: str</span>
+<span class="sd">    :param hf_token: Hugging Face token for API client.</span>
+<span class="sd">    :type hf_token: str, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
     <span class="n">relative_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="o">*</span><span class="n">file_in_repo</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span>
     <span class="n">temp_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="n">relative_filename</span><span class="p">)</span>
