@@ -1,3 +1,27 @@
+"""
+This module provides functions for downloading files and directories from Hugging Face repositories.
+
+It includes utilities for downloading individual files, archives, and entire directories,
+with support for concurrent downloads, retries, and progress tracking.
+
+The module interacts with the Hugging Face Hub API to fetch repository contents and
+download files, handling various repository types and revisions.
+
+Key features:
+
+- Download individual files from Hugging Face repositories
+- Download and extract archive files
+- Download entire directories with pattern matching and ignore rules
+- Concurrent downloads with configurable worker count
+- Retry mechanism for failed downloads
+- Progress tracking with tqdm
+- Support for different repository types (dataset, model, space)
+- Token-based authentication for accessing private repositories
+
+This module is particularly useful for managing and synchronizing local copies of
+Hugging Face repository contents, especially when dealing with large datasets or models.
+"""
+
 import logging
 import os.path
 import shutil
@@ -15,6 +39,26 @@ from ..utils import tqdm, TemporaryDirectory, hf_normpath
 def _raw_download_file(td: str, local_file: str, repo_id: str, file_in_repo: str,
                        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                        hf_token: Optional[str] = None):
+    """
+    Download a file from a Hugging Face repository to a temporary directory and then move it to the final location.
+
+    This internal function handles the actual download process using the Hugging Face Hub client.
+
+    :param td: Temporary directory path.
+    :type td: str
+    :param local_file: The final local file path where the downloaded file will be moved.
+    :type local_file: str
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param file_in_repo: The file path within the repository.
+    :type file_in_repo: str
+    :param repo_type: The type of the repository ('dataset', 'model', 'space').
+    :type repo_type: RepoTypeTyping
+    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :type revision: str
+    :param hf_token: Hugging Face token for API client.
+    :type hf_token: str, optional
+    """
     hf_client = get_hf_client(hf_token=hf_token)
     relative_filename = os.path.join(*file_in_repo.split("/"))
     temp_path = os.path.join(td, relative_filename)
