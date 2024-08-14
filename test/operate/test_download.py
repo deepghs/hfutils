@@ -4,6 +4,7 @@ import pytest
 from hbutils.testing import isolated_directory
 
 from hfutils.operate import download_file_to_file, download_archive_as_directory, download_directory_as_directory
+from hfutils.operate.download import _raw_download_file
 from test.testings import get_testfile, file_compare, dir_compare
 
 
@@ -37,9 +38,9 @@ class TestOperateDownload:
         def _my_download(*args, **kwargs):
             nonlocal call_times
             call_times += 1
-            return download_file_to_file(*args, **kwargs)
+            return _raw_download_file(*args, **kwargs)
 
-        with patch('hfutils.operate.download.download_file_to_file', _my_download), \
+        with patch('hfutils.operate.download._raw_download_file', _my_download), \
                 isolated_directory():
             download_directory_as_directory(
                 'download_dir',
@@ -59,9 +60,9 @@ class TestOperateDownload:
         def _my_download(*args, **kwargs):
             nonlocal call_times
             call_times += 1
-            return download_file_to_file(*args, **kwargs)
+            return _raw_download_file(*args, **kwargs)
 
-        with patch('hfutils.operate.download.download_file_to_file', _my_download), \
+        with patch('hfutils.operate.download._raw_download_file', _my_download), \
                 isolated_directory({'download_dir': src_dir}):
             download_directory_as_directory(
                 'download_dir',
@@ -80,9 +81,9 @@ class TestOperateDownload:
         def _my_download(*args, **kwargs):
             nonlocal call_times
             call_times += 1
-            return download_file_to_file(*args, **kwargs)
+            return _raw_download_file(*args, **kwargs)
 
-        with patch('hfutils.operate.download.download_file_to_file', _my_download), \
+        with patch('hfutils.operate.download._raw_download_file', _my_download), \
                 isolated_directory():
             download_directory_as_directory(
                 'download_dir',
