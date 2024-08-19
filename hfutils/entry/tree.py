@@ -26,7 +26,7 @@ class _TreeItem:
             self.name,
             fg=self.type_.render_color if self.exist else None,
             strikethrough=not self.exist,
-        )
+        ) + ('' if self.exist else ' <NOT EXIST>')
 
     def get_children(self):
         return self.children if self.type_ == FileItemType.FOLDER else []

@@ -186,3 +186,29 @@ class TestEntryTree:
             "├── 6.webp",
             "└── 7.webp"
         ]
+
+    def test_tree_file(self):
+        result = simulate_entry(hfutilscli, [
+            'hfutils', 'tree',
+            '-r', 'deepghs/test_nested_dataset',
+            '-d', 'meta.json'
+        ])
+        assert result.exitcode == 0
+        lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
+        lines = list(filter(bool, lines))
+        assert lines == [
+            "datasets/deepghs/test_nested_dataset@main/meta.json"
+        ]
+
+    def test_tree_not_exist(self):
+        result = simulate_entry(hfutilscli, [
+            'hfutils', 'tree',
+            '-r', 'deepghs/test_nested_dataset',
+            '-d', 'not_exist'
+        ])
+        assert result.exitcode == 0
+        lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
+        lines = list(filter(bool, lines))
+        assert lines == [
+            "datasets/deepghs/test_nested_dataset@main/not_exist <NOT EXIST>"
+        ]
