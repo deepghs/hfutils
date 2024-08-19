@@ -1,3 +1,15 @@
+"""
+This module provides functionality for identifying archive and compressed files based on their filenames.
+
+It includes a comprehensive list of known archive and compressed file extensions, as well as patterns for
+identifying split archives and other generic compressed file formats. The main
+function :func:`is_archive_or_compressed` can be used to determine if a given filename
+represents an archive or compressed file.
+
+The module is useful for file handling operations where it's necessary to distinguish between regular files
+and archives or compressed files.
+"""
+
 import os.path
 import re
 from typing import Union
@@ -98,6 +110,30 @@ _ARCHIVE_SPLIT_PATTERNS = [
 
 
 def is_archive_or_compressed(filename: Union[str, os.PathLike]) -> bool:
+    """
+    Determine if the given filename represents an archive or compressed file.
+
+    This function checks the filename against a list of known archive and compressed file extensions,
+    as well as patterns for split archives and other generic compressed file formats.
+
+    :param filename: The name of the file to check. Can be a string or a path-like object.
+    :type filename: Union[str, os.PathLike]
+
+    :return: True if the filename represents an archive or compressed file, False otherwise.
+    :rtype: bool
+
+    :raises TypeError: If the filename is not a string or path-like object.
+
+    Usage:
+        >>> is_archive_or_compressed('example.zip')
+        True
+        >>> is_archive_or_compressed('document.txt')
+        False
+        >>> is_archive_or_compressed('archive.tar.gz')
+        True
+        >>> is_archive_or_compressed('split_archive.zip.001')
+        True
+    """
     if not isinstance(filename, (str, os.PathLike)):
         raise TypeError(f'Unknown file name type - {filename!r}')
     filename = os.path.basename(os.path.normcase(str(filename)))

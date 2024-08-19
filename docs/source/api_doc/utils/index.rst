@@ -9,6 +9,7 @@ hfutils.utils
 .. toctree::
     :maxdepth: 3
 
+    archive
     binary
     download
     number
