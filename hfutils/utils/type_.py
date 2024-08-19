@@ -4,6 +4,7 @@ from enum import Enum, unique
 from typing import Union
 
 from .archive import is_archive_or_compressed
+from .model import is_model_file
 
 mimetypes.add_type('image/webp', '.webp')
 
@@ -55,8 +56,7 @@ def get_file_type(filename: Union[str, os.PathLike]) -> ListItemType:
     type_ = ListItemType.FILE
     if is_archive_or_compressed(filename):
         type_ = ListItemType.ARCHIVE
-    elif ext in {'.ckpt', '.pt', '.safetensors', '.onnx', '.model', '.h5', '.mlmodel',
-                 '.ftz', '.pb', '.pth', '.tflite'}:
+    elif is_model_file(filename):
         type_ = ListItemType.MODEL
     elif ext in {'.json', '.csv', '.tsv', '.arrow', '.bin', '.msgpack', '.npy', '.npz',
                  '.parquet', '.pickle', '.pkl', '.wasm'}:
