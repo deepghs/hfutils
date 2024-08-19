@@ -1,4 +1,4 @@
-hfutils.utils.tqdm_
+hfutils.utils.tqdm\_
 =================================
 
 .. currentmodule:: hfutils.utils.tqdm_

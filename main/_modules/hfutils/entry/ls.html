@@ -95,9 +95,8 @@
     
     
   <h1>Source code for hfutils.entry.ls</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">mimetypes</span>
+<span></span><span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">unique</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="kn">import</span> <span class="nn">click</span>
@@ -107,46 +106,7 @@
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">CONTEXT_SETTINGS</span>
 <span class="kn">from</span> <span class="nn">..operate.base</span> <span class="kn">import</span> <span class="n">REPO_TYPES</span><span class="p">,</span> <span class="n">get_hf_client</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">get_requests_session</span>
-
-<span class="n">mimetypes</span><span class="o">.</span><span class="n">add_type</span><span class="p">(</span><span class="s1">&#39;image/webp&#39;</span><span class="p">,</span> <span class="s1">&#39;.webp&#39;</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="ListItemType"><a class="viewcode-back" href="../../../api_doc/entry/ls.html#hfutils.entry.ls.ListItemType">[docs]</a><span class="nd">@unique</span>
-<span class="k">class</span> <span class="nc">ListItemType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Enum class representing different types of list items.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">FILE</span> <span class="o">=</span> <span class="mh">0x1</span>
-    <span class="n">FOLDER</span> <span class="o">=</span> <span class="mh">0x2</span>
-    <span class="n">IMAGE</span> <span class="o">=</span> <span class="mh">0x3</span>
-    <span class="n">ARCHIVE</span> <span class="o">=</span> <span class="mh">0x4</span>
-    <span class="n">MODEL</span> <span class="o">=</span> <span class="mh">0x5</span>
-    <span class="n">DATA</span> <span class="o">=</span> <span class="mh">0x6</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">render_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the render color based on the item type.</span>
-
-<span class="sd">        :return: The render color for the item type.</span>
-<span class="sd">        :rtype: str</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">FILE</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">FOLDER</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;blue&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">IMAGE</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;magenta&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARCHIVE</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;red&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODEL</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;green&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DATA</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;yellow&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown type - </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">get_requests_session</span><span class="p">,</span> <span class="n">FileItemType</span><span class="p">,</span> <span class="n">get_file_type</span>
 
 
 <div class="viewcode-block" id="ListItem"><a class="viewcode-back" href="../../../api_doc/entry/ls.html#hfutils.entry.ls.ListItem">[docs]</a><span class="k">class</span> <span class="nc">ListItem</span><span class="p">:</span>
@@ -163,22 +123,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">item</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_dir</span> <span class="o">=</span> <span class="n">base_dir</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">RepoFolder</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FOLDER</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">mimetype</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FILE</span>
-            <span class="k">if</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;.ckpt&#39;</span><span class="p">,</span> <span class="s1">&#39;.pt&#39;</span><span class="p">,</span> <span class="s1">&#39;.safetensors&#39;</span><span class="p">,</span> <span class="s1">&#39;.onnx&#39;</span><span class="p">,</span> <span class="s1">&#39;.model&#39;</span><span class="p">,</span> <span class="s1">&#39;.h5&#39;</span><span class="p">,</span> <span class="s1">&#39;.mlmodel&#39;</span><span class="p">,</span>
-                       <span class="s1">&#39;.ftz&#39;</span><span class="p">,</span> <span class="s1">&#39;.pb&#39;</span><span class="p">,</span> <span class="s1">&#39;.pth&#39;</span><span class="p">,</span> <span class="s1">&#39;.tflite&#39;</span><span class="p">}:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">MODEL</span>
-            <span class="k">elif</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;.json&#39;</span><span class="p">,</span> <span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;.tsv&#39;</span><span class="p">,</span> <span class="s1">&#39;.arrow&#39;</span><span class="p">,</span> <span class="s1">&#39;.bin&#39;</span><span class="p">,</span> <span class="s1">&#39;.msgpack&#39;</span><span class="p">,</span> <span class="s1">&#39;.npy&#39;</span><span class="p">,</span> <span class="s1">&#39;.npz&#39;</span><span class="p">,</span>
-                         <span class="s1">&#39;.parquet&#39;</span><span class="p">,</span> <span class="s1">&#39;.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;.wasm&#39;</span><span class="p">}:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">DATA</span>
-            <span class="k">elif</span> <span class="n">mimetype</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s1">&#39;image&#39;</span> <span class="ow">in</span> <span class="n">mimetype</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">IMAGE</span>
-                <span class="k">elif</span> <span class="n">mimetype</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="s1">&#39;rar&#39;</span><span class="p">,</span> <span class="s1">&#39;x-tar&#39;</span><span class="p">,</span> <span class="s1">&#39;x-7z-compressed&#39;</span><span class="p">}:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">ARCHIVE</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">get_file_type</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_add_ls_subcommand</span><span class="p">(</span><span class="n">cli</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">click</span><span class="o">.</span><span class="n">Group</span><span class="p">:</span>
@@ -251,7 +198,7 @@
             <span class="n">max_size_length</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">max_commit_info_length</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FOLDER</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span><span class="p">:</span>
                     <span class="n">size_text</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">size_text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
@@ -261,8 +208,8 @@
                 <span class="n">max_commit_info_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_commit_info_length</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">commit_text</span><span class="p">))</span>
 
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;d&#39;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FOLDER</span> <span class="k">else</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;L&#39;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FOLDER</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">lfs</span> <span class="k">else</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;d&#39;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span> <span class="k">else</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;L&#39;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">lfs</span> <span class="k">else</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 
                 <span class="n">commit_text</span> <span class="o">=</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">last_commit</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="n">keepends</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="nb">print</span><span class="p">(</span>
@@ -271,7 +218,7 @@
                     <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
                 <span class="p">)</span>
 
-                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FOLDER</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span><span class="p">:</span>
                     <span class="n">size_text</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">size_text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
@@ -355,9 +302,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/tree/index.html">dev/tree</a></dd>
-                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="ls.html">main</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>
