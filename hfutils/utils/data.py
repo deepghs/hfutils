@@ -1,3 +1,11 @@
+"""
+This module provides functionality for identifying data files based on their file extensions.
+
+It includes a comprehensive set of data file extensions and a function to check if a given
+filename corresponds to a known data file format. This can be useful in various data processing
+and file handling scenarios where it's necessary to distinguish data files from other types of files.
+"""
+
 import os
 from typing import Union
 
@@ -44,6 +52,32 @@ _DATA_EXTS = {
 
 
 def is_data_file(filename: Union[str, os.PathLike]) -> bool:
+    """
+    Determine if a given filename corresponds to a known data file format.
+
+    This function checks if the file extension of the provided filename matches
+    any of the known data file extensions defined in the `_DATA_EXTS` set.
+
+    :param filename: The name of the file to check. Can be a string or a path-like object.
+    :type filename: Union[str, os.PathLike]
+
+    :return: True if the file extension matches a known data file format, False otherwise.
+    :rtype: bool
+
+    :raises TypeError: If the provided filename is not a string or path-like object.
+
+    Usage:
+        >>> is_data_file('data.csv')
+        True
+        >>> is_data_file('script.py')
+        False
+        >>> is_data_file(Path('/path/to/data.json'))
+        True
+
+    .. note::
+        The function is case-insensitive and works with both file names and full paths.
+        It normalizes the filename and extracts only the extension for comparison.
+    """
     if not isinstance(filename, (str, os.PathLike)):
         raise TypeError(f'Unknown file name type - {filename!r}')
 

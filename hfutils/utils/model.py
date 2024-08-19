@@ -1,3 +1,28 @@
+"""
+This module provides functionality for identifying model files based on their extensions and naming patterns.
+
+It includes a comprehensive list of model file extensions, patterns for sharded model files, and specific patterns
+for Hugging Face model files. The main function, :func:`is_model_file`, determines whether a given filename corresponds
+to a model file based on these predefined patterns and extensions.
+
+This module can be useful in various scenarios, such as:
+
+- Automated model file detection in directories
+- Validation of uploaded files in machine learning platforms
+- Preprocessing steps in model loading pipelines
+
+Usage:
+    .. code:: python
+
+        from model_file_identifier import is_model_file
+
+        filename = "model.pt"
+        if is_model_file(filename):
+            print(f"{filename} is a model file")
+        else:
+            print(f"{filename} is not a model file")
+"""
+
 import os
 import re
 from typing import Union
@@ -74,6 +99,33 @@ _HF_MODEL_PATTERNS = [
 
 
 def is_model_file(filename: Union[str, os.PathLike]) -> bool:
+    """
+    Determine if a given filename corresponds to a model file.
+
+    This function checks if the provided filename matches any of the known model file extensions
+    or patterns, including sharded model files and Hugging Face specific patterns.
+
+    :param filename: The name of the file to check. Can be a full path or just the filename.
+    :type filename: Union[str, os.PathLike]
+
+    :return: True if the filename corresponds to a model file, False otherwise.
+    :rtype: bool
+
+    :raises TypeError: If the filename is not a string or os.PathLike object.
+
+    Usage:
+        >>> is_model_file("model.pt")
+        True
+        >>> is_model_file("data.csv")
+        False
+        >>> is_model_file("model-00001-of-00005")
+        True
+        >>> is_model_file("pytorch_model.bin")
+        True
+
+    .. note::
+        This function is case-insensitive and works with both file names and full paths.
+    """
     if not isinstance(filename, (str, os.PathLike)):
         raise TypeError(f'Unknown file name type - {filename!r}')
     filename = os.path.basename(os.path.normcase(str(filename)))
