@@ -4,6 +4,7 @@ from enum import Enum, unique
 from typing import Union
 
 from .archive import is_archive_or_compressed
+from .data import is_data_file
 from .model import is_model_file
 
 mimetypes.add_type('image/webp', '.webp')
@@ -30,17 +31,17 @@ class ListItemType(Enum):
         :return: The render color for the item type.
         :rtype: str
         """
-        if self == self.FILE:
+        if self == ListItemType.FILE:
             return None
-        elif self == self.FOLDER:
+        elif self == ListItemType.FOLDER:
             return 'blue'
-        elif self == self.IMAGE:
+        elif self == ListItemType.IMAGE:
             return 'magenta'
-        elif self == self.ARCHIVE:
+        elif self == ListItemType.ARCHIVE:
             return 'red'
-        elif self == self.MODEL:
+        elif self == ListItemType.MODEL:
             return 'green'
-        elif self == self.DATA:
+        elif self == ListItemType.DATA:
             return 'yellow'
         else:
             raise ValueError(f'Unknown type - {self!r}')  # pragma: no cover
@@ -52,14 +53,12 @@ def get_file_type(filename: Union[str, os.PathLike]) -> ListItemType:
     filename = os.path.basename(os.path.normcase(str(filename)))
 
     mimetype, _ = mimetypes.guess_type(filename)
-    _, ext = os.path.splitext(filename)
     type_ = ListItemType.FILE
     if is_archive_or_compressed(filename):
         type_ = ListItemType.ARCHIVE
     elif is_model_file(filename):
         type_ = ListItemType.MODEL
-    elif ext in {'.json', '.csv', '.tsv', '.arrow', '.bin', '.msgpack', '.npy', '.npz',
-                 '.parquet', '.pickle', '.pkl', '.wasm'}:
+    elif is_data_file(filename):
         type_ = ListItemType.DATA
     elif mimetype:
         if 'image' in mimetype:
