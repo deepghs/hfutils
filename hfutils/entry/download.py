@@ -7,7 +7,7 @@ from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS, command_wrap, ClickErrorException
 from ..operate import download_file_to_file, download_archive_as_directory, download_directory_as_directory
-from ..operate.base import REPO_TYPES, RepoTypeTyping
+from ..operate.base import REPO_TYPES, RepoTypeTyping, _IGNORE_PATTERN_UNSET
 from ..utils import get_requests_session
 
 
@@ -55,12 +55,15 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                   help='Just check the file size when validating the downloaded files.', show_default=True)
     @click.option('--tmpdir', 'tmpdir', type=str, default=None,
                   help='Use custom temporary Directory.', show_default=True)
+    @click.option('--all', 'show_all', is_flag=True, type=bool, default=False,
+                  help='Show all files, including hidden files.', show_default=True)
     @command_wrap()
     def download(
             repo_id: str, repo_type: RepoTypeTyping,
             file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
             output_path: str, revision: str, max_workers: int,
-            password: Optional[str], wildcard: Optional[str], soft_mode_when_check: bool, tmpdir: Optional[str]
+            password: Optional[str], wildcard: Optional[str], soft_mode_when_check: bool, tmpdir: Optional[str],
+            show_all: bool = False,
     ):
         """
         Download data from HuggingFace repositories.
@@ -135,6 +138,7 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                 silent=False,
                 max_workers=max_workers,
                 soft_mode_when_check=soft_mode_when_check,
+                ignore_patterns=_IGNORE_PATTERN_UNSET if not show_all else [],
             )
 
         else:
