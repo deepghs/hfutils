@@ -10,7 +10,7 @@ from huggingface_hub.hf_api import RepoFolder, RepoFile
 
 from .base import CONTEXT_SETTINGS
 from ..operate.base import REPO_TYPES, get_hf_client
-from ..utils import get_requests_session
+from ..utils import get_requests_session, is_archive_or_compressed
 
 mimetypes.add_type('image/webp', '.webp')
 
@@ -71,8 +71,10 @@ class ListItem:
             mimetype, _ = mimetypes.guess_type(item.path)
             _, ext = os.path.splitext(item.path)
             self.type = ListItemType.FILE
-            if ext in {'.ckpt', '.pt', '.safetensors', '.onnx', '.model', '.h5', '.mlmodel',
-                       '.ftz', '.pb', '.pth', '.tflite'}:
+            if is_archive_or_compressed(item.path):
+                self.type = ListItemType.ARCHIVE
+            elif ext in {'.ckpt', '.pt', '.safetensors', '.onnx', '.model', '.h5', '.mlmodel',
+                         '.ftz', '.pb', '.pth', '.tflite'}:
                 self.type = ListItemType.MODEL
             elif ext in {'.json', '.csv', '.tsv', '.arrow', '.bin', '.msgpack', '.npy', '.npz',
                          '.parquet', '.pickle', '.pkl', '.wasm'}:
@@ -80,8 +82,6 @@ class ListItem:
             elif mimetype:
                 if 'image' in mimetype:
                     self.type = ListItemType.IMAGE
-                elif mimetype.split('/', maxsplit=1)[-1] in {'zip', 'rar', 'x-tar', 'x-7z-compressed'}:
-                    self.type = ListItemType.ARCHIVE
 
 
 def _add_ls_subcommand(cli: click.Group) -> click.Group:
