@@ -1,6 +1,5 @@
-import mimetypes
 import os.path
-from enum import Enum, unique
+import os.path
 from typing import Union, List
 
 import click
@@ -10,46 +9,7 @@ from huggingface_hub.hf_api import RepoFolder, RepoFile
 
 from .base import CONTEXT_SETTINGS
 from ..operate.base import REPO_TYPES, get_hf_client
-from ..utils import get_requests_session, is_archive_or_compressed
-
-mimetypes.add_type('image/webp', '.webp')
-
-
-@unique
-class ListItemType(Enum):
-    """
-    Enum class representing different types of list items.
-    """
-
-    FILE = 0x1
-    FOLDER = 0x2
-    IMAGE = 0x3
-    ARCHIVE = 0x4
-    MODEL = 0x5
-    DATA = 0x6
-
-    @property
-    def render_color(self):
-        """
-        Get the render color based on the item type.
-
-        :return: The render color for the item type.
-        :rtype: str
-        """
-        if self == self.FILE:
-            return None
-        elif self == self.FOLDER:
-            return 'blue'
-        elif self == self.IMAGE:
-            return 'magenta'
-        elif self == self.ARCHIVE:
-            return 'red'
-        elif self == self.MODEL:
-            return 'green'
-        elif self == self.DATA:
-            return 'yellow'
-        else:
-            raise ValueError(f'Unknown type - {self!r}')  # pragma: no cover
+from ..utils import get_requests_session, ListItemType, get_file_type
 
 
 class ListItem:
@@ -68,20 +28,7 @@ class ListItem:
         if isinstance(item, RepoFolder):
             self.type = ListItemType.FOLDER
         else:
-            mimetype, _ = mimetypes.guess_type(item.path)
-            _, ext = os.path.splitext(item.path)
-            self.type = ListItemType.FILE
-            if is_archive_or_compressed(item.path):
-                self.type = ListItemType.ARCHIVE
-            elif ext in {'.ckpt', '.pt', '.safetensors', '.onnx', '.model', '.h5', '.mlmodel',
-                         '.ftz', '.pb', '.pth', '.tflite'}:
-                self.type = ListItemType.MODEL
-            elif ext in {'.json', '.csv', '.tsv', '.arrow', '.bin', '.msgpack', '.npy', '.npz',
-                         '.parquet', '.pickle', '.pkl', '.wasm'}:
-                self.type = ListItemType.DATA
-            elif mimetype:
-                if 'image' in mimetype:
-                    self.type = ListItemType.IMAGE
+            self.type = get_file_type(item.path)
 
 
 def _add_ls_subcommand(cli: click.Group) -> click.Group:
