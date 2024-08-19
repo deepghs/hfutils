@@ -1,5 +1,3 @@
-from pprint import pprint
-
 import click
 import pytest
 from hbutils.testing import simulate_entry
@@ -16,6 +14,7 @@ class TestEntryTree:
         ])
         assert result.exitcode == 0
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
+        lines = list(filter(bool, lines))
         assert lines == [
             'datasets/deepghs/test_nested_dataset@main/.',
             '├── README.md',
@@ -66,6 +65,7 @@ class TestEntryTree:
         ])
         assert result.exitcode == 0
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
+        lines = list(filter(bool, lines))
         assert lines == [
             'datasets/deepghs/test_nested_dataset@main/.',
             '├── .gitattributes',
@@ -117,6 +117,7 @@ class TestEntryTree:
         ])
         assert result.exitcode == 0
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
+        lines = list(filter(bool, lines))
         assert lines == [
             "datasets/deepghs/test_nested_dataset@main/images",
             "├── 20240808",
@@ -146,6 +147,7 @@ class TestEntryTree:
         ])
         assert result.exitcode == 0
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
+        lines = list(filter(bool, lines))
         assert lines == [
             "datasets/deepghs/test_nested_dataset@main/samples",
             "├── colored",
@@ -171,9 +173,8 @@ class TestEntryTree:
             '-d', 'samples/colored'
         ])
         assert result.exitcode == 0
-        text = click.unstyle(result.stdout).strip()
-        pprint(text)
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
+        lines = list(filter(bool, lines))
         assert lines == [
             "datasets/deepghs/test_nested_dataset@main/samples/colored",
             "├── 0.webp",
