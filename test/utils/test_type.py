@@ -4,27 +4,27 @@ from unittest.mock import patch
 
 import pytest
 
-from hfutils.utils import ListItemType, get_file_type
+from hfutils.utils import FileItemType, get_file_type
 
 
 @pytest.mark.unittest
 class TestUtilsType:
     def test_list_item_type_enum(self):
-        assert isinstance(ListItemType.FILE, Enum)
-        assert ListItemType.FILE.value == 0x1
-        assert ListItemType.FOLDER.value == 0x2
-        assert ListItemType.IMAGE.value == 0x3
-        assert ListItemType.ARCHIVE.value == 0x4
-        assert ListItemType.MODEL.value == 0x5
-        assert ListItemType.DATA.value == 0x6
+        assert isinstance(FileItemType.FILE, Enum)
+        assert FileItemType.FILE.value == 0x1
+        assert FileItemType.FOLDER.value == 0x2
+        assert FileItemType.IMAGE.value == 0x3
+        assert FileItemType.ARCHIVE.value == 0x4
+        assert FileItemType.MODEL.value == 0x5
+        assert FileItemType.DATA.value == 0x6
 
     @pytest.mark.parametrize("item_type, expected_color", [
-        (ListItemType.FILE, None),
-        (ListItemType.FOLDER, 'blue'),
-        (ListItemType.IMAGE, 'magenta'),
-        (ListItemType.ARCHIVE, 'red'),
-        (ListItemType.MODEL, 'green'),
-        (ListItemType.DATA, 'yellow'),
+        (FileItemType.FILE, None),
+        (FileItemType.FOLDER, 'blue'),
+        (FileItemType.IMAGE, 'magenta'),
+        (FileItemType.ARCHIVE, 'red'),
+        (FileItemType.MODEL, 'green'),
+        (FileItemType.DATA, 'yellow'),
     ])
     def test_render_color(self, item_type, expected_color):
         assert item_type.render_color == expected_color
@@ -34,15 +34,15 @@ class TestUtilsType:
             UNKNOWN = 0x7
 
         with pytest.raises(ValueError, match='Unknown type'):
-            ListItemType.render_color.fget(UnknownType.UNKNOWN)
+            FileItemType.render_color.fget(UnknownType.UNKNOWN)
 
     @pytest.mark.parametrize("filename, expected_type", [
-        ('file.txt', ListItemType.FILE),
-        ('image.jpg', ListItemType.IMAGE),
-        ('archive.zip', ListItemType.ARCHIVE),
-        ('model.pkl', ListItemType.MODEL),
-        ('data.csv', ListItemType.DATA),
-        ('folder', ListItemType.FILE),  # Assuming folders are not detected by filename
+        ('file.txt', FileItemType.FILE),
+        ('image.jpg', FileItemType.IMAGE),
+        ('archive.zip', FileItemType.ARCHIVE),
+        ('model.pkl', FileItemType.MODEL),
+        ('data.csv', FileItemType.DATA),
+        ('folder', FileItemType.FILE),  # Assuming folders are not detected by filename
     ])
     def test_get_file_type(self, filename, expected_type):
         with patch('mimetypes.guess_type') as mock_guess_type, \
@@ -50,11 +50,11 @@ class TestUtilsType:
                 patch('hfutils.utils.type_.is_model_file') as mock_is_model, \
                 patch('hfutils.utils.type_.is_data_file') as mock_is_data:
             mock_guess_type.return_value = (None, None)
-            mock_is_archive.return_value = expected_type == ListItemType.ARCHIVE
-            mock_is_model.return_value = expected_type == ListItemType.MODEL
-            mock_is_data.return_value = expected_type == ListItemType.DATA
+            mock_is_archive.return_value = expected_type == FileItemType.ARCHIVE
+            mock_is_model.return_value = expected_type == FileItemType.MODEL
+            mock_is_data.return_value = expected_type == FileItemType.DATA
 
-            if expected_type == ListItemType.IMAGE:
+            if expected_type == FileItemType.IMAGE:
                 mock_guess_type.return_value = ('image/jpeg', None)
 
             assert get_file_type(filename) == expected_type
@@ -62,7 +62,7 @@ class TestUtilsType:
     def test_get_file_type_with_path(self):
         with patch('mimetypes.guess_type') as mock_guess_type:
             mock_guess_type.return_value = (None, None)
-            assert get_file_type('/path/to/file.txt') == ListItemType.FILE
+            assert get_file_type('/path/to/file.txt') == FileItemType.FILE
 
     def test_get_file_type_invalid_input(self):
         with pytest.raises(TypeError, match='Unknown file name type'):
@@ -71,7 +71,7 @@ class TestUtilsType:
     def test_get_file_type_empty_string(self):
         with patch('mimetypes.guess_type') as mock_guess_type:
             mock_guess_type.return_value = (None, None)
-            assert get_file_type('') == ListItemType.FILE
+            assert get_file_type('') == FileItemType.FILE
 
     @pytest.mark.parametrize("filename", [
         'file.txt', 'FILE.TXT', 'FiLe.TxT',
@@ -81,10 +81,10 @@ class TestUtilsType:
     def test_get_file_type_case_insensitive(self, filename):
         with patch('mimetypes.guess_type') as mock_guess_type:
             mock_guess_type.return_value = (None, None)
-            assert get_file_type(filename) == ListItemType.FILE
+            assert get_file_type(filename) == FileItemType.FILE
 
     def test_get_file_type_with_pathlike_object(self):
         with patch('mimetypes.guess_type') as mock_guess_type:
             mock_guess_type.return_value = (None, None)
             path = os.path.join('path', 'to', 'file.txt')
-            assert get_file_type(os.fspath(path)) == ListItemType.FILE
+            assert get_file_type(os.fspath(path)) == FileItemType.FILE

@@ -21,7 +21,7 @@ mimetypes.add_type('image/webp', '.webp')
 
 
 @unique
-class ListItemType(Enum):
+class FileItemType(Enum):
     """
     Enum class representing different types of list items.
 
@@ -29,9 +29,9 @@ class ListItemType(Enum):
     in a file system or list of items. Each type is associated with a unique integer value.
 
     Usage:
-        >>> item_type = ListItemType.FILE
+        >>> item_type = FileItemType.FILE
         >>> print(item_type)
-        ListItemType.FILE
+        FileItemType.FILE
         >>> print(item_type.value)
         1
     """
@@ -57,65 +57,65 @@ class ListItemType(Enum):
         :raises ValueError: If an unknown item type is encountered.
 
         Usage:
-            >>> item_type = ListItemType.FOLDER
+            >>> item_type = FileItemType.FOLDER
             >>> print(item_type.render_color)
             blue
         """
-        if self == ListItemType.FILE:
+        if self == FileItemType.FILE:
             return None
-        elif self == ListItemType.FOLDER:
+        elif self == FileItemType.FOLDER:
             return 'blue'
-        elif self == ListItemType.IMAGE:
+        elif self == FileItemType.IMAGE:
             return 'magenta'
-        elif self == ListItemType.ARCHIVE:
+        elif self == FileItemType.ARCHIVE:
             return 'red'
-        elif self == ListItemType.MODEL:
+        elif self == FileItemType.MODEL:
             return 'green'
-        elif self == ListItemType.DATA:
+        elif self == FileItemType.DATA:
             return 'yellow'
         else:
             raise ValueError(f'Unknown type - {self!r}')  # pragma: no cover
 
 
-def get_file_type(filename: Union[str, os.PathLike]) -> ListItemType:
+def get_file_type(filename: Union[str, os.PathLike]) -> FileItemType:
     """
     Determine the type of a given file.
 
-    This function analyzes the provided filename and returns the corresponding ListItemType.
+    This function analyzes the provided filename and returns the corresponding FileItemType.
     It uses various methods to determine the file type, including checking for archives,
     model files, data files, and image files based on MIME types.
 
     :param filename: The name or path of the file to analyze.
     :type filename: Union[str, os.PathLike]
 
-    :return: The determined ListItemType for the given file.
-    :rtype: ListItemType
+    :return: The determined FileItemType for the given file.
+    :rtype: FileItemType
 
     :raises TypeError: If the provided filename is not a string or PathLike object.
 
     Usage:
         >>> file_type = get_file_type('image.jpg')
         >>> print(file_type)
-        ListItemType.IMAGE
+        FileItemType.IMAGE
 
         >>> file_type = get_file_type('data.csv')
         >>> print(file_type)
-        ListItemType.DATA
+        FileItemType.DATA
     """
     if not isinstance(filename, (str, os.PathLike)):
         raise TypeError(f'Unknown file name type - {filename!r}')
     filename = os.path.basename(os.path.normcase(str(filename)))
 
     mimetype, _ = mimetypes.guess_type(filename)
-    type_ = ListItemType.FILE
+    type_ = FileItemType.FILE
     if is_archive_or_compressed(filename):
-        type_ = ListItemType.ARCHIVE
+        type_ = FileItemType.ARCHIVE
     elif is_model_file(filename):
-        type_ = ListItemType.MODEL
+        type_ = FileItemType.MODEL
     elif is_data_file(filename):
-        type_ = ListItemType.DATA
+        type_ = FileItemType.DATA
     elif mimetype:
         if 'image' in mimetype:
-            type_ = ListItemType.IMAGE
+            type_ = FileItemType.IMAGE
 
     return type_

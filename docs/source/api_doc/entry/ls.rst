@@ -6,10 +6,10 @@ hfutils.entry.ls
 .. automodule:: hfutils.entry.ls
 
 
-ListItemType
+FileItemType
 -------------------------
 
-.. autoenum:: ListItemType
+.. autoenum:: FileItemType
 
 
 
