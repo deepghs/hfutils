@@ -72,8 +72,8 @@
 <li class="toctree-l2"><a class="reference internal" href="download.html">hfutils.entry.download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index_.html">hfutils.entry.index</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">hfutils.entry.ls</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#listitemtype">ListItemType</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#hfutils.entry.ls.ListItemType"><code class="docutils literal notranslate"><span class="pre">ListItemType</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fileitemtype">FileItemType</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.entry.ls.FileItemType"><code class="docutils literal notranslate"><span class="pre">FileItemType</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#listitem">ListItem</a><ul>
@@ -123,18 +123,18 @@
     
   <section id="module-hfutils.entry.ls">
 <span id="hfutils-entry-ls"></span><h1>hfutils.entry.ls<a class="headerlink" href="#module-hfutils.entry.ls" title="Permalink to this heading"></a></h1>
-<section id="listitemtype">
-<h2>ListItemType<a class="headerlink" href="#listitemtype" title="Permalink to this heading"></a></h2>
+<section id="fileitemtype">
+<h2>FileItemType<a class="headerlink" href="#fileitemtype" title="Permalink to this heading"></a></h2>
 <dl class="py class enum">
-<dt class="sig sig-object py" id="hfutils.entry.ls.ListItemType">
-<em class="property"><span class="pre">enum</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.ls.</span></span><span class="sig-name descname"><span class="pre">ListItemType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/utils/type_.html#ListItemType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.ls.ListItemType" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.entry.ls.FileItemType">
+<em class="property"><span class="pre">enum</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.ls.</span></span><span class="sig-name descname"><span class="pre">FileItemType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/utils/type_.html#FileItemType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.ls.FileItemType" title="Permalink to this definition"></a></dt>
 <dd><p>Enum class representing different types of list items.</p>
 <p>This enumeration defines various file and folder types that can be encountered
 in a file system or list of items. Each type is associated with a unique integer value.</p>
 <dl>
-<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">item_type</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FILE</span>
+<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">item_type</span> <span class="o">=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FILE</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">item_type</span><span class="p">)</span>
-<span class="go">ListItemType.FILE</span>
+<span class="go">FileItemType.FILE</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">item_type</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">1</span>
 </pre></div>
@@ -143,33 +143,33 @@ in a file system or list of items. Each type is associated with a unique integer
 </dl>
 <p>Valid values are as follows:</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.entry.ls.ListItemType.FILE">
-<span class="sig-name descname"><span class="pre">FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.FILE:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.ListItemType.FILE" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.entry.ls.FileItemType.FILE">
+<span class="sig-name descname"><span class="pre">FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.FILE:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.FileItemType.FILE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.entry.ls.ListItemType.FOLDER">
-<span class="sig-name descname"><span class="pre">FOLDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.FOLDER:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.ListItemType.FOLDER" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.entry.ls.FileItemType.FOLDER">
+<span class="sig-name descname"><span class="pre">FOLDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.FOLDER:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.FileItemType.FOLDER" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.entry.ls.ListItemType.IMAGE">
-<span class="sig-name descname"><span class="pre">IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.IMAGE:</span> <span class="pre">3&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.ListItemType.IMAGE" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.entry.ls.FileItemType.IMAGE">
+<span class="sig-name descname"><span class="pre">IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.IMAGE:</span> <span class="pre">3&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.FileItemType.IMAGE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.entry.ls.ListItemType.ARCHIVE">
-<span class="sig-name descname"><span class="pre">ARCHIVE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.ARCHIVE:</span> <span class="pre">4&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.ListItemType.ARCHIVE" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.entry.ls.FileItemType.ARCHIVE">
+<span class="sig-name descname"><span class="pre">ARCHIVE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.ARCHIVE:</span> <span class="pre">4&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.FileItemType.ARCHIVE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.entry.ls.ListItemType.MODEL">
-<span class="sig-name descname"><span class="pre">MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.MODEL:</span> <span class="pre">5&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.ListItemType.MODEL" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.entry.ls.FileItemType.MODEL">
+<span class="sig-name descname"><span class="pre">MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.MODEL:</span> <span class="pre">5&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.FileItemType.MODEL" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.entry.ls.ListItemType.DATA">
-<span class="sig-name descname"><span class="pre">DATA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.DATA:</span> <span class="pre">6&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.ListItemType.DATA" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.entry.ls.FileItemType.DATA">
+<span class="sig-name descname"><span class="pre">DATA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.DATA:</span> <span class="pre">6&gt;</span></em><a class="headerlink" href="#hfutils.entry.ls.FileItemType.DATA" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>

@@ -117,8 +117,8 @@
 <span class="n">mimetypes</span><span class="o">.</span><span class="n">add_type</span><span class="p">(</span><span class="s1">&#39;image/webp&#39;</span><span class="p">,</span> <span class="s1">&#39;.webp&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ListItemType"><a class="viewcode-back" href="../../../api_doc/utils/type_.html#hfutils.entry.ls.ListItemType">[docs]</a><span class="nd">@unique</span>
-<span class="k">class</span> <span class="nc">ListItemType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="FileItemType"><a class="viewcode-back" href="../../../api_doc/utils/type_.html#hfutils.entry.ls.FileItemType">[docs]</a><span class="nd">@unique</span>
+<span class="k">class</span> <span class="nc">FileItemType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enum class representing different types of list items.</span>
 
@@ -126,9 +126,9 @@
 <span class="sd">    in a file system or list of items. Each type is associated with a unique integer value.</span>
 
 <span class="sd">    Usage:</span>
-<span class="sd">        &gt;&gt;&gt; item_type = ListItemType.FILE</span>
+<span class="sd">        &gt;&gt;&gt; item_type = FileItemType.FILE</span>
 <span class="sd">        &gt;&gt;&gt; print(item_type)</span>
-<span class="sd">        ListItemType.FILE</span>
+<span class="sd">        FileItemType.FILE</span>
 <span class="sd">        &gt;&gt;&gt; print(item_type.value)</span>
 <span class="sd">        1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -154,66 +154,66 @@
 <span class="sd">        :raises ValueError: If an unknown item type is encountered.</span>
 
 <span class="sd">        Usage:</span>
-<span class="sd">            &gt;&gt;&gt; item_type = ListItemType.FOLDER</span>
+<span class="sd">            &gt;&gt;&gt; item_type = FileItemType.FOLDER</span>
 <span class="sd">            &gt;&gt;&gt; print(item_type.render_color)</span>
 <span class="sd">            blue</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FILE</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FILE</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FOLDER</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;blue&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">IMAGE</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">IMAGE</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;magenta&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">ARCHIVE</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">ARCHIVE</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;red&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">MODEL</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">MODEL</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;green&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">DATA</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">DATA</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;yellow&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown type - </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
 
 
-<div class="viewcode-block" id="get_file_type"><a class="viewcode-back" href="../../../api_doc/utils/type_.html#hfutils.entry.ls.get_file_type">[docs]</a><span class="k">def</span> <span class="nf">get_file_type</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ListItemType</span><span class="p">:</span>
+<div class="viewcode-block" id="get_file_type"><a class="viewcode-back" href="../../../api_doc/utils/type_.html#hfutils.entry.ls.get_file_type">[docs]</a><span class="k">def</span> <span class="nf">get_file_type</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">FileItemType</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine the type of a given file.</span>
 
-<span class="sd">    This function analyzes the provided filename and returns the corresponding ListItemType.</span>
+<span class="sd">    This function analyzes the provided filename and returns the corresponding FileItemType.</span>
 <span class="sd">    It uses various methods to determine the file type, including checking for archives,</span>
 <span class="sd">    model files, data files, and image files based on MIME types.</span>
 
 <span class="sd">    :param filename: The name or path of the file to analyze.</span>
 <span class="sd">    :type filename: Union[str, os.PathLike]</span>
 
-<span class="sd">    :return: The determined ListItemType for the given file.</span>
-<span class="sd">    :rtype: ListItemType</span>
+<span class="sd">    :return: The determined FileItemType for the given file.</span>
+<span class="sd">    :rtype: FileItemType</span>
 
 <span class="sd">    :raises TypeError: If the provided filename is not a string or PathLike object.</span>
 
 <span class="sd">    Usage:</span>
 <span class="sd">        &gt;&gt;&gt; file_type = get_file_type(&#39;image.jpg&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; print(file_type)</span>
-<span class="sd">        ListItemType.IMAGE</span>
+<span class="sd">        FileItemType.IMAGE</span>
 
 <span class="sd">        &gt;&gt;&gt; file_type = get_file_type(&#39;data.csv&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; print(file_type)</span>
-<span class="sd">        ListItemType.DATA</span>
+<span class="sd">        FileItemType.DATA</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown file name type - </span><span class="si">{</span><span class="n">filename</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)))</span>
 
     <span class="n">mimetype</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="n">type_</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FILE</span>
+    <span class="n">type_</span> <span class="o">=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FILE</span>
     <span class="k">if</span> <span class="n">is_archive_or_compressed</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="n">type_</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">ARCHIVE</span>
+        <span class="n">type_</span> <span class="o">=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">ARCHIVE</span>
     <span class="k">elif</span> <span class="n">is_model_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="n">type_</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">MODEL</span>
+        <span class="n">type_</span> <span class="o">=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">MODEL</span>
     <span class="k">elif</span> <span class="n">is_data_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="n">type_</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">DATA</span>
+        <span class="n">type_</span> <span class="o">=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">DATA</span>
     <span class="k">elif</span> <span class="n">mimetype</span><span class="p">:</span>
         <span class="k">if</span> <span class="s1">&#39;image&#39;</span> <span class="ow">in</span> <span class="n">mimetype</span><span class="p">:</span>
-            <span class="n">type_</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">IMAGE</span>
+            <span class="n">type_</span> <span class="o">=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">IMAGE</span>
 
     <span class="k">return</span> <span class="n">type_</span></div>
 </pre></div>

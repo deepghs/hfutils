@@ -79,8 +79,8 @@
 <li class="toctree-l2"><a class="reference internal" href="session.html">hfutils.utils.session</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tqdm_.html">hfutils.utils.tqdm_</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">hfutils.utils.type_</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#listitemtype">ListItemType</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#hfutils.utils.type_.ListItemType"><code class="docutils literal notranslate"><span class="pre">ListItemType</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fileitemtype">FileItemType</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.utils.type_.FileItemType"><code class="docutils literal notranslate"><span class="pre">FileItemType</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#get-file-type">get_file_type</a><ul>
@@ -128,18 +128,18 @@
 the type of a given file. The module also adds support for the WebP image format.</p>
 <p>The module uses the <code class="docutils literal notranslate"><span class="pre">mimetypes</span></code> library for MIME type detection and imports custom functions
 for identifying archive, model, and data files.</p>
-<section id="listitemtype">
-<h2>ListItemType<a class="headerlink" href="#listitemtype" title="Permalink to this heading"></a></h2>
+<section id="fileitemtype">
+<h2>FileItemType<a class="headerlink" href="#fileitemtype" title="Permalink to this heading"></a></h2>
 <dl class="py class enum">
-<dt class="sig sig-object py" id="hfutils.utils.type_.ListItemType">
-<em class="property"><span class="pre">enum</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.utils.type_.</span></span><span class="sig-name descname"><span class="pre">ListItemType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/utils/type_.html#ListItemType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.type_.ListItemType" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType">
+<em class="property"><span class="pre">enum</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.utils.type_.</span></span><span class="sig-name descname"><span class="pre">FileItemType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/utils/type_.html#FileItemType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.type_.FileItemType" title="Permalink to this definition"></a></dt>
 <dd><p>Enum class representing different types of list items.</p>
 <p>This enumeration defines various file and folder types that can be encountered
 in a file system or list of items. Each type is associated with a unique integer value.</p>
 <dl>
-<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">item_type</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FILE</span>
+<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">item_type</span> <span class="o">=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FILE</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">item_type</span><span class="p">)</span>
-<span class="go">ListItemType.FILE</span>
+<span class="go">FileItemType.FILE</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">item_type</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">1</span>
 </pre></div>
@@ -148,39 +148,39 @@ in a file system or list of items. Each type is associated with a unique integer
 </dl>
 <p>Valid values are as follows:</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.utils.type_.ListItemType.FILE">
-<span class="sig-name descname"><span class="pre">FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.FILE:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.ListItemType.FILE" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.FILE">
+<span class="sig-name descname"><span class="pre">FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.FILE:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.FILE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.utils.type_.ListItemType.FOLDER">
-<span class="sig-name descname"><span class="pre">FOLDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.FOLDER:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.ListItemType.FOLDER" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.FOLDER">
+<span class="sig-name descname"><span class="pre">FOLDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.FOLDER:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.FOLDER" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.utils.type_.ListItemType.IMAGE">
-<span class="sig-name descname"><span class="pre">IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.IMAGE:</span> <span class="pre">3&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.ListItemType.IMAGE" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.IMAGE">
+<span class="sig-name descname"><span class="pre">IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.IMAGE:</span> <span class="pre">3&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.IMAGE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.utils.type_.ListItemType.ARCHIVE">
-<span class="sig-name descname"><span class="pre">ARCHIVE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.ARCHIVE:</span> <span class="pre">4&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.ListItemType.ARCHIVE" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.ARCHIVE">
+<span class="sig-name descname"><span class="pre">ARCHIVE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.ARCHIVE:</span> <span class="pre">4&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.ARCHIVE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.utils.type_.ListItemType.MODEL">
-<span class="sig-name descname"><span class="pre">MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.MODEL:</span> <span class="pre">5&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.ListItemType.MODEL" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.MODEL">
+<span class="sig-name descname"><span class="pre">MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.MODEL:</span> <span class="pre">5&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.MODEL" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hfutils.utils.type_.ListItemType.DATA">
-<span class="sig-name descname"><span class="pre">DATA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ListItemType.DATA:</span> <span class="pre">6&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.ListItemType.DATA" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.DATA">
+<span class="sig-name descname"><span class="pre">DATA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.DATA:</span> <span class="pre">6&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.DATA" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code> and its members also have the following methods:</p>
 <dl class="py property">
-<dt class="sig sig-object py" id="hfutils.utils.type_.ListItemType.render_color">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">render_color</span></span><a class="headerlink" href="#hfutils.utils.type_.ListItemType.render_color" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.render_color">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">render_color</span></span><a class="headerlink" href="#hfutils.utils.type_.FileItemType.render_color" title="Permalink to this definition"></a></dt>
 <dd><p>Get the render color based on the item type.</p>
 <p>This property returns a color string associated with each item type,
 which can be used for rendering or display purposes.</p>
@@ -196,7 +196,7 @@ which can be used for rendering or display purposes.</p>
 </dd>
 </dl>
 <dl>
-<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">item_type</span> <span class="o">=</span> <span class="n">ListItemType</span><span class="o">.</span><span class="n">FOLDER</span>
+<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">item_type</span> <span class="o">=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">item_type</span><span class="o">.</span><span class="n">render_color</span><span class="p">)</span>
 <span class="go">blue</span>
 </pre></div>
@@ -212,9 +212,9 @@ which can be used for rendering or display purposes.</p>
 <h2>get_file_type<a class="headerlink" href="#get-file-type" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.utils.type_.get_file_type">
-<span class="sig-prename descclassname"><span class="pre">hfutils.utils.type_.</span></span><span class="sig-name descname"><span class="pre">get_file_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hfutils.utils.type_.ListItemType" title="hfutils.utils.type_.ListItemType"><span class="pre">ListItemType</span></a></span></span><a class="reference internal" href="../../_modules/hfutils/utils/type_.html#get_file_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.type_.get_file_type" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.utils.type_.</span></span><span class="sig-name descname"><span class="pre">get_file_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hfutils.utils.type_.FileItemType" title="hfutils.utils.type_.FileItemType"><span class="pre">FileItemType</span></a></span></span><a class="reference internal" href="../../_modules/hfutils/utils/type_.html#get_file_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.type_.get_file_type" title="Permalink to this definition"></a></dt>
 <dd><p>Determine the type of a given file.</p>
-<p>This function analyzes the provided filename and returns the corresponding ListItemType.
+<p>This function analyzes the provided filename and returns the corresponding FileItemType.
 It uses various methods to determine the file type, including checking for archives,
 model files, data files, and image files based on MIME types.</p>
 <dl class="field-list simple">
@@ -222,10 +222,10 @@ model files, data files, and image files based on MIME types.</p>
 <dd class="field-odd"><p><strong>filename</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>os.PathLike</em><em>]</em>) – The name or path of the file to analyze.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The determined ListItemType for the given file.</p>
+<dd class="field-even"><p>The determined FileItemType for the given file.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#hfutils.utils.type_.ListItemType" title="hfutils.utils.type_.ListItemType">ListItemType</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#hfutils.utils.type_.FileItemType" title="hfutils.utils.type_.FileItemType">FileItemType</a></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>TypeError</strong> – If the provided filename is not a string or PathLike object.</p>
@@ -234,12 +234,12 @@ model files, data files, and image files based on MIME types.</p>
 <dl>
 <dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_type</span> <span class="o">=</span> <span class="n">get_file_type</span><span class="p">(</span><span class="s1">&#39;image.jpg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">file_type</span><span class="p">)</span>
-<span class="go">ListItemType.IMAGE</span>
+<span class="go">FileItemType.IMAGE</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_type</span> <span class="o">=</span> <span class="n">get_file_type</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">file_type</span><span class="p">)</span>
-<span class="go">ListItemType.DATA</span>
+<span class="go">FileItemType.DATA</span>
 </pre></div>
 </div>
 </dd>

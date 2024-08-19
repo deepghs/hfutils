@@ -6,10 +6,10 @@ hfutils.utils.type\_
 .. automodule:: hfutils.utils.type_
 
 
-ListItemType
+FileItemType
 --------------------------
 
-.. autoenum:: ListItemType
+.. autoenum:: FileItemType
     :members: render_color
 
 
