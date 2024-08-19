@@ -11,7 +11,9 @@ hfutils.utils
 
     archive
     binary
+    data
     download
+    model
     number
     path
     session
