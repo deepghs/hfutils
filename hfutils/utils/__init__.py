@@ -1,5 +1,6 @@
 from .archive import is_archive_or_compressed
 from .binary import is_binary_file
+from .data import is_data_file
 from .download import download_file
 from .logging import ColoredFormatter
 from .number import number_to_tag
