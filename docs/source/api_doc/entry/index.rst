@@ -17,6 +17,7 @@ hfutils.entry
     index_
     ls
     ls_repo
+    rollback
+    tree
     upload
     whoami
-    rollback

@@ -1,3 +1,20 @@
+"""
+This module provides functionality for listing and displaying files from a HuggingFace repository in a tree-like structure.
+
+It includes functions for parsing repository paths, retrieving file information, and formatting the output as a tree.
+The module also defines a CLI command for easy interaction with the tree functionality.
+
+Key components:
+
+- TreeItem: A dataclass representing an item (file or folder) in the tree structure.
+- _get_tree: Function to retrieve the tree structure of files in a HuggingFace repository.
+- _add_tree_subcommand: Function to add the 'tree' subcommand to a Click CLI group.
+
+Usage:
+This module is typically used as part of a larger CLI application for interacting with HuggingFace repositories.
+The 'tree' command can be used to visualize the structure of files in a repository.
+"""
+
 import dataclasses
 import os
 import re
@@ -15,13 +32,37 @@ from ..utils import get_requests_session, hf_normpath, get_file_type, hf_fs_path
 
 
 @dataclasses.dataclass
-class _TreeItem:
+class TreeItem:
+    """
+    Represents an item (file or folder) in the tree structure.
+
+    :param name: The name of the item.
+    :type name: str
+    :param type_: The type of the item (file or folder).
+    :type type_: FileItemType
+    :param children: List of child items if this is a folder.
+    :type children: Optional[List[TreeItem]]
+    :param exist: Whether the item exists in the repository.
+    :type exist: bool
+
+    :ivar name: The name of the item.
+    :ivar type_: The type of the item.
+    :ivar children: List of child items.
+    :ivar exist: Existence status of the item.
+    """
+
     name: str
     type_: FileItemType
-    children: Optional[List['_TreeItem']]
+    children: Optional[List['TreeItem']]
     exist: bool = True
 
     def get_name(self):
+        """
+        Get the formatted name of the item for display.
+
+        :return: Formatted name string with color and strike-through if applicable.
+        :rtype: str
+        """
         return click.style(
             self.name,
             fg=self.type_.render_color if self.exist else None,
@@ -29,11 +70,34 @@ class _TreeItem:
         ) + ('' if self.exist else ' <NOT EXIST>')
 
     def get_children(self):
+        """
+        Get the children of this item if it's a folder.
+
+        :return: List of child items if folder, empty list otherwise.
+        :rtype: List[TreeItem]
+        """
         return self.children if self.type_ == FileItemType.FOLDER else []
 
 
 def _get_tree(repo_id: str, repo_type: RepoTypeTyping, dir_in_repo: str,
-              revision: Optional[str] = None, show_all: bool = False) -> _TreeItem:
+              revision: Optional[str] = None, show_all: bool = False) -> TreeItem:
+    """
+    Retrieve the tree structure of files in a HuggingFace repository.
+
+    :param repo_id: The ID of the repository.
+    :type repo_id: str
+    :param repo_type: The type of the repository.
+    :type repo_type: RepoTypeTyping
+    :param dir_in_repo: The directory in the repository to start from.
+    :type dir_in_repo: str
+    :param revision: The revision of the repository to use.
+    :type revision: Optional[str]
+    :param show_all: Whether to show hidden files.
+    :type show_all: bool
+
+    :return: The root TreeItem representing the directory structure.
+    :rtype: TreeItem
+    """
     root = {}
     for filepath in list_files_in_repository(
             repo_id=repo_id,
@@ -65,7 +129,7 @@ def _get_tree(repo_id: str, repo_type: RepoTypeTyping, dir_in_repo: str,
 
     def _recursion(cur_node: Union[dict, FileItemType], parent_name: str, is_exist: bool = False):
         if isinstance(cur_node, dict):
-            return _TreeItem(
+            return TreeItem(
                 name=parent_name,
                 type_=FileItemType.FOLDER,
                 children=[
@@ -75,7 +139,7 @@ def _get_tree(repo_id: str, repo_type: RepoTypeTyping, dir_in_repo: str,
                 exist=is_exist,
             )
         else:
-            return _TreeItem(
+            return TreeItem(
                 name=parent_name,
                 type_=cur_node,
                 children=[],
@@ -110,7 +174,26 @@ def _get_tree(repo_id: str, repo_type: RepoTypeTyping, dir_in_repo: str,
 
 
 def _add_tree_subcommand(cli: click.Group) -> click.Group:
-    @cli.command('tree', help='List files from HuggingFace repository.\n\n'
+    """
+    Add the 'tree' subcommand to a Click CLI group.
+
+    This function defines a new 'tree' command that lists files from a HuggingFace repository
+    in a tree-like structure.
+
+    :param cli: The Click CLI group to add the command to.
+    :type cli: click.Group
+
+    :return: The modified CLI group with the 'tree' command added.
+    :rtype: click.Group
+
+    Usage:
+        This function is typically called when setting up a CLI application:
+
+        cli = click.Group()
+        cli = _add_tree_subcommand(cli)
+    """
+
+    @cli.command('tree', help='List files as a tree from HuggingFace repository.\n\n'
                               'Set environment $HF_TOKEN to use your own access token.',
                  context_settings=CONTEXT_SETTINGS)
     @click.option('-r', '--repository', 'repo_id', type=str, required=True,
@@ -124,6 +207,20 @@ def _add_tree_subcommand(cli: click.Group) -> click.Group:
     @click.option('-a', '--all', 'show_all', is_flag=True, type=bool, default=False,
                   help='Show all files, including hidden files.', show_default=True)
     def tree(repo_id: str, repo_type: RepoTypeTyping, dir_in_repo, revision: str, show_all: bool):
+        """
+        List files as a tree from a HuggingFace repository in a tree-like structure.
+
+        :param repo_id: The ID of the repository.
+        :type repo_id: str
+        :param repo_type: The type of the repository.
+        :type repo_type: RepoTypeTyping
+        :param dir_in_repo: The directory in the repository to start from.
+        :type dir_in_repo: str
+        :param revision: The revision of the repository to use.
+        :type revision: str
+        :param show_all: Whether to show hidden files.
+        :type show_all: bool
+        """
         configure_http_backend(get_requests_session)
 
         _tree = _get_tree(
@@ -135,8 +232,8 @@ def _add_tree_subcommand(cli: click.Group) -> click.Group:
         )
         print(format_tree(
             _tree,
-            format_node=_TreeItem.get_name,
-            get_children=_TreeItem.get_children,
+            format_node=TreeItem.get_name,
+            get_children=TreeItem.get_children,
         ))
 
     return cli
