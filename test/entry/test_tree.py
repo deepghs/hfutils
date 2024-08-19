@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import click
 import pytest
 from hbutils.testing import simulate_entry
@@ -169,6 +171,8 @@ class TestEntryTree:
             '-d', 'samples/colored'
         ])
         assert result.exitcode == 0
+        text = click.unstyle(result.stdout).strip()
+        pprint(text)
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
         assert lines == [
             "datasets/deepghs/test_nested_dataset@main/samples/colored",
