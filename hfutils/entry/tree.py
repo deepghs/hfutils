@@ -6,10 +6,11 @@ from typing import Optional, List, Union
 import click
 from hbutils.string import format_tree
 from huggingface_hub import configure_http_backend
+from huggingface_hub.hf_api import RepoFile
 from natsort import natsorted
 
 from .base import CONTEXT_SETTINGS
-from ..operate.base import REPO_TYPES, list_files_in_repository, RepoTypeTyping
+from ..operate.base import REPO_TYPES, list_files_in_repository, RepoTypeTyping, get_hf_client
 from ..utils import get_requests_session, hf_normpath, get_file_type, hf_fs_path, FileItemType
 
 
@@ -18,9 +19,14 @@ class _TreeItem:
     name: str
     type_: FileItemType
     children: Optional[List['_TreeItem']]
+    exist: bool = True
 
     def get_name(self):
-        return click.style(self.name, fg=self.type_.render_color)
+        return click.style(
+            self.name,
+            fg=self.type_.render_color if self.exist else None,
+            strikethrough=not self.exist,
+        )
 
     def get_children(self):
         return self.children if self.type_ == FileItemType.FOLDER else []
@@ -38,7 +44,7 @@ def _get_tree(repo_id: str, repo_type: RepoTypeTyping, dir_in_repo: str,
     ):
         filename = hf_normpath(os.path.relpath(filepath, dir_in_repo))
         segments = re.split(r'[\\/]+', filename)
-        if any(segment.startswith('.') for segment in segments) and not show_all:
+        if any(segment.startswith('.') and segment != '.' for segment in segments) and not show_all:
             continue
 
         current_node = root
@@ -57,26 +63,49 @@ def _get_tree(repo_id: str, repo_type: RepoTypeTyping, dir_in_repo: str,
         revision=revision,
     )
 
-    def _recursion(cur_node: Union[dict, FileItemType], parent_name: str):
+    def _recursion(cur_node: Union[dict, FileItemType], parent_name: str, is_exist: bool = False):
         if isinstance(cur_node, dict):
             return _TreeItem(
                 name=parent_name,
                 type_=FileItemType.FOLDER,
                 children=[
-                    _recursion(cur_node=value, parent_name=name)
+                    _recursion(cur_node=value, parent_name=name, is_exist=is_exist)
                     for name, value in natsorted(cur_node.items())
-                ]
+                ],
+                exist=is_exist,
             )
         else:
             return _TreeItem(
                 name=parent_name,
                 type_=cur_node,
                 children=[],
+                exist=is_exist,
             )
+
+    exist = True
+    if not root:
+        hf_client = get_hf_client()
+        paths = hf_client.get_paths_info(
+            repo_id=repo_id,
+            repo_type=repo_type,
+            revision=revision,
+            paths=[dir_in_repo],
+        )
+        if len(paths) == 0:
+            exist = False
+        elif len(paths) == 1:
+            pathobj = paths[0]
+            if isinstance(pathobj, RepoFile):  # the subdir is a file
+                root = get_file_type(dir_in_repo)
+        else:
+            assert len(paths) == 1, \
+                f'Multiple path {dir_in_repo!r} found in repo {root_name!r}, ' \
+                f'this must be caused by HuggingFace API.'  # pragma: no cover
 
     return _recursion(
         cur_node=root,
         parent_name=root_name,
+        is_exist=exist,
     )
 
 
