@@ -18,5 +18,6 @@ hfutils.utils
     path
     session
     tqdm_
+    type_
     walk
 
