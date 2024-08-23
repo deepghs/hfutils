@@ -1,9 +1,9 @@
 import os.path
+import statistics
 import warnings
 from typing import Optional, Literal
 
 import click
-import numpy as np
 import pandas as pd
 from hbutils.scale import size_to_bytes_str
 from hbutils.string import plural_word, titleize
@@ -102,34 +102,35 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
 
                 # Convert to numpy array for easier calculations
                 file_sizes = [file_info['size'] for file, file_info in idx_info['files'].items()]
-                sizes = np.array(file_sizes)
 
                 # Basic statistics
-                total_files = len(sizes)
-                total_size = np.sum(sizes)
-                mean_size = np.mean(sizes)
-                median_size = np.median(sizes)
-                min_size = np.min(sizes)
-                max_size = np.max(sizes)
+                total_size = sum(file_sizes)
+                mean_size = statistics.mean(file_sizes)
+                median_size = statistics.median(file_sizes)
+                min_size = min(file_sizes)
+                max_size = max(file_sizes)
 
                 # Quartiles
-                q1, q3 = np.percentile(sizes, [25, 75])
+                sorted_sizes = sorted(file_sizes)
+                n = len(sorted_sizes)
+                q1 = sorted_sizes[n // 4]
+                q3 = sorted_sizes[(3 * n) // 4]
                 iqr = q3 - q1
-                std_dev = np.std(sizes)
+                std_dev = statistics.stdev(file_sizes)
 
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", UserWarning)
-                    print(f"Total Size: {size_to_bytes_str(total_size.item(), precision=3)}")
-                    print(f"  Average File Size: {size_to_bytes_str(mean_size.item(), precision=3)}")
-                    print(f"  Median File Size: {size_to_bytes_str(median_size.item(), precision=3)}")
-                    print(f"  Smallest File Size: {size_to_bytes_str(min_size.item(), precision=3)}")
-                    print(f"  Largest File Size: {size_to_bytes_str(max_size.item(), precision=3)}")
-                    print(f"  Standard Deviation: {size_to_bytes_str(std_dev.item(), precision=3)}")
+                    print(f"Total Size: {size_to_bytes_str(total_size, precision=3)}")
+                    print(f"  Average File Size: {size_to_bytes_str(mean_size, precision=3)}")
+                    print(f"  Median File Size: {size_to_bytes_str(median_size, precision=3)}")
+                    print(f"  Smallest File Size: {size_to_bytes_str(min_size, precision=3)}")
+                    print(f"  Largest File Size: {size_to_bytes_str(max_size, precision=3)}")
+                    print(f"  Standard Deviation: {size_to_bytes_str(std_dev, precision=3)}")
                     print("Quartiles:")
-                    print(f"  Q1 (25th Percentile): {size_to_bytes_str(q1.item(), precision=3)}")
-                    print(f"  Q2 (50th Percentile, Median): {size_to_bytes_str(median_size.item(), precision=3)}")
-                    print(f"  Q3 (75th Percentile): {size_to_bytes_str(q3.item(), precision=3)}")
-                    print(f"  Interquartile Range (IQR): {size_to_bytes_str(iqr.item(), precision=3)}")
+                    print(f"  Q1 (25th Percentile): {size_to_bytes_str(q1, precision=3)}")
+                    print(f"  Q2 (50th Percentile, Median): {size_to_bytes_str(median_size, precision=3)}")
+                    print(f"  Q3 (75th Percentile): {size_to_bytes_str(q3, precision=3)}")
+                    print(f"  Interquartile Range (IQR): {size_to_bytes_str(iqr, precision=3)}")
 
         else:
             rows = []
@@ -159,13 +160,11 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
                 if show_detailed:
                     max_t_file_len = df['t_file'].map(len).max().item()
                     max_t_offset_len = df['t_offset'].map(len).max().item()
-                    max_t_size_len = df['t_size'].map(len).max().item()
                     max_t_size_text_len = df['t_size_text'].map(len).max().item()
                     max_t_sha256_len = df['t_sha256'].map(len).max().item()
 
                     for row in df.to_dict('records'):
-                        print(' ' * (max_t_offset_len - len(row['t_offset'])) + row['t_offset'], end='')
-                        print(' | ', end='')
+                        print(' ' * (max_t_offset_len - len(row['t_offset'])) + row['t_offset'], end=' | ')
 
                         fc = get_file_type(row['t_file'])
                         print(' ' * (max_t_file_len - len(row['t_file']))
