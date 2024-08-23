@@ -4,13 +4,12 @@ import warnings
 from typing import Optional, Literal
 
 import click
-import pandas as pd
 from hbutils.scale import size_to_bytes_str
 from hbutils.string import plural_word, titleize
 from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS
-from ..index import hf_tar_get_index
+from ..index import hf_tar_get_index, hf_tar_validate
 from ..operate.base import REPO_TYPES
 from ..utils import get_requests_session, get_file_type, FileItemType
 from ..utils.path import RepoTypeTyping, hf_normpath
@@ -66,21 +65,21 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
             idx_file_in_repo=idx_file,
         )
         if show_information:
-            print('Repo ID: ' + click.style(repo_id, underline=True))
+            print('Repo ID: ' + click.style(repo_id, underline=True, fg='blue'))
             if idx_repo_id:
-                print('Index Repo ID: ' + click.style(idx_repo_id, underline=True))
-            print('Repo Type: ' + click.style(repo_type, underline=True))
-            print('Revision: ' + click.style(revision, underline=True))
-            print('Archive File: ' + click.style(archive_file, underline=True))
+                print('Index Repo ID: ' + click.style(idx_repo_id, underline=True, fg='blue'))
+            print('Repo Type: ' + click.style(repo_type, underline=True, fg='blue'))
+            print('Revision: ' + click.style(revision, underline=True, fg='blue'))
+            print('Archive File: ' + click.style(archive_file, underline=True, fg='blue'))
             if idx_file:
-                print('Index File: ' + click.style(idx_file, underline=True))
+                print('Index File: ' + click.style(idx_file, underline=True, fg='blue'))
             print()
 
-            print('File Size: ' + click.style(size_to_bytes_str(idx_info['filesize'], precision=3))
+            print('File Size: ' + click.style(size_to_bytes_str(idx_info['filesize'], precision=3), fg='blue')
                   + ' (' + click.style(plural_word(idx_info['filesize'], "Byte"), underline=True) + ')')
             print('Native Hash: ' + click.style(idx_info['hash'], underline=True))
             print('LFS Hash: ' + click.style(idx_info['hash_lfs'], underline=True))
-            print('Files: ' + click.style(plural_word(len(idx_info['files']), 'file'), underline=True))
+            print('Files: ' + click.style(plural_word(len(idx_info['files']), 'file'), underline=True, fg='blue'))
             if idx_info['files']:
                 d_files = {}
                 for file in idx_info['files'].keys():
@@ -120,17 +119,43 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
 
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", UserWarning)
-                    print(f"Total Size: {size_to_bytes_str(total_size, precision=3)}")
-                    print(f"  Average File Size: {size_to_bytes_str(mean_size, precision=3)}")
-                    print(f"  Median File Size: {size_to_bytes_str(median_size, precision=3)}")
-                    print(f"  Smallest File Size: {size_to_bytes_str(min_size, precision=3)}")
-                    print(f"  Largest File Size: {size_to_bytes_str(max_size, precision=3)}")
-                    print(f"  Standard Deviation: {size_to_bytes_str(std_dev, precision=3)}")
+                    print(f"Total Size: " +
+                          click.style(size_to_bytes_str(total_size, precision=3), underline=True, fg='blue'))
+                    print(f"  Average File Size: " +
+                          click.style(size_to_bytes_str(mean_size, precision=3), underline=True, fg='blue'))
+                    print(f"  Median File Size: " +
+                          click.style(size_to_bytes_str(median_size, precision=3), underline=True, fg='blue'))
+                    print(f"  Smallest File Size: " +
+                          click.style(size_to_bytes_str(min_size, precision=3), underline=True))
+                    print(f"  Largest File Size: " +
+                          click.style(size_to_bytes_str(max_size, precision=3), underline=True))
+                    print(f"  Standard Deviation: " +
+                          click.style(size_to_bytes_str(std_dev, precision=3), underline=True))
                     print("Quartiles:")
                     print(f"  Q1 (25th Percentile): {size_to_bytes_str(q1, precision=3)}")
                     print(f"  Q2 (50th Percentile, Median): {size_to_bytes_str(median_size, precision=3)}")
                     print(f"  Q3 (75th Percentile): {size_to_bytes_str(q3, precision=3)}")
                     print(f"  Interquartile Range (IQR): {size_to_bytes_str(iqr, precision=3)}")
+            print()
+
+            is_ready = hf_tar_validate(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                revision=revision,
+                archive_in_repo=archive_file,
+
+                idx_repo_id=idx_repo_id or repo_id,
+                idx_repo_type=repo_type,
+                idx_revision=revision,
+                idx_file_in_repo=idx_file,
+            )
+
+            print('Status: ' + (
+                click.style('Up-To-Date', fg='green', underline=True) if is_ready else
+                click.style('Outdated', fg='yellow', underline=True)
+            ))
+            if not is_ready:
+                print('Index file is recommended to get refreshed.')
 
         else:
             rows = []
@@ -146,37 +171,35 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
                     't_size_text': size_to_bytes_str(file_info['size'], precision=3),
                     't_sha256': file_info['sha256'],
                 })
-            df = pd.DataFrame(rows)
             if sort_by == 'offset':
-                df = df.sort_values(by=['offset', 'file'], ascending=order_by == 'asc')
+                rows = sorted(rows, key=lambda x: (x['offset'], x['file']), reverse=(order_by != 'asc'))
             elif sort_by == 'name':
-                df = df.sort_values(by=['file', 'offset'], ascending=order_by == 'asc')
+                rows = sorted(rows, key=lambda x: (x['file'], x['offset']), reverse=(order_by != 'asc'))
             elif sort_by == 'size':
-                df = df.sort_values(by=['size', 'offset', 'file'], ascending=order_by == 'asc')
+                rows = sorted(rows, key=lambda x: (x['size'], x['offset'], x['file']), reverse=(order_by != 'asc'))
             else:
                 raise ValueError(f'Unknown sort_by {sort_by!r}.')  # pragma: no cover
 
-            if len(df):
+            if len(rows):
                 if show_detailed:
-                    max_t_file_len = df['t_file'].map(len).max().item()
-                    max_t_offset_len = df['t_offset'].map(len).max().item()
-                    max_t_size_text_len = df['t_size_text'].map(len).max().item()
-                    max_t_sha256_len = df['t_sha256'].map(len).max().item()
+                    max_t_file_len = max(len(row['t_file']) for row in rows)
+                    max_t_offset_len = max(len(row['t_offset']) for row in rows)
+                    max_t_size_text_len = max(len(row['t_size_text']) for row in rows)
+                    max_t_sha256_len = max(len(row['t_sha256']) for row in rows)
 
-                    for row in df.to_dict('records'):
+                    for row in rows:
                         print(' ' * (max_t_offset_len - len(row['t_offset'])) + row['t_offset'], end=' | ')
-
                         fc = get_file_type(row['t_file'])
                         print(' ' * (max_t_file_len - len(row['t_file']))
                               + click.style(row['t_file'], fg=fc.render_color), end=' ')
-
                         print(' ' * (max_t_size_text_len - len(row['t_size_text']))
                               + click.style(row['t_size_text'], underline=True), end=' ')
                         print(' ' * (max_t_sha256_len - len(row['t_sha256']))
                               + click.style(row['t_sha256']))
 
                 else:
-                    for file in df['t_file']:
+                    for row in rows:
+                        file = row['file']
                         fc = get_file_type(file)
                         print(click.style(file, fg=fc.render_color))
 
