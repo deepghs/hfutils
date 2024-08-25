@@ -14,6 +14,7 @@ hfutils.entry
     clone
     dispatch
     download
+    ils
     index_
     ls
     ls_repo
