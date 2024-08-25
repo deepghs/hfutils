@@ -1,3 +1,23 @@
+"""
+This module provides functionality for listing files from a HuggingFace repository's index tar file.
+
+It includes a command-line interface (CLI) for interacting with HuggingFace repositories,
+specifically for listing and displaying information about files within a repository's
+index tar file. The module offers various options for sorting, filtering, and displaying
+detailed information about the files and the repository itself.
+
+Key features:
+
+1. List files from a HuggingFace repository's index tar file
+2. Display detailed file information
+3. Show repository and index file statistics
+4. Sort files by different criteria (offset, name, size)
+5. Validate the index file's status (up-to-date or outdated)
+
+This module is part of a larger system for interacting with HuggingFace repositories
+and provides a user-friendly interface for exploring the contents of index tar files.
+"""
+
 import os.path
 import statistics
 import warnings
@@ -24,6 +44,29 @@ _FT_NAME_MAP = {
 
 
 def _add_ils_subcommand(cli: click.Group) -> click.Group:
+    """
+    Add the 'ils' subcommand to the given click Group.
+
+    This function defines and adds the 'ils' (Index List) subcommand to the provided
+    click Group. The 'ils' command allows users to list files from a HuggingFace
+    repository's index tar file and display various information about the repository
+    and its contents.
+
+    :param cli: The click Group to which the 'ils' subcommand will be added.
+    :type cli: click.Group
+
+    :return: The modified click Group with the 'ils' subcommand added.
+    :rtype: click.Group
+
+    Usage:
+        This function is typically called when setting up the CLI for the application.
+        It adds the 'ils' command with various options for customizing the output.
+
+    Example:
+        cli = click.Group()
+        cli = _add_ils_subcommand(cli)
+    """
+
     @cli.command('ils', help='List files from HuggingFace repository\'s index tar file.\n\n'
                              'Set environment $HF_TOKEN to use your own access token.',
                  context_settings=CONTEXT_SETTINGS)
@@ -51,6 +94,45 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
            show_detailed: bool, show_information: bool,
            sort_by: Literal['offset', 'name', 'size'], order_by: Literal['asc', 'desc'],
            archive_file: str, idx_file: Optional[str] = None):
+        """
+        List files from a HuggingFace repository's index tar file.
+
+        This function retrieves and displays information about files in a HuggingFace
+        repository's index tar file. It can show detailed file information, repository
+        statistics, and allows for sorting and filtering of the file list.
+
+        :param repo_id: The ID of the HuggingFace repository.
+        :type repo_id: str
+        :param idx_repo_id: The ID of the index repository (if different from repo_id).
+        :type idx_repo_id: Optional[str]
+        :param repo_type: The type of the HuggingFace repository (e.g., 'dataset', 'model').
+        :type repo_type: RepoTypeTyping
+        :param revision: The revision of the repository to use.
+        :type revision: str
+        :param show_detailed: Flag to show detailed file information.
+        :type show_detailed: bool
+        :param show_information: Flag to show general information about the index file.
+        :type show_information: bool
+        :param sort_by: Criterion to sort the files by ('offset', 'name', or 'size').
+        :type sort_by: Literal['offset', 'name', 'size']
+        :param order_by: Order of sorting ('asc' or 'desc').
+        :type order_by: Literal['asc', 'desc']
+        :param archive_file: The name of the archive file in the repository.
+        :type archive_file: str
+        :param idx_file: The name of the index file (if different from default).
+        :type idx_file: Optional[str]
+
+        :return: None
+
+        This function performs the following steps:
+
+        1. Configures the HTTP backend for HuggingFace Hub.
+        2. Retrieves the index information for the specified repository and archive.
+        3. If show_information is True, displays general statistics about the repository and files.
+        4. If not showing information, lists the files according to the specified sorting and filtering options.
+
+        The function uses click styles to format the output for better readability in the terminal.
+        """
         configure_http_backend(get_requests_session)
 
         idx_info = hf_tar_get_index(
