@@ -358,3 +358,117 @@ class TestEntryIls:
             " 225792 |             愚人节.png 152.971 KiB 4e1539e93a82eace5f40293fb64befb85bed7b90174f54bec7e9bbbc98ce55dc",
             "2725376 |          .meta.json   8.758 KiB 4585b01c251a496b73cb231d29fc711cfb1d682a84334d95f6f5b6c1cc5b5222"
         ]
+
+    def test_ils_information(self):
+        result = simulate_entry(hfutilscli,
+                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-I'])
+        assert result.exitcode == 0
+        assert click.unstyle(result.stdout).splitlines(keepends=False) == [
+            "Repo ID: narugo/test_cos5t_tars",
+            "Repo Type: dataset",
+            "Revision: main",
+            "Archive File: mashu_skins.tar",
+            "",
+            "File Size: 5.410 MiB (5672960 Bytes)",
+            "Native Hash: a55942a154b97580d4ffdae1219c95120ea94294",
+            "LFS Hash: 6e7d17af49c7502e8045575f214cd9229a5b0b842d68591a7a5d9aee1448f478",
+            "Files: 17 files",
+            "  Image Files: 16 files",
+            "  Data Files: 1 file",
+            "File Extensions:",
+            "  .png : 16 files",
+            "  .json : 1 file",
+            "Total Size: 5.376 MiB",
+            "  Average File Size: 323.854 KiB",
+            "  Median File Size: 249.293 KiB",
+            "  Smallest File Size: 8.758 KiB",
+            "  Largest File Size: 871.836 KiB",
+            "  Standard Deviation: 202.998 KiB",
+            "Quartiles:",
+            "  Q1 (25th Percentile): 227.161 KiB",
+            "  Q2 (50th Percentile, Median): 249.293 KiB",
+            "  Q3 (75th Percentile): 383.661 KiB",
+            "  Interquartile Range (IQR): 156.500 KiB",
+            "",
+            "Status: Up-To-Date"
+        ]
+
+    def test_ils_information_not_match(self):
+        result = simulate_entry(hfutilscli,
+                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-I', '-i',
+                                 'ex3.json'])
+        assert result.exitcode == 0
+        assert click.unstyle(result.stdout).splitlines(keepends=False) == [
+            "Repo ID: narugo/test_cos5t_tars",
+            "Repo Type: dataset",
+            "Revision: main",
+            "Archive File: mashu_skins.tar",
+            "Index File: ex3.json",
+            "",
+            "File Size: 24.482 MiB (25671680 Bytes)",
+            "Native Hash: f7f756e3f5e744cc94197cc669c409fd8990deba",
+            "LFS Hash: abb016a5115ec2f18771b42128f50f2c96caace5cf9e84d1c342a9ab8da93e0e",
+            "Files: 295 files",
+            "  Image Files: 295 files",
+            "File Extensions:",
+            "  .jpg : 295 files",
+            "Total Size: 23.974 MiB",
+            "  Average File Size: 83.218 KiB",
+            "  Median File Size: 79.722 KiB",
+            "  Smallest File Size: 32.238 KiB",
+            "  Largest File Size: 197.258 KiB",
+            "  Standard Deviation: 25.068 KiB",
+            "Quartiles:",
+            "  Q1 (25th Percentile): 64.862 KiB",
+            "  Q2 (50th Percentile, Median): 79.722 KiB",
+            "  Q3 (75th Percentile): 98.960 KiB",
+            "  Interquartile Range (IQR): 34.098 KiB",
+            "",
+            "Status: Outdated",
+            "Index file is recommended to get refreshed."
+        ]
+
+    def test_ils_information_sep(self):
+        result = simulate_entry(hfutilscli,
+                                ['hfutils', 'ils', '-r', 'nyanko7/danbooru2023', '-a', 'original/data-0000.tar', '-I',
+                                 '--idx_repository', 'deepghs/danbooru2023_index', '-i', 'original/data-0000.json'])
+        assert result.exitcode == 0
+        assert click.unstyle(result.stdout).splitlines(keepends=False) == [
+            "Repo ID: nyanko7/danbooru2023",
+            "Index Repo ID: deepghs/danbooru2023_index",
+            "Repo Type: dataset",
+            "Revision: main",
+            "Archive File: original/data-0000.tar",
+            "Index File: original/data-0000.json",
+            "",
+            "File Size: 7.592 GiB (8151715840 Bytes)",
+            "Native Hash: 334e3b11928649d8d2b8fb79d6b281dd72d704d1",
+            "LFS Hash: f2b1d0650c36af4d20d933b4068d2a7b88f79e4d39bb8776d423fbb40f9e055e",
+            "Files: 6766 files",
+            "  Image Files: 6729 files",
+            "  Archive/Compressed Files: 9 files",
+            "  Other Files: 28 files",
+            "File Extensions:",
+            "  .jpg : 5040 files",
+            "  .png : 1657 files",
+            "  .gif : 28 files",
+            "  .mp4 : 26 files",
+            "  .zip : 9 files",
+            "  .webp : 3 files",
+            "  . : 1 file",
+            "  .jpeg : 1 file",
+            "  .swf : 1 file",
+            "Total Size: 7.587 GiB",
+            "  Average File Size: 1.148 MiB",
+            "  Median File Size: 504.214 KiB",
+            "  Smallest File Size: 0.000 Bit",
+            "  Largest File Size: 41.124 MiB",
+            "  Standard Deviation: 2.147 MiB",
+            "Quartiles:",
+            "  Q1 (25th Percentile): 229.165 KiB",
+            "  Q2 (50th Percentile, Median): 504.214 KiB",
+            "  Q3 (75th Percentile): 1.111 MiB",
+            "  Interquartile Range (IQR): 908.403 KiB",
+            "",
+            "Status: Up-To-Date"
+        ]
