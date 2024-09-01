@@ -287,7 +287,9 @@
 <span class="sd">    :type idx_file: Optional[str]</span>
 <span class="sd">    :param chunk_size: The size of chunks to read and write, in bytes. Default is 1MB.</span>
 <span class="sd">    :type chunk_size: int</span>
-<span class="sd">    :param force_download: Force download the file to destination path. Defualt to `False`.</span>
+<span class="sd">    :param force_download: Force download the file to destination path.</span>
+<span class="sd">                           Defualt to `False`, downloading will be skipped if the local file</span>
+<span class="sd">                           is fully matched with expected file.</span>
 <span class="sd">    :type force_download: bool</span>
 
 <span class="sd">    :raises FileNotFoundError: If the specified file is not found in the archive.</span>

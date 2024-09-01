@@ -332,7 +332,9 @@ the expected hash (if provided in the index).</p>
 <li><p><strong>idx_file</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Optional path to the index file. If not provided,
 it will be inferred from the archive file name.</p></li>
 <li><p><strong>chunk_size</strong> (<em>int</em>) – The size of chunks to read and write, in bytes. Default is 1MB.</p></li>
-<li><p><strong>force_download</strong> (<em>bool</em>) – Force download the file to destination path. Defualt to <cite>False</cite>.</p></li>
+<li><p><strong>force_download</strong> (<em>bool</em>) – Force download the file to destination path.
+Defualt to <cite>False</cite>, downloading will be skipped if the local file
+is fully matched with expected file.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>

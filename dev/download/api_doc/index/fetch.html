@@ -500,7 +500,9 @@ get the file information by explicitly assigning the <code class="docutils liter
 <li><p><strong>user_agent</strong> (<em>Union</em><em>[</em><em>Dict</em><em>, </em><em>str</em><em>, </em><em>None</em><em>]</em><em>, </em><em>optional</em>) – The user agent for the HTTP request.</p></li>
 <li><p><strong>headers</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The additional headers for the HTTP request.</p></li>
 <li><p><strong>endpoint</strong> (<em>str</em><em>, </em><em>optional</em>) – The Hugging Face API endpoint.</p></li>
-<li><p><strong>force_download</strong> (<em>bool</em>) – Force download the file to destination path. Defualt to <cite>False</cite>.</p></li>
+<li><p><strong>force_download</strong> (<em>bool</em>) – Force download the file to destination path.
+Defualt to <cite>False</cite>, downloading will be skipped if the local file
+is fully matched with expected file.</p></li>
 <li><p><strong>hf_token</strong> (<em>str</em><em>, </em><em>optional</em>) – The Hugging Face access token.</p></li>
 </ul>
 </dd>
