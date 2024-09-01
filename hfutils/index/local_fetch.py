@@ -171,7 +171,7 @@ def tar_file_size(archive_file: str, file_in_archive: str, idx_file: Optional[st
 
 
 def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
-                      idx_file: Optional[str] = None, chunk_size: int = 1 << 20):
+                      idx_file: Optional[str] = None, chunk_size: int = 1 << 20, force_download: bool = False):
     """
     Extract and download a specific file from the tar archive to a local file.
 
@@ -190,6 +190,8 @@ def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
     :type idx_file: Optional[str]
     :param chunk_size: The size of chunks to read and write, in bytes. Default is 1MB.
     :type chunk_size: int
+    :param force_download: Force download the file to destination path. Defualt to `False`.
+    :type force_download: bool
 
     :raises FileNotFoundError: If the specified file is not found in the archive.
     :raises ArchiveStandaloneFileIncompleteDownload: If the downloaded file size doesn't match the expected size.
@@ -211,6 +213,13 @@ def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
                                 f'in local archive {archive_file!r}.')
 
     info = files[_n_path(file_in_archive)]
+
+    if not force_download and os.path.exists(local_file) and \
+            os.path.isfile(local_file) and os.path.getsize(local_file) == info['size']:
+        _expected_sha256 = info.get('sha256')
+        if not _expected_sha256 or _f_sha256(local_file) == _expected_sha256:
+            # file already ready, no need to download it again
+            return
 
     if os.path.dirname(local_file):
         os.makedirs(os.path.dirname(local_file), exist_ok=True)

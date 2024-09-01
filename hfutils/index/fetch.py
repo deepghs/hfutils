@@ -438,7 +438,7 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
                          idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
                          proxies: Optional[Dict] = None, user_agent: Union[Dict, str, None] = None,
                          headers: Optional[Dict[str, str]] = None, endpoint: Optional[str] = None,
-                         hf_token: Optional[str] = None):
+                         force_download: bool = False, hf_token: Optional[str] = None):
     """
     Download a file from a tar archive file in a Hugging Face repository.
 
@@ -470,6 +470,8 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
     :type headers: Dict[str, str], optional
     :param endpoint: The Hugging Face API endpoint.
     :type endpoint: str, optional
+    :param force_download: Force download the file to destination path. Defualt to `False`.
+    :type force_download: bool
     :param hf_token: The Hugging Face access token.
     :type hf_token: str, optional
     :raises FileNotFoundError: Raise this when file not exist in tar archive.
@@ -532,6 +534,13 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
     start_bytes = info['offset']
     end_bytes = info['offset'] + info['size'] - 1
     headers['Range'] = f'bytes={start_bytes}-{end_bytes}'
+
+    if not force_download and os.path.exists(local_file) and \
+            os.path.isfile(local_file) and os.path.getsize(local_file) == info['size']:
+        _expected_sha256 = info.get('sha256')
+        if not _expected_sha256 or _f_sha256(local_file) == _expected_sha256:
+            # file already ready, no need to download it again
+            return
 
     if os.path.dirname(local_file):
         os.makedirs(os.path.dirname(local_file), exist_ok=True)
