@@ -100,12 +100,56 @@ class TestIndexLocalFetch:
             )
             file_compare(get_testfile('skin_mashu', '.meta.json'), '.meta.json')
 
+    def test_tar_file_download_small_exist(self, local_narugo_test_cos5t_tars):
+        with isolated_directory({
+            '.meta.json': get_testfile('skin_mashu', '.meta.json')
+        }):
+            tar_file_download(
+                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                file_in_archive='.meta.json',
+                local_file='.meta.json'
+            )
+            file_compare(get_testfile('skin_mashu', '.meta.json'), '.meta.json')
+
+    def test_tar_file_download_small_replace(self, local_narugo_test_cos5t_tars):
+        with isolated_directory({
+            '.meta.json': get_testfile('skin_mashu', '愚人节_奥特瑙斯.png')
+        }):
+            tar_file_download(
+                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                file_in_archive='.meta.json',
+                local_file='.meta.json'
+            )
+            file_compare(get_testfile('skin_mashu', '.meta.json'), '.meta.json')
+
     def test_tar_file_download_lfs(self, local_narugo_test_cos5t_tars):
         with isolated_directory():
             tar_file_download(
                 archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
                 file_in_archive='./愚人节_奥特瑙斯.png',
                 local_file='愚人节_奥特瑙斯.png'
+            )
+            file_compare(get_testfile('skin_mashu', '愚人节_奥特瑙斯.png'), '愚人节_奥特瑙斯.png')
+
+    def test_tar_file_download_lfs_exist(self, local_narugo_test_cos5t_tars):
+        with isolated_directory({
+            '愚人节_奥特瑙斯.png': get_testfile('skin_mashu', '愚人节_奥特瑙斯.png'),
+        }):
+            tar_file_download(
+                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                file_in_archive='./愚人节_奥特瑙斯.png',
+                local_file='愚人节_奥特瑙斯.png',
+            )
+            file_compare(get_testfile('skin_mashu', '愚人节_奥特瑙斯.png'), '愚人节_奥特瑙斯.png')
+
+    def test_tar_file_download_lfs_replace(self, local_narugo_test_cos5t_tars):
+        with isolated_directory({
+            '愚人节_奥特瑙斯.png': get_testfile('skin_mashu', '.meta.json'),
+        }):
+            tar_file_download(
+                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                file_in_archive='./愚人节_奥特瑙斯.png',
+                local_file='愚人节_奥特瑙斯.png',
             )
             file_compare(get_testfile('skin_mashu', '愚人节_奥特瑙斯.png'), '愚人节_奥特瑙斯.png')
 

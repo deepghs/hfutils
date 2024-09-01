@@ -470,7 +470,9 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
     :type headers: Dict[str, str], optional
     :param endpoint: The Hugging Face API endpoint.
     :type endpoint: str, optional
-    :param force_download: Force download the file to destination path. Defualt to `False`.
+    :param force_download: Force download the file to destination path.
+                           Defualt to `False`, downloading will be skipped if the local file
+                           is fully matched with expected file.
     :type force_download: bool
     :param hf_token: The Hugging Face access token.
     :type hf_token: str, optional

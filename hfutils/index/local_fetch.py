@@ -190,7 +190,9 @@ def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
     :type idx_file: Optional[str]
     :param chunk_size: The size of chunks to read and write, in bytes. Default is 1MB.
     :type chunk_size: int
-    :param force_download: Force download the file to destination path. Defualt to `False`.
+    :param force_download: Force download the file to destination path.
+                           Defualt to `False`, downloading will be skipped if the local file
+                           is fully matched with expected file.
     :type force_download: bool
 
     :raises FileNotFoundError: If the specified file is not found in the archive.
