@@ -6,6 +6,7 @@ from typing import Optional, Dict, Union, List
 
 from huggingface_hub.file_download import http_get, hf_hub_url
 from huggingface_hub.utils import build_hf_headers
+from tqdm import tqdm
 
 from .hash import _f_sha256
 from ..operate.base import RepoTypeTyping, get_hf_client
@@ -438,7 +439,7 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
                          idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
                          proxies: Optional[Dict] = None, user_agent: Union[Dict, str, None] = None,
                          headers: Optional[Dict[str, str]] = None, endpoint: Optional[str] = None,
-                         force_download: bool = False, hf_token: Optional[str] = None):
+                         force_download: bool = False, silent: bool = False, hf_token: Optional[str] = None):
     """
     Download a file from a tar archive file in a Hugging Face repository.
 
@@ -547,7 +548,7 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
     if os.path.dirname(local_file):
         os.makedirs(os.path.dirname(local_file), exist_ok=True)
     try:
-        with open(local_file, 'wb') as f:
+        with open(local_file, 'wb') as f, tqdm(disable=True) as empty_tqdm:
             if info['size'] > 0:
                 http_get(
                     url_to_download,
@@ -557,6 +558,7 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
                     headers=headers,
                     expected_size=info['size'],
                     displayed_filename=file_in_archive,
+                    _tqdm_bar=empty_tqdm if silent else None,
                 )
 
         if os.path.getsize(local_file) != info['size']:
