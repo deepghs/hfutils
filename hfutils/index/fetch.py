@@ -441,21 +441,25 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
                          headers: Optional[Dict[str, str]] = None, endpoint: Optional[str] = None,
                          force_download: bool = False, silent: bool = False, hf_token: Optional[str] = None):
     """
-    Download a file from a tar archive file in a Hugging Face repository.
+    Download a specific file from a tar archive stored in a Hugging Face repository.
 
-    :param repo_id: The identifier of the repository.
+    This function allows you to extract and download a single file from a tar archive
+    that is hosted in a Hugging Face repository. It handles authentication, supports
+    different repository types, and can work with separate index repositories.
+
+    :param repo_id: The identifier of the repository containing the tar archive.
     :type repo_id: str
-    :param archive_in_repo: The path to the archive file in the repository.
+    :param archive_in_repo: The path to the tar archive file within the repository.
     :type archive_in_repo: str
-    :param file_in_archive: The path to the file inside the archive.
+    :param file_in_archive: The path to the desired file inside the tar archive.
     :type file_in_archive: str
-    :param local_file: The path to save the downloaded file locally.
+    :param local_file: The local path where the downloaded file will be saved.
     :type local_file: str
-    :param repo_type: The type of the Hugging Face repository.
+    :param repo_type: The type of the Hugging Face repository (e.g., 'dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping, optional
-    :param revision: The revision of the repository.
+    :param revision: The specific revision of the repository to use.
     :type revision: str, optional
-    :param idx_repo_id: The identifier of the index repository.
+    :param idx_repo_id: The identifier of a separate index repository, if applicable.
     :type idx_repo_id: str, optional
     :param idx_file_in_repo: The path to the index file in the index repository.
     :type idx_file_in_repo: str, optional
@@ -463,48 +467,58 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
     :type idx_repo_type: RepoTypeTyping, optional
     :param idx_revision: The revision of the index repository.
     :type idx_revision: str, optional
-    :param proxies: The proxies to be used for the HTTP request.
+    :param proxies: Proxy settings for the HTTP request.
     :type proxies: Dict, optional
-    :param user_agent: The user agent for the HTTP request.
+    :param user_agent: Custom user agent for the HTTP request.
     :type user_agent: Union[Dict, str, None], optional
-    :param headers: The additional headers for the HTTP request.
+    :param headers: Additional headers for the HTTP request.
     :type headers: Dict[str, str], optional
-    :param endpoint: The Hugging Face API endpoint.
+    :param endpoint: Custom Hugging Face API endpoint.
     :type endpoint: str, optional
-    :param force_download: Force download the file to destination path.
-                           Defualt to `False`, downloading will be skipped if the local file
-                           is fully matched with expected file.
+    :param force_download: If True, force re-download even if the file exists locally.
     :type force_download: bool
-    :param hf_token: The Hugging Face access token.
+    :param silent: If True, suppress progress bar output.
+    :type silent: bool
+    :param hf_token: Hugging Face authentication token.
     :type hf_token: str, optional
-    :raises FileNotFoundError: Raise this when file not exist in tar archive.
-    :raises ArchiveStandaloneFileIncompleteDownload: Raise when download incomplete.
-    :raises ArchiveStandaloneFileHashNotMatch: Raise when download hash not match.
 
-    Examples::
-        >>> from hfutils.index import hf_tar_file_download
-        >>>
-        >>> hf_tar_file_download(
-        ...     repo_id='deepghs/danbooru_newest',
-        ...     archive_in_repo='images/0000.tar',
-        ...     file_in_archive='7506000.jpg',
-        ...     local_file='test_example.jpg'  # download destination
-        ... )
+    :raises FileNotFoundError: If the specified file is not found in the tar archive.
+    :raises ArchiveStandaloneFileIncompleteDownload: If the download is incomplete.
+    :raises ArchiveStandaloneFileHashNotMatch: If the downloaded file's hash doesn't match the expected hash.
+
+    This function performs several steps:
+
+    1. Retrieves the index of the tar archive.
+    2. Checks if the desired file exists in the archive.
+    3. Constructs the download URL and headers.
+    4. Checks if the file already exists locally and matches the expected size and hash.
+    5. Downloads the file if necessary, using byte range requests for efficiency.
+    6. Verifies the downloaded file's size and hash.
+
+    Usage examples:
+        1. Basic usage:
+            >>> hf_tar_file_download(
+            ...     repo_id='deepghs/danbooru_newest',
+            ...     archive_in_repo='images/0000.tar',
+            ...     file_in_archive='7506000.jpg',
+            ...     local_file='test_example.jpg'  # download destination
+            ... )
+
+        2. Using a separate index repository:
+            >>> hf_tar_file_download(
+            ...     repo_id='nyanko7/danbooru2023',
+            ...     idx_repo_id='deepghs/danbooru2023_index',
+            ...     archive_in_repo='original/data-0000.tar',
+            ...     file_in_archive='1000.png',
+            ...     local_file='test_example.png'  # download destination
+            ... )
 
     .. note::
 
-        Besides, if the tar and index files are in different repositories, you can also use this function to
-        download the given file by explicitly assigning the ``idx_repo_id`` argument.
-
-        >>> from hfutils.index import hf_tar_file_download
-        >>>
-        >>> hf_tar_file_download(
-        ...     repo_id='nyanko7/danbooru2023',
-        ...     idx_repo_id='deepghs/danbooru2023_index',
-        ...     archive_in_repo='original/data-0000.tar',
-        ...     file_in_archive='1000.png',
-        ...     local_file='test_example.png'  # download destination
-        ... )
+        - This function is particularly useful for efficiently downloading single files from large tar archives
+          without having to download the entire archive.
+        - It supports authentication via the `hf_token` parameter, which is crucial for accessing private repositories.
+        - The function includes checks to avoid unnecessary downloads and to ensure the integrity of the downloaded file.
     """
     index = hf_tar_get_index(
         repo_id=repo_id,
