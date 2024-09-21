@@ -245,7 +245,7 @@ jobs:
           ls -al dist
           dist/hfutils -v
           dist/hfutils -h
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: hfutils-v${{ env.PACKAGE_VERSION }}-${{ env.OS_NAME }}-${{ env.CPU_ARCH }}-${{ env.GIT_COMMIT_ID }}
           path: dist
