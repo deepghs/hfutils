@@ -126,12 +126,20 @@
     
   <section id="module-hfutils.utils.path">
 <span id="hfutils-utils-path"></span><h1>hfutils.utils.path<a class="headerlink" href="#module-hfutils.utils.path" title="Permalink to this heading"></a></h1>
+<p>This module provides utilities for working with Hugging Face filesystem paths.
+It includes functions for normalizing paths, constructing Hugging Face filesystem paths,
+and parsing those paths into structured components. Additionally, it manages
+irregular repositories through caching and provides a data class for representing
+Hugging Face filesystem paths.</p>
 <section id="hf-normpath">
 <h2>hf_normpath<a class="headerlink" href="#hf-normpath" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.utils.path.hf_normpath">
 <span class="sig-prename descclassname"><span class="pre">hfutils.utils.path.</span></span><span class="sig-name descname"><span class="pre">hf_normpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hfutils/utils/path.html#hf_normpath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.path.hf_normpath" title="Permalink to this definition"></a></dt>
 <dd><p>Normalize a given path.</p>
+<p>This function takes a path as input and normalizes it by removing any redundant
+separators and converting it to a relative path. This can be useful for ensuring
+consistent path formatting across different operating systems.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>path</strong> (<em>Any</em>) – The path to normalize.</p>
@@ -150,8 +158,11 @@
 <h2>hf_fs_path<a class="headerlink" href="#hf-fs-path" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.utils.path.hf_fs_path">
-<span class="sig-prename descclassname"><span class="pre">hfutils.utils.path.</span></span><span class="sig-name descname"><span class="pre">hf_fs_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/utils/path.html#hf_fs_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.path.hf_fs_path" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.utils.path.</span></span><span class="sig-name descname"><span class="pre">hf_fs_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hfutils/utils/path.html#hf_fs_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.path.hf_fs_path" title="Permalink to this definition"></a></dt>
 <dd><p>Get the huggingface filesystem path.</p>
+<p>This function constructs a Hugging Face filesystem path from the given repository ID,
+filename, repository type, and optional revision. It ensures that the path is formatted
+correctly according to the Hugging Face conventions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -177,6 +188,9 @@
 <dt class="sig sig-object py" id="hfutils.utils.path.parse_hf_fs_path">
 <span class="sig-prename descclassname"><span class="pre">hfutils.utils.path.</span></span><span class="sig-name descname"><span class="pre">parse_hf_fs_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hfutils.utils.path.HfFileSystemPath" title="hfutils.utils.path.HfFileSystemPath"><span class="pre">HfFileSystemPath</span></a></span></span><a class="reference internal" href="../../_modules/hfutils/utils/path.html#parse_hf_fs_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.path.parse_hf_fs_path" title="Permalink to this definition"></a></dt>
 <dd><p>Parse the huggingface filesystem path.</p>
+<p>This function takes a Hugging Face filesystem path as input and parses it into
+its components: repository ID, filename, repository type, and revision. It validates
+the path format and raises an error if the path is invalid.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to parse.</p>
@@ -200,6 +214,9 @@
 <dt class="sig sig-object py" id="hfutils.utils.path.HfFileSystemPath">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.utils.path.</span></span><span class="sig-name descname"><span class="pre">HfFileSystemPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/utils/path.html#HfFileSystemPath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.path.HfFileSystemPath" title="Permalink to this definition"></a></dt>
 <dd><p>Huggingface FileSystem Path.</p>
+<p>This data class represents a Hugging Face filesystem path, encapsulating the
+repository ID, filename, repository type, and optional revision. It is used
+to provide a structured representation of filesystem paths used in Hugging Face.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -289,9 +306,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/pattern/api_doc/utils/path.html">dev/pattern</a></dd>
-                        <dd><a href="../../../dev/rate/api_doc/utils/path.html">dev/rate</a></dd>
                         <dd><a href="path.html">main</a></dd>
+                        <dd><a href="../../../dev/rate/api_doc/utils/path.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>

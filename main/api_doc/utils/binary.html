@@ -114,6 +114,12 @@
     
   <section id="module-hfutils.utils.binary">
 <span id="hfutils-utils-binary"></span><h1>hfutils.utils.binary<a class="headerlink" href="#module-hfutils.utils.binary" title="Permalink to this heading"></a></h1>
+<p>This module provides functionality to determine whether a given file is a binary file or a text file.
+It does so by reading the first 1024 bytes of the file and checking for the presence of non-text characters.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Inspired from <a class="reference external" href="https://stackoverflow.com/a/7392391/6995899">https://stackoverflow.com/a/7392391/6995899</a></p>
+</div>
 <section id="is-binary-file">
 <h2>is_binary_file<a class="headerlink" href="#is-binary-file" title="Permalink to this heading"></a></h2>
 <dl class="py function">
@@ -121,7 +127,8 @@
 <span class="sig-prename descclassname"><span class="pre">hfutils.utils.binary.</span></span><span class="sig-name descname"><span class="pre">is_binary_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/hfutils/utils/binary.html#is_binary_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.binary.is_binary_file" title="Permalink to this definition"></a></dt>
 <dd><p>Check if a given file is binary.</p>
 <p>This function reads the first 1024 bytes of the file and checks if it contains any
-non-text (binary) characters.</p>
+non-text (binary) characters. It uses a predefined set of text characters to determine
+the nature of the file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – The path to the file to be checked.</p>
@@ -132,7 +139,21 @@ non-text (binary) characters.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the specified file does not exist.</p></li>
+<li><p><strong>IOError</strong> – If there is an error reading the file.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
 </dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_binary_file</span><span class="p">(</span><span class="s1">&#39;example.txt&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_binary_file</span><span class="p">(</span><span class="s1">&#39;example.bin&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
@@ -212,9 +233,8 @@ non-text (binary) characters.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/pattern/api_doc/utils/binary.html">dev/pattern</a></dd>
-                        <dd><a href="../../../dev/rate/api_doc/utils/binary.html">dev/rate</a></dd>
                         <dd><a href="binary.html">main</a></dd>
+                        <dd><a href="../../../dev/rate/api_doc/utils/binary.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>

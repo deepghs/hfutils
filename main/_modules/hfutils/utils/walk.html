@@ -90,24 +90,45 @@
     
     
   <h1>Source code for hfutils.utils.walk</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides utilities for file handling, specifically for walking through directories</span>
+<span class="sd">and retrieving file paths. It includes a function to recursively search for files in a specified</span>
+<span class="sd">directory based on a given pattern.</span>
+
+<span class="sd">The primary function is `walk_files`, which allows users to easily obtain relative paths of all</span>
+<span class="sd">files within a directory structure, making it useful for file management tasks, data processing,</span>
+<span class="sd">and more.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span>
 
 
-<div class="viewcode-block" id="walk_files"><a class="viewcode-back" href="../../../api_doc/utils/walk.html#hfutils.utils.walk.walk_files">[docs]</a><span class="k">def</span> <span class="nf">walk_files</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="walk_files"><a class="viewcode-back" href="../../../api_doc/utils/walk.html#hfutils.utils.walk.walk_files">[docs]</a><span class="k">def</span> <span class="nf">walk_files</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;**&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Recursively walk through a directory and yield relative paths of all files.</span>
 
+<span class="sd">    This function takes a directory path and a pattern to search for files. It uses the `glob`</span>
+<span class="sd">    module to find all files that match the specified pattern within the directory and its</span>
+<span class="sd">    subdirectories. The yielded paths are relative to the specified directory.</span>
+
 <span class="sd">    :param directory: The root directory to start walking.</span>
 <span class="sd">    :type directory: str</span>
+<span class="sd">    :param pattern: The pattern to match files against, defaults to ``**/*`` which matches all files.</span>
+<span class="sd">    :type pattern: str</span>
 
 <span class="sd">    :return: An iterator that yields relative paths of all files in the directory.</span>
 <span class="sd">    :rtype: Iterator[str]</span>
+
+<span class="sd">    :example:</span>
+
+<span class="sd">    &gt;&gt;&gt; for file in walk_files(&#39;/path/to/directory&#39;):</span>
+<span class="sd">    ...     print(file)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
-            <span class="k">yield</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">directory</span><span class="p">)</span></div>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">directory</span><span class="p">))</span></div>
 </pre></div>
 
 
@@ -180,9 +201,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/pattern/index.html">dev/pattern</a></dd>
-                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="walk.html">main</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>

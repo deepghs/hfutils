@@ -90,7 +90,15 @@
     
     
   <h1>Source code for hfutils.utils.path</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides utilities for working with Hugging Face filesystem paths.</span>
+<span class="sd">It includes functions for normalizing paths, constructing Hugging Face filesystem paths,</span>
+<span class="sd">and parsing those paths into structured components. Additionally, it manages</span>
+<span class="sd">irregular repositories through caching and provides a data class for representing</span>
+<span class="sd">Hugging Face filesystem paths.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
@@ -103,6 +111,10 @@
 <div class="viewcode-block" id="hf_normpath"><a class="viewcode-back" href="../../../api_doc/utils/path.html#hfutils.utils.path.hf_normpath">[docs]</a><span class="k">def</span> <span class="nf">hf_normpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Normalize a given path.</span>
+
+<span class="sd">    This function takes a path as input and normalizes it by removing any redundant</span>
+<span class="sd">    separators and converting it to a relative path. This can be useful for ensuring</span>
+<span class="sd">    consistent path formatting across different operating systems.</span>
 
 <span class="sd">    :param path: The path to normalize.</span>
 <span class="sd">    :type path: Any</span>
@@ -117,9 +129,13 @@
 
 
 <div class="viewcode-block" id="hf_fs_path"><a class="viewcode-back" href="../../../api_doc/utils/path.html#hfutils.utils.path.hf_fs_path">[docs]</a><span class="k">def</span> <span class="nf">hf_fs_path</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-               <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+               <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the huggingface filesystem path.</span>
+
+<span class="sd">    This function constructs a Hugging Face filesystem path from the given repository ID,</span>
+<span class="sd">    filename, repository type, and optional revision. It ensures that the path is formatted</span>
+<span class="sd">    correctly according to the Hugging Face conventions.</span>
 
 <span class="sd">    :param repo_id: The repository ID.</span>
 <span class="sd">    :type repo_id: str</span>
@@ -157,6 +173,10 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get irregular repositories.</span>
 
+<span class="sd">    This function reads a JSON file containing a list of irregular repositories for</span>
+<span class="sd">    different types (models, datasets, spaces) and returns them as a dictionary.</span>
+<span class="sd">    It caches the results for efficiency.</span>
+
 <span class="sd">    :return: A dictionary containing irregular repositories.</span>
 <span class="sd">    :rtype: Dict[RepoTypeTyping, Set[str]]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -180,6 +200,10 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Huggingface FileSystem Path.</span>
 
+<span class="sd">    This data class represents a Hugging Face filesystem path, encapsulating the</span>
+<span class="sd">    repository ID, filename, repository type, and optional revision. It is used</span>
+<span class="sd">    to provide a structured representation of filesystem paths used in Hugging Face.</span>
+
 <span class="sd">    :param repo_id: The repository ID.</span>
 <span class="sd">    :type repo_id: str</span>
 
@@ -201,6 +225,10 @@
 <div class="viewcode-block" id="parse_hf_fs_path"><a class="viewcode-back" href="../../../api_doc/utils/path.html#hfutils.utils.path.parse_hf_fs_path">[docs]</a><span class="k">def</span> <span class="nf">parse_hf_fs_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HfFileSystemPath</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse the huggingface filesystem path.</span>
+
+<span class="sd">    This function takes a Hugging Face filesystem path as input and parses it into</span>
+<span class="sd">    its components: repository ID, filename, repository type, and revision. It validates</span>
+<span class="sd">    the path format and raises an error if the path is invalid.</span>
 
 <span class="sd">    :param path: The path to parse.</span>
 <span class="sd">    :type path: str</span>
@@ -306,9 +334,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/pattern/index.html">dev/pattern</a></dd>
-                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="path.html">main</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>

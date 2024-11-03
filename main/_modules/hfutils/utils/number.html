@@ -90,7 +90,19 @@
     
     
   <h1>Source code for hfutils.utils.number</h1><div class="highlight"><pre>
-<span></span><span class="n">_NUM_TAGS</span> <span class="o">=</span> <span class="p">[</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functionality to categorize numeric values into predefined ranges,</span>
+<span class="sd">returning corresponding tags that represent these ranges. This can be particularly useful</span>
+<span class="sd">for labeling metadata in applications such as HuggingFace repositories, where numeric</span>
+<span class="sd">values need to be classified for better understanding and organization.</span>
+
+<span class="sd">The ranges are defined in a list of tuples, where each tuple contains a tag and the</span>
+<span class="sd">minimum and maximum bounds for that range. The primary function in this module is</span>
+<span class="sd">`number_to_tag`, which takes a numeric value and returns the appropriate tag based</span>
+<span class="sd">on the defined ranges.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">_NUM_TAGS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="s1">&#39;n&lt;1K&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1_000</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;1K&lt;n&lt;10K&#39;</span><span class="p">,</span> <span class="mi">1_000</span><span class="p">,</span> <span class="mi">10_000</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;10K&lt;n&lt;100K&#39;</span><span class="p">,</span> <span class="mi">10_000</span><span class="p">,</span> <span class="mi">100_000</span><span class="p">),</span>
@@ -208,9 +220,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/pattern/index.html">dev/pattern</a></dd>
-                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="number.html">main</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>

@@ -114,6 +114,14 @@
     
   <section id="module-hfutils.utils.number">
 <span id="hfutils-utils-number"></span><h1>hfutils.utils.number<a class="headerlink" href="#module-hfutils.utils.number" title="Permalink to this heading"></a></h1>
+<p>This module provides functionality to categorize numeric values into predefined ranges,
+returning corresponding tags that represent these ranges. This can be particularly useful
+for labeling metadata in applications such as HuggingFace repositories, where numeric
+values need to be classified for better understanding and organization.</p>
+<p>The ranges are defined in a list of tuples, where each tuple contains a tag and the
+minimum and maximum bounds for that range. The primary function in this module is
+<cite>number_to_tag</cite>, which takes a numeric value and returns the appropriate tag based
+on the defined ranges.</p>
 <section id="number-to-tag">
 <h2>number_to_tag<a class="headerlink" href="#number-to-tag" title="Permalink to this heading"></a></h2>
 <dl class="py function">
@@ -225,9 +233,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/pattern/api_doc/utils/number.html">dev/pattern</a></dd>
-                        <dd><a href="../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="number.html">main</a></dd>
+                        <dd><a href="../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>

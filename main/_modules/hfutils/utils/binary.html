@@ -90,7 +90,14 @@
     
     
   <h1>Source code for hfutils.utils.binary</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Inspired from https://stackoverflow.com/a/7392391/6995899</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functionality to determine whether a given file is a binary file or a text file.</span>
+<span class="sd">It does so by reading the first 1024 bytes of the file and checking for the presence of non-text characters.</span>
+
+<span class="sd">.. note::</span>
+<span class="sd">    Inspired from https://stackoverflow.com/a/7392391/6995899</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="n">_TEXT_CHARS</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">({</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">27</span><span class="p">}</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mh">0x20</span><span class="p">,</span> <span class="mh">0x100</span><span class="p">))</span> <span class="o">-</span> <span class="p">{</span><span class="mh">0x7f</span><span class="p">})</span>
 
 
@@ -99,13 +106,24 @@
 <span class="sd">    Check if a given file is binary.</span>
 
 <span class="sd">    This function reads the first 1024 bytes of the file and checks if it contains any</span>
-<span class="sd">    non-text (binary) characters.</span>
+<span class="sd">    non-text (binary) characters. It uses a predefined set of text characters to determine</span>
+<span class="sd">    the nature of the file.</span>
 
 <span class="sd">    :param file: The path to the file to be checked.</span>
 <span class="sd">    :type file: str</span>
 
 <span class="sd">    :return: True if the file is binary, False if it is a text file.</span>
 <span class="sd">    :rtype: bool</span>
+
+<span class="sd">    :raises FileNotFoundError: If the specified file does not exist.</span>
+<span class="sd">    :raises IOError: If there is an error reading the file.</span>
+
+<span class="sd">    :example:</span>
+
+<span class="sd">    &gt;&gt;&gt; is_binary_file(&#39;example.txt&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; is_binary_file(&#39;example.bin&#39;)</span>
+<span class="sd">    True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">prefix</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
@@ -182,9 +200,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/pattern/index.html">dev/pattern</a></dd>
-                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="binary.html">main</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>

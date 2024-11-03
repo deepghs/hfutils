@@ -113,15 +113,27 @@
     
   <section id="module-hfutils.utils.walk">
 <span id="hfutils-utils-walk"></span><h1>hfutils.utils.walk<a class="headerlink" href="#module-hfutils.utils.walk" title="Permalink to this heading"></a></h1>
+<p>This module provides utilities for file handling, specifically for walking through directories
+and retrieving file paths. It includes a function to recursively search for files in a specified
+directory based on a given pattern.</p>
+<p>The primary function is <cite>walk_files</cite>, which allows users to easily obtain relative paths of all
+files within a directory structure, making it useful for file management tasks, data processing,
+and more.</p>
 <section id="walk-files">
 <h2>walk_files<a class="headerlink" href="#walk-files" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.utils.walk.walk_files">
-<span class="sig-prename descclassname"><span class="pre">hfutils.utils.walk.</span></span><span class="sig-name descname"><span class="pre">walk_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/hfutils/utils/walk.html#walk_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.walk.walk_files" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.utils.walk.</span></span><span class="sig-name descname"><span class="pre">walk_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'**/*'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/hfutils/utils/walk.html#walk_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.walk.walk_files" title="Permalink to this definition"></a></dt>
 <dd><p>Recursively walk through a directory and yield relative paths of all files.</p>
+<p>This function takes a directory path and a pattern to search for files. It uses the <cite>glob</cite>
+module to find all files that match the specified pattern within the directory and its
+subdirectories. The yielded paths are relative to the specified directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>directory</strong> (<em>str</em>) – The root directory to start walking.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directory</strong> (<em>str</em>) – The root directory to start walking.</p></li>
+<li><p><strong>pattern</strong> (<em>str</em>) – The pattern to match files against, defaults to <code class="docutils literal notranslate"><span class="pre">**/*</span></code> which matches all files.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>An iterator that yields relative paths of all files in the directory.</p>
@@ -129,7 +141,13 @@
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Iterator[str]</p>
 </dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
 </dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">walk_files</span><span class="p">(</span><span class="s1">&#39;/path/to/directory&#39;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
@@ -208,9 +226,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/pattern/api_doc/utils/walk.html">dev/pattern</a></dd>
-                        <dd><a href="../../../dev/rate/api_doc/utils/walk.html">dev/rate</a></dd>
                         <dd><a href="walk.html">main</a></dd>
+                        <dd><a href="../../../dev/rate/api_doc/utils/walk.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>
