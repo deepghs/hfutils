@@ -1,3 +1,11 @@
+"""
+This module provides utilities for working with Hugging Face filesystem paths.
+It includes functions for normalizing paths, constructing Hugging Face filesystem paths,
+and parsing those paths into structured components. Additionally, it manages
+irregular repositories through caching and provides a data class for representing
+Hugging Face filesystem paths.
+"""
+
 import json
 import os
 import re
@@ -12,6 +20,10 @@ def hf_normpath(path) -> str:
     """
     Normalize a given path.
 
+    This function takes a path as input and normalizes it by removing any redundant
+    separators and converting it to a relative path. This can be useful for ensuring
+    consistent path formatting across different operating systems.
+
     :param path: The path to normalize.
     :type path: Any
 
@@ -25,9 +37,13 @@ def hf_normpath(path) -> str:
 
 
 def hf_fs_path(repo_id: str, filename: str,
-               repo_type: RepoTypeTyping = 'dataset', revision: Optional[str] = None):
+               repo_type: RepoTypeTyping = 'dataset', revision: Optional[str] = None) -> str:
     """
     Get the huggingface filesystem path.
+
+    This function constructs a Hugging Face filesystem path from the given repository ID,
+    filename, repository type, and optional revision. It ensures that the path is formatted
+    correctly according to the Hugging Face conventions.
 
     :param repo_id: The repository ID.
     :type repo_id: str
@@ -65,6 +81,10 @@ def _irregular_repos() -> Dict[RepoTypeTyping, Set[str]]:
     """
     Get irregular repositories.
 
+    This function reads a JSON file containing a list of irregular repositories for
+    different types (models, datasets, spaces) and returns them as a dictionary.
+    It caches the results for efficiency.
+
     :return: A dictionary containing irregular repositories.
     :rtype: Dict[RepoTypeTyping, Set[str]]
     """
@@ -88,6 +108,10 @@ class HfFileSystemPath:
     """
     Huggingface FileSystem Path.
 
+    This data class represents a Hugging Face filesystem path, encapsulating the
+    repository ID, filename, repository type, and optional revision. It is used
+    to provide a structured representation of filesystem paths used in Hugging Face.
+
     :param repo_id: The repository ID.
     :type repo_id: str
 
@@ -109,6 +133,10 @@ class HfFileSystemPath:
 def parse_hf_fs_path(path: str) -> HfFileSystemPath:
     """
     Parse the huggingface filesystem path.
+
+    This function takes a Hugging Face filesystem path as input and parses it into
+    its components: repository ID, filename, repository type, and revision. It validates
+    the path format and raises an error if the path is invalid.
 
     :param path: The path to parse.
     :type path: str
