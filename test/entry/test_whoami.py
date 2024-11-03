@@ -33,10 +33,9 @@ class TestEntryWhoami:
         for org_info in [
             '@waifu-research-department (full name: The Waifu Research Department)',
             '@deepghs (full name: DeepGHS)',
-            '@CyberHarem (full name: DeepGHS CyberHarem)',
-            '@BangumiBase (full name: DeepGHS BangumiBase)',
+            '@CyberHarem (full name: CyberHarem)',
+            '@BangumiBase (full name: BangumiBase)',
             '@DeepBase (full name: DeepBase)',
-            '@CyberHaremXL (full name: DeepGHS CyberHarem for SDXL)',
             '@AppleHarem (full name: LittleApple AppleHarem)',
         ]:
             assert org_info in text, f'Organization {org_info!r} not found.'

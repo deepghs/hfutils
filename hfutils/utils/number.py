@@ -1,3 +1,15 @@
+"""
+This module provides functionality to categorize numeric values into predefined ranges,
+returning corresponding tags that represent these ranges. This can be particularly useful
+for labeling metadata in applications such as HuggingFace repositories, where numeric
+values need to be classified for better understanding and organization.
+
+The ranges are defined in a list of tuples, where each tuple contains a tag and the
+minimum and maximum bounds for that range. The primary function in this module is
+`number_to_tag`, which takes a numeric value and returns the appropriate tag based
+on the defined ranges.
+"""
+
 _NUM_TAGS = [
     ('n<1K', 0, 1_000),
     ('1K<n<10K', 1_000, 10_000),
