@@ -9,8 +9,8 @@ except ImportError:  # pragma: no cover
     rarfile = None
 
 
-def _rar_pack(directory, zip_file, silent: bool = False, clear: bool = False):
-    _ = directory, zip_file, silent, clear
+def _rar_pack(directory, zip_file, pattern: Optional[str] = None, silent: bool = False, clear: bool = False):
+    _ = directory, zip_file, pattern, silent, clear
     raise RuntimeError('RAR format packing is not supported.')
 
 

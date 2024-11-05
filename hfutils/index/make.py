@@ -262,7 +262,12 @@ def hf_tar_create_from_directory(
         local_tar_file = os.path.join(td, archive_in_repo)
         if os.path.dirname(local_tar_file):
             os.makedirs(os.path.dirname(local_tar_file), exist_ok=True)
-        archive_pack('tar', local_directory, local_tar_file, silent=silent)
+        archive_pack(
+            type_name='tar',
+            directory=local_directory,
+            archive_file=local_tar_file,
+            silent=silent,
+        )
         tar_create_index(local_tar_file, chunk_for_hash=chunk_for_hash, with_hash=with_hash, silent=silent)
 
         upload_directory_as_directory(

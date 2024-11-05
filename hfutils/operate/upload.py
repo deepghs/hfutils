@@ -73,7 +73,12 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
     archive_type = get_archive_type(archive_in_repo)
     with TemporaryDirectory() as td:
         local_archive_file = os.path.join(td, os.path.basename(archive_in_repo))
-        archive_pack(archive_type, local_directory, local_archive_file, silent=silent)
+        archive_pack(
+            type_name=archive_type,
+            directory=local_directory,
+            archive_file=local_archive_file,
+            silent=silent
+        )
         upload_file_to_file(local_archive_file, repo_id, archive_in_repo,
                             repo_type, revision, message, hf_token=hf_token)
 

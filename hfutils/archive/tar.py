@@ -28,7 +28,8 @@ except ImportError:
 CompressTyping = Literal['', 'gzip', 'bzip2', 'xz']
 
 
-def _tarfile_pack(directory, tar_file, compress: CompressTyping = "gzip", silent: bool = False, clear: bool = False):
+def _tarfile_pack(directory, tar_file, pattern: Optional[str] = None,
+                  compress: CompressTyping = "gzip", silent: bool = False, clear: bool = False):
     if compress is None:
         tar_compression = ''
     elif compress == 'gzip':
@@ -42,7 +43,7 @@ def _tarfile_pack(directory, tar_file, compress: CompressTyping = "gzip", silent
                          "supported : {0}".format(compress))
 
     with tarfile.open(tar_file, f'w|{tar_compression}') as tar:
-        progress = tqdm(walk_files(directory), silent=silent, desc=f'Packing {directory!r} ...')
+        progress = tqdm(walk_files(directory, pattern=pattern), silent=silent, desc=f'Packing {directory!r} ...')
         for file in progress:
             progress.set_description(file)
             tar.add(os.path.join(directory, file), file)

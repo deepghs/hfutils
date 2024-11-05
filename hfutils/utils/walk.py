@@ -7,13 +7,12 @@ The primary function is `walk_files`, which allows users to easily obtain relati
 files within a directory structure, making it useful for file management tasks, data processing,
 and more.
 """
-
 import glob
 import os
-from typing import Iterator
+from typing import Iterator, Optional
 
 
-def walk_files(directory: str, pattern: str = os.path.join('**', '*')) -> Iterator[str]:
+def walk_files(directory: str, pattern: Optional[str] = None, ) -> Iterator[str]:
     """
     Recursively walk through a directory and yield relative paths of all files.
 
@@ -34,6 +33,6 @@ def walk_files(directory: str, pattern: str = os.path.join('**', '*')) -> Iterat
     >>> for file in walk_files('/path/to/directory'):
     ...     print(file)
     """
-    for path in glob.glob(os.path.abspath(os.path.join(directory, pattern)), recursive=True):
+    for path in glob.glob(os.path.abspath(os.path.join(directory, pattern or os.path.join('**', '*'))), recursive=True):
         if os.path.isfile(path):
             yield os.path.relpath(path, start=os.path.abspath(directory))
