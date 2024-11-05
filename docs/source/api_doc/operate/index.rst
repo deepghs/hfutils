@@ -11,6 +11,7 @@ hfutils.operate
 
     base
     download
+    duplicate
     upload
     validate
 
