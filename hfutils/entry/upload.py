@@ -74,10 +74,13 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                   help='Set public repository when created.', show_default=True)
     @click.option('-w', '--wildcard', 'wildcard', type=str, default=None,
                   help='Wildcard for files to download. Only applied when -d is used.', show_default=True)
+    @click.option('-m', '--message', 'message', type=str, default=None,
+                  help='Commit message for this operation.', show_default=True)
     @command_wrap()
     def upload(repo_id: str, repo_type: RepoTypeTyping,
                file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
-               input_path: str, revision: str, clear: bool, private: bool, public: bool, wildcard: Optional[str]):
+               input_path: str, revision: str, clear: bool, private: bool, public: bool, wildcard: Optional[str],
+               message: Optional[str]):
         """
         Upload data to HuggingFace repositories.
 
@@ -108,6 +111,8 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
         :type public: bool
         :param wildcard: Wildcard pattern for selecting files to upload.
         :type wildcard: Optional[str]
+        :param message: Commit message for this operation.
+        :type message: Optional[str]
 
         :raises NoRemotePathAssignedWithUpload: If no remote path in repository is assigned.
         :raises ValueError: If both private and public flags are set.
@@ -150,6 +155,7 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                 file_in_repo=file_in_repo,
                 repo_type=repo_type,
                 revision=revision,
+                message=message,
             )
 
         elif archive_in_repo:
@@ -163,6 +169,7 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                 revision=revision,
                 pattern=wildcard,
                 silent=False,
+                message=message,
             )
 
         elif dir_in_repo:
@@ -174,6 +181,7 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                 revision=revision,
                 clear=clear,
                 pattern=wildcard,
+                message=message,
             )
 
         else:
