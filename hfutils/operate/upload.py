@@ -1,3 +1,9 @@
+"""
+This module provides functions for uploading files and directories to Hugging Face repositories.
+
+The module uses the Hugging Face Hub API client for repository operations.
+"""
+
 import datetime
 import logging
 import math
@@ -34,6 +40,11 @@ def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
     :type message: Optional[str]
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
+
+    :raises: Any exception raised by the Hugging Face Hub API client.
+
+    This function uses the Hugging Face Hub API client to upload a single file to a specified
+    repository. It's useful for adding or updating individual files in a repository.
     """
     hf_client = get_hf_client(hf_token)
     hf_client.upload_file(
@@ -46,7 +57,7 @@ def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
     )
 
 
-def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: str,
+def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: str, pattern: Optional[str] = None,
                                 repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                 message: Optional[str] = None, silent: bool = False,
                                 hf_token: Optional[str] = None):
@@ -59,6 +70,8 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
     :type repo_id: str
     :param archive_in_repo: The archive file path within the repository.
     :type archive_in_repo: str
+    :param pattern: A pattern to filter files in the local directory.
+    :type pattern: Optional[str]
     :param repo_type: The type of the repository ('dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
@@ -69,6 +82,12 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
     :type silent: bool
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
+
+    :raises: Any exception raised during archive creation or file upload.
+
+    This function compresses the specified local directory into an archive file and then
+    uploads it to the Hugging Face repository. It's useful for uploading entire directories
+    as a single file, which can be more efficient for large directories.
     """
     archive_type = get_archive_type(archive_in_repo)
     with TemporaryDirectory() as td:
@@ -77,7 +96,8 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
             type_name=archive_type,
             directory=local_directory,
             archive_file=local_archive_file,
-            silent=silent
+            pattern=pattern,
+            silent=silent,
         )
         upload_file_to_file(local_archive_file, repo_id, archive_in_repo,
                             repo_type, revision, message, hf_token=hf_token)
@@ -87,7 +107,7 @@ _PATH_SEP = re.compile(r'[/\\]+')
 
 
 def upload_directory_as_directory(
-        local_directory, repo_id: str, path_in_repo: str,
+        local_directory, repo_id: str, path_in_repo: str, pattern: Optional[str] = None,
         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
         message: Optional[str] = None, time_suffix: bool = True,
         clear: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
@@ -103,6 +123,8 @@ def upload_directory_as_directory(
     :type repo_id: str
     :param path_in_repo: The directory path within the repository.
     :type path_in_repo: str
+    :param pattern: A pattern to filter files in the local directory.
+    :type pattern: Optional[str]
     :param repo_type: The type of the repository ('dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
@@ -118,22 +140,28 @@ def upload_directory_as_directory(
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
     :param operation_chunk_size: Chunk size of the operations. All the operations will be
-        seperated into multiple commits when this is set.
+        separated into multiple commits when this is set.
     :type operation_chunk_size: Optional[int]
     :param upload_timespan: Upload minimal time interval when chunked uploading enabled.
     :type upload_timespan: float
 
+    :raises: Any exception raised during the upload process.
+
+    This function uploads a local directory to a Hugging Face repository, maintaining its
+    structure. It can handle large directories by chunking the upload process and provides
+    options for clearing existing files and ignoring specific patterns.
+
     .. note::
-        When `operation_chunk_size` is set, multiple commits will be created. When some commits failed,
-        it will roll back to the startup commit, using :func:`hfutils.repository.hf_hub_rollback` function..
+        When `operation_chunk_size` is set, multiple commits will be created. When some commits fail,
+        it will roll back to the startup commit, using :func:`hfutils.repository.hf_hub_rollback` function.
 
     .. warning::
         When `operation_chunk_size` is set, multiple commits will be created. But HuggingFace's repository
-        api cannot guarantee the atomic feature of your data. So **this function is not thread-safe**.
+        API cannot guarantee the atomic feature of your data. So **this function is not thread-safe**.
 
     .. note::
         The rate limit of HuggingFace repository commit creation is approximately 120 commits / hour.
-        So if you really have large number of chunks to create, please set the `upload_timespan` to a value
+        So if you really have a large number of chunks to create, please set the `upload_timespan` to a value
         no less than `30.0` to make sure your uploading will not be rate-limited.
     """
     hf_client = get_hf_client(hf_token)
@@ -153,7 +181,7 @@ def upload_directory_as_directory(
         pre_exist_files = set()
 
     operations = []
-    for file in walk_files(local_directory):
+    for file in walk_files(local_directory, pattern=pattern):
         segments = tuple(seg for seg in _PATH_SEP.split(file) if seg)
         if segments in pre_exist_files:
             pre_exist_files.remove(segments)
@@ -202,7 +230,6 @@ def upload_directory_as_directory(
                     operations=operation_chunk,
                     commit_message=f'[Chunk #{chunk_id + 1}/{total_chunks}] {commit_message}',
                 )
-
 
         except Exception:
             from ..repository import hf_hub_rollback
