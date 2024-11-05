@@ -1,3 +1,15 @@
+"""
+This module provides functionality for uploading data to HuggingFace repositories.
+
+It includes a CLI command for uploading files, archives, or directories to HuggingFace
+repositories. The module handles different upload scenarios, including creating new
+repositories, setting visibility, and handling various input types.
+
+Usage:
+    This module is typically used as part of a larger CLI application for interacting
+    with HuggingFace repositories.
+"""
+
 import warnings
 from typing import Optional
 
@@ -13,6 +25,12 @@ from ..utils import get_requests_session
 class NoRemotePathAssignedWithUpload(ClickErrorException):
     """
     Custom exception class for indicating that no remote path in the repository is assigned.
+
+    This exception is raised when attempting to upload without specifying a remote path
+    (file, archive, or directory) in the repository.
+
+    :attribute exit_code: The exit code to be used when this exception is raised.
+    :type exit_code: int
     """
     exit_code = 0x21
 
@@ -21,9 +39,12 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
     """
     Add the 'upload' subcommand to the CLI.
 
-    :param cli: The Click CLI application.
+    This function defines and adds the 'upload' command to the provided CLI group.
+    It sets up all the necessary options and implements the upload functionality.
+
+    :param cli: The Click CLI application to which the upload command will be added.
     :type cli: click.Group
-    :return: The modified Click CLI application.
+    :return: The modified Click CLI application with the upload command added.
     :rtype: click.Group
     """
 
@@ -51,12 +72,18 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                   help='Set private repository when created.', show_default=True)
     @click.option('-P', '--public', 'public', is_flag=True, type=bool, default=None,
                   help='Set public repository when created.', show_default=True)
+    @click.option('-w', '--wildcard', 'wildcard', type=str, default=None,
+                  help='Wildcard for files to download. Only applied when -d is used.', show_default=True)
     @command_wrap()
     def upload(repo_id: str, repo_type: RepoTypeTyping,
                file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
-               input_path: str, revision: str, clear: bool, private: bool, public: bool):
+               input_path: str, revision: str, clear: bool, private: bool, public: bool, wildcard: Optional[str]):
         """
         Upload data to HuggingFace repositories.
+
+        This function handles the upload process to HuggingFace repositories. It supports
+        uploading individual files, archives, or entire directories. The function also
+        manages repository creation and visibility settings.
 
         :param repo_id: Repository to upload to.
         :type repo_id: str
@@ -79,6 +106,11 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
         :type private: bool
         :param public: Set public repository when created.
         :type public: bool
+        :param wildcard: Wildcard pattern for selecting files to upload.
+        :type wildcard: Optional[str]
+
+        :raises NoRemotePathAssignedWithUpload: If no remote path in repository is assigned.
+        :raises ValueError: If both private and public flags are set.
         """
         configure_http_backend(get_requests_session)
 
@@ -129,6 +161,7 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                 archive_in_repo=archive_in_repo,
                 repo_type=repo_type,
                 revision=revision,
+                pattern=wildcard,
                 silent=False,
             )
 
@@ -140,6 +173,7 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                 repo_type=repo_type,
                 revision=revision,
                 clear=clear,
+                pattern=wildcard,
             )
 
         else:

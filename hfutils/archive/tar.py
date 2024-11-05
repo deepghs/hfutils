@@ -1,3 +1,13 @@
+"""
+This module provides functionality for working with tar archive files.
+
+It includes functions for packing and unpacking tar archives with various compression options.
+The module also registers different tar archive types based on the available compression libraries.
+
+.. note::
+    Some compression methods may not be available depending on the system's installed libraries.
+"""
+
 import copy
 import os.path
 import tarfile
@@ -28,7 +38,25 @@ except ImportError:
 CompressTyping = Literal['', 'gzip', 'bzip2', 'xz']
 
 
-def _tarfile_pack(directory, tar_file, compress: CompressTyping = "gzip", silent: bool = False, clear: bool = False):
+def _tarfile_pack(directory, tar_file, pattern: Optional[str] = None,
+                  compress: CompressTyping = "gzip", silent: bool = False, clear: bool = False):
+    """
+    Pack a directory into a tar archive file with optional compression.
+
+    :param directory: The directory to pack.
+    :type directory: str
+    :param tar_file: The name of the tar file to create.
+    :type tar_file: str
+    :param pattern: Optional file pattern to filter files for packing.
+    :type pattern: str, optional
+    :param compress: Compression method to use ('', 'gzip', 'bzip2', 'xz').
+    :type compress: CompressTyping
+    :param silent: If True, suppress progress output.
+    :type silent: bool
+    :param clear: If True, remove packed files from the source directory.
+    :type clear: bool
+    :raises ValueError: If an unsupported compression method is specified.
+    """
     if compress is None:
         tar_compression = ''
     elif compress == 'gzip':
@@ -42,7 +70,7 @@ def _tarfile_pack(directory, tar_file, compress: CompressTyping = "gzip", silent
                          "supported : {0}".format(compress))
 
     with tarfile.open(tar_file, f'w|{tar_compression}') as tar:
-        progress = tqdm(walk_files(directory), silent=silent, desc=f'Packing {directory!r} ...')
+        progress = tqdm(walk_files(directory, pattern=pattern), silent=silent, desc=f'Packing {directory!r} ...')
         for file in progress:
             progress.set_description(file)
             tar.add(os.path.join(directory, file), file)
@@ -51,6 +79,20 @@ def _tarfile_pack(directory, tar_file, compress: CompressTyping = "gzip", silent
 
 
 def _tarfile_unpack(tar_file, directory, silent: bool = False, numeric_owner=False, password: Optional[str] = None):
+    """
+    Unpack a tar archive file into a directory.
+
+    :param tar_file: The tar file to unpack.
+    :type tar_file: str
+    :param directory: The directory to unpack the files into.
+    :type directory: str
+    :param silent: If True, suppress progress output.
+    :type silent: bool
+    :param numeric_owner: If True, use numeric owner (UID, GID) instead of names.
+    :type numeric_owner: bool
+    :param password: Ignored for tar files (included for compatibility with other archive types).
+    :type password: str, optional
+    """
     if password is not None:
         warnings.warn('Password is not supported in tar archive files.\n'
                       'So assigned password will be ignored.')
@@ -82,6 +124,7 @@ def _tarfile_unpack(tar_file, directory, silent: bool = False, numeric_owner=Fal
             tar.chmod(tarinfo, dirpath)
 
 
+# Register various tar archive types based on available compression libraries
 register_archive_type('tar', ['.tar'], partial(_tarfile_pack, compress=None), _tarfile_unpack)
 if _ZLIB_SUPPORTED:
     register_archive_type('gztar', ['.tar.gz', '.tgz'], partial(_tarfile_pack, compress='gzip'), _tarfile_unpack)

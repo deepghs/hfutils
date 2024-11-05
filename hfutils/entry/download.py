@@ -1,3 +1,15 @@
+"""
+This module provides functionality for downloading data from HuggingFace repositories.
+
+It includes a CLI command for downloading files, archives, or directories from HuggingFace,
+with various options for customization. The module also defines custom exceptions and
+utility functions to support the download process.
+
+Usage:
+    This module is typically used as part of a larger CLI application for
+    interacting with HuggingFace repositories.
+"""
+
 import os
 import warnings
 from typing import Optional
@@ -14,6 +26,12 @@ from ..utils import get_requests_session
 class NoRemotePathAssignedWithDownload(ClickErrorException):
     """
     Custom exception class for indicating that no remote path in the repository is assigned.
+
+    This exception is raised when a download is attempted without specifying a file,
+    archive, or directory to download from the repository.
+
+    :attribute exit_code: The exit code to be used when this exception is raised.
+    :type exit_code: int
     """
     exit_code = 0x11
 
@@ -22,9 +40,12 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
     """
     Add the 'download' subcommand to the CLI.
 
-    :param cli: The Click CLI application.
+    This function defines and adds the 'download' command to the given CLI group.
+    It sets up all the necessary options and implements the download functionality.
+
+    :param cli: The Click CLI application to which the download command will be added.
     :type cli: click.Group
-    :return: The modified Click CLI application.
+    :return: The modified Click CLI application with the download command added.
     :rtype: click.Group
     """
 
@@ -68,6 +89,10 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
         """
         Download data from HuggingFace repositories.
 
+        This function implements the core functionality of the download command.
+        It handles downloading individual files, archives, or entire directories
+        from HuggingFace repositories based on the provided options.
+
         :param repo_id: Repository to download from.
         :type repo_id: str
         :param repo_type: Type of the HuggingFace repository.
@@ -85,13 +110,17 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
         :param max_workers: Max workers to download
         :type max_workers: int
         :param password: Password for the archive file. Only applied when -a is used.
-        :type password: str, optional
+        :type password: Optional[str]
         :param wildcard: Wildcard for files to download. Only applied when -d is used.
-        :type password: str, optional
+        :type wildcard: Optional[str]
         :param soft_mode_when_check: Just check the size of the expected file when enabled. Default is False.
         :type soft_mode_when_check: bool
         :param tmpdir: Use custom temporary Directory.
-        :type tmpdir: str, optional
+        :type tmpdir: Optional[str]
+        :param show_all: Show all files, including hidden files.
+        :type show_all: bool
+
+        :raises NoRemotePathAssignedWithDownload: If no remote path in repository is assigned.
         """
         configure_http_backend(get_requests_session)
 
