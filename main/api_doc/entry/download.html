@@ -116,12 +116,28 @@
     
   <section id="module-hfutils.entry.download">
 <span id="hfutils-entry-download"></span><h1>hfutils.entry.download<a class="headerlink" href="#module-hfutils.entry.download" title="Permalink to this heading"></a></h1>
+<p>This module provides functionality for downloading data from HuggingFace repositories.</p>
+<p>It includes a CLI command for downloading files, archives, or directories from HuggingFace,
+with various options for customization. The module also defines custom exceptions and
+utility functions to support the download process.</p>
+<dl class="simple">
+<dt>Usage:</dt><dd><p>This module is typically used as part of a larger CLI application for
+interacting with HuggingFace repositories.</p>
+</dd>
+</dl>
 <section id="noremotepathassignedwithdownload">
 <h2>NoRemotePathAssignedWithDownload<a class="headerlink" href="#noremotepathassignedwithdownload" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="hfutils.entry.download.NoRemotePathAssignedWithDownload">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.download.</span></span><span class="sig-name descname"><span class="pre">NoRemotePathAssignedWithDownload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/download.html#NoRemotePathAssignedWithDownload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.download.NoRemotePathAssignedWithDownload" title="Permalink to this definition"></a></dt>
 <dd><p>Custom exception class for indicating that no remote path in the repository is assigned.</p>
+<p>This exception is raised when a download is attempted without specifying a file,
+archive, or directory to download from the repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attribute exit_code<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The exit code to be used when this exception is raised.</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hfutils.entry.download.NoRemotePathAssignedWithDownload.exit_code">
 <span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">17</span></em><a class="headerlink" href="#hfutils.entry.download.NoRemotePathAssignedWithDownload.exit_code" title="Permalink to this definition"></a></dt>

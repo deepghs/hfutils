@@ -90,7 +90,19 @@
     
     
   <h1>Source code for hfutils.archive.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os.path</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functionality for handling archive files in various formats.</span>
+
+<span class="sd">It includes functions for registering custom archive types, packing directories into archives,</span>
+<span class="sd">unpacking archives, and determining archive types based on file extensions. The module supports</span>
+<span class="sd">a flexible system for working with different archive formats through a registration mechanism.</span>
+
+<span class="sd">.. note::</span>
+<span class="sd">    This module uses a global dictionary to store registered archive types, so it&#39;s</span>
+<span class="sd">    important to register custom types before using the packing and unpacking functions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
@@ -101,14 +113,27 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Register a custom archive type with associated file extensions and packing/unpacking functions.</span>
 
-<span class="sd">    :param name: The name of the archive type.</span>
+<span class="sd">    This function allows users to add support for new archive types by providing the necessary</span>
+<span class="sd">    information and functions to handle the archive format.</span>
+
+<span class="sd">    :param name: The name of the archive type (e.g., &#39;zip&#39;, &#39;tar&#39;).</span>
 <span class="sd">    :type name: str</span>
-<span class="sd">    :param exts: A list of file extensions associated with the archive type.</span>
+<span class="sd">    :param exts: A list of file extensions associated with the archive type (e.g., [&#39;.zip&#39;]).</span>
 <span class="sd">    :type exts: List[str]</span>
 <span class="sd">    :param fn_pack: The packing function that takes a directory and an archive filename as input and creates an archive.</span>
 <span class="sd">    :type fn_pack: Callable</span>
 <span class="sd">    :param fn_unpack: The unpacking function that takes an archive filename and a directory as input and extracts the archive.</span>
 <span class="sd">    :type fn_unpack: Callable</span>
+<span class="sd">    :raises ValueError: If no file extensions are provided for the archive type.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; def custom_pack(directory, archive_file, **kwargs):</span>
+<span class="sd">        ...     # Custom packing logic here</span>
+<span class="sd">        ...     pass</span>
+<span class="sd">        &gt;&gt;&gt; def custom_unpack(archive_file, directory, **kwargs):</span>
+<span class="sd">        ...     # Custom unpacking logic here</span>
+<span class="sd">        ...     pass</span>
+<span class="sd">        &gt;&gt;&gt; register_archive_type(&#39;custom&#39;, [&#39;.cst&#39;], custom_pack, custom_unpack)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;At least one extension name for archive type </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s1"> should be provided.&#39;</span><span class="p">)</span>
@@ -119,12 +144,17 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the file extension associated with a registered archive type.</span>
 
+<span class="sd">    This function returns the first (primary) file extension associated with the given archive type.</span>
+
 <span class="sd">    :param type_name: The name of the archive type.</span>
 <span class="sd">    :type type_name: str</span>
-
 <span class="sd">    :return: The file extension associated with the archive type.</span>
 <span class="sd">    :rtype: str</span>
 <span class="sd">    :raises ValueError: If the archive type is not registered.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; get_archive_extname(&#39;zip&#39;)</span>
+<span class="sd">        &#39;.zip&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">:</span>
         <span class="n">exts</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>
@@ -133,9 +163,12 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown archive type - </span><span class="si">{</span><span class="n">type_name</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="archive_pack"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_pack">[docs]</a><span class="k">def</span> <span class="nf">archive_pack</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">clear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="archive_pack"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_pack">[docs]</a><span class="k">def</span> <span class="nf">archive_pack</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">clear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pack a directory into an archive file using the specified archive type.</span>
+
+<span class="sd">    This function creates an archive of the specified type containing the contents of the given directory.</span>
 
 <span class="sd">    :param type_name: The name of the archive type.</span>
 <span class="sd">    :type type_name: str</span>
@@ -143,13 +176,16 @@
 <span class="sd">    :type directory: str</span>
 <span class="sd">    :param archive_file: The filename of the resulting archive.</span>
 <span class="sd">    :type archive_file: str</span>
+<span class="sd">    :param pattern: A pattern to filter files for inclusion in the archive (optional).</span>
+<span class="sd">    :type pattern: str, optional</span>
 <span class="sd">    :param silent: If True, suppress warnings during the packing process.</span>
 <span class="sd">    :type silent: bool</span>
 <span class="sd">    :param clear: If True, remove existing files when packing.</span>
 <span class="sd">    :type clear: bool</span>
+<span class="sd">    :raises ValueError: If the archive type is not registered.</span>
 
-<span class="sd">    :return: The path to the created archive file.</span>
-<span class="sd">    :rtype: str</span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; archive_pack(&#39;zip&#39;, &#39;/path/to/directory&#39;, &#39;/path/to/archive.zip&#39;, pattern=&#39;*.txt&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">exts</span><span class="p">,</span> <span class="n">fn_pack</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">extname</span><span class="p">)</span> <span class="k">for</span> <span class="n">extname</span> <span class="ow">in</span> <span class="n">exts</span><span class="p">):</span>
@@ -157,19 +193,25 @@
                       <span class="sa">f</span><span class="s1">&#39;but file name </span><span class="si">{</span><span class="n">archive_file</span><span class="si">!r}</span><span class="s1"> is assigned. &#39;</span>
                       <span class="sa">f</span><span class="s1">&#39;We strongly recommend using a regular extension name for the archive file.&#39;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">fn_pack</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">fn_pack</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_archive_type"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.get_archive_type">[docs]</a><span class="k">def</span> <span class="nf">get_archive_type</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine the archive type based on the file extension.</span>
 
+<span class="sd">    This function examines the file extension of the given archive file and returns the</span>
+<span class="sd">    corresponding archive type name.</span>
+
 <span class="sd">    :param archive_file: The filename of the archive.</span>
 <span class="sd">    :type archive_file: str</span>
-
 <span class="sd">    :return: The name of the archive type.</span>
 <span class="sd">    :rtype: str</span>
 <span class="sd">    :raises ValueError: If the file extension is not associated with any registered archive type.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; get_archive_type(&#39;/path/to/archive.tar.gz&#39;)</span>
+<span class="sd">        &#39;gztar&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">archive_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">type_name</span><span class="p">,</span> <span class="p">(</span><span class="n">exts</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -183,17 +225,20 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Unpack an archive file into a directory using the specified archive type.</span>
 
+<span class="sd">    This function extracts the contents of the given archive file into the specified directory.</span>
+
 <span class="sd">    :param archive_file: The filename of the archive.</span>
 <span class="sd">    :type archive_file: str</span>
 <span class="sd">    :param directory: The directory to unpack the contents into.</span>
 <span class="sd">    :type directory: str</span>
 <span class="sd">    :param silent: If True, suppress warnings during the unpacking process.</span>
 <span class="sd">    :type silent: bool</span>
-<span class="sd">    :param password: The password to extract the archive file.</span>
+<span class="sd">    :param password: The password to extract the archive file (optional).</span>
 <span class="sd">    :type password: str, optional</span>
+<span class="sd">    :raises ValueError: If the archive type is not recognized.</span>
 
-<span class="sd">    :return: The path to the unpacked directory.</span>
-<span class="sd">    :rtype: str</span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; archive_unpack(&#39;/path/to/archive.zip&#39;, &#39;/path/to/extract&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">type_name</span> <span class="o">=</span> <span class="n">get_archive_type</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">fn_unpack</span> <span class="o">=</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>

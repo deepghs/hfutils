@@ -90,7 +90,19 @@
     
     
   <h1>Source code for hfutils.entry.download</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functionality for downloading data from HuggingFace repositories.</span>
+
+<span class="sd">It includes a CLI command for downloading files, archives, or directories from HuggingFace,</span>
+<span class="sd">with various options for customization. The module also defines custom exceptions and</span>
+<span class="sd">utility functions to support the download process.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    This module is typically used as part of a larger CLI application for</span>
+<span class="sd">    interacting with HuggingFace repositories.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
@@ -106,6 +118,12 @@
 <div class="viewcode-block" id="NoRemotePathAssignedWithDownload"><a class="viewcode-back" href="../../../api_doc/entry/download.html#hfutils.entry.download.NoRemotePathAssignedWithDownload">[docs]</a><span class="k">class</span> <span class="nc">NoRemotePathAssignedWithDownload</span><span class="p">(</span><span class="n">ClickErrorException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Custom exception class for indicating that no remote path in the repository is assigned.</span>
+
+<span class="sd">    This exception is raised when a download is attempted without specifying a file,</span>
+<span class="sd">    archive, or directory to download from the repository.</span>
+
+<span class="sd">    :attribute exit_code: The exit code to be used when this exception is raised.</span>
+<span class="sd">    :type exit_code: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">exit_code</span> <span class="o">=</span> <span class="mh">0x11</span></div>
 
@@ -114,9 +132,12 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add the &#39;download&#39; subcommand to the CLI.</span>
 
-<span class="sd">    :param cli: The Click CLI application.</span>
+<span class="sd">    This function defines and adds the &#39;download&#39; command to the given CLI group.</span>
+<span class="sd">    It sets up all the necessary options and implements the download functionality.</span>
+
+<span class="sd">    :param cli: The Click CLI application to which the download command will be added.</span>
 <span class="sd">    :type cli: click.Group</span>
-<span class="sd">    :return: The modified Click CLI application.</span>
+<span class="sd">    :return: The modified Click CLI application with the download command added.</span>
 <span class="sd">    :rtype: click.Group</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -160,6 +181,10 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download data from HuggingFace repositories.</span>
 
+<span class="sd">        This function implements the core functionality of the download command.</span>
+<span class="sd">        It handles downloading individual files, archives, or entire directories</span>
+<span class="sd">        from HuggingFace repositories based on the provided options.</span>
+
 <span class="sd">        :param repo_id: Repository to download from.</span>
 <span class="sd">        :type repo_id: str</span>
 <span class="sd">        :param repo_type: Type of the HuggingFace repository.</span>
@@ -177,13 +202,17 @@
 <span class="sd">        :param max_workers: Max workers to download</span>
 <span class="sd">        :type max_workers: int</span>
 <span class="sd">        :param password: Password for the archive file. Only applied when -a is used.</span>
-<span class="sd">        :type password: str, optional</span>
+<span class="sd">        :type password: Optional[str]</span>
 <span class="sd">        :param wildcard: Wildcard for files to download. Only applied when -d is used.</span>
-<span class="sd">        :type password: str, optional</span>
+<span class="sd">        :type wildcard: Optional[str]</span>
 <span class="sd">        :param soft_mode_when_check: Just check the size of the expected file when enabled. Default is False.</span>
 <span class="sd">        :type soft_mode_when_check: bool</span>
 <span class="sd">        :param tmpdir: Use custom temporary Directory.</span>
-<span class="sd">        :type tmpdir: str, optional</span>
+<span class="sd">        :type tmpdir: Optional[str]</span>
+<span class="sd">        :param show_all: Show all files, including hidden files.</span>
+<span class="sd">        :type show_all: bool</span>
+
+<span class="sd">        :raises NoRemotePathAssignedWithDownload: If no remote path in repository is assigned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">configure_http_backend</span><span class="p">(</span><span class="n">get_requests_session</span><span class="p">)</span>
 

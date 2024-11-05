@@ -90,7 +90,13 @@
     
     
   <h1>Source code for hfutils.operate.upload</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functions for uploading files and directories to Hugging Face repositories.</span>
+
+<span class="sd">The module uses the Hugging Face Hub API client for repository operations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
@@ -126,6 +132,11 @@
 <span class="sd">    :type message: Optional[str]</span>
 <span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
 <span class="sd">    :type hf_token: str, optional</span>
+
+<span class="sd">    :raises: Any exception raised by the Hugging Face Hub API client.</span>
+
+<span class="sd">    This function uses the Hugging Face Hub API client to upload a single file to a specified</span>
+<span class="sd">    repository. It&#39;s useful for adding or updating individual files in a repository.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="p">)</span>
     <span class="n">hf_client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span>
@@ -138,7 +149,7 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="upload_directory_as_archive"><a class="viewcode-back" href="../../../api_doc/operate/upload.html#hfutils.operate.upload.upload_directory_as_archive">[docs]</a><span class="k">def</span> <span class="nf">upload_directory_as_archive</span><span class="p">(</span><span class="n">local_directory</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_in_repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<div class="viewcode-block" id="upload_directory_as_archive"><a class="viewcode-back" href="../../../api_doc/operate/upload.html#hfutils.operate.upload.upload_directory_as_archive">[docs]</a><span class="k">def</span> <span class="nf">upload_directory_as_archive</span><span class="p">(</span><span class="n">local_directory</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_in_repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                                 <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
                                 <span class="n">message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                                 <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -151,6 +162,8 @@
 <span class="sd">    :type repo_id: str</span>
 <span class="sd">    :param archive_in_repo: The archive file path within the repository.</span>
 <span class="sd">    :type archive_in_repo: str</span>
+<span class="sd">    :param pattern: A pattern to filter files in the local directory.</span>
+<span class="sd">    :type pattern: Optional[str]</span>
 <span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;).</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
 <span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash).</span>
@@ -161,11 +174,23 @@
 <span class="sd">    :type silent: bool</span>
 <span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
 <span class="sd">    :type hf_token: str, optional</span>
+
+<span class="sd">    :raises: Any exception raised during archive creation or file upload.</span>
+
+<span class="sd">    This function compresses the specified local directory into an archive file and then</span>
+<span class="sd">    uploads it to the Hugging Face repository. It&#39;s useful for uploading entire directories</span>
+<span class="sd">    as a single file, which can be more efficient for large directories.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">archive_type</span> <span class="o">=</span> <span class="n">get_archive_type</span><span class="p">(</span><span class="n">archive_in_repo</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">td</span><span class="p">:</span>
         <span class="n">local_archive_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">archive_in_repo</span><span class="p">))</span>
-        <span class="n">archive_pack</span><span class="p">(</span><span class="n">archive_type</span><span class="p">,</span> <span class="n">local_directory</span><span class="p">,</span> <span class="n">local_archive_file</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">)</span>
+        <span class="n">archive_pack</span><span class="p">(</span>
+            <span class="n">type_name</span><span class="o">=</span><span class="n">archive_type</span><span class="p">,</span>
+            <span class="n">directory</span><span class="o">=</span><span class="n">local_directory</span><span class="p">,</span>
+            <span class="n">archive_file</span><span class="o">=</span><span class="n">local_archive_file</span><span class="p">,</span>
+            <span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span>
+            <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">upload_file_to_file</span><span class="p">(</span><span class="n">local_archive_file</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">,</span> <span class="n">archive_in_repo</span><span class="p">,</span>
                             <span class="n">repo_type</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span></div>
 
@@ -174,7 +199,7 @@
 
 
 <div class="viewcode-block" id="upload_directory_as_directory"><a class="viewcode-back" href="../../../api_doc/operate/upload.html#hfutils.operate.upload.upload_directory_as_directory">[docs]</a><span class="k">def</span> <span class="nf">upload_directory_as_directory</span><span class="p">(</span>
-        <span class="n">local_directory</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path_in_repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">local_directory</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path_in_repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
         <span class="n">message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">time_suffix</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">clear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">,</span>
@@ -190,6 +215,8 @@
 <span class="sd">    :type repo_id: str</span>
 <span class="sd">    :param path_in_repo: The directory path within the repository.</span>
 <span class="sd">    :type path_in_repo: str</span>
+<span class="sd">    :param pattern: A pattern to filter files in the local directory.</span>
+<span class="sd">    :type pattern: Optional[str]</span>
 <span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;).</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
 <span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash).</span>
@@ -205,22 +232,28 @@
 <span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
 <span class="sd">    :type hf_token: str, optional</span>
 <span class="sd">    :param operation_chunk_size: Chunk size of the operations. All the operations will be</span>
-<span class="sd">        seperated into multiple commits when this is set.</span>
+<span class="sd">        separated into multiple commits when this is set.</span>
 <span class="sd">    :type operation_chunk_size: Optional[int]</span>
 <span class="sd">    :param upload_timespan: Upload minimal time interval when chunked uploading enabled.</span>
 <span class="sd">    :type upload_timespan: float</span>
 
+<span class="sd">    :raises: Any exception raised during the upload process.</span>
+
+<span class="sd">    This function uploads a local directory to a Hugging Face repository, maintaining its</span>
+<span class="sd">    structure. It can handle large directories by chunking the upload process and provides</span>
+<span class="sd">    options for clearing existing files and ignoring specific patterns.</span>
+
 <span class="sd">    .. note::</span>
-<span class="sd">        When `operation_chunk_size` is set, multiple commits will be created. When some commits failed,</span>
-<span class="sd">        it will roll back to the startup commit, using :func:`hfutils.repository.hf_hub_rollback` function..</span>
+<span class="sd">        When `operation_chunk_size` is set, multiple commits will be created. When some commits fail,</span>
+<span class="sd">        it will roll back to the startup commit, using :func:`hfutils.repository.hf_hub_rollback` function.</span>
 
 <span class="sd">    .. warning::</span>
 <span class="sd">        When `operation_chunk_size` is set, multiple commits will be created. But HuggingFace&#39;s repository</span>
-<span class="sd">        api cannot guarantee the atomic feature of your data. So **this function is not thread-safe**.</span>
+<span class="sd">        API cannot guarantee the atomic feature of your data. So **this function is not thread-safe**.</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">        The rate limit of HuggingFace repository commit creation is approximately 120 commits / hour.</span>
-<span class="sd">        So if you really have large number of chunks to create, please set the `upload_timespan` to a value</span>
+<span class="sd">        So if you really have a large number of chunks to create, please set the `upload_timespan` to a value</span>
 <span class="sd">        no less than `30.0` to make sure your uploading will not be rate-limited.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="p">)</span>
@@ -240,7 +273,7 @@
         <span class="n">pre_exist_files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
     <span class="n">operations</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">walk_files</span><span class="p">(</span><span class="n">local_directory</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">walk_files</span><span class="p">(</span><span class="n">local_directory</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">):</span>
         <span class="n">segments</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">seg</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">_PATH_SEP</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">if</span> <span class="n">seg</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">segments</span> <span class="ow">in</span> <span class="n">pre_exist_files</span><span class="p">:</span>
             <span class="n">pre_exist_files</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
@@ -289,7 +322,6 @@
                     <span class="n">operations</span><span class="o">=</span><span class="n">operation_chunk</span><span class="p">,</span>
                     <span class="n">commit_message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;[Chunk #</span><span class="si">{</span><span class="n">chunk_id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">total_chunks</span><span class="si">}</span><span class="s1">] </span><span class="si">{</span><span class="n">commit_message</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
                 <span class="p">)</span>
-
 
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">..repository</span> <span class="kn">import</span> <span class="n">hf_hub_rollback</span>

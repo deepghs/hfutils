@@ -171,14 +171,31 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
 <dt class="sig sig-object py" id="hfutils.archive.register_archive_type">
 <span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">register_archive_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_pack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_unpack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#register_archive_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.register_archive_type" title="Permalink to this definition"></a></dt>
 <dd><p>Register a custom archive type with associated file extensions and packing/unpacking functions.</p>
+<p>This function allows users to add support for new archive types by providing the necessary
+information and functions to handle the archive format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – The name of the archive type.</p></li>
-<li><p><strong>exts</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of file extensions associated with the archive type.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the archive type (e.g., ‘zip’, ‘tar’).</p></li>
+<li><p><strong>exts</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of file extensions associated with the archive type (e.g., [‘.zip’]).</p></li>
 <li><p><strong>fn_pack</strong> (<em>Callable</em>) – The packing function that takes a directory and an archive filename as input and creates an archive.</p></li>
 <li><p><strong>fn_unpack</strong> (<em>Callable</em>) – The unpacking function that takes an archive filename and a directory as input and extracts the archive.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If no file extensions are provided for the archive type.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">custom_pack</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Custom packing logic here</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">custom_unpack</span><span class="p">(</span><span class="n">archive_file</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Custom unpacking logic here</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_archive_type</span><span class="p">(</span><span class="s1">&#39;custom&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;.cst&#39;</span><span class="p">],</span> <span class="n">custom_pack</span><span class="p">,</span> <span class="n">custom_unpack</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -188,23 +205,28 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
 <h2>archive_pack<a class="headerlink" href="#archive-pack" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.archive.archive_pack">
-<span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">archive_pack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#archive_pack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.archive_pack" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">archive_pack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#archive_pack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.archive_pack" title="Permalink to this definition"></a></dt>
 <dd><p>Pack a directory into an archive file using the specified archive type.</p>
+<p>This function creates an archive of the specified type containing the contents of the given directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>type_name</strong> (<em>str</em>) – The name of the archive type.</p></li>
 <li><p><strong>directory</strong> (<em>str</em>) – The directory to pack.</p></li>
 <li><p><strong>archive_file</strong> (<em>str</em>) – The filename of the resulting archive.</p></li>
+<li><p><strong>pattern</strong> (<em>str</em><em>, </em><em>optional</em>) – A pattern to filter files for inclusion in the archive (optional).</p></li>
 <li><p><strong>silent</strong> (<em>bool</em>) – If True, suppress warnings during the packing process.</p></li>
 <li><p><strong>clear</strong> (<em>bool</em>) – If True, remove existing files when packing.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The path to the created archive file.</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the archive type is not registered.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">archive_pack</span><span class="p">(</span><span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="s1">&#39;/path/to/directory&#39;</span><span class="p">,</span> <span class="s1">&#39;/path/to/archive.zip&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;*.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -216,20 +238,24 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
 <dt class="sig sig-object py" id="hfutils.archive.archive_unpack">
 <span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">archive_unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">archive_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#archive_unpack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.archive_unpack" title="Permalink to this definition"></a></dt>
 <dd><p>Unpack an archive file into a directory using the specified archive type.</p>
+<p>This function extracts the contents of the given archive file into the specified directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>archive_file</strong> (<em>str</em>) – The filename of the archive.</p></li>
 <li><p><strong>directory</strong> (<em>str</em>) – The directory to unpack the contents into.</p></li>
 <li><p><strong>silent</strong> (<em>bool</em>) – If True, suppress warnings during the unpacking process.</p></li>
-<li><p><strong>password</strong> (<em>str</em><em>, </em><em>optional</em>) – The password to extract the archive file.</p></li>
+<li><p><strong>password</strong> (<em>str</em><em>, </em><em>optional</em>) – The password to extract the archive file (optional).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The path to the unpacked directory.</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the archive type is not recognized.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">archive_unpack</span><span class="p">(</span><span class="s1">&#39;/path/to/archive.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;/path/to/extract&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -241,6 +267,8 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
 <dt class="sig sig-object py" id="hfutils.archive.get_archive_type">
 <span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">get_archive_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">archive_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#get_archive_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.get_archive_type" title="Permalink to this definition"></a></dt>
 <dd><p>Determine the archive type based on the file extension.</p>
+<p>This function examines the file extension of the given archive file and returns the
+corresponding archive type name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>archive_file</strong> (<em>str</em>) – The filename of the archive.</p>
@@ -255,6 +283,13 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
 <dd class="field-even"><p><strong>ValueError</strong> – If the file extension is not associated with any registered archive type.</p>
 </dd>
 </dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_archive_type</span><span class="p">(</span><span class="s1">&#39;/path/to/archive.tar.gz&#39;</span><span class="p">)</span>
+<span class="go">&#39;gztar&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -264,6 +299,7 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
 <dt class="sig sig-object py" id="hfutils.archive.get_archive_extname">
 <span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">get_archive_extname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#get_archive_extname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.get_archive_extname" title="Permalink to this definition"></a></dt>
 <dd><p>Get the file extension associated with a registered archive type.</p>
+<p>This function returns the first (primary) file extension associated with the given archive type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>type_name</strong> (<em>str</em>) – The name of the archive type.</p>
@@ -276,6 +312,13 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If the archive type is not registered.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_archive_extname</span><span class="p">(</span><span class="s1">&#39;zip&#39;</span><span class="p">)</span>
+<span class="go">&#39;.zip&#39;</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
