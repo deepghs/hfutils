@@ -245,6 +245,19 @@ jobs:
           ls -al dist
           dist/hfutils -v
           dist/hfutils -h
+      - name: Check Whoami
+        shell: bash
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          dist/hfutils whoami
+      - name: Check Downloading
+        shell: bash
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          dist/hfutils download -r deepghs/konachan_index -d . -o konachan_index
+          tree konachan_index
       - uses: actions/upload-artifact@v3
         with:
           name: hfutils-v${{ env.PACKAGE_VERSION }}-${{ env.OS_NAME }}-${{ env.CPU_ARCH }}-${{ env.GIT_COMMIT_ID }}
