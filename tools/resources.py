@@ -5,7 +5,7 @@ import importlib_metadata
 from hbutils.reflection import quick_import_object
 
 
-def get_resource_files_from_package(package):
+def get_resources_from_package(package):
     try:
         path, _, _ = quick_import_object(f'{package}.__file__')
     except ImportError:
@@ -30,8 +30,31 @@ def list_installed_packages():
         yield dist.metadata['Name']
 
 
+def list_resources():
+    from hfutils import __file__ as _pysysml_file
+
+    proj_dir = os.path.abspath(os.path.normpath(os.path.join(_pysysml_file, '..')))
+    for root, _, files in os.walk(proj_dir):
+        if '__pycache__' in root:
+            continue
+
+        for file in files:
+            _, ext = os.path.splitext(file)
+            if ext != '.py':
+                rfile = os.path.abspath(os.path.join(root, file))
+                yield rfile
+
+
+def get_resources_from_mine():
+    workdir = os.path.abspath('.')
+    for rfile in list_resources():
+        dst_file = os.path.dirname(os.path.relpath(rfile, workdir))
+        yield rfile, dst_file
+
+
 def get_resource_files():
-    yield from get_resource_files_from_package('random_user_agent')
+    yield from get_resources_from_package('random_user_agent')
+    yield from get_resources_from_mine()
     # for pack_name in list_installed_packages():
     #     yield from get_resource_files_from_package(pack_name)
 

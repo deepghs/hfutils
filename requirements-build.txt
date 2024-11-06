@@ -1,2 +1,3 @@
 pyinstaller>=4.7,<5
 setuptools<70
+hbutils>=0.10.0

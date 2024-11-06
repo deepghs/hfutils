@@ -174,13 +174,14 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           dist/hfutils whoami
+          dist/hfutils whoami | grep narugo1992
       - name: Check Downloading
         shell: bash
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           dist/hfutils download -r deepghs/konachan_index -d . -o konachan_index
-          tree konachan_index
+          ls -al konachan_index
       - name: Upload packed files to artifacts
         uses: actions/upload-artifact@v3
         with:
