@@ -188,6 +188,7 @@ jobs:
         run: |
           dist/hfutils download -r deepghs/konachan_index -d . -o konachan_index
           ls -al konachan_index
+          ls -al konachan_index | grep konachan.parquet
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:

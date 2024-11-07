@@ -182,6 +182,7 @@ jobs:
         run: |
           dist/hfutils download -r deepghs/konachan_index -d . -o konachan_index
           ls -al konachan_index
+          ls -al konachan_index | grep konachan.parquet
       - name: Upload packed files to artifacts
         uses: actions/upload-artifact@v3
         with:
