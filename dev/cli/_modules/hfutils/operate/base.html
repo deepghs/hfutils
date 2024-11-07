@@ -262,17 +262,15 @@
     <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">parse_hf_fs_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">filename</span>
-            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">hf_fs_path</span><span class="p">(</span>
-                <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
-                <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
-                <span class="n">filename</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span>
-                <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
-            <span class="p">))</span>
-        <span class="p">]</span>
+        <span class="n">raw_paths</span> <span class="o">=</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">hf_fs_path</span><span class="p">(</span>
+            <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+            <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span>
+            <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
+        <span class="p">))</span>
     <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
         <span class="k">return</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">parse_hf_fs_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">filename</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">raw_paths</span><span class="p">]</span>
 
     <span class="n">offset</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">startup_batch</span>
     <span class="n">progress</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Paths Info&#39;</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">)</span>
