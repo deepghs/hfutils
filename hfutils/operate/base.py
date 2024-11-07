@@ -170,17 +170,15 @@ def list_all_with_pattern(
     hf_client = get_hf_client(hf_token=hf_token)
 
     try:
-        paths = [
-            parse_hf_fs_path(path).filename
-            for path in hf_fs.glob(hf_fs_path(
-                repo_id=repo_id,
-                repo_type=repo_type,
-                filename=pattern,
-                revision=revision,
-            ))
-        ]
+        raw_paths = hf_fs.glob(hf_fs_path(
+            repo_id=repo_id,
+            repo_type=repo_type,
+            filename=pattern,
+            revision=revision,
+        ))
     except FileNotFoundError:
         return
+    paths = [parse_hf_fs_path(path).filename for path in raw_paths]
 
     offset, batch_size = 0, startup_batch
     progress = tqdm(total=len(paths), desc='Paths Info', silent=silent)
