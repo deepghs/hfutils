@@ -76,11 +76,13 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                   help='Wildcard for files to download. Only applied when -d is used.', show_default=True)
     @click.option('-m', '--message', 'message', type=str, default=None,
                   help='Commit message for this operation.', show_default=True)
+    @click.option('-s', '--max_size_per_pack', 'max_size_per_pack', type=str, default=None,
+                  help='Max size per archive packages, only applied when -a is assigned.', show_default=True)
     @command_wrap()
     def upload(repo_id: str, repo_type: RepoTypeTyping,
                file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
                input_path: str, revision: str, clear: bool, private: bool, public: bool, wildcard: Optional[str],
-               message: Optional[str]):
+               message: Optional[str], max_size_per_pack: Optional[str]):
         """
         Upload data to HuggingFace repositories.
 
@@ -169,6 +171,7 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                 revision=revision,
                 pattern=wildcard,
                 silent=False,
+                max_size_per_pack=max_size_per_pack,
                 message=message,
             )
 

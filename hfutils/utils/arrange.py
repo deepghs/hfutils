@@ -19,6 +19,7 @@ from typing import List, Union, Optional
 
 from hbutils.scale import size_to_bytes
 from natsort import natsorted
+from tqdm import tqdm
 
 from .heap import Heap
 from .walk import walk_files
@@ -199,7 +200,8 @@ def _group_by(files: List[FileItem], group_method: Optional[Union[str, int]] = N
 
 def walk_files_with_groups(directory: str, pattern: Optional[str] = None,
                            group_method: Optional[Union[str, int]] = None,
-                           max_total_size: Optional[Union[str, float]] = None) \
+                           max_total_size: Optional[Union[str, float]] = None,
+                           silent: bool = False) \
         -> List[FilesGroup]:
     """
     Walk through a directory and group files based on specified criteria.
@@ -215,6 +217,8 @@ def walk_files_with_groups(directory: str, pattern: Optional[str] = None,
     :type group_method: Optional[Union[str, int]]
     :param max_total_size: Maximum total size for each group (can be string like "1GB")
     :type max_total_size: Optional[Union[str, float]]
+    :param silent: If True, the progress bar content will not be displayed.
+    :type silent: bool
 
     :return: List of file groups
     :rtype: List[FilesGroup]
@@ -228,7 +232,7 @@ def walk_files_with_groups(directory: str, pattern: Optional[str] = None,
     """
     all_items = [
         FileItem.from_file(os.path.join(directory, file), rel_to=directory)
-        for file in walk_files(directory, pattern=pattern)
+        for file in tqdm(walk_files(directory, pattern=pattern), desc=f'Scanning {directory!r} ...', disable=silent)
     ]
     if max_total_size is not None and isinstance(max_total_size, str):
         max_total_size = size_to_bytes(max_total_size)
@@ -242,7 +246,7 @@ def walk_files_with_groups(directory: str, pattern: Optional[str] = None,
         raw_groups: List[Union[FileItem, FilesGroup]] = _group_by(all_items, group_method=group_method)
         collected_groups: List[FilesGroup] = []
         heap: Heap[FilesGroup] = Heap(key=lambda x: (x.size, x.count))
-        for group in raw_groups:
+        for group in tqdm(raw_groups, desc='Arranging Files', disable=silent):
             if not heap or (heap.peek().size + group.size) > max_total_size:
                 new_group = FilesGroup.new()
                 heap.push(new_group)
