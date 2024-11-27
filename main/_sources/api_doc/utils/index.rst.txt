@@ -10,8 +10,10 @@ hfutils.utils
     :maxdepth: 3
 
     archive
+    arrange
     binary
     data
+    heap
     download
     model
     number
