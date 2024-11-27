@@ -3,6 +3,7 @@ import pathlib
 import tempfile
 
 import pytest
+from hbutils.scale import size_to_bytes
 
 from hfutils.utils import walk_files, FileItem, FilesGroup, walk_files_with_groups
 
@@ -225,6 +226,19 @@ class TestWalkFilesWithGroupsComplex:
 
         assert len(result) > 1  # Should have multiple groups due to size limit
         assert all(group.size <= 5000 or group.count == 1 for group in result)
+
+        # Verify total file count
+        total_files = sum(group.count for group in result)
+        original_files = len(list(walk_files(complex_directory)))
+        assert total_files == original_files
+
+    def test_group_by_size_threshold_size_str(self, complex_directory):
+        # Test grouping with size threshold around 5000 bytes
+        # Should separate large files from medium and small ones
+        result = walk_files_with_groups(complex_directory, max_total_size='5kb')
+
+        assert len(result) > 1  # Should have multiple groups due to size limit
+        assert all(group.size <= size_to_bytes('5kb') or group.count == 1 for group in result)
 
         # Verify total file count
         total_files = sum(group.count for group in result)
