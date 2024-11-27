@@ -2,10 +2,12 @@ import os
 import pathlib
 from collections import defaultdict
 from dataclasses import dataclass
-from pprint import pprint
-from typing import List, Union, Optional, Iterator
+from typing import List, Union, Optional
 
 from natsort import natsorted
+
+from .heap import Heap
+from .walk import walk_files
 
 
 @dataclass
@@ -73,8 +75,8 @@ def _group_by_segs(files: List[FileItem], segs: int) -> List[Union[FileItem, Fil
     return retval
 
 
-def _group_by(files: List[FileItem], group_method: Optional[Union[str, int]] = None) -> List[
-    Union[FileItem, FilesGroup]]:
+def _group_by(files: List[FileItem], group_method: Optional[Union[str, int]] = None) \
+        -> List[Union[FileItem, FilesGroup]]:
     if isinstance(group_method, int):
         pass  # is an int
     elif isinstance(group_method, str):
@@ -100,27 +102,30 @@ def _group_by(files: List[FileItem], group_method: Optional[Union[str, int]] = N
 
 def walk_files_with_groups(directory: str, pattern: Optional[str] = None,
                            group_method: Optional[Union[str, int]] = None,
-                           max_files_count: Optional[int] = None, max_total_size: Optional[float] = None) \
-        -> Iterator[FilesGroup]:
-    raw_groups: List[Union[FileItem, FilesGroup]] = _group_by([
+                           max_total_size: Optional[float] = None) \
+        -> List[FilesGroup]:
+    all_items = [
         FileItem.from_file(os.path.join(directory, file), rel_to=directory)
         for file in walk_files(directory, pattern=pattern)
-    ], group_method=group_method)
+    ]
+    if max_total_size is None:
+        final_group = FilesGroup.new()
+        for file_item in all_items:
+            final_group.add(file_item)
+        return [final_group]
 
-    ret_groups: List[FilesGroup] = []
-    for group in raw_groups:
-        if not ret_groups or \
-                (max_files_count is not None and ret_groups[-1].count + group.count >= max_files_count) or \
-                (max_total_size is not None and ret_groups[-1].size + group.size >= max_total_size):
-            ret_groups.append(FilesGroup.new())
-        ret_groups[-1].add(group)
+    else:
+        raw_groups: List[Union[FileItem, FilesGroup]] = _group_by(all_items, group_method=group_method)
+        collected_groups: List[FilesGroup] = []
+        heap: Heap[FilesGroup] = Heap(key=lambda x: (x.size, x.count))
+        for group in raw_groups:
+            if not heap or (heap.peek().size + group.size) > max_total_size:
+                new_group = FilesGroup.new()
+                heap.push(new_group)
+                collected_groups.append(new_group)
+            item = heap.pop()
+            item.add(group)
+            heap.push(item)
 
-
-if __name__ == '__main__':
-    src_dir = 'hfutils'
-    from .walk import walk_files
-
-    pprint(_group_by([
-        FileItem.from_file(os.path.join(src_dir, file), rel_to=src_dir)
-        for file in walk_files(src_dir, pattern='**/*.py')
-    ], group_method=1))
+        collected_groups = [item for item in collected_groups if item.count > 0]
+        return collected_groups
