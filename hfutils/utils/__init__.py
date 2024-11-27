@@ -3,6 +3,7 @@ from .arrange import FilesGroup, FileItem, walk_files_with_groups
 from .binary import is_binary_file
 from .data import is_data_file
 from .download import download_file
+from .ext import splitext_with_composite
 from .heap import Heap
 from .logging import ColoredFormatter
 from .number import number_to_tag

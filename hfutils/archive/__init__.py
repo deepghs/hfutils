@@ -18,7 +18,7 @@ Supported Formats:
     The creation of archive files in the RAR format is not supported, as we utilize the `rarfile <https://github.com/markokr/rarfile>`_ library, which does not offer functionality for creating RAR files.
 """
 from .base import register_archive_type, archive_pack, archive_unpack, get_archive_type, get_archive_extname, \
-    archive_writer, ArchiveWriter
+    archive_writer, ArchiveWriter, archive_splitext
 from .rar import _rar_pack, _rar_unpack, RARWriter
 from .sevenz import _7z_pack, _7z_unpack, SevenZWriter
 from .tar import _tarfile_pack, _tarfile_unpack, TarWriter

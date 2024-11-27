@@ -7,7 +7,8 @@ repositories, setting visibility, and handling various input types.
 
 Usage:
     This module is typically used as part of a larger CLI application for interacting
-    with HuggingFace repositories.
+    with HuggingFace repositories. It requires appropriate authentication through
+    HuggingFace tokens (set via environment variable HF_TOKEN).
 """
 
 import warnings
@@ -27,7 +28,8 @@ class NoRemotePathAssignedWithUpload(ClickErrorException):
     Custom exception class for indicating that no remote path in the repository is assigned.
 
     This exception is raised when attempting to upload without specifying a remote path
-    (file, archive, or directory) in the repository.
+    (file, archive, or directory) in the repository. At least one of these options must
+    be provided for successful upload operation.
 
     :attribute exit_code: The exit code to be used when this exception is raised.
     :type exit_code: int
@@ -37,10 +39,11 @@ class NoRemotePathAssignedWithUpload(ClickErrorException):
 
 def _add_upload_subcommand(cli: click.Group) -> click.Group:
     """
-    Add the 'upload' subcommand to the CLI.
+    Add the 'upload' subcommand to the CLI application.
 
-    This function defines and adds the 'upload' command to the provided CLI group.
-    It sets up all the necessary options and implements the upload functionality.
+    This function enhances the provided CLI group by adding a comprehensive upload command
+    that supports various upload scenarios to HuggingFace repositories. It configures
+    multiple options for fine-grained control over the upload process.
 
     :param cli: The Click CLI application to which the upload command will be added.
     :type cli: click.Group
@@ -76,46 +79,49 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                   help='Wildcard for files to download. Only applied when -d is used.', show_default=True)
     @click.option('-m', '--message', 'message', type=str, default=None,
                   help='Commit message for this operation.', show_default=True)
+    @click.option('-s', '--max_size_per_pack', 'max_size_per_pack', type=str, default=None,
+                  help='Max size per archive packages, only applied when -a is assigned.', show_default=True)
     @command_wrap()
     def upload(repo_id: str, repo_type: RepoTypeTyping,
                file_in_repo: Optional[str], archive_in_repo: Optional[str], dir_in_repo: Optional[str],
                input_path: str, revision: str, clear: bool, private: bool, public: bool, wildcard: Optional[str],
-               message: Optional[str]):
+               message: Optional[str], max_size_per_pack: Optional[str]):
         """
-        Upload data to HuggingFace repositories.
+        Upload data to HuggingFace repositories with various options and modes.
 
-        This function handles the upload process to HuggingFace repositories. It supports
-        uploading individual files, archives, or entire directories. The function also
-        manages repository creation and visibility settings.
+        This function implements the core upload functionality, supporting multiple upload modes
+        and repository management features. It handles repository creation, visibility settings,
+        and different types of uploads (file, archive, directory).
 
-        :param repo_id: Repository to upload to.
+        :param repo_id: Repository identifier to upload to.
         :type repo_id: str
-        :param repo_type: Type of the HuggingFace repository.
+        :param repo_type: Type of the HuggingFace repository (e.g., dataset, model).
         :type repo_type: RepoTypeTyping
-        :param file_in_repo: File in repository to upload.
+        :param file_in_repo: Target path for single file upload in the repository.
         :type file_in_repo: Optional[str]
-        :param archive_in_repo: Archive file in repository to upload and extract from.
+        :param archive_in_repo: Target path for archive upload in the repository.
         :type archive_in_repo: Optional[str]
-        :param dir_in_repo: Directory in repository to upload the full directory tree.
+        :param dir_in_repo: Target directory path in the repository for directory upload.
         :type dir_in_repo: Optional[str]
-        :param input_path: Input path for upload.
+        :param input_path: Local path of the file or directory to upload.
         :type input_path: str
-        :param revision: Revision of repository.
+        :param revision: Repository revision/branch to upload to.
         :type revision: str
-        :param clear: Clear the remote directory before uploading.
-                      Only applied when -d is used.
+        :param clear: Whether to clear existing content before directory upload.
         :type clear: bool
-        :param private: Set private repository when created.
+        :param private: Flag to set repository as private when created.
         :type private: bool
-        :param public: Set public repository when created.
+        :param public: Flag to set repository as public when created.
         :type public: bool
-        :param wildcard: Wildcard pattern for selecting files to upload.
+        :param wildcard: Pattern for filtering files during upload.
         :type wildcard: Optional[str]
-        :param message: Commit message for this operation.
+        :param message: Commit message for the upload operation.
         :type message: Optional[str]
+        :param max_size_per_pack: Maximum size limit for archive packages.
+        :type max_size_per_pack: Optional[str]
 
-        :raises NoRemotePathAssignedWithUpload: If no remote path in repository is assigned.
-        :raises ValueError: If both private and public flags are set.
+        :raises NoRemotePathAssignedWithUpload: If no upload mode is specified.
+        :raises ValueError: If conflicting visibility settings are provided.
         """
         configure_http_backend(get_requests_session)
 
@@ -169,6 +175,7 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
                 revision=revision,
                 pattern=wildcard,
                 silent=False,
+                max_size_per_pack=max_size_per_pack,
                 message=message,
             )
 

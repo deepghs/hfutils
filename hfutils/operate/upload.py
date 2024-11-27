@@ -10,14 +10,15 @@ import math
 import os.path
 import re
 import time
-from typing import Optional, List
+from typing import Optional, List, Union
 
 from hbutils.string import plural_word
 from huggingface_hub import CommitOperationAdd, CommitOperationDelete
 
 from .base import RepoTypeTyping, get_hf_client, list_files_in_repository, _IGNORE_PATTERN_UNSET
-from ..archive import get_archive_type, archive_pack
-from ..utils import walk_files, TemporaryDirectory, tqdm
+from ..archive import get_archive_type, archive_pack, archive_writer, archive_splitext
+from ..config.meta import __VERSION__
+from ..utils import walk_files, TemporaryDirectory, tqdm, walk_files_with_groups, FilesGroup, hf_normpath
 
 
 def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
@@ -53,13 +54,15 @@ def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
         path_or_fileobj=local_file,
         path_in_repo=file_in_repo,
         revision=revision,
-        commit_message=message,
+        commit_message=message or f'Upload file {hf_normpath(file_in_repo)!r} with hfutils v{__VERSION__}',
     )
 
 
 def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: str, pattern: Optional[str] = None,
                                 repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                                 message: Optional[str] = None, silent: bool = False,
+                                group_method: Optional[Union[str, int]] = None,
+                                max_size_per_pack: Optional[Union[str, float]] = None,
                                 hf_token: Optional[str] = None):
     """
     Upload a local directory as an archive file to a specified path in a Hugging Face repository.
@@ -80,6 +83,12 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
     :type message: Optional[str]
     :param silent: If True, suppress progress bar output.
     :type silent: bool
+    :param group_method: Method for grouping files (None for default, int for segment count).
+                         Only applied when ``max_total_size`` is assigned.
+    :type group_method: Optional[Union[str, int]]
+    :param max_size_per_pack: Maximum total size for each group (can be string like "1GB").
+                              When assigned, this function will try to upload with multiple archive files.
+    :type max_size_per_pack: Optional[Union[str, float]]
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
 
@@ -91,16 +100,66 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
     """
     archive_type = get_archive_type(archive_in_repo)
     with TemporaryDirectory() as td:
-        local_archive_file = os.path.join(td, os.path.basename(archive_in_repo))
-        archive_pack(
-            type_name=archive_type,
-            directory=local_directory,
-            archive_file=local_archive_file,
-            pattern=pattern,
-            silent=silent,
-        )
-        upload_file_to_file(local_archive_file, repo_id, archive_in_repo,
-                            repo_type, revision, message, hf_token=hf_token)
+        if max_size_per_pack is not None:
+            file_groups = walk_files_with_groups(
+                directory=local_directory,
+                pattern=pattern,
+                group_method=group_method,
+                max_total_size=max_size_per_pack,
+                silent=silent,
+            )
+            if len(file_groups) < 2:
+                file_groups = None
+        else:
+            file_groups = None
+
+        if file_groups is None:
+            local_archive_file = os.path.join(td, os.path.basename(archive_in_repo))
+            archive_pack(
+                type_name=archive_type,
+                directory=local_directory,
+                archive_file=local_archive_file,
+                pattern=pattern,
+                silent=silent,
+            )
+            upload_file_to_file(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                local_file=local_archive_file,
+                file_in_repo=archive_in_repo,
+                revision=revision,
+                message=message or f'Upload archive {hf_normpath(archive_in_repo)!r} with hfutils v{__VERSION__}',
+                hf_token=hf_token
+            )
+
+        else:
+            id_pattern = f'{{x:0{max(len(str(len(file_groups))), 5)}d}}'
+            raw_dst_archive_file = os.path.normpath(os.path.join(td, archive_in_repo))
+            for gid, group in enumerate(tqdm(file_groups, silent=silent,
+                                             desc=f'Making {plural_word(len(file_groups), "package")}'), start=1):
+                group: FilesGroup
+                dst_archive_file_body, dst_archive_file_ext = archive_splitext(raw_dst_archive_file)
+                dst_archive_file = (f'{dst_archive_file_body}'
+                                    f'-{id_pattern.format(x=gid)}-of-{id_pattern.format(x=len(file_groups))}'
+                                    f'{dst_archive_file_ext}')
+                os.makedirs(os.path.dirname(dst_archive_file), exist_ok=True)
+                with archive_writer(type_name=archive_type, archive_file=dst_archive_file) as af, \
+                        tqdm(group.files, silent=silent,
+                             desc=f'Packing {local_directory!r} #{gid}/{len(file_groups)} ...') as progress:
+                    for file in progress:
+                        af.add(os.path.join(local_directory, file), file)
+
+            upload_directory_as_directory(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                local_directory=td,
+                path_in_repo='.',
+                revision=revision,
+                message=message or f'Upload archive {hf_normpath(archive_in_repo)!r} '
+                                   f'({plural_word(len(file_groups), "packs")}) '
+                                   f'with hfutils v{__VERSION__}',
+                hf_token=hf_token,
+            )
 
 
 _PATH_SEP = re.compile(r'[/\\]+')
@@ -196,7 +255,7 @@ def upload_directory_as_directory(
         ))
 
     current_time = datetime.datetime.now().astimezone().strftime('%Y-%m-%d %H:%M:%S %Z')
-    commit_message = message or f'Upload directory {os.path.basename(os.path.abspath(local_directory))!r}'
+    commit_message = message or f'Upload directory {hf_normpath(path_in_repo)!r} with hfutils v{__VERSION__}'
     if time_suffix:
         commit_message = f'{commit_message}, on {current_time}'
 
