@@ -146,7 +146,6 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
                         tqdm(group.files, silent=silent,
                              desc=f'Packing {local_directory!r} #{gid}/{len(file_groups)} ...') as progress:
                     for file in progress:
-                        progress.set_description(file)
                         af.add(os.path.join(local_directory, file), file)
 
             upload_directory_as_directory(
