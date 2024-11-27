@@ -135,7 +135,8 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
         else:
             id_pattern = f'{{x:0{max(len(str(len(file_groups))), 5)}d}}'
             raw_dst_archive_file = os.path.normpath(os.path.join(td, archive_in_repo))
-            for gid, group in enumerate(file_groups, start=1):
+            for gid, group in enumerate(tqdm(file_groups, silent=silent,
+                                             desc=f'Making {plural_word(len(file_groups), "package")}'), start=1):
                 group: FilesGroup
                 dst_archive_file_body, dst_archive_file_ext = archive_splitext(raw_dst_archive_file)
                 dst_archive_file = (f'{dst_archive_file_body}'
