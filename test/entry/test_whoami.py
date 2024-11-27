@@ -36,7 +36,7 @@ class TestEntryWhoami:
             '@CyberHarem (full name: CyberHarem)',
             '@BangumiBase (full name: BangumiBase)',
             '@DeepBase (full name: DeepBase)',
-            '@AppleHarem (full name: LittleApple AppleHarem)',
+            '@AppleHarem (full name: AppleHarem)',
         ]:
             assert org_info in text, f'Organization {org_info!r} not found.'
 
