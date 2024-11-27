@@ -91,11 +91,7 @@
     
   <h1>Source code for hfutils.archive.base</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module provides functionality for handling archive files in various formats.</span>
-
-<span class="sd">It includes functions for registering custom archive types, packing directories into archives,</span>
-<span class="sd">unpacking archives, and determining archive types based on file extensions. The module supports</span>
-<span class="sd">a flexible system for working with different archive formats through a registration mechanism.</span>
+<span class="sd">Archive handling module for managing different types of archive files.</span>
 
 <span class="sd">.. note::</span>
 <span class="sd">    This module uses a global dictionary to store registered archive types, so it&#39;s</span>
@@ -104,18 +100,26 @@
 
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">hfutils.utils</span> <span class="kn">import</span> <span class="n">splitext_with_composite</span>
 
 
 <div class="viewcode-block" id="ArchiveWriter"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter">[docs]</a><span class="k">class</span> <span class="nc">ArchiveWriter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A base class for creating archive writers.</span>
+<span class="sd">    Base class for creating and managing archive writers.</span>
 
 <span class="sd">    This class provides a context manager interface for handling archive files,</span>
-<span class="sd">    allowing files to be added to the archive and ensuring proper resource management.</span>
+<span class="sd">    allowing for safe resource management and consistent file addition operations.</span>
+<span class="sd">    It serves as a template for specific archive format implementations.</span>
 
-<span class="sd">    :param archive_file: The path to the archive file to be created or modified.</span>
+<span class="sd">    :param archive_file: Path to the archive file to be created or modified.</span>
 <span class="sd">    :type archive_file: str</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; with ArchiveWriter(&#39;output.zip&#39;) as writer:</span>
+<span class="sd">        ...     writer.add(&#39;file.txt&#39;, &#39;archive_path/file.txt&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ArchiveWriter.__init__"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -124,12 +128,12 @@
 
     <span class="k">def</span> <span class="nf">_create_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create the handler for the archive writer.</span>
+<span class="sd">        Create the underlying archive handler.</span>
 
-<span class="sd">        This method should be overridden by subclasses to provide specific</span>
-<span class="sd">        handler creation logic for different archive types.</span>
+<span class="sd">        This method should be implemented by subclasses to initialize the</span>
+<span class="sd">        specific archive format handler.</span>
 
-<span class="sd">        :raises NotImplementedError: If not overridden in a subclass.</span>
+<span class="sd">        :raises NotImplementedError: When called on the base class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>  <span class="c1"># pragma: no cover</span>
 
@@ -137,14 +141,14 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a file to the archive.</span>
 
-<span class="sd">        This method should be overridden by subclasses to define how files</span>
-<span class="sd">        are added to the archive for different formats.</span>
+<span class="sd">        This method should be implemented by subclasses to define the</span>
+<span class="sd">        specific file addition logic for each archive format.</span>
 
-<span class="sd">        :param filename: The path to the file to add to the archive.</span>
+<span class="sd">        :param filename: Path to the file to be added.</span>
 <span class="sd">        :type filename: str</span>
-<span class="sd">        :param arcname: The archive name for the file.</span>
+<span class="sd">        :param arcname: Desired path within the archive.</span>
 <span class="sd">        :type arcname: str</span>
-<span class="sd">        :raises NotImplementedError: If not overridden in a subclass.</span>
+<span class="sd">        :raises NotImplementedError: When called on the base class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>  <span class="c1"># pragma: no cover</span>
 
@@ -152,7 +156,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Open the archive for writing.</span>
 
-<span class="sd">        Initializes the handler if it has not been created yet.</span>
+<span class="sd">        Initializes the archive handler if it hasn&#39;t been created yet.</span>
+<span class="sd">        This method is automatically called when using the context manager.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_handler</span><span class="p">()</span></div>
@@ -161,18 +166,19 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a file to the archive.</span>
 
-<span class="sd">        :param filename: The path to the file to add.</span>
+<span class="sd">        :param filename: Path to the file to be added.</span>
 <span class="sd">        :type filename: str</span>
-<span class="sd">        :param arcname: The name to use for the file within the archive.</span>
+<span class="sd">        :param arcname: Desired path within the archive.</span>
 <span class="sd">        :type arcname: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">arcname</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ArchiveWriter.close"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Close the archive.</span>
+<span class="sd">        Close the archive and release resources.</span>
 
-<span class="sd">        Ensures that all resources are properly released.</span>
+<span class="sd">        This method ensures proper cleanup of resources and is automatically</span>
+<span class="sd">        called when using the context manager.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -180,18 +186,23 @@
 
 <div class="viewcode-block" id="ArchiveWriter.__enter__"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__enter__">[docs]</a>    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Enter the runtime context related to this object.</span>
+<span class="sd">        Context manager entry point.</span>
 
-<span class="sd">        Opens the archive for writing.</span>
+<span class="sd">        :return: Self reference for use in context manager.</span>
+<span class="sd">        :rtype: ArchiveWriter</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="ArchiveWriter.__exit__"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__exit__">[docs]</a>    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Exit the runtime context related to this object.</span>
+<span class="sd">        Context manager exit point.</span>
 
-<span class="sd">        Closes the archive, ensuring that resources are released.</span>
+<span class="sd">        Ensures proper cleanup of resources when exiting the context.</span>
+
+<span class="sd">        :param exc_type: Exception type if an error occurred.</span>
+<span class="sd">        :param exc_val: Exception value if an error occurred.</span>
+<span class="sd">        :param exc_tb: Exception traceback if an error occurred.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
 
@@ -202,31 +213,28 @@
 
 <div class="viewcode-block" id="register_archive_type"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.register_archive_type">[docs]</a><span class="k">def</span> <span class="nf">register_archive_type</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">fn_pack</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">fn_unpack</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">fn_writer</span><span class="p">:</span> <span class="n">_FN_WRITER</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Register a custom archive type with associated file extensions and packing/unpacking functions.</span>
+<span class="sd">    Register a new archive type with its associated handlers and extensions.</span>
 
-<span class="sd">    This function allows users to add support for new archive types by providing the necessary</span>
-<span class="sd">    information and functions to handle the archive format.</span>
+<span class="sd">    This function allows for the registration of custom archive formats by providing</span>
+<span class="sd">    the necessary functions for packing, unpacking, and creating archive writers.</span>
 
-<span class="sd">    :param name: The name of the archive type (e.g., &#39;zip&#39;, &#39;tar&#39;).</span>
+<span class="sd">    :param name: Identifier for the archive type (e.g., &#39;zip&#39;, &#39;tar&#39;).</span>
 <span class="sd">    :type name: str</span>
-<span class="sd">    :param exts: A list of file extensions associated with the archive type (e.g., [&#39;.zip&#39;]).</span>
+<span class="sd">    :param exts: List of file extensions for this archive type (e.g., [&#39;.zip&#39;]).</span>
 <span class="sd">    :type exts: List[str]</span>
-<span class="sd">    :param fn_pack: The packing function that takes a directory and an archive filename as input and creates an archive.</span>
+<span class="sd">    :param fn_pack: Function to create archives of this type.</span>
 <span class="sd">    :type fn_pack: Callable</span>
-<span class="sd">    :param fn_unpack: The unpacking function that takes an archive filename and a directory as input and extracts the archive.</span>
+<span class="sd">    :param fn_unpack: Function to extract archives of this type.</span>
 <span class="sd">    :type fn_unpack: Callable</span>
-<span class="sd">    :param fn_writer: The writer creation function that takes an archive filename and creates an archive writer object.</span>
+<span class="sd">    :param fn_writer: Function to create an archive writer instance.</span>
 <span class="sd">    :type fn_writer: Callable[[str], ArchiveWriter]</span>
-<span class="sd">    :raises ValueError: If no file extensions are provided for the archive type.</span>
+<span class="sd">    :raises ValueError: If no file extensions are provided.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; def custom_pack(directory, archive_file, **kwargs):</span>
-<span class="sd">        ...     # Custom packing logic here</span>
-<span class="sd">        ...     pass</span>
-<span class="sd">        &gt;&gt;&gt; def custom_unpack(archive_file, directory, **kwargs):</span>
-<span class="sd">        ...     # Custom unpacking logic here</span>
-<span class="sd">        ...     pass</span>
-<span class="sd">        &gt;&gt;&gt; register_archive_type(&#39;custom&#39;, [&#39;.cst&#39;], custom_pack, custom_unpack)</span>
+<span class="sd">        &gt;&gt;&gt; def my_pack(directory, archive_file, **kwargs): pass</span>
+<span class="sd">        &gt;&gt;&gt; def my_unpack(archive_file, directory, **kwargs): pass</span>
+<span class="sd">        &gt;&gt;&gt; def my_writer(archive_file): return CustomWriter(archive_file)</span>
+<span class="sd">        &gt;&gt;&gt; register_archive_type(&#39;custom&#39;, [&#39;.cst&#39;], my_pack, my_unpack, my_writer)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;At least one extension name for archive type </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s1"> should be provided.&#39;</span><span class="p">)</span>
@@ -235,18 +243,17 @@
 
 <div class="viewcode-block" id="get_archive_extname"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.get_archive_extname">[docs]</a><span class="k">def</span> <span class="nf">get_archive_extname</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get the file extension associated with a registered archive type.</span>
+<span class="sd">    Retrieve the primary file extension for a registered archive type.</span>
 
-<span class="sd">    This function returns the first (primary) file extension associated with the given archive type.</span>
-
-<span class="sd">    :param type_name: The name of the archive type.</span>
+<span class="sd">    :param type_name: Name of the archive type.</span>
 <span class="sd">    :type type_name: str</span>
-<span class="sd">    :return: The file extension associated with the archive type.</span>
+<span class="sd">    :return: Primary file extension for the archive type.</span>
 <span class="sd">    :rtype: str</span>
 <span class="sd">    :raises ValueError: If the archive type is not registered.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; get_archive_extname(&#39;zip&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; ext = get_archive_extname(&#39;zip&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(ext)</span>
 <span class="sd">        &#39;.zip&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">:</span>
@@ -259,26 +266,24 @@
 <div class="viewcode-block" id="archive_pack"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_pack">[docs]</a><span class="k">def</span> <span class="nf">archive_pack</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">clear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Pack a directory into an archive file using the specified archive type.</span>
+<span class="sd">    Create an archive from a directory using the specified archive type.</span>
 
-<span class="sd">    This function creates an archive of the specified type containing the contents of the given directory.</span>
-
-<span class="sd">    :param type_name: The name of the archive type.</span>
+<span class="sd">    :param type_name: Name of the archive type to use.</span>
 <span class="sd">    :type type_name: str</span>
-<span class="sd">    :param directory: The directory to pack.</span>
+<span class="sd">    :param directory: Source directory to archive.</span>
 <span class="sd">    :type directory: str</span>
-<span class="sd">    :param archive_file: The filename of the resulting archive.</span>
+<span class="sd">    :param archive_file: Output archive file path.</span>
 <span class="sd">    :type archive_file: str</span>
-<span class="sd">    :param pattern: A pattern to filter files for inclusion in the archive (optional).</span>
+<span class="sd">    :param pattern: Optional file pattern for filtering (e.g., &#39;*.txt&#39;).</span>
 <span class="sd">    :type pattern: str, optional</span>
-<span class="sd">    :param silent: If True, suppress warnings during the packing process.</span>
+<span class="sd">    :param silent: Whether to suppress warnings.</span>
 <span class="sd">    :type silent: bool</span>
-<span class="sd">    :param clear: If True, remove existing files when packing.</span>
+<span class="sd">    :param clear: Whether to remove existing files when packing.</span>
 <span class="sd">    :type clear: bool</span>
 <span class="sd">    :raises ValueError: If the archive type is not registered.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; archive_pack(&#39;zip&#39;, &#39;/path/to/directory&#39;, &#39;/path/to/archive.zip&#39;, pattern=&#39;*.txt&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; archive_pack(&#39;zip&#39;, &#39;/data&#39;, &#39;backup.zip&#39;, pattern=&#39;*.dat&#39;, silent=True)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">exts</span><span class="p">,</span> <span class="n">fn_pack</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">extname</span><span class="p">)</span> <span class="k">for</span> <span class="n">extname</span> <span class="ow">in</span> <span class="n">exts</span><span class="p">):</span>
@@ -291,19 +296,17 @@
 
 <div class="viewcode-block" id="get_archive_type"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.get_archive_type">[docs]</a><span class="k">def</span> <span class="nf">get_archive_type</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Determine the archive type based on the file extension.</span>
+<span class="sd">    Determine the archive type from a file&#39;s extension.</span>
 
-<span class="sd">    This function examines the file extension of the given archive file and returns the</span>
-<span class="sd">    corresponding archive type name.</span>
-
-<span class="sd">    :param archive_file: The filename of the archive.</span>
+<span class="sd">    :param archive_file: Path to the archive file.</span>
 <span class="sd">    :type archive_file: str</span>
-<span class="sd">    :return: The name of the archive type.</span>
+<span class="sd">    :return: Name of the detected archive type.</span>
 <span class="sd">    :rtype: str</span>
-<span class="sd">    :raises ValueError: If the file extension is not associated with any registered archive type.</span>
+<span class="sd">    :raises ValueError: If the file extension doesn&#39;t match any registered type.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; get_archive_type(&#39;/path/to/archive.tar.gz&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; type_name = get_archive_type(&#39;data.tar.gz&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(type_name)</span>
 <span class="sd">        &#39;gztar&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">archive_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span>
@@ -316,22 +319,20 @@
 
 <div class="viewcode-block" id="archive_unpack"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_unpack">[docs]</a><span class="k">def</span> <span class="nf">archive_unpack</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Unpack an archive file into a directory using the specified archive type.</span>
+<span class="sd">    Extract an archive file to a directory.</span>
 
-<span class="sd">    This function extracts the contents of the given archive file into the specified directory.</span>
-
-<span class="sd">    :param archive_file: The filename of the archive.</span>
+<span class="sd">    :param archive_file: Path to the archive file to extract.</span>
 <span class="sd">    :type archive_file: str</span>
-<span class="sd">    :param directory: The directory to unpack the contents into.</span>
+<span class="sd">    :param directory: Destination directory for extraction.</span>
 <span class="sd">    :type directory: str</span>
-<span class="sd">    :param silent: If True, suppress warnings during the unpacking process.</span>
+<span class="sd">    :param silent: Whether to suppress warnings.</span>
 <span class="sd">    :type silent: bool</span>
-<span class="sd">    :param password: The password to extract the archive file (optional).</span>
+<span class="sd">    :param password: Optional password for protected archives.</span>
 <span class="sd">    :type password: str, optional</span>
 <span class="sd">    :raises ValueError: If the archive type is not recognized.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; archive_unpack(&#39;/path/to/archive.zip&#39;, &#39;/path/to/extract&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; archive_unpack(&#39;protected.zip&#39;, &#39;output_dir&#39;, password=&#39;secret&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">type_name</span> <span class="o">=</span> <span class="n">get_archive_type</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">fn_unpack</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>
@@ -340,22 +341,19 @@
 
 <div class="viewcode-block" id="archive_writer"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_writer">[docs]</a><span class="k">def</span> <span class="nf">archive_writer</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchiveWriter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create an ArchiveWriter instance for the specified archive type.</span>
+<span class="sd">    Create an archive writer for the specified archive type.</span>
 
-<span class="sd">    This function returns an ArchiveWriter that can be used to add files to an archive.</span>
-
-<span class="sd">    :param type_name: The name of the archive type.</span>
+<span class="sd">    :param type_name: Name of the archive type.</span>
 <span class="sd">    :type type_name: str</span>
-<span class="sd">    :param archive_file: The filename of the archive to be created or modified.</span>
+<span class="sd">    :param archive_file: Path to the archive file to create.</span>
 <span class="sd">    :type archive_file: str</span>
-<span class="sd">    :return: An ArchiveWriter instance for the specified archive type.</span>
+<span class="sd">    :return: An archive writer instance.</span>
 <span class="sd">    :rtype: ArchiveWriter</span>
 <span class="sd">    :raises ValueError: If the archive type is not registered.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; writer = archive_writer(&#39;zip&#39;, &#39;/path/to/archive.zip&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; with writer as w:</span>
-<span class="sd">        ...     w.add(&#39;/path/to/file.txt&#39;, &#39;file.txt&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; with archive_writer(&#39;zip&#39;, &#39;output.zip&#39;) as writer:</span>
+<span class="sd">        ...     writer.add(&#39;file.txt&#39;, &#39;docs/file.txt&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">exts</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">fn_writer</span> <span class="o">=</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">extname</span><span class="p">)</span> <span class="k">for</span> <span class="n">extname</span> <span class="ow">in</span> <span class="n">exts</span><span class="p">):</span>
@@ -364,6 +362,37 @@
                       <span class="sa">f</span><span class="s1">&#39;We strongly recommend using a regular extension name for the archive file.&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fn_writer</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span></div>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_get_all_extensions</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a list of all registered archive extensions.</span>
+
+<span class="sd">    :return: List of all registered file extensions.</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">type_name</span><span class="p">,</span> <span class="p">(</span><span class="n">exts</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">extensions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">exts</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">extensions</span>
+
+
+<div class="viewcode-block" id="archive_splitext"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_splitext">[docs]</a><span class="k">def</span> <span class="nf">archive_splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Split a filename into root and extension, handling compound extensions.</span>
+
+<span class="sd">    :param filename: The filename to split.</span>
+<span class="sd">    :type filename: str</span>
+<span class="sd">    :return: Tuple of (root, extension).</span>
+<span class="sd">    :rtype: Tuple[str, str]</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; root, ext = archive_splitext(&#39;data.tar.gz&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(root, ext)</span>
+<span class="sd">        &#39;data&#39; &#39;.tar.gz&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">splitext_with_composite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">_get_all_extensions</span><span class="p">())</span></div>
 </pre></div>
 
 
@@ -438,9 +467,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/upload/index.html">dev/upload</a></dd>
-                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="base.html">main</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>

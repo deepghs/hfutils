@@ -13,6 +13,7 @@ hfutils.utils
     arrange
     binary
     data
+    ext
     heap
     download
     model

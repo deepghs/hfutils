@@ -122,7 +122,8 @@ repositories. The module handles different upload scenarios, including creating 
 repositories, setting visibility, and handling various input types.</p>
 <dl class="simple">
 <dt>Usage:</dt><dd><p>This module is typically used as part of a larger CLI application for interacting
-with HuggingFace repositories.</p>
+with HuggingFace repositories. It requires appropriate authentication through
+HuggingFace tokens (set via environment variable HF_TOKEN).</p>
 </dd>
 </dl>
 <section id="noremotepathassignedwithupload">
@@ -132,7 +133,8 @@ with HuggingFace repositories.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.upload.</span></span><span class="sig-name descname"><span class="pre">NoRemotePathAssignedWithUpload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/upload.html#NoRemotePathAssignedWithUpload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.upload.NoRemotePathAssignedWithUpload" title="Permalink to this definition"></a></dt>
 <dd><p>Custom exception class for indicating that no remote path in the repository is assigned.</p>
 <p>This exception is raised when attempting to upload without specifying a remote path
-(file, archive, or directory) in the repository.</p>
+(file, archive, or directory) in the repository. At least one of these options must
+be provided for successful upload operation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attribute exit_code<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The exit code to be used when this exception is raised.</p>
@@ -236,9 +238,8 @@ with HuggingFace repositories.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/upload/api_doc/entry/upload.html">dev/upload</a></dd>
-                        <dd><a href="../../../dev/rate/api_doc/entry/upload.html">dev/rate</a></dd>
                         <dd><a href="upload.html">main</a></dd>
+                        <dd><a href="../../../dev/rate/api_doc/entry/upload.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>
