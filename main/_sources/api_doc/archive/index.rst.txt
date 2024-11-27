@@ -27,6 +27,21 @@ archive_unpack
 
 
 
+archive_writer
+----------------------------------------
+
+.. autofunction:: archive_writer
+
+
+
+ArchiveWriter
+----------------------------------------
+
+.. autoclass:: ArchiveWriter
+    :members: __init__, open, add, close, __enter__, __exit__
+
+
+
 get_archive_type
 ----------------------------------------
 

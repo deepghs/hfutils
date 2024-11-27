@@ -69,6 +69,22 @@
 <li class="toctree-l3"><a class="reference internal" href="#hfutils.archive.archive_unpack"><code class="docutils literal notranslate"><span class="pre">archive_unpack()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#archive-writer">archive_writer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hfutils.archive.archive_writer"><code class="docutils literal notranslate"><span class="pre">archive_writer()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#archivewriter">ArchiveWriter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hfutils.archive.ArchiveWriter"><code class="docutils literal notranslate"><span class="pre">ArchiveWriter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.archive.ArchiveWriter.__enter__"><code class="docutils literal notranslate"><span class="pre">ArchiveWriter.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.archive.ArchiveWriter.__exit__"><code class="docutils literal notranslate"><span class="pre">ArchiveWriter.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.archive.ArchiveWriter.__init__"><code class="docutils literal notranslate"><span class="pre">ArchiveWriter.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.archive.ArchiveWriter.add"><code class="docutils literal notranslate"><span class="pre">ArchiveWriter.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.archive.ArchiveWriter.close"><code class="docutils literal notranslate"><span class="pre">ArchiveWriter.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.archive.ArchiveWriter.open"><code class="docutils literal notranslate"><span class="pre">ArchiveWriter.open()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#get-archive-type">get_archive_type</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#hfutils.archive.get_archive_type"><code class="docutils literal notranslate"><span class="pre">get_archive_type()</span></code></a></li>
 </ul>
@@ -169,7 +185,7 @@ pip<span class="w"> </span>install<span class="w"> </span>hfutils<span class="o"
 <h2>register_archive_type<a class="headerlink" href="#register-archive-type" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.archive.register_archive_type">
-<span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">register_archive_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_pack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_unpack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#register_archive_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.register_archive_type" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">register_archive_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_pack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_unpack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_writer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#hfutils.archive.ArchiveWriter" title="hfutils.archive.base.ArchiveWriter"><span class="pre">ArchiveWriter</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#register_archive_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.register_archive_type" title="Permalink to this definition"></a></dt>
 <dd><p>Register a custom archive type with associated file extensions and packing/unpacking functions.</p>
 <p>This function allows users to add support for new archive types by providing the necessary
 information and functions to handle the archive format.</p>
@@ -180,6 +196,7 @@ information and functions to handle the archive format.</p>
 <li><p><strong>exts</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of file extensions associated with the archive type (e.g., [‘.zip’]).</p></li>
 <li><p><strong>fn_pack</strong> (<em>Callable</em>) – The packing function that takes a directory and an archive filename as input and creates an archive.</p></li>
 <li><p><strong>fn_unpack</strong> (<em>Callable</em>) – The unpacking function that takes an archive filename and a directory as input and extracts the archive.</p></li>
+<li><p><strong>fn_writer</strong> (<em>Callable</em><em>[</em><em>[</em><em>str</em><em>]</em><em>, </em><a class="reference internal" href="#hfutils.archive.ArchiveWriter" title="hfutils.archive.ArchiveWriter"><em>ArchiveWriter</em></a><em>]</em>) – The writer creation function that takes an archive filename and creates an archive writer object.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -258,6 +275,104 @@ information and functions to handle the archive format.</p>
 </div>
 </dd>
 </dl>
+</dd></dl>
+
+</section>
+<section id="archive-writer">
+<h2>archive_writer<a class="headerlink" href="#archive-writer" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.archive.archive_writer">
+<span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">archive_writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hfutils.archive.ArchiveWriter" title="hfutils.archive.base.ArchiveWriter"><span class="pre">ArchiveWriter</span></a></span></span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#archive_writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.archive_writer" title="Permalink to this definition"></a></dt>
+<dd><p>Create an ArchiveWriter instance for the specified archive type.</p>
+<p>This function returns an ArchiveWriter that can be used to add files to an archive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_name</strong> (<em>str</em>) – The name of the archive type.</p></li>
+<li><p><strong>archive_file</strong> (<em>str</em>) – The filename of the archive to be created or modified.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An ArchiveWriter instance for the specified archive type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hfutils.archive.ArchiveWriter" title="hfutils.archive.ArchiveWriter">ArchiveWriter</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the archive type is not registered.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span> <span class="o">=</span> <span class="n">archive_writer</span><span class="p">(</span><span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="s1">&#39;/path/to/archive.zip&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">writer</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">w</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;/path/to/file.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;file.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="archivewriter">
+<h2>ArchiveWriter<a class="headerlink" href="#archivewriter" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="hfutils.archive.ArchiveWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.archive.</span></span><span class="sig-name descname"><span class="pre">ArchiveWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">archive_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#ArchiveWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.ArchiveWriter" title="Permalink to this definition"></a></dt>
+<dd><p>A base class for creating archive writers.</p>
+<p>This class provides a context manager interface for handling archive files,
+allowing files to be added to the archive and ensuring proper resource management.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>archive_file</strong> (<em>str</em>) – The path to the archive file to be created or modified.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="hfutils.archive.ArchiveWriter.__enter__">
+<span class="sig-name descname"><span class="pre">__enter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#ArchiveWriter.__enter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.ArchiveWriter.__enter__" title="Permalink to this definition"></a></dt>
+<dd><p>Enter the runtime context related to this object.</p>
+<p>Opens the archive for writing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hfutils.archive.ArchiveWriter.__exit__">
+<span class="sig-name descname"><span class="pre">__exit__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_tb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#ArchiveWriter.__exit__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.ArchiveWriter.__exit__" title="Permalink to this definition"></a></dt>
+<dd><p>Exit the runtime context related to this object.</p>
+<p>Closes the archive, ensuring that resources are released.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hfutils.archive.ArchiveWriter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">archive_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#ArchiveWriter.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.ArchiveWriter.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hfutils.archive.ArchiveWriter.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arcname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#ArchiveWriter.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.ArchiveWriter.add" title="Permalink to this definition"></a></dt>
+<dd><p>Add a file to the archive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – The path to the file to add.</p></li>
+<li><p><strong>arcname</strong> (<em>str</em>) – The name to use for the file within the archive.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hfutils.archive.ArchiveWriter.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#ArchiveWriter.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.ArchiveWriter.close" title="Permalink to this definition"></a></dt>
+<dd><p>Close the archive.</p>
+<p>Ensures that all resources are properly released.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hfutils.archive.ArchiveWriter.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/archive/base.html#ArchiveWriter.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.archive.ArchiveWriter.open" title="Permalink to this definition"></a></dt>
+<dd><p>Open the archive for writing.</p>
+<p>Initializes the handler if it has not been created yet.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -402,9 +517,8 @@ corresponding archive type name.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/archive/api_doc/archive/index.html">dev/archive</a></dd>
-                        <dd><a href="../../../dev/rate/api_doc/archive/index.html">dev/rate</a></dd>
                         <dd><a href="index.html">main</a></dd>
+                        <dd><a href="../../../dev/rate/api_doc/archive/index.html">dev/rate</a></dd>
                 </dl>
         </div>
     </div><script>
