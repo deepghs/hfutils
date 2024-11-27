@@ -16,7 +16,7 @@ from hbutils.string import plural_word
 from huggingface_hub import CommitOperationAdd, CommitOperationDelete
 
 from .base import RepoTypeTyping, get_hf_client, list_files_in_repository, _IGNORE_PATTERN_UNSET
-from ..archive import get_archive_type, archive_pack, archive_writer
+from ..archive import get_archive_type, archive_pack, archive_writer, archive_splitext
 from ..config.meta import __VERSION__
 from ..utils import walk_files, TemporaryDirectory, tqdm, walk_files_with_groups, FilesGroup, hf_normpath
 
@@ -137,7 +137,7 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
             raw_dst_archive_file = os.path.normpath(os.path.join(td, archive_in_repo))
             for gid, group in enumerate(file_groups, start=1):
                 group: FilesGroup
-                dst_archive_file_body, dst_archive_file_ext = os.path.splitext(raw_dst_archive_file)
+                dst_archive_file_body, dst_archive_file_ext = archive_splitext(raw_dst_archive_file)
                 dst_archive_file = (f'{dst_archive_file_body}'
                                     f'-{id_pattern.format(x=gid)}-of-{id_pattern.format(x=len(file_groups))}'
                                     f'{dst_archive_file_ext}')

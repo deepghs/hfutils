@@ -12,7 +12,10 @@ a flexible system for working with different archive formats through a registrat
 
 import os.path
 import warnings
+from functools import lru_cache
 from typing import List, Dict, Tuple, Callable, Optional
+
+from hfutils.utils import splitext_with_composite
 
 
 class ArchiveWriter:
@@ -272,3 +275,15 @@ def archive_writer(type_name: str, archive_file: str) -> ArchiveWriter:
                       f'We strongly recommend using a regular extension name for the archive file.')
 
     return fn_writer(archive_file)
+
+
+@lru_cache()
+def _get_all_extensions():
+    extensions = []
+    for type_name, (exts, _, _, _) in _KNOWN_ARCHIVE_TYPES.items():
+        extensions.extend(exts)
+    return extensions
+
+
+def archive_splitext(filename: str) -> Tuple[str, str]:
+    return splitext_with_composite(filename, _get_all_extensions())
