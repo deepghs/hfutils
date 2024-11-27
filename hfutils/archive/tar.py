@@ -15,7 +15,7 @@ import warnings
 from functools import partial
 from typing import Literal, Optional
 
-from .base import register_archive_type
+from .base import register_archive_type, ArchiveWriter
 from .zip import _ZLIB_SUPPORTED
 from ..utils import walk_files, tqdm
 
@@ -38,6 +38,29 @@ except ImportError:
 CompressTyping = Literal['', 'gzip', 'bzip2', 'xz']
 
 
+class TarWriter(ArchiveWriter):
+
+    def __init__(self, archive_file: str, compress: CompressTyping = "gzip"):
+        super().__init__(archive_file)
+        if compress is None:
+            self._tar_compression = ''
+        elif compress == 'gzip':
+            self._tar_compression = 'gz'
+        elif compress == 'bzip2':
+            self._tar_compression = 'bz2'
+        elif compress == 'xz':
+            self._tar_compression = 'xz'
+        else:
+            raise ValueError("bad value for 'compress', or compression format not "
+                             "supported : {0}".format(compress))
+
+    def _create_handler(self):
+        return tarfile.open(self.archive_file, f'w|{self._tar_compression}')
+
+    def _add_file(self, filename: str, arcname: str):
+        return self._handler.add(filename, arcname)
+
+
 def _tarfile_pack(directory, tar_file, pattern: Optional[str] = None,
                   compress: CompressTyping = "gzip", silent: bool = False, clear: bool = False):
     """
@@ -57,19 +80,7 @@ def _tarfile_pack(directory, tar_file, pattern: Optional[str] = None,
     :type clear: bool
     :raises ValueError: If an unsupported compression method is specified.
     """
-    if compress is None:
-        tar_compression = ''
-    elif compress == 'gzip':
-        tar_compression = 'gz'
-    elif compress == 'bzip2':
-        tar_compression = 'bz2'
-    elif compress == 'xz':
-        tar_compression = 'xz'
-    else:
-        raise ValueError("bad value for 'compress', or compression format not "
-                         "supported : {0}".format(compress))
-
-    with tarfile.open(tar_file, f'w|{tar_compression}') as tar:
+    with TarWriter(tar_file, compress=compress) as tar:
         progress = tqdm(walk_files(directory, pattern=pattern), silent=silent, desc=f'Packing {directory!r} ...')
         for file in progress:
             progress.set_description(file)
@@ -125,10 +136,30 @@ def _tarfile_unpack(tar_file, directory, silent: bool = False, numeric_owner=Fal
 
 
 # Register various tar archive types based on available compression libraries
-register_archive_type('tar', ['.tar'], partial(_tarfile_pack, compress=None), _tarfile_unpack)
+register_archive_type(
+    'tar', ['.tar'],
+    partial(_tarfile_pack, compress=None),
+    _tarfile_unpack,
+    partial(TarWriter, compress=None),
+)
 if _ZLIB_SUPPORTED:
-    register_archive_type('gztar', ['.tar.gz', '.tgz'], partial(_tarfile_pack, compress='gzip'), _tarfile_unpack)
+    register_archive_type(
+        'gztar', ['.tar.gz', '.tgz'],
+        partial(_tarfile_pack, compress='gzip'),
+        _tarfile_unpack,
+        partial(TarWriter, compress='gzip'),
+    )
 if _BZ2_SUPPORTED:
-    register_archive_type('bztar', ['.tar.bz2', '.tbz2'], partial(_tarfile_pack, compress='bzip2'), _tarfile_unpack)
+    register_archive_type(
+        'bztar', ['.tar.bz2', '.tbz2'],
+        partial(_tarfile_pack, compress='bzip2'),
+        _tarfile_unpack,
+        partial(TarWriter, compress='bzip2'),
+    )
 if _LZMA_SUPPORTED:
-    register_archive_type('xztar', ['.tar.xz', '.txz'], partial(_tarfile_pack, compress='xz'), _tarfile_unpack)
+    register_archive_type(
+        'xztar', ['.tar.xz', '.txz'],
+        partial(_tarfile_pack, compress='xz'),
+        _tarfile_unpack,
+        partial(TarWriter, compress='xz'),
+    )

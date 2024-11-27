@@ -14,10 +14,43 @@ import os.path
 import warnings
 from typing import List, Dict, Tuple, Callable, Optional
 
-_KNOWN_ARCHIVE_TYPES: Dict[str, Tuple[List[str], Callable, Callable]] = {}
+
+class ArchiveWriter:
+    def __init__(self, archive_file: str):
+        self.archive_file = archive_file
+        self._handler = None
+
+    def _create_handler(self):
+        raise NotImplementedError  # pragma: no cover
+
+    def _add_file(self, filename: str, arcname: str):
+        raise NotImplementedError  # pragma: no cover
+
+    def open(self):
+        if self._handler is None:
+            self._handler = self._create_handler()
+
+    def add(self, filename: str, arcname: str):
+        return self._add_file(filename, arcname)
+
+    def close(self):
+        if self._handler is not None:
+            self._handler.close()
+            self._handler = None
+
+    def __enter__(self):
+        self.open()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
 
-def register_archive_type(name: str, exts: List[str], fn_pack: Callable, fn_unpack: Callable):
+_FN_WRITER = Callable[[str], ArchiveWriter]
+_KNOWN_ARCHIVE_TYPES: Dict[str, Tuple[List[str], Callable, Callable, _FN_WRITER]] = {}
+
+
+def register_archive_type(name: str, exts: List[str], fn_pack: Callable, fn_unpack: Callable, fn_writer: _FN_WRITER):
     """
     Register a custom archive type with associated file extensions and packing/unpacking functions.
 
@@ -45,7 +78,7 @@ def register_archive_type(name: str, exts: List[str], fn_pack: Callable, fn_unpa
     """
     if len(exts) == 0:
         raise ValueError(f'At least one extension name for archive type {name!r} should be provided.')
-    _KNOWN_ARCHIVE_TYPES[name] = (exts, fn_pack, fn_unpack)
+    _KNOWN_ARCHIVE_TYPES[name] = (exts, fn_pack, fn_unpack, fn_writer)
 
 
 def get_archive_extname(type_name: str) -> str:
@@ -65,7 +98,7 @@ def get_archive_extname(type_name: str) -> str:
         '.zip'
     """
     if type_name in _KNOWN_ARCHIVE_TYPES:
-        exts, _, _ = _KNOWN_ARCHIVE_TYPES[type_name]
+        exts, _, _, _ = _KNOWN_ARCHIVE_TYPES[type_name]
         return exts[0]
     else:
         raise ValueError(f'Unknown archive type - {type_name!r}.')
@@ -95,7 +128,7 @@ def archive_pack(type_name: str, directory: str, archive_file: str,
     Example:
         >>> archive_pack('zip', '/path/to/directory', '/path/to/archive.zip', pattern='*.txt')
     """
-    exts, fn_pack, _ = _KNOWN_ARCHIVE_TYPES[type_name]
+    exts, fn_pack, _, _ = _KNOWN_ARCHIVE_TYPES[type_name]
     if not any(os.path.normcase(archive_file).endswith(extname) for extname in exts):
         warnings.warn(f'The archive type {type_name!r} should be one of the {exts!r}, '
                       f'but file name {archive_file!r} is assigned. '
@@ -122,7 +155,7 @@ def get_archive_type(archive_file: str) -> str:
         'gztar'
     """
     archive_file = os.path.normcase(archive_file)
-    for type_name, (exts, _, _) in _KNOWN_ARCHIVE_TYPES.items():
+    for type_name, (exts, _, _, _) in _KNOWN_ARCHIVE_TYPES.items():
         if any(archive_file.endswith(extname) for extname in exts):
             return type_name
 
@@ -149,5 +182,15 @@ def archive_unpack(archive_file: str, directory: str, silent: bool = False, pass
         >>> archive_unpack('/path/to/archive.zip', '/path/to/extract')
     """
     type_name = get_archive_type(archive_file)
-    _, _, fn_unpack = _KNOWN_ARCHIVE_TYPES[type_name]
+    _, _, fn_unpack, _ = _KNOWN_ARCHIVE_TYPES[type_name]
     return fn_unpack(archive_file, directory, silent=silent, password=password)
+
+
+def archive_writer(type_name: str, archive_file: str) -> ArchiveWriter:
+    exts, _, _, fn_writer = _KNOWN_ARCHIVE_TYPES[type_name]
+    if not any(os.path.normcase(archive_file).endswith(extname) for extname in exts):
+        warnings.warn(f'The archive type {type_name!r} should be one of the {exts!r}, '
+                      f'but file name {archive_file!r} is assigned. '
+                      f'We strongly recommend using a regular extension name for the archive file.')
+
+    return fn_writer(archive_file)

@@ -33,4 +33,4 @@ class TestArchiveBase:
 
     def test_empty_register(self):
         with pytest.raises(ValueError):
-            register_archive_type('xxx', [], lambda: None, lambda: None)
+            register_archive_type('xxx', [], lambda: None, lambda: None, lambda x: None)

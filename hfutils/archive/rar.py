@@ -11,12 +11,24 @@ The module uses the 'rarfile' library for RAR file operations.
 import os
 from typing import Optional
 
-from .base import register_archive_type
+from .base import register_archive_type, ArchiveWriter
 
 try:
     import rarfile
 except ImportError:  # pragma: no cover
     rarfile = None
+
+
+class RARWriter(ArchiveWriter):
+    def __init__(self, archive_file: str):
+        super().__init__(archive_file)
+        raise RuntimeError('RAR format writing is not supported.')
+
+    def _create_handler(self):
+        raise NotImplementedError  # pragma: no cover
+
+    def _add_file(self, filename: str, arcname: str):
+        raise NotImplementedError  # pragma: no cover
 
 
 def _rar_pack(directory, zip_file, pattern: Optional[str] = None, silent: bool = False, clear: bool = False):
@@ -58,4 +70,4 @@ def _rar_unpack(rar_file, directory, silent: bool = False, password: Optional[st
 
 
 if rarfile is not None:
-    register_archive_type('rar', ['.rar'], _rar_pack, _rar_unpack)
+    register_archive_type('rar', ['.rar'], _rar_pack, _rar_unpack, RARWriter)

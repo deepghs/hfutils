@@ -9,7 +9,7 @@ import os.path
 import zipfile
 from typing import Optional
 
-from .base import register_archive_type
+from .base import register_archive_type, ArchiveWriter
 from ..utils import tqdm, walk_files
 
 try:
@@ -19,6 +19,14 @@ try:
     _ZLIB_SUPPORTED = True
 except ImportError:
     _ZLIB_SUPPORTED = False
+
+
+class ZipWriter(ArchiveWriter):
+    def _create_handler(self):
+        return zipfile.ZipFile(self.archive_file, "w", compression=zipfile.ZIP_DEFLATED)
+
+    def _add_file(self, filename: str, arcname: str):
+        return self._handler.write(filename, arcname)
 
 
 def _zip_pack(directory, zip_file, pattern: Optional[str] = None, silent: bool = False, clear: bool = False):
@@ -36,11 +44,12 @@ def _zip_pack(directory, zip_file, pattern: Optional[str] = None, silent: bool =
     :param clear: If True, remove original files after packing.
     :type clear: bool
     """
-    with zipfile.ZipFile(zip_file, "w", compression=zipfile.ZIP_DEFLATED) as zf:
-        progress = tqdm(walk_files(directory, pattern=pattern), silent=silent, desc=f'Packing {directory!r} ...')
+    with ZipWriter(zip_file) as zf:
+        progress = tqdm(walk_files(directory, pattern=pattern),
+                        silent=silent, desc=f'Packing {directory!r} ...')
         for file in progress:
             progress.set_description(file)
-            zf.write(os.path.join(directory, file), file)
+            zf.add(os.path.join(directory, file), file)
             if clear:
                 os.remove(os.path.join(directory, file))
 
@@ -70,4 +79,4 @@ def _zip_unpack(zip_file, directory, silent: bool = False, password: Optional[st
 
 
 if _ZLIB_SUPPORTED:
-    register_archive_type('zip', ['.zip'], _zip_pack, _zip_unpack)
+    register_archive_type('zip', ['.zip'], _zip_pack, _zip_unpack, ZipWriter)

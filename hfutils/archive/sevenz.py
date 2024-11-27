@@ -11,13 +11,21 @@ the 7z archive type if the py7zr library is available.
 import os
 from typing import Optional
 
-from .base import register_archive_type
+from .base import register_archive_type, ArchiveWriter
 from ..utils import tqdm, walk_files
 
 try:
     import py7zr
 except ImportError:  # pragma: no cover
     py7zr = None
+
+
+class SevenZWriter(ArchiveWriter):
+    def _create_handler(self):
+        return py7zr.SevenZipFile(self.archive_file, 'w')
+
+    def _add_file(self, filename: str, arcname: str):
+        return self._handler.write(filename, arcname)
 
 
 def _7z_pack(directory, sz_file, pattern: Optional[str] = None, silent: bool = False, clear: bool = False):
@@ -35,11 +43,11 @@ def _7z_pack(directory, sz_file, pattern: Optional[str] = None, silent: bool = F
     :param clear: If True, remove source files after packing.
     :type clear: bool, optional
     """
-    with py7zr.SevenZipFile(sz_file, 'w') as zf:
+    with SevenZWriter(sz_file) as zf:
         progress = tqdm(walk_files(directory, pattern=pattern), silent=silent, desc=f'Packing {directory!r} ...')
         for file in progress:
             progress.set_description(file)
-            zf.write(os.path.join(directory, file), file)
+            zf.add(os.path.join(directory, file), file)
             if clear:
                 os.remove(os.path.join(directory, file))
 
@@ -65,4 +73,4 @@ def _7z_unpack(sz_file, directory, silent: bool = False, password: Optional[str]
 
 
 if py7zr is not None:
-    register_archive_type('7z', ['.7z'], _7z_pack, _7z_unpack)
+    register_archive_type('7z', ['.7z'], _7z_pack, _7z_unpack, SevenZWriter)
