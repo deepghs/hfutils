@@ -1,12 +1,13 @@
+import glob
 import os.path
 import tarfile
 
 import pytest
-from hbutils.testing import isolated_directory, disable_output
+from hbutils.testing import isolated_directory, disable_output, tmatrix
 
-from hfutils.archive import get_archive_type, get_archive_extname, archive_pack, archive_unpack
+from hfutils.archive import get_archive_type, get_archive_extname, archive_pack, archive_unpack, archive_writer
 from hfutils.utils import walk_files
-from test.testings import get_testfile
+from test.testings import get_testfile, dir_compare
 
 
 @pytest.fixture()
@@ -83,3 +84,26 @@ class TestArchiveTar:
             with disable_output(), pytest.warns(UserWarning):
                 archive_unpack(get_testfile(f'raw{ext}'), '.', password='password')
             check_unpack_dir('.')
+
+    @pytest.mark.parametrize(*tmatrix({
+        'ext': ['bin', 'binary', 'bst'],
+        ('type_', 'type_ext'): [
+            ('tar', '.tar'),
+            ('gztar', '.tar.gz'),
+            ('bztar', '.tar.bz2'),
+            ('xztar', '.tar.xz'),
+        ],
+    }))
+    def test_archive_writer(self, ext, type_, type_ext):
+        src_dir = get_testfile('complex_directory')
+        dst_dir = get_testfile(f'complex_directory_{ext}')
+
+        with isolated_directory():
+            archive_file = f'archive.{type_ext}'
+            with archive_writer(type_, archive_file) as af:
+                for file in glob.glob(os.path.join(src_dir, '**', f'*.{ext}'), recursive=True):
+                    af.add(file, os.path.basename(file))
+
+            archive_unpack(archive_file, '.', silent=True)
+            os.remove(archive_file)
+            dir_compare('.', dst_dir)

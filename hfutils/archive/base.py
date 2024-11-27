@@ -14,10 +14,101 @@ import os.path
 import warnings
 from typing import List, Dict, Tuple, Callable, Optional
 
-_KNOWN_ARCHIVE_TYPES: Dict[str, Tuple[List[str], Callable, Callable]] = {}
+
+class ArchiveWriter:
+    """
+    A base class for creating archive writers.
+
+    This class provides a context manager interface for handling archive files,
+    allowing files to be added to the archive and ensuring proper resource management.
+
+    :param archive_file: The path to the archive file to be created or modified.
+    :type archive_file: str
+    """
+
+    def __init__(self, archive_file: str):
+        self.archive_file = archive_file
+        self._handler = None
+
+    def _create_handler(self):
+        """
+        Create the handler for the archive writer.
+
+        This method should be overridden by subclasses to provide specific
+        handler creation logic for different archive types.
+
+        :raises NotImplementedError: If not overridden in a subclass.
+        """
+        raise NotImplementedError  # pragma: no cover
+
+    def _add_file(self, filename: str, arcname: str):
+        """
+        Add a file to the archive.
+
+        This method should be overridden by subclasses to define how files
+        are added to the archive for different formats.
+
+        :param filename: The path to the file to add to the archive.
+        :type filename: str
+        :param arcname: The archive name for the file.
+        :type arcname: str
+        :raises NotImplementedError: If not overridden in a subclass.
+        """
+        raise NotImplementedError  # pragma: no cover
+
+    def open(self):
+        """
+        Open the archive for writing.
+
+        Initializes the handler if it has not been created yet.
+        """
+        if self._handler is None:
+            self._handler = self._create_handler()
+
+    def add(self, filename: str, arcname: str):
+        """
+        Add a file to the archive.
+
+        :param filename: The path to the file to add.
+        :type filename: str
+        :param arcname: The name to use for the file within the archive.
+        :type arcname: str
+        """
+        return self._add_file(filename, arcname)
+
+    def close(self):
+        """
+        Close the archive.
+
+        Ensures that all resources are properly released.
+        """
+        if self._handler is not None:
+            self._handler.close()
+            self._handler = None
+
+    def __enter__(self):
+        """
+        Enter the runtime context related to this object.
+
+        Opens the archive for writing.
+        """
+        self.open()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """
+        Exit the runtime context related to this object.
+
+        Closes the archive, ensuring that resources are released.
+        """
+        self.close()
 
 
-def register_archive_type(name: str, exts: List[str], fn_pack: Callable, fn_unpack: Callable):
+_FN_WRITER = Callable[[str], ArchiveWriter]
+_KNOWN_ARCHIVE_TYPES: Dict[str, Tuple[List[str], Callable, Callable, _FN_WRITER]] = {}
+
+
+def register_archive_type(name: str, exts: List[str], fn_pack: Callable, fn_unpack: Callable, fn_writer: _FN_WRITER):
     """
     Register a custom archive type with associated file extensions and packing/unpacking functions.
 
@@ -32,6 +123,8 @@ def register_archive_type(name: str, exts: List[str], fn_pack: Callable, fn_unpa
     :type fn_pack: Callable
     :param fn_unpack: The unpacking function that takes an archive filename and a directory as input and extracts the archive.
     :type fn_unpack: Callable
+    :param fn_writer: The writer creation function that takes an archive filename and creates an archive writer object.
+    :type fn_writer: Callable[[str], ArchiveWriter]
     :raises ValueError: If no file extensions are provided for the archive type.
 
     Example:
@@ -45,7 +138,7 @@ def register_archive_type(name: str, exts: List[str], fn_pack: Callable, fn_unpa
     """
     if len(exts) == 0:
         raise ValueError(f'At least one extension name for archive type {name!r} should be provided.')
-    _KNOWN_ARCHIVE_TYPES[name] = (exts, fn_pack, fn_unpack)
+    _KNOWN_ARCHIVE_TYPES[name] = (exts, fn_pack, fn_unpack, fn_writer)
 
 
 def get_archive_extname(type_name: str) -> str:
@@ -65,7 +158,7 @@ def get_archive_extname(type_name: str) -> str:
         '.zip'
     """
     if type_name in _KNOWN_ARCHIVE_TYPES:
-        exts, _, _ = _KNOWN_ARCHIVE_TYPES[type_name]
+        exts, _, _, _ = _KNOWN_ARCHIVE_TYPES[type_name]
         return exts[0]
     else:
         raise ValueError(f'Unknown archive type - {type_name!r}.')
@@ -95,7 +188,7 @@ def archive_pack(type_name: str, directory: str, archive_file: str,
     Example:
         >>> archive_pack('zip', '/path/to/directory', '/path/to/archive.zip', pattern='*.txt')
     """
-    exts, fn_pack, _ = _KNOWN_ARCHIVE_TYPES[type_name]
+    exts, fn_pack, _, _ = _KNOWN_ARCHIVE_TYPES[type_name]
     if not any(os.path.normcase(archive_file).endswith(extname) for extname in exts):
         warnings.warn(f'The archive type {type_name!r} should be one of the {exts!r}, '
                       f'but file name {archive_file!r} is assigned. '
@@ -122,7 +215,7 @@ def get_archive_type(archive_file: str) -> str:
         'gztar'
     """
     archive_file = os.path.normcase(archive_file)
-    for type_name, (exts, _, _) in _KNOWN_ARCHIVE_TYPES.items():
+    for type_name, (exts, _, _, _) in _KNOWN_ARCHIVE_TYPES.items():
         if any(archive_file.endswith(extname) for extname in exts):
             return type_name
 
@@ -149,5 +242,33 @@ def archive_unpack(archive_file: str, directory: str, silent: bool = False, pass
         >>> archive_unpack('/path/to/archive.zip', '/path/to/extract')
     """
     type_name = get_archive_type(archive_file)
-    _, _, fn_unpack = _KNOWN_ARCHIVE_TYPES[type_name]
+    _, _, fn_unpack, _ = _KNOWN_ARCHIVE_TYPES[type_name]
     return fn_unpack(archive_file, directory, silent=silent, password=password)
+
+
+def archive_writer(type_name: str, archive_file: str) -> ArchiveWriter:
+    """
+    Create an ArchiveWriter instance for the specified archive type.
+
+    This function returns an ArchiveWriter that can be used to add files to an archive.
+
+    :param type_name: The name of the archive type.
+    :type type_name: str
+    :param archive_file: The filename of the archive to be created or modified.
+    :type archive_file: str
+    :return: An ArchiveWriter instance for the specified archive type.
+    :rtype: ArchiveWriter
+    :raises ValueError: If the archive type is not registered.
+
+    Example:
+        >>> writer = archive_writer('zip', '/path/to/archive.zip')
+        >>> with writer as w:
+        ...     w.add('/path/to/file.txt', 'file.txt')
+    """
+    exts, _, _, fn_writer = _KNOWN_ARCHIVE_TYPES[type_name]
+    if not any(os.path.normcase(archive_file).endswith(extname) for extname in exts):
+        warnings.warn(f'The archive type {type_name!r} should be one of the {exts!r}, '
+                      f'but file name {archive_file!r} is assigned. '
+                      f'We strongly recommend using a regular extension name for the archive file.')
+
+    return fn_writer(archive_file)
