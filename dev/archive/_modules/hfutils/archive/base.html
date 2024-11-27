@@ -107,35 +107,93 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
 
-<span class="k">class</span> <span class="nc">ArchiveWriter</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="ArchiveWriter"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter">[docs]</a><span class="k">class</span> <span class="nc">ArchiveWriter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A base class for creating archive writers.</span>
+
+<span class="sd">    This class provides a context manager interface for handling archive files,</span>
+<span class="sd">    allowing files to be added to the archive and ensuring proper resource management.</span>
+
+<span class="sd">    :param archive_file: The path to the archive file to be created or modified.</span>
+<span class="sd">    :type archive_file: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ArchiveWriter.__init__"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_file</span> <span class="o">=</span> <span class="n">archive_file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="k">def</span> <span class="nf">_create_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the handler for the archive writer.</span>
+
+<span class="sd">        This method should be overridden by subclasses to provide specific</span>
+<span class="sd">        handler creation logic for different archive types.</span>
+
+<span class="sd">        :raises NotImplementedError: If not overridden in a subclass.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>  <span class="c1"># pragma: no cover</span>
 
     <span class="k">def</span> <span class="nf">_add_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">arcname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a file to the archive.</span>
+
+<span class="sd">        This method should be overridden by subclasses to define how files</span>
+<span class="sd">        are added to the archive for different formats.</span>
+
+<span class="sd">        :param filename: The path to the file to add to the archive.</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :param arcname: The archive name for the file.</span>
+<span class="sd">        :type arcname: str</span>
+<span class="sd">        :raises NotImplementedError: If not overridden in a subclass.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>  <span class="c1"># pragma: no cover</span>
 
-    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ArchiveWriter.open"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open the archive for writing.</span>
+
+<span class="sd">        Initializes the handler if it has not been created yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_handler</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_handler</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">arcname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">arcname</span><span class="p">)</span>
+<div class="viewcode-block" id="ArchiveWriter.add"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">arcname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a file to the archive.</span>
 
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="sd">        :param filename: The path to the file to add.</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :param arcname: The name to use for the file within the archive.</span>
+<span class="sd">        :type arcname: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">arcname</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ArchiveWriter.close"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close the archive.</span>
+
+<span class="sd">        Ensures that all resources are properly released.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ArchiveWriter.__enter__"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__enter__">[docs]</a>    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enter the runtime context related to this object.</span>
+
+<span class="sd">        Opens the archive for writing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="viewcode-block" id="ArchiveWriter.__exit__"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__exit__">[docs]</a>    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exit the runtime context related to this object.</span>
+
+<span class="sd">        Closes the archive, ensuring that resources are released.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
 
 
 <span class="n">_FN_WRITER</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">ArchiveWriter</span><span class="p">]</span>
@@ -157,6 +215,8 @@
 <span class="sd">    :type fn_pack: Callable</span>
 <span class="sd">    :param fn_unpack: The unpacking function that takes an archive filename and a directory as input and extracts the archive.</span>
 <span class="sd">    :type fn_unpack: Callable</span>
+<span class="sd">    :param fn_writer: The writer creation function that takes an archive filename and creates an archive writer object.</span>
+<span class="sd">    :type fn_writer: Callable[[str], ArchiveWriter]</span>
 <span class="sd">    :raises ValueError: If no file extensions are provided for the archive type.</span>
 
 <span class="sd">    Example:</span>
@@ -278,14 +338,32 @@
     <span class="k">return</span> <span class="n">fn_unpack</span><span class="p">(</span><span class="n">archive_file</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">archive_writer</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchiveWriter</span><span class="p">:</span>
+<div class="viewcode-block" id="archive_writer"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_writer">[docs]</a><span class="k">def</span> <span class="nf">archive_writer</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchiveWriter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an ArchiveWriter instance for the specified archive type.</span>
+
+<span class="sd">    This function returns an ArchiveWriter that can be used to add files to an archive.</span>
+
+<span class="sd">    :param type_name: The name of the archive type.</span>
+<span class="sd">    :type type_name: str</span>
+<span class="sd">    :param archive_file: The filename of the archive to be created or modified.</span>
+<span class="sd">    :type archive_file: str</span>
+<span class="sd">    :return: An ArchiveWriter instance for the specified archive type.</span>
+<span class="sd">    :rtype: ArchiveWriter</span>
+<span class="sd">    :raises ValueError: If the archive type is not registered.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; writer = archive_writer(&#39;zip&#39;, &#39;/path/to/archive.zip&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; with writer as w:</span>
+<span class="sd">        ...     w.add(&#39;/path/to/file.txt&#39;, &#39;file.txt&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">exts</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">fn_writer</span> <span class="o">=</span> <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">extname</span><span class="p">)</span> <span class="k">for</span> <span class="n">extname</span> <span class="ow">in</span> <span class="n">exts</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The archive type </span><span class="si">{</span><span class="n">type_name</span><span class="si">!r}</span><span class="s1"> should be one of the </span><span class="si">{</span><span class="n">exts</span><span class="si">!r}</span><span class="s1">, &#39;</span>
                       <span class="sa">f</span><span class="s1">&#39;but file name </span><span class="si">{</span><span class="n">archive_file</span><span class="si">!r}</span><span class="s1"> is assigned. &#39;</span>
                       <span class="sa">f</span><span class="s1">&#39;We strongly recommend using a regular extension name for the archive file.&#39;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">fn_writer</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fn_writer</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span></div>
 </pre></div>
 
 
