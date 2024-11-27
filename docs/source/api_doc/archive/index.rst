@@ -56,3 +56,11 @@ get_archive_extname
 
 
 
+archive_splitext
+----------------------------------------
+
+.. autofunction:: archive_splitext
+
+
+
+
