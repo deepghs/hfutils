@@ -40,12 +40,12 @@ def person_heap():
 class TestHeap:
     def test_empty_heap_creation(self, empty_heap):
         assert len(empty_heap) == 0
-        assert empty_heap.is_empty()
+        assert empty_heap.is_empty
         assert not empty_heap
 
     def test_heap_creation_with_items(self, int_heap):
         assert len(int_heap) == 11
-        assert not int_heap.is_empty()
+        assert not int_heap.is_empty
         assert int_heap
 
     def test_push_and_pop_integers(self, empty_heap):
@@ -140,14 +140,14 @@ class TestHeap:
         for num in numbers:
             empty_heap.push(num)
         result = []
-        while not empty_heap.is_empty():
+        while not empty_heap.is_empty:
             result.append(empty_heap.pop())
         assert result == sorted(numbers)
 
     def test_heap_with_duplicates(self):
         heap = Heap([1, 1, 1, 2, 2, 3])
         result = []
-        while not heap.is_empty():
+        while not heap.is_empty:
             result.append(heap.pop())
         assert result == [1, 1, 1, 2, 2, 3]
 

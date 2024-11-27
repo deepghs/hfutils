@@ -12,6 +12,7 @@ hfutils.utils
     archive
     binary
     data
+    heap
     download
     model
     number
