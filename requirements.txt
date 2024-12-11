@@ -1,4 +1,4 @@
-hbutils>=0.10.0
+hbutils>=0.10.1
 huggingface_hub>=0.23,!=0.24.0,!=0.24.1
 tqdm
 requests
