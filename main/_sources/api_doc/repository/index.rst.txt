@@ -12,5 +12,6 @@ hfutils.repository
     base
     clone
     rollback
+    size
     url
 
