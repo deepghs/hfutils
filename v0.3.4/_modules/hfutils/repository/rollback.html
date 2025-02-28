@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hfutils.repository.rollback &mdash; hfutils 0.3.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -96,19 +96,19 @@
 <span class="sd">It includes a function to clone a repository, reset it to a specified commit, and force push the changes back to the remote repository.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">_check_git</span>
-<span class="kn">from</span> <span class="nn">.clone</span> <span class="kn">import</span> <span class="n">hf_hub_clone</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
-<span class="kn">from</span> <span class="nn">..utils.path</span> <span class="kn">import</span> <span class="n">RepoTypeTyping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">_check_git</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.clone</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_clone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoTypeTyping</span>
 
 
-<div class="viewcode-block" id="hf_hub_rollback"><a class="viewcode-back" href="../../../api_doc/repository/rollback.html#hfutils.repository.rollback.hf_hub_rollback">[docs]</a><span class="k">def</span> <span class="nf">hf_hub_rollback</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rollback_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<div class="viewcode-block" id="hf_hub_rollback"><a class="viewcode-back" href="../../../api_doc/repository/rollback.html#hfutils.repository.rollback.hf_hub_rollback">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">hf_hub_rollback</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rollback_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                     <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
                     <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -202,7 +202,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992.</p>
+    <p>&#169; Copyright 2025, narugo1992.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -269,6 +269,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/fixpartial/index.html">dev/fixpartial</a></dd>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>

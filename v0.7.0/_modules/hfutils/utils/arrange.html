@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hfutils.utils.arrange &mdash; hfutils 0.7.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -103,22 +103,22 @@
 <span class="sd">    ...     print(f&quot;Group size: {group.size}, File count: {group.count}&quot;)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">hbutils.scale</span> <span class="kn">import</span> <span class="n">size_to_bytes</span>
-<span class="kn">from</span> <span class="nn">natsort</span> <span class="kn">import</span> <span class="n">natsorted</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.scale</span><span class="w"> </span><span class="kn">import</span> <span class="n">size_to_bytes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">natsort</span><span class="w"> </span><span class="kn">import</span> <span class="n">natsorted</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span> <span class="nn">.heap</span> <span class="kn">import</span> <span class="n">Heap</span>
-<span class="kn">from</span> <span class="nn">.walk</span> <span class="kn">import</span> <span class="n">walk_files</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.heap</span><span class="w"> </span><span class="kn">import</span> <span class="n">Heap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.walk</span><span class="w"> </span><span class="kn">import</span> <span class="n">walk_files</span>
 
 
 <div class="viewcode-block" id="FileItem"><a class="viewcode-back" href="../../../api_doc/utils/arrange.html#hfutils.utils.arrange.FileItem">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">FileItem</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FileItem</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A data class representing a single file with its properties.</span>
 
@@ -135,7 +135,7 @@
     <span class="n">count</span><span class="p">:</span> <span class="nb">int</span>
 
 <div class="viewcode-block" id="FileItem.from_file"><a class="viewcode-back" href="../../../api_doc/utils/arrange.html#hfutils.utils.arrange.FileItem.from_file">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rel_to</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FileItem&#39;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rel_to</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FileItem&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a FileItem instance from a file path.</span>
 
@@ -162,7 +162,7 @@
 
 
 <div class="viewcode-block" id="FilesGroup"><a class="viewcode-back" href="../../../api_doc/utils/arrange.html#hfutils.utils.arrange.FilesGroup">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">FilesGroup</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FilesGroup</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A data class representing a group of files with collective properties.</span>
 
@@ -179,7 +179,7 @@
     <span class="n">count</span><span class="p">:</span> <span class="nb">int</span>
 
 <div class="viewcode-block" id="FilesGroup.new"><a class="viewcode-back" href="../../../api_doc/utils/arrange.html#hfutils.utils.arrange.FilesGroup.new">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FilesGroup&#39;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">new</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FilesGroup&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a new empty FilesGroup instance.</span>
 
@@ -192,7 +192,7 @@
             <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="FilesGroup.add"><a class="viewcode-back" href="../../../api_doc/utils/arrange.html#hfutils.utils.arrange.FilesGroup.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">FileItem</span><span class="p">,</span> <span class="s1">&#39;FilesGroup&#39;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s1">&#39;FilesGroup&#39;</span><span class="p">:</span>
+<div class="viewcode-block" id="FilesGroup.add"><a class="viewcode-back" href="../../../api_doc/utils/arrange.html#hfutils.utils.arrange.FilesGroup.add">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">FileItem</span><span class="p">,</span> <span class="s1">&#39;FilesGroup&#39;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s1">&#39;FilesGroup&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a FileItem or another FilesGroup to this group.</span>
 
@@ -217,7 +217,7 @@
         <span class="k">return</span> <span class="bp">self</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">_group_by_default</span><span class="p">(</span><span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">FileItem</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">FileItem</span><span class="p">,</span> <span class="n">FilesGroup</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_group_by_default</span><span class="p">(</span><span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">FileItem</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">FileItem</span><span class="p">,</span> <span class="n">FilesGroup</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Default grouping function that returns files as-is.</span>
 
@@ -230,7 +230,7 @@
     <span class="k">return</span> <span class="n">files</span>
 
 
-<span class="k">def</span> <span class="nf">_group_by_segs</span><span class="p">(</span><span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">FileItem</span><span class="p">],</span> <span class="n">segs</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">FileItem</span><span class="p">,</span> <span class="n">FilesGroup</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_group_by_segs</span><span class="p">(</span><span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">FileItem</span><span class="p">],</span> <span class="n">segs</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">FileItem</span><span class="p">,</span> <span class="n">FilesGroup</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Group files by their path segments.</span>
 
@@ -252,7 +252,7 @@
     <span class="k">return</span> <span class="n">retval</span>
 
 
-<span class="k">def</span> <span class="nf">_group_by</span><span class="p">(</span><span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">FileItem</span><span class="p">],</span> <span class="n">group_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
+<span class="k">def</span><span class="w"> </span><span class="nf">_group_by</span><span class="p">(</span><span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">FileItem</span><span class="p">],</span> <span class="n">group_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">FileItem</span><span class="p">,</span> <span class="n">FilesGroup</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Group files according to the specified method.</span>
@@ -290,7 +290,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unsupported group by method - </span><span class="si">{</span><span class="n">group_method</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="walk_files_with_groups"><a class="viewcode-back" href="../../../api_doc/utils/arrange.html#hfutils.utils.arrange.walk_files_with_groups">[docs]</a><span class="k">def</span> <span class="nf">walk_files_with_groups</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="walk_files_with_groups"><a class="viewcode-back" href="../../../api_doc/utils/arrange.html#hfutils.utils.arrange.walk_files_with_groups">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">walk_files_with_groups</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                            <span class="n">group_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                            <span class="n">max_total_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                            <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> \
@@ -359,7 +359,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992.</p>
+    <p>&#169; Copyright 2025, narugo1992.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -426,6 +426,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/fixpartial/index.html">dev/fixpartial</a></dd>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>

@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hfutils.index.fetch &mdash; hfutils 0.3.8 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
@@ -181,7 +181,7 @@
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_get_index</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_get_index</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">idx</span> <span class="o">=</span> <span class="n">hf_tar_get_index</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/danbooru_newest&#39;</span><span class="p">,</span>
@@ -199,7 +199,7 @@
 <p class="admonition-title">Note</p>
 <p>Besides, if the tar and index files are in different repositories, you can also use this function to
 get the index information by explicitly assigning the <code class="docutils literal notranslate"><span class="pre">idx_repo_id</span></code> argument.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_get_index</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_get_index</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">idx</span> <span class="o">=</span> <span class="n">hf_tar_get_index</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;nyanko7/danbooru2023&#39;</span><span class="p">,</span>
@@ -244,7 +244,7 @@ get the index information by explicitly assigning the <code class="docutils lite
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_list_files</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_list_files</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_list_files</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/danbooru_newest&#39;</span><span class="p">,</span>
@@ -259,7 +259,7 @@ get the index information by explicitly assigning the <code class="docutils lite
 <p class="admonition-title">Note</p>
 <p>Besides, if the tar and index files are in different repositories, you can also use this function to
 list all the files by explicitly assigning the <code class="docutils literal notranslate"><span class="pre">idx_repo_id</span></code> argument.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_list_files</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_list_files</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_list_files</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;nyanko7/danbooru2023&#39;</span><span class="p">,</span>
@@ -302,7 +302,7 @@ list all the files by explicitly assigning the <code class="docutils literal not
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_file_exists</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_file_exists</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_file_exists</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/danbooru_newest&#39;</span><span class="p">,</span>
@@ -324,7 +324,7 @@ list all the files by explicitly assigning the <code class="docutils literal not
 <p class="admonition-title">Note</p>
 <p>Besides, if the tar and index files are in different repositories, you can also use this function to
 check the file existence by explicitly assigning the <code class="docutils literal notranslate"><span class="pre">idx_repo_id</span></code> argument.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_file_exists</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_file_exists</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_file_exists</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;nyanko7/danbooru2023&#39;</span><span class="p">,</span>
@@ -378,7 +378,7 @@ check the file existence by explicitly assigning the <code class="docutils liter
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_file_size</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_file_size</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_file_size</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/danbooru_newest&#39;</span><span class="p">,</span>
@@ -394,7 +394,7 @@ check the file existence by explicitly assigning the <code class="docutils liter
 <p class="admonition-title">Note</p>
 <p>Besides, if the tar and index files are in different repositories, you can also use this function to
 get the file size by explicitly assigning the <code class="docutils literal notranslate"><span class="pre">idx_repo_id</span></code> argument.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_file_size</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_file_size</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_file_size</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;nyanko7/danbooru2023&#39;</span><span class="p">,</span>
@@ -441,7 +441,7 @@ get the file size by explicitly assigning the <code class="docutils literal notr
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_file_info</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_file_info</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_file_info</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/danbooru_newest&#39;</span><span class="p">,</span>
@@ -457,7 +457,7 @@ get the file size by explicitly assigning the <code class="docutils literal notr
 <p class="admonition-title">Note</p>
 <p>Besides, if the tar and index files are in different repositories, you can also use this function to
 get the file information by explicitly assigning the <code class="docutils literal notranslate"><span class="pre">idx_repo_id</span></code> argument.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_file_info</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_file_info</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_file_info</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;nyanko7/danbooru2023&#39;</span><span class="p">,</span>
@@ -507,7 +507,7 @@ get the file information by explicitly assigning the <code class="docutils liter
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_file_download</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_file_download</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_file_download</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/danbooru_newest&#39;</span><span class="p">,</span>
@@ -523,7 +523,7 @@ get the file information by explicitly assigning the <code class="docutils liter
 <p class="admonition-title">Note</p>
 <p>Besides, if the tar and index files are in different repositories, you can also use this function to
 download the given file by explicitly assigning the <code class="docutils literal notranslate"><span class="pre">idx_repo_id</span></code> argument.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_file_download</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_file_download</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_file_download</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;nyanko7/danbooru2023&#39;</span><span class="p">,</span>
@@ -552,7 +552,7 @@ download the given file by explicitly assigning the <code class="docutils litera
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992.</p>
+    <p>&#169; Copyright 2025, narugo1992.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -619,6 +619,8 @@ download the given file by explicitly assigning the <code class="docutils litera
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../dev/fixpartial/api_doc/index/fetch.html">dev/fixpartial</a></dd>
+                        <dd><a href="../../../HEAD/api_doc/index/fetch.html">HEAD</a></dd>
                         <dd><a href="../../../dev/rate/api_doc/index/fetch.html">dev/rate</a></dd>
                         <dd><a href="../../../main/api_doc/index/fetch.html">main</a></dd>
                 </dl>

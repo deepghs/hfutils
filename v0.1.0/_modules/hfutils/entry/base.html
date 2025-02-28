@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hfutils.entry.base &mdash; hfutils 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -87,23 +87,23 @@
     
     
   <h1>Source code for hfutils.entry.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">builtins</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">traceback</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span><span class="p">,</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">IO</span><span class="p">,</span> <span class="n">Callable</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">builtins</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span><span class="p">,</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">IO</span><span class="p">,</span> <span class="n">Callable</span>
 
-<span class="kn">import</span> <span class="nn">click</span>
-<span class="kn">from</span> <span class="nn">click.exceptions</span> <span class="kn">import</span> <span class="n">ClickException</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">click.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickException</span>
 
 <span class="n">CONTEXT_SETTINGS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">help_option_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-h&#39;</span><span class="p">,</span> <span class="s1">&#39;--help&#39;</span><span class="p">]</span>
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="ClickWarningException"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.ClickWarningException">[docs]</a><span class="k">class</span> <span class="nc">ClickWarningException</span><span class="p">(</span><span class="n">ClickException</span><span class="p">):</span>
+<div class="viewcode-block" id="ClickWarningException"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.ClickWarningException">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ClickWarningException</span><span class="p">(</span><span class="n">ClickException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Custom exception class for displaying warnings in yellow color.</span>
 
@@ -111,7 +111,7 @@
 <span class="sd">    :type message: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ClickWarningException.show"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.ClickWarningException.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ClickWarningException.show"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.ClickWarningException.show">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Display the warning message in yellow.</span>
 
@@ -121,7 +121,7 @@
         <span class="n">click</span><span class="o">.</span><span class="n">secho</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_message</span><span class="p">(),</span> <span class="n">fg</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="ClickErrorException"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.ClickErrorException">[docs]</a><span class="k">class</span> <span class="nc">ClickErrorException</span><span class="p">(</span><span class="n">ClickException</span><span class="p">):</span>
+<div class="viewcode-block" id="ClickErrorException"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.ClickErrorException">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ClickErrorException</span><span class="p">(</span><span class="n">ClickException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Custom exception class for displaying errors in red color.</span>
 
@@ -129,7 +129,7 @@
 <span class="sd">    :type message: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ClickErrorException.show"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.ClickErrorException.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ClickErrorException.show"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.ClickErrorException.show">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Display the error message in red.</span>
 
@@ -139,7 +139,7 @@
         <span class="n">click</span><span class="o">.</span><span class="n">secho</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_message</span><span class="p">(),</span> <span class="n">fg</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="print_exception"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.print_exception">[docs]</a><span class="k">def</span> <span class="nf">print_exception</span><span class="p">(</span><span class="n">err</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span> <span class="nb">print</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="print_exception"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.print_exception">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">print_exception</span><span class="p">(</span><span class="n">err</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span> <span class="nb">print</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Print exception information, including traceback.</span>
 
@@ -167,7 +167,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">err</span><span class="o">.</span><span class="n">args</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="KeyboardInterrupted"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.KeyboardInterrupted">[docs]</a><span class="k">class</span> <span class="nc">KeyboardInterrupted</span><span class="p">(</span><span class="n">ClickWarningException</span><span class="p">):</span>
+<div class="viewcode-block" id="KeyboardInterrupted"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.KeyboardInterrupted">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">KeyboardInterrupted</span><span class="p">(</span><span class="n">ClickWarningException</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Exception class for handling keyboard interruptions.</span>
 
@@ -176,7 +176,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">exit_code</span> <span class="o">=</span> <span class="mh">0x7</span>
 
-<div class="viewcode-block" id="KeyboardInterrupted.__init__"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.KeyboardInterrupted.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="KeyboardInterrupted.__init__"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.KeyboardInterrupted.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the exception.</span>
 
@@ -186,7 +186,7 @@
         <span class="n">ClickWarningException</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span> <span class="ow">or</span> <span class="s1">&#39;Interrupted.&#39;</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="command_wrap"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.command_wrap">[docs]</a><span class="k">def</span> <span class="nf">command_wrap</span><span class="p">():</span>
+<div class="viewcode-block" id="command_wrap"><a class="viewcode-back" href="../../../api_doc/entry/base.html#hfutils.entry.base.command_wrap">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">command_wrap</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator for wrapping Click commands.</span>
 
@@ -196,9 +196,9 @@
 <span class="sd">    :rtype: Callable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">_new_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_new_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">ClickException</span><span class="p">:</span>
@@ -223,7 +223,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992.</p>
+    <p>&#169; Copyright 2025, narugo1992.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -290,6 +290,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/fixpartial/index.html">dev/fixpartial</a></dd>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>

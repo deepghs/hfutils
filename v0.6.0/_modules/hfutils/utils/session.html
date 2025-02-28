@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hfutils.utils.session &mdash; hfutils 0.6.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -103,18 +103,18 @@
 <span class="sd">- Optional SSL verification.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span>
 
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">random_user_agent.params</span> <span class="kn">import</span> <span class="n">SoftwareName</span><span class="p">,</span> <span class="n">OperatingSystem</span>
-<span class="kn">from</span> <span class="nn">random_user_agent.user_agent</span> <span class="kn">import</span> <span class="n">UserAgent</span>
-<span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span><span class="p">,</span> <span class="n">Retry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">random_user_agent.params</span><span class="w"> </span><span class="kn">import</span> <span class="n">SoftwareName</span><span class="p">,</span> <span class="n">OperatingSystem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">random_user_agent.user_agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserAgent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">requests.adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPAdapter</span><span class="p">,</span> <span class="n">Retry</span>
 
 <span class="n">DEFAULT_TIMEOUT</span> <span class="o">=</span> <span class="mi">15</span>  <span class="c1"># seconds</span>
 
 
-<div class="viewcode-block" id="TimeoutHTTPAdapter"><a class="viewcode-back" href="../../../api_doc/utils/session.html#hfutils.utils.session.TimeoutHTTPAdapter">[docs]</a><span class="k">class</span> <span class="nc">TimeoutHTTPAdapter</span><span class="p">(</span><span class="n">HTTPAdapter</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeoutHTTPAdapter"><a class="viewcode-back" href="../../../api_doc/utils/session.html#hfutils.utils.session.TimeoutHTTPAdapter">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">TimeoutHTTPAdapter</span><span class="p">(</span><span class="n">HTTPAdapter</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A custom HTTPAdapter that enforces a default timeout on all requests.</span>
 
@@ -122,14 +122,14 @@
 <span class="sd">    :param kwargs: Arbitrary keyword arguments. &#39;timeout&#39; can be specified to set a custom timeout.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="TimeoutHTTPAdapter.__init__"><a class="viewcode-back" href="../../../api_doc/utils/session.html#hfutils.utils.session.TimeoutHTTPAdapter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeoutHTTPAdapter.__init__"><a class="viewcode-back" href="../../../api_doc/utils/session.html#hfutils.utils.session.TimeoutHTTPAdapter.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">DEFAULT_TIMEOUT</span>
         <span class="k">if</span> <span class="s2">&quot;timeout&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">]</span>
             <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TimeoutHTTPAdapter.send"><a class="viewcode-back" href="../../../api_doc/utils/session.html#hfutils.utils.session.TimeoutHTTPAdapter.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeoutHTTPAdapter.send"><a class="viewcode-back" href="../../../api_doc/utils/session.html#hfutils.utils.session.TimeoutHTTPAdapter.send">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sends the Request object, applying the timeout setting.</span>
 
@@ -144,7 +144,7 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="get_requests_session"><a class="viewcode-back" href="../../../api_doc/utils/session.html#hfutils.utils.session.get_requests_session">[docs]</a><span class="k">def</span> <span class="nf">get_requests_session</span><span class="p">(</span><span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_TIMEOUT</span><span class="p">,</span> <span class="n">verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<div class="viewcode-block" id="get_requests_session"><a class="viewcode-back" href="../../../api_doc/utils/session.html#hfutils.utils.session.get_requests_session">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_requests_session</span><span class="p">(</span><span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_TIMEOUT</span><span class="p">,</span> <span class="n">verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                          <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -183,7 +183,7 @@
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_ua_pool</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_ua_pool</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates and caches a UserAgent rotator instance with a specified number of user agents.</span>
 
@@ -197,7 +197,7 @@
     <span class="k">return</span> <span class="n">user_agent_rotator</span>
 
 
-<div class="viewcode-block" id="get_random_ua"><a class="viewcode-back" href="../../../api_doc/utils/session.html#hfutils.utils.session.get_random_ua">[docs]</a><span class="k">def</span> <span class="nf">get_random_ua</span><span class="p">():</span>
+<div class="viewcode-block" id="get_random_ua"><a class="viewcode-back" href="../../../api_doc/utils/session.html#hfutils.utils.session.get_random_ua">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_random_ua</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieves a random user agent string from the cached UserAgent rotator.</span>
 
@@ -215,7 +215,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992.</p>
+    <p>&#169; Copyright 2025, narugo1992.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -282,6 +282,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/fixpartial/index.html">dev/fixpartial</a></dd>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
