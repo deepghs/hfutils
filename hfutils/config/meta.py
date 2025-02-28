@@ -7,7 +7,7 @@ Overview:
 __TITLE__ = 'hfutils'
 
 #: Version of this project.
-__VERSION__ = '0.7.1'
+__VERSION__ = '0.8.0'
 
 #: Short description of the project, will be included in ``setup.py``.
 __DESCRIPTION__ = 'Useful utilities for huggingface'
@@ -16,4 +16,4 @@ __DESCRIPTION__ = 'Useful utilities for huggingface'
 __AUTHOR__ = 'narugo1992'
 
 #: Email of the authors'.
-__AUTHOR_EMAIL__ = 'narugo992@gmail.com'
+__AUTHOR_EMAIL__ = 'narugo1992@deepghs.org'
