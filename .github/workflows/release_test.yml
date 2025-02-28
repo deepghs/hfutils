@@ -38,7 +38,7 @@ jobs:
           make package
           ls -al dist
       - name: Upload packed files to artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts-source-pack
           path: ./dist/*
@@ -184,7 +184,7 @@ jobs:
           ls -al konachan_index
           ls -al konachan_index | grep konachan.parquet
       - name: Upload packed files to artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: hfutils-v${{ env.PACKAGE_VERSION }}-${{ env.OS_NAME }}-${{ env.CPU_ARCH }}-${{ env.GIT_COMMIT_ID }}
           path: ./dist/*
