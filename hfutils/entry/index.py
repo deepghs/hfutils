@@ -61,10 +61,12 @@ def _add_index_subcommand(cli: click.Group) -> click.Group:
                   help='Type of the HuggingFace repository.', show_default=True)
     @click.option('-R', '--revision', 'revision', type=str, default='main',
                   help='Revision of repository.', show_default=True)
+    @click.option('-d', '--subdir', 'subdir', type=str, default='.',
+                  help='Sub directory for index making.', show_default=True)
     @click.option('--min_upload_interval', 'min_upload_interval', type=float, default=60,
                   help='Min seconds for uploading to huggingface repository.', show_default=True)
     def index(repo_id: str, idx_repo_id: Optional[str], repo_type: RepoTypeTyping, revision: str,
-              min_upload_interval: float):
+              min_upload_interval: float, subdir: str):
         """
         Create index files for tar archives in a Hugging Face repository and upload them to a specified index repository.
 
@@ -105,7 +107,8 @@ def _add_index_subcommand(cli: click.Group) -> click.Group:
             hf_client.create_repo(repo_id=idx_repo_id, repo_type=repo_type)
 
         hf_fs = get_hf_fs()
-        hf_tars = hf_fs.glob(hf_fs_path(repo_id=repo_id, repo_type=repo_type, filename='**/*.tar', revision=revision))
+        hf_tars = hf_fs.glob(hf_fs_path(repo_id=repo_id, repo_type=repo_type,
+                                        filename=hf_normpath(f'{subdir}/**/*.tar'), revision=revision))
         logging.info(f'{plural_word(len(hf_tars), "tar archive")} found in {repo_type}s/{repo_id} ...')
         with TemporaryDirectory() as upload_dir:
             idx_files = []
