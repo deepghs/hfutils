@@ -14,8 +14,10 @@ import json
 import os
 from typing import Optional, List
 
+_TAR_IDX_CACHE = {}
 
-def tar_get_index(archive_file: str, idx_file: Optional[str] = None):
+
+def tar_get_index(archive_file: str, idx_file: Optional[str] = None, no_cache: bool = False):
     """
     Retrieve the index data for a given tar archive file.
 
@@ -27,6 +29,8 @@ def tar_get_index(archive_file: str, idx_file: Optional[str] = None):
     :param idx_file: Optional path to the index file. If not provided,
                      it will be inferred from the archive file name.
     :type idx_file: Optional[str]
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :return: The parsed JSON data from the index file.
     :rtype: dict
@@ -39,11 +43,18 @@ def tar_get_index(archive_file: str, idx_file: Optional[str] = None):
     """
     body, _ = os.path.splitext(archive_file)
     default_index_file = f'{body}.json'
-    with open(idx_file or default_index_file, 'r') as f:
-        return json.load(f)
+    idx_file = os.path.normcase(os.path.normpath(idx_file or default_index_file))
+
+    if not no_cache and idx_file in _TAR_IDX_CACHE:
+        return _TAR_IDX_CACHE[idx_file]
+    else:
+        with open(idx_file, 'r') as f:
+            idx_data = json.load(f)
+        _TAR_IDX_CACHE[idx_file] = idx_data
+        return idx_data
 
 
-def tar_list_files(archive_file: str, idx_file: Optional[str] = None) -> List[str]:
+def tar_list_files(archive_file: str, idx_file: Optional[str] = None, no_cache: bool = False) -> List[str]:
     """
     List all files contained within the specified tar archive.
 
@@ -55,6 +66,8 @@ def tar_list_files(archive_file: str, idx_file: Optional[str] = None) -> List[st
     :param idx_file: Optional path to the index file. If not provided,
                      it will be inferred from the archive file name.
     :type idx_file: Optional[str]
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :return: A list of file names contained in the archive.
     :rtype: List[str]
@@ -67,11 +80,13 @@ def tar_list_files(archive_file: str, idx_file: Optional[str] = None) -> List[st
     index_data = tar_get_index(
         archive_file=archive_file,
         idx_file=idx_file,
+        no_cache=no_cache,
     )
     return list(index_data['files'].keys())
 
 
-def tar_file_exists(archive_file: str, file_in_archive: str, idx_file: Optional[str] = None) -> bool:
+def tar_file_exists(archive_file: str, file_in_archive: str,
+                    idx_file: Optional[str] = None, no_cache: bool = False) -> bool:
     """
     Check if a specific file exists within the tar archive.
 
@@ -85,6 +100,8 @@ def tar_file_exists(archive_file: str, file_in_archive: str, idx_file: Optional[
     :param idx_file: Optional path to the index file. If not provided,
                      it will be inferred from the archive file name.
     :type idx_file: Optional[str]
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :return: True if the file exists in the archive, False otherwise.
     :rtype: bool
@@ -98,12 +115,14 @@ def tar_file_exists(archive_file: str, file_in_archive: str, idx_file: Optional[
     index = tar_get_index(
         archive_file=archive_file,
         idx_file=idx_file,
+        no_cache=no_cache,
     )
     files = _hf_files_process(index['files'])
     return _n_path(file_in_archive) in files
 
 
-def tar_file_info(archive_file: str, file_in_archive: str, idx_file: Optional[str] = None) -> dict:
+def tar_file_info(archive_file: str, file_in_archive: str,
+                  idx_file: Optional[str] = None, no_cache: bool = False) -> dict:
     """
     Retrieve information about a specific file within the tar archive.
 
@@ -117,6 +136,8 @@ def tar_file_info(archive_file: str, file_in_archive: str, idx_file: Optional[st
     :param idx_file: Optional path to the index file. If not provided,
                      it will be inferred from the archive file name.
     :type idx_file: Optional[str]
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :return: A dictionary containing file metadata.
     :rtype: dict
@@ -131,6 +152,7 @@ def tar_file_info(archive_file: str, file_in_archive: str, idx_file: Optional[st
     index = tar_get_index(
         archive_file=archive_file,
         idx_file=idx_file,
+        no_cache=no_cache,
     )
     files = _hf_files_process(index['files'])
     if _n_path(file_in_archive) not in files:
@@ -171,7 +193,8 @@ def tar_file_size(archive_file: str, file_in_archive: str, idx_file: Optional[st
 
 
 def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
-                      idx_file: Optional[str] = None, chunk_size: int = 1 << 20, force_download: bool = False):
+                      idx_file: Optional[str] = None, chunk_size: int = 1 << 20,
+                      force_download: bool = False, no_cache: bool = False):
     """
     Extract and download a specific file from the tar archive to a local file.
 
@@ -194,6 +217,8 @@ def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
                            Defualt to `False`, downloading will be skipped if the local file
                            is fully matched with expected file.
     :type force_download: bool
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :raises FileNotFoundError: If the specified file is not found in the archive.
     :raises ArchiveStandaloneFileIncompleteDownload: If the downloaded file size doesn't match the expected size.
@@ -208,6 +233,7 @@ def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
     index = tar_get_index(
         archive_file=archive_file,
         idx_file=idx_file,
+        no_cache=no_cache,
     )
     files = _hf_files_process(index['files'])
     if _n_path(file_in_archive) not in files:
