@@ -10,6 +10,7 @@ from tqdm import tqdm
 
 from .hash import _f_sha256
 from ..operate.base import RepoTypeTyping, get_hf_client
+from ..utils import hf_normpath
 
 
 class ArchiveStandaloneFileIncompleteDownload(Exception):
@@ -25,13 +26,14 @@ class ArchiveStandaloneFileHashNotMatch(Exception):
 
 
 _HF_TAR_IDX_LOCKS = defaultdict(threading.Lock)
+_HF_TAR_IDX_CACHE = {}
 
 
 def hf_tar_get_index(repo_id: str, archive_in_repo: str,
                      repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                      idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
                      idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
-                     hf_token: Optional[str] = None):
+                     hf_token: Optional[str] = None, no_cache: bool = False):
     """
     Get the index of a tar archive file in a Hugging Face repository.
 
@@ -91,23 +93,30 @@ def hf_tar_get_index(repo_id: str, archive_in_repo: str,
     default_index_file = f'{body}.json'
     f_repo_id = idx_repo_id or repo_id
     f_repo_type = idx_repo_type or repo_type
-    f_filename = idx_file_in_repo or default_index_file
+    f_filename = hf_normpath(idx_file_in_repo or default_index_file)
     f_revision = idx_revision or revision
-    with _HF_TAR_IDX_LOCKS[(f_repo_id, f_repo_type, f_filename, f_revision)]:
-        with open(hf_client.hf_hub_download(
-                repo_id=f_repo_id,
-                repo_type=f_repo_type,
-                filename=f_filename,
-                revision=f_revision,
-        ), 'r') as f:
-            return json.load(f)
+
+    cache_key = (f_repo_id, f_repo_type, f_filename, f_revision)
+    if not no_cache and cache_key in _HF_TAR_IDX_CACHE:
+        return _HF_TAR_IDX_CACHE[cache_key]
+    else:
+        with _HF_TAR_IDX_LOCKS[cache_key]:
+            with open(hf_client.hf_hub_download(
+                    repo_id=f_repo_id,
+                    repo_type=f_repo_type,
+                    filename=f_filename,
+                    revision=f_revision,
+            ), 'r') as f:
+                idx_data = json.load(f)
+            _HF_TAR_IDX_CACHE[cache_key] = idx_data
+            return idx_data
 
 
 def hf_tar_list_files(repo_id: str, archive_in_repo: str,
                       repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                       idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
                       idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
-                      hf_token: Optional[str] = None) -> List[str]:
+                      hf_token: Optional[str] = None, no_cache: bool = False) -> List[str]:
     """
     List files inside a tar archive file in a Hugging Face repository.
 
@@ -168,6 +177,7 @@ def hf_tar_list_files(repo_id: str, archive_in_repo: str,
         idx_revision=idx_revision,
 
         hf_token=hf_token,
+        no_cache=no_cache,
     )
 
     return list(index_data['files'].keys())
@@ -177,7 +187,7 @@ def hf_tar_file_exists(repo_id: str, archive_in_repo: str, file_in_archive: str,
                        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                        idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
                        idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
-                       hf_token: Optional[str] = None):
+                       hf_token: Optional[str] = None, no_cache: bool = False):
     """
     Check if a file exists inside a tar archive file in a Hugging Face repository.
 
@@ -255,6 +265,7 @@ def hf_tar_file_exists(repo_id: str, archive_in_repo: str, file_in_archive: str,
         idx_revision=idx_revision,
 
         hf_token=hf_token,
+        no_cache=no_cache,
     )
     files = _hf_files_process(index['files'])
     return _n_path(file_in_archive) in files
@@ -288,7 +299,7 @@ def hf_tar_file_info(repo_id: str, archive_in_repo: str, file_in_archive: str,
                      repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                      idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
                      idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
-                     hf_token: Optional[str] = None) -> dict:
+                     hf_token: Optional[str] = None, no_cache: bool = False) -> dict:
     """
     Get a file's detailed information in index tars, including offset, sha256 and size.
 
@@ -353,6 +364,7 @@ def hf_tar_file_info(repo_id: str, archive_in_repo: str, file_in_archive: str,
         idx_revision=idx_revision,
 
         hf_token=hf_token,
+        no_cache=no_cache,
     )
     files = _hf_files_process(index['files'])
     if _n_path(file_in_archive) not in files:
@@ -439,7 +451,8 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
                          idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
                          proxies: Optional[Dict] = None, user_agent: Union[Dict, str, None] = None,
                          headers: Optional[Dict[str, str]] = None, endpoint: Optional[str] = None,
-                         force_download: bool = False, silent: bool = False, hf_token: Optional[str] = None):
+                         force_download: bool = False, silent: bool = False,
+                         hf_token: Optional[str] = None, no_cache: bool = False):
     """
     Download a specific file from a tar archive stored in a Hugging Face repository.
 
@@ -532,6 +545,7 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
         idx_revision=idx_revision,
 
         hf_token=hf_token,
+        no_cache=no_cache,
     )
     files = _hf_files_process(index['files'])
     if _n_path(file_in_archive) not in files:
