@@ -1,22 +1,22 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hfutils.repository.size &mdash; hfutils 0.8.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=ec16d22d"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ce6c0465"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -121,9 +121,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_normpath</span><span class="p">,</span> <span class="n">hf_fs_path</span>
 
 
-<div class="viewcode-block" id="RepoFileItem">
-<a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileItem">[docs]</a>
-<span class="nd">@dataclass</span>
+<div class="viewcode-block" id="RepoFileItem"><a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileItem">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">RepoFileItem</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a file item in a Hugging Face repository.</span>
@@ -144,9 +142,7 @@
     <span class="n">lfs_sha256</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">blob_id</span><span class="p">:</span> <span class="nb">str</span>
 
-<div class="viewcode-block" id="RepoFileItem.from_repo_file">
-<a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileItem.from_repo_file">[docs]</a>
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="RepoFileItem.from_repo_file"><a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileItem.from_repo_file">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_repo_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">repo_file</span><span class="p">:</span> <span class="n">RepoFile</span><span class="p">,</span> <span class="n">subdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;RepoFileItem&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a RepoFileItem from a RepoFile object.</span>
@@ -164,7 +160,6 @@
             <span class="n">blob_id</span><span class="o">=</span><span class="n">repo_file</span><span class="o">.</span><span class="n">blob_id</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">path_segments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -174,23 +169,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">seg</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">seg</span> <span class="ow">and</span> <span class="n">seg</span> <span class="o">!=</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="RepoFileItem.__repr__">
-<a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileItem.__repr__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RepoFileItem.__repr__"><a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileItem.__repr__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a string representation of the RepoFileItem.</span>
 
 <span class="sd">        :return: A formatted string representation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">, size: </span><span class="si">{</span><span class="n">size_to_bytes_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">sigfigs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">system</span><span class="o">=</span><span class="s2">&quot;si&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot; (LFS)&quot;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">is_lfs</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">&gt;&#39;</span><span class="p">)</span></div>
-</div>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot; (LFS)&quot;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">is_lfs</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">&gt;&#39;</span><span class="p">)</span></div></div>
 
 
-
-<div class="viewcode-block" id="RepoFileList">
-<a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">RepoFileList</span><span class="p">(</span><span class="n">Sequence</span><span class="p">):</span>
+<div class="viewcode-block" id="RepoFileList"><a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">RepoFileList</span><span class="p">(</span><span class="n">Sequence</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a list of RepoFileItems with additional metadata and utility methods.</span>
 
@@ -204,9 +193,7 @@
 <span class="sd">    :param subdir: The subdirectory within the repository (default: &#39;&#39;).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RepoFileList.__init__">
-<a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList.__init__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RepoFileItem</span><span class="p">],</span>
+<div class="viewcode-block" id="RepoFileList.__init__"><a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RepoFileItem</span><span class="p">],</span>
                  <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">subdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span> <span class="o">=</span> <span class="n">repo_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">repo_type</span> <span class="o">=</span> <span class="n">repo_type</span>
@@ -217,10 +204,7 @@
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_items</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_total_size</span> <span class="o">+=</span> <span class="n">item</span><span class="o">.</span><span class="n">size</span></div>
 
-
-<div class="viewcode-block" id="RepoFileList.__getitem__">
-<a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList.__getitem__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="RepoFileList.__getitem__"><a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList.__getitem__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a RepoFileItem by index.</span>
 
@@ -229,17 +213,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_items</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
 
-
-<div class="viewcode-block" id="RepoFileList.__len__">
-<a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList.__len__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="RepoFileList.__len__"><a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList.__len__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the number of items in the list.</span>
 
 <span class="sd">        :return: The number of RepoFileItems in the list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_items</span><span class="p">)</span></div>
-
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">total_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -279,9 +259,7 @@
             <span class="p">]</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="RepoFileList.__repr__">
-<a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList.__repr__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RepoFileList.__repr__"><a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList.__repr__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a string representation of the RepoFileList.</span>
 
@@ -293,10 +271,7 @@
             <span class="n">get_children</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
         <span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="RepoFileList.repr">
-<a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList.repr">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_items</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="RepoFileList.repr"><a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.RepoFileList.repr">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_items</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a custom string representation of the RepoFileList.</span>
 
@@ -307,17 +282,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span><span class="p">(</span><span class="n">max_items</span><span class="o">=</span><span class="n">max_items</span><span class="p">),</span>
             <span class="n">format_node</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
             <span class="n">get_children</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
-        <span class="p">)</span></div>
-</div>
-
+        <span class="p">)</span></div></div>
 
 
 <span class="n">SortByTyping</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="hf_hub_repo_analysis">
-<a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.hf_hub_repo_analysis">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">hf_hub_repo_analysis</span><span class="p">(</span>
+<div class="viewcode-block" id="hf_hub_repo_analysis"><a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.hf_hub_repo_analysis">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">hf_hub_repo_analysis</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span>
         <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">subdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sort_by</span><span class="p">:</span> <span class="n">SortByTyping</span> <span class="o">=</span> <span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -373,7 +344,6 @@
         <span class="n">subdir</span><span class="o">=</span><span class="n">subdir</span><span class="p">,</span>
         <span class="n">items</span><span class="o">=</span><span class="n">file_items</span>
     <span class="p">)</span></div>
-
 </pre></div>
 
 

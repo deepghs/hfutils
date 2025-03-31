@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -9,15 +9,15 @@
   <title>hfutils.utils.data &mdash; hfutils 0.7.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=5a057da9"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=787fabe1"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -116,16 +116,16 @@
     
     
   <section id="module-hfutils.utils.data">
-<span id="hfutils-utils-data"></span><h1>hfutils.utils.data<a class="headerlink" href="#module-hfutils.utils.data" title="Link to this heading"></a></h1>
+<span id="hfutils-utils-data"></span><h1>hfutils.utils.data<a class="headerlink" href="#module-hfutils.utils.data" title="Permalink to this heading"></a></h1>
 <p>This module provides functionality for identifying data files based on their file extensions.</p>
 <p>It includes a comprehensive set of data file extensions and a function to check if a given
 filename corresponds to a known data file format. This can be useful in various data processing
 and file handling scenarios where it’s necessary to distinguish data files from other types of files.</p>
 <section id="is-data-file">
-<h2>is_data_file<a class="headerlink" href="#is-data-file" title="Link to this heading"></a></h2>
+<h2>is_data_file<a class="headerlink" href="#is-data-file" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.utils.data.is_data_file">
-<span class="sig-prename descclassname"><span class="pre">hfutils.utils.data.</span></span><span class="sig-name descname"><span class="pre">is_data_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/hfutils/utils/data.html#is_data_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.data.is_data_file" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.utils.data.</span></span><span class="sig-name descname"><span class="pre">is_data_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/hfutils/utils/data.html#is_data_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.data.is_data_file" title="Permalink to this definition"></a></dt>
 <dd><p>Determine if a given filename corresponds to a known data file format.</p>
 <p>This function checks if the file extension of the provided filename matches
 any of the known data file extensions defined in the <cite>_DATA_EXTS</cite> set.</p>

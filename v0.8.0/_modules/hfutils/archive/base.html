@@ -1,22 +1,22 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hfutils.archive.base &mdash; hfutils 0.8.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=486e5634"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=6a14807c"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -106,9 +106,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">splitext_with_composite</span>
 
 
-<div class="viewcode-block" id="ArchiveWriter">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ArchiveWriter</span><span class="p">:</span>
+<div class="viewcode-block" id="ArchiveWriter"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ArchiveWriter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class for creating and managing archive writers.</span>
 
@@ -124,12 +122,9 @@
 <span class="sd">        ...     writer.add(&#39;file.txt&#39;, &#39;archive_path/file.txt&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ArchiveWriter.__init__">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__init__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="ArchiveWriter.__init__"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_file</span> <span class="o">=</span> <span class="n">archive_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="kc">None</span></div>
-
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -157,9 +152,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>  <span class="c1"># pragma: no cover</span>
 
-<div class="viewcode-block" id="ArchiveWriter.open">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.open">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ArchiveWriter.open"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.open">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Open the archive for writing.</span>
 
@@ -169,10 +162,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_handler</span><span class="p">()</span></div>
 
-
-<div class="viewcode-block" id="ArchiveWriter.add">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.add">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">arcname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="ArchiveWriter.add"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.add">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">arcname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a file to the archive.</span>
 
@@ -183,10 +173,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">arcname</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="ArchiveWriter.close">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.close">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ArchiveWriter.close"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.close">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Close the archive and release resources.</span>
 
@@ -197,10 +184,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-
-<div class="viewcode-block" id="ArchiveWriter.__enter__">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__enter__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ArchiveWriter.__enter__"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__enter__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Context manager entry point.</span>
 
@@ -210,10 +194,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-
-<div class="viewcode-block" id="ArchiveWriter.__exit__">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__exit__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+<div class="viewcode-block" id="ArchiveWriter.__exit__"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.ArchiveWriter.__exit__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Context manager exit point.</span>
 
@@ -223,18 +204,14 @@
 <span class="sd">        :param exc_val: Exception value if an error occurred.</span>
 <span class="sd">        :param exc_tb: Exception traceback if an error occurred.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
-</div>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
 
 
 <span class="n">_FN_WRITER</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">ArchiveWriter</span><span class="p">]</span>
 <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">_FN_WRITER</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
 
 
-<div class="viewcode-block" id="register_archive_type">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.register_archive_type">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">register_archive_type</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">fn_pack</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">fn_unpack</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">fn_writer</span><span class="p">:</span> <span class="n">_FN_WRITER</span><span class="p">):</span>
+<div class="viewcode-block" id="register_archive_type"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.register_archive_type">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">register_archive_type</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">fn_pack</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">fn_unpack</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">fn_writer</span><span class="p">:</span> <span class="n">_FN_WRITER</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Register a new archive type with its associated handlers and extensions.</span>
 
@@ -264,10 +241,7 @@
     <span class="n">_KNOWN_ARCHIVE_TYPES</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">exts</span><span class="p">,</span> <span class="n">fn_pack</span><span class="p">,</span> <span class="n">fn_unpack</span><span class="p">,</span> <span class="n">fn_writer</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="get_archive_extname">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.get_archive_extname">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_archive_extname</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="get_archive_extname"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.get_archive_extname">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_archive_extname</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieve the primary file extension for a registered archive type.</span>
 
@@ -289,10 +263,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown archive type - </span><span class="si">{</span><span class="n">type_name</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="archive_pack">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_pack">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">archive_pack</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<div class="viewcode-block" id="archive_pack"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_pack">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">archive_pack</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">clear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create an archive from a directory using the specified archive type.</span>
@@ -323,10 +294,7 @@
     <span class="k">return</span> <span class="n">fn_pack</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="get_archive_type">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.get_archive_type">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_archive_type</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="get_archive_type"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.get_archive_type">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_archive_type</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine the archive type from a file&#39;s extension.</span>
 
@@ -349,10 +317,7 @@
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown type of archive file </span><span class="si">{</span><span class="n">archive_file</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="archive_unpack">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_unpack">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">archive_unpack</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="archive_unpack"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_unpack">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">archive_unpack</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract an archive file to a directory.</span>
 
@@ -374,10 +339,7 @@
     <span class="k">return</span> <span class="n">fn_unpack</span><span class="p">(</span><span class="n">archive_file</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="archive_writer">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_writer">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">archive_writer</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchiveWriter</span><span class="p">:</span>
+<div class="viewcode-block" id="archive_writer"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_writer">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">archive_writer</span><span class="p">(</span><span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchiveWriter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create an archive writer for the specified archive type.</span>
 
@@ -402,7 +364,6 @@
     <span class="k">return</span> <span class="n">fn_writer</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span></div>
 
 
-
 <span class="nd">@lru_cache</span><span class="p">()</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_all_extensions</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -417,9 +378,7 @@
     <span class="k">return</span> <span class="n">extensions</span>
 
 
-<div class="viewcode-block" id="archive_splitext">
-<a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_splitext">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">archive_splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="archive_splitext"><a class="viewcode-back" href="../../../api_doc/archive/index.html#hfutils.archive.archive_splitext">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">archive_splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Split a filename into root and extension, handling compound extensions.</span>
 
@@ -434,7 +393,6 @@
 <span class="sd">        &#39;data&#39; &#39;.tar.gz&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">splitext_with_composite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">_get_all_extensions</span><span class="p">())</span></div>
-
 </pre></div>
 
 
