@@ -17,6 +17,13 @@ from typing import Optional, List
 _TAR_IDX_CACHE = {}
 
 
+def _tar_get_cache_key(archive_file: str, idx_file: Optional[str] = None):
+    body, _ = os.path.splitext(archive_file)
+    default_index_file = f'{body}.json'
+    idx_file = os.path.normcase(os.path.normpath(idx_file or default_index_file))
+    return idx_file
+
+
 def tar_get_index(archive_file: str, idx_file: Optional[str] = None, no_cache: bool = False):
     """
     Retrieve the index data for a given tar archive file.
@@ -41,9 +48,10 @@ def tar_get_index(archive_file: str, idx_file: Optional[str] = None, no_cache: b
     :example:
         >>> index_data = tar_get_index('my_archive.tar')
     """
-    body, _ = os.path.splitext(archive_file)
-    default_index_file = f'{body}.json'
-    idx_file = os.path.normcase(os.path.normpath(idx_file or default_index_file))
+    idx_file = _tar_get_cache_key(
+        archive_file=archive_file,
+        idx_file=idx_file,
+    )
 
     if not no_cache and idx_file in _TAR_IDX_CACHE:
         return _TAR_IDX_CACHE[idx_file]

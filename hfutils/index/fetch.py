@@ -29,6 +29,20 @@ _HF_TAR_IDX_LOCKS = defaultdict(threading.Lock)
 _HF_TAR_IDX_CACHE = {}
 
 
+def _hf_tar_get_cache_key(repo_id: str, archive_in_repo: str,
+                          repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                          idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
+                          idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None):
+    body, _ = os.path.splitext(archive_in_repo)
+    default_index_file = f'{body}.json'
+    f_repo_id = idx_repo_id or repo_id
+    f_repo_type = idx_repo_type or repo_type
+    f_filename = hf_normpath(idx_file_in_repo or default_index_file)
+    f_revision = idx_revision or revision
+
+    return f_repo_id, f_repo_type, f_filename, f_revision
+
+
 def hf_tar_get_index(repo_id: str, archive_in_repo: str,
                      repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                      idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
@@ -91,14 +105,16 @@ def hf_tar_get_index(repo_id: str, archive_in_repo: str,
 
     """
     hf_client = get_hf_client(hf_token)
-    body, _ = os.path.splitext(archive_in_repo)
-    default_index_file = f'{body}.json'
-    f_repo_id = idx_repo_id or repo_id
-    f_repo_type = idx_repo_type or repo_type
-    f_filename = hf_normpath(idx_file_in_repo or default_index_file)
-    f_revision = idx_revision or revision
-
-    cache_key = (f_repo_id, f_repo_type, f_filename, f_revision)
+    f_repo_id, f_repo_type, f_filename, f_revision = cache_key = _hf_tar_get_cache_key(
+        repo_id=repo_id,
+        archive_in_repo=archive_in_repo,
+        repo_type=repo_type,
+        revision=revision,
+        idx_repo_id=idx_repo_id,
+        idx_file_in_repo=idx_file_in_repo,
+        idx_repo_type=idx_repo_type,
+        idx_revision=idx_revision
+    )
     if not no_cache and cache_key in _HF_TAR_IDX_CACHE:
         return _HF_TAR_IDX_CACHE[cache_key]
     else:
