@@ -29,6 +29,8 @@ def tar_get_index(archive_file: str, idx_file: Optional[str] = None, no_cache: b
     :param idx_file: Optional path to the index file. If not provided,
                      it will be inferred from the archive file name.
     :type idx_file: Optional[str]
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :return: The parsed JSON data from the index file.
     :rtype: dict
@@ -64,6 +66,8 @@ def tar_list_files(archive_file: str, idx_file: Optional[str] = None, no_cache: 
     :param idx_file: Optional path to the index file. If not provided,
                      it will be inferred from the archive file name.
     :type idx_file: Optional[str]
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :return: A list of file names contained in the archive.
     :rtype: List[str]
@@ -96,6 +100,8 @@ def tar_file_exists(archive_file: str, file_in_archive: str,
     :param idx_file: Optional path to the index file. If not provided,
                      it will be inferred from the archive file name.
     :type idx_file: Optional[str]
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :return: True if the file exists in the archive, False otherwise.
     :rtype: bool
@@ -130,6 +136,8 @@ def tar_file_info(archive_file: str, file_in_archive: str,
     :param idx_file: Optional path to the index file. If not provided,
                      it will be inferred from the archive file name.
     :type idx_file: Optional[str]
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :return: A dictionary containing file metadata.
     :rtype: dict
@@ -209,6 +217,8 @@ def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
                            Defualt to `False`, downloading will be skipped if the local file
                            is fully matched with expected file.
     :type force_download: bool
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :raises FileNotFoundError: If the specified file is not found in the archive.
     :raises ArchiveStandaloneFileIncompleteDownload: If the downloaded file size doesn't match the expected size.

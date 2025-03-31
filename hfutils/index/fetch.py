@@ -55,6 +55,8 @@ def hf_tar_get_index(repo_id: str, archive_in_repo: str,
     :type idx_revision: str, optional
     :param hf_token: The Hugging Face access token.
     :type hf_token: str, optional
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
     :return: The index of the tar archive file.
     :rtype: Dict
 
@@ -138,6 +140,8 @@ def hf_tar_list_files(repo_id: str, archive_in_repo: str,
     :type idx_revision: str, optional
     :param hf_token: The Hugging Face access token.
     :type hf_token: str, optional
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
     :return: The list of files inside the tar archive.
     :rtype: List[str]
 
@@ -211,6 +215,8 @@ def hf_tar_file_exists(repo_id: str, archive_in_repo: str, file_in_archive: str,
     :type idx_revision: str, optional
     :param hf_token: The Hugging Face access token.
     :type hf_token: str, optional
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
     :return: True if the file exists, False otherwise.
     :rtype: bool
 
@@ -323,6 +329,8 @@ def hf_tar_file_info(repo_id: str, archive_in_repo: str, file_in_archive: str,
     :type idx_revision: str, optional
     :param hf_token: The Hugging Face access token.
     :type hf_token: str, optional
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
     :return: Return a dictionary object with meta information of this file.
     :rtype: dict
     :raises FileNotFoundError: Raise this when file not exist in tar archive.
@@ -494,6 +502,8 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
     :type silent: bool
     :param hf_token: Hugging Face authentication token.
     :type hf_token: str, optional
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool
 
     :raises FileNotFoundError: If the specified file is not found in the tar archive.
     :raises ArchiveStandaloneFileIncompleteDownload: If the download is incomplete.
