@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hfutils.utils.model &mdash; hfutils 0.9.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=39bb1c6d"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            hfutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/archive/index.html">hfutils.archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/cache/index.html">hfutils.cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">hfutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/entry/index.html">hfutils.entry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/index/index.html">hfutils.index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">hfutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/repository/index.html">hfutils.repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">hfutils.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">hfutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">hfutils.utils.model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for hfutils.utils.model</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functionality for identifying model files based on their extensions and naming patterns.</span>
+
+<span class="sd">It includes a comprehensive list of model file extensions, patterns for sharded model files, and specific patterns</span>
+<span class="sd">for Hugging Face model files. The main function, :func:`is_model_file`, determines whether a given filename corresponds</span>
+<span class="sd">to a model file based on these predefined patterns and extensions.</span>
+
+<span class="sd">This module can be useful in various scenarios, such as:</span>
+
+<span class="sd">- Automated model file detection in directories</span>
+<span class="sd">- Validation of uploaded files in machine learning platforms</span>
+<span class="sd">- Preprocessing steps in model loading pipelines</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        from model_file_identifier import is_model_file</span>
+
+<span class="sd">        filename = &quot;model.pt&quot;</span>
+<span class="sd">        if is_model_file(filename):</span>
+<span class="sd">            print(f&quot;{filename} is a model file&quot;)</span>
+<span class="sd">        else:</span>
+<span class="sd">            print(f&quot;{filename} is not a model file&quot;)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+
+<span class="n">_MODEL_EXTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;.ckpt&#39;</span><span class="p">,</span>  <span class="c1"># Checkpoint file</span>
+    <span class="s1">&#39;.pt&#39;</span><span class="p">,</span>  <span class="c1"># PyTorch model file</span>
+    <span class="s1">&#39;.pth&#39;</span><span class="p">,</span>  <span class="c1"># PyTorch model file (alternative extension)</span>
+    <span class="s1">&#39;.safetensors&#39;</span><span class="p">,</span>  <span class="c1"># SafeTensors model file</span>
+    <span class="s1">&#39;.onnx&#39;</span><span class="p">,</span>  <span class="c1"># Open Neural Network Exchange model file</span>
+    <span class="s1">&#39;.model&#39;</span><span class="p">,</span>  <span class="c1"># Generic model file</span>
+    <span class="s1">&#39;.h5&#39;</span><span class="p">,</span>  <span class="c1"># Hierarchical Data Format version 5</span>
+    <span class="s1">&#39;.hdf5&#39;</span><span class="p">,</span>  <span class="c1"># Hierarchical Data Format version 5 (alternative extension)</span>
+    <span class="s1">&#39;.mlmodel&#39;</span><span class="p">,</span>  <span class="c1"># Core ML model file</span>
+    <span class="s1">&#39;.ftz&#39;</span><span class="p">,</span>  <span class="c1"># FastText model file</span>
+    <span class="s1">&#39;.pb&#39;</span><span class="p">,</span>  <span class="c1"># Protocol Buffer file (often used for TensorFlow models)</span>
+    <span class="s1">&#39;.tflite&#39;</span><span class="p">,</span>  <span class="c1"># TensorFlow Lite model file</span>
+    <span class="s1">&#39;.pkl&#39;</span><span class="p">,</span>  <span class="c1"># Pickle file (often used for scikit-learn models)</span>
+    <span class="s1">&#39;.joblib&#39;</span><span class="p">,</span>  <span class="c1"># Joblib file (often used for scikit-learn models)</span>
+    <span class="s1">&#39;.bin&#39;</span><span class="p">,</span>  <span class="c1"># Binary file (generic)</span>
+    <span class="s1">&#39;.meta&#39;</span><span class="p">,</span>  <span class="c1"># Meta file (often associated with TensorFlow checkpoints)</span>
+    <span class="s1">&#39;.params&#39;</span><span class="p">,</span>  <span class="c1"># Parameters file (often used in MXNet)</span>
+    <span class="s1">&#39;.pdparams&#39;</span><span class="p">,</span>  <span class="c1"># PaddlePaddle parameters file</span>
+    <span class="s1">&#39;.pdmodel&#39;</span><span class="p">,</span>  <span class="c1"># PaddlePaddle model file</span>
+    <span class="s1">&#39;.ot&#39;</span><span class="p">,</span>  <span class="c1"># OpenVINO model file</span>
+    <span class="s1">&#39;.nnet&#39;</span><span class="p">,</span>  <span class="c1"># Neural network file</span>
+    <span class="s1">&#39;.dnn&#39;</span><span class="p">,</span>  <span class="c1"># Deep neural network file</span>
+    <span class="s1">&#39;.mar&#39;</span><span class="p">,</span>  <span class="c1"># MXNet Archive</span>
+    <span class="s1">&#39;.tf&#39;</span><span class="p">,</span>  <span class="c1"># TensorFlow SavedModel file</span>
+    <span class="s1">&#39;.keras&#39;</span><span class="p">,</span>  <span class="c1"># Keras model file</span>
+    <span class="s1">&#39;.weights&#39;</span><span class="p">,</span>  <span class="c1"># Weights file (generic)</span>
+    <span class="s1">&#39;.pmml&#39;</span><span class="p">,</span>  <span class="c1"># Predictive Model Markup Language file</span>
+    <span class="s1">&#39;.gguf&#39;</span><span class="p">,</span>  <span class="c1"># GGUF (GPT-Generated Unified Format) file</span>
+    <span class="s1">&#39;.ggml&#39;</span><span class="p">,</span>  <span class="c1"># GGML (GPT-Generated Model Language) file</span>
+    <span class="s1">&#39;.q4_0&#39;</span><span class="p">,</span>  <span class="c1"># 4-bit quantized model (type 0)</span>
+    <span class="s1">&#39;.q4_1&#39;</span><span class="p">,</span>  <span class="c1"># 4-bit quantized model (type 1)</span>
+    <span class="s1">&#39;.q5_0&#39;</span><span class="p">,</span>  <span class="c1"># 5-bit quantized model (type 0)</span>
+    <span class="s1">&#39;.q5_1&#39;</span><span class="p">,</span>  <span class="c1"># 5-bit quantized model (type 1)</span>
+    <span class="s1">&#39;.q8_0&#39;</span><span class="p">,</span>  <span class="c1"># 8-bit quantized model</span>
+    <span class="s1">&#39;.qnt&#39;</span><span class="p">,</span>  <span class="c1"># Quantized model (generic)</span>
+    <span class="s1">&#39;.int8&#39;</span><span class="p">,</span>  <span class="c1"># 8-bit integer quantized model</span>
+    <span class="s1">&#39;.fp16&#39;</span><span class="p">,</span>  <span class="c1"># 16-bit floating point model</span>
+    <span class="s1">&#39;.bk&#39;</span><span class="p">,</span>  <span class="c1"># Backup file (often used for model checkpoints)</span>
+    <span class="s1">&#39;.engine&#39;</span><span class="p">,</span>  <span class="c1"># TensorRT engine file</span>
+    <span class="s1">&#39;.plan&#39;</span><span class="p">,</span>  <span class="c1"># TensorRT plan file</span>
+    <span class="s1">&#39;.trt&#39;</span><span class="p">,</span>  <span class="c1"># TensorRT model file</span>
+    <span class="s1">&#39;.torchscript&#39;</span><span class="p">,</span>  <span class="c1"># TorchScript model file</span>
+    <span class="s1">&#39;.pdiparams&#39;</span><span class="p">,</span>  <span class="c1"># PaddlePaddle inference parameters file</span>
+    <span class="s1">&#39;.pdopt&#39;</span><span class="p">,</span>  <span class="c1"># PaddlePaddle optimizer file</span>
+    <span class="s1">&#39;.nb&#39;</span><span class="p">,</span>  <span class="c1"># Neural network binary file</span>
+    <span class="s1">&#39;.mnn&#39;</span><span class="p">,</span>  <span class="c1"># MNN (Mobile Neural Network) model file</span>
+    <span class="s1">&#39;.ncnn&#39;</span><span class="p">,</span>  <span class="c1"># NCNN model file</span>
+    <span class="s1">&#39;.om&#39;</span><span class="p">,</span>  <span class="c1"># CANN (Compute Architecture for Neural Networks) offline model</span>
+    <span class="s1">&#39;.rknn&#39;</span><span class="p">,</span>  <span class="c1"># Rockchip Neural Network model file</span>
+    <span class="s1">&#39;.xmodel&#39;</span><span class="p">,</span>  <span class="c1"># Vitis AI model file</span>
+    <span class="s1">&#39;.kmodel&#39;</span><span class="p">,</span>  <span class="c1"># Kendryte model file</span>
+<span class="p">}</span>
+
+<span class="n">_MODEL_SHARD_PATTERNS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">r</span><span class="s1">&#39;.*-\d</span><span class="si">{5}</span><span class="s1">-of-\d</span><span class="si">{5}</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># Pattern for sharded files like &quot;model-00001-of-00005&quot;</span>
+    <span class="sa">r</span><span class="s1">&#39;.*\.bin\.\d+&#39;</span><span class="p">,</span>  <span class="c1"># Pattern for binary shards like &quot;model.bin.1&quot;</span>
+    <span class="sa">r</span><span class="s1">&#39;.*\.part\.\d+&#39;</span><span class="p">,</span>  <span class="c1"># Pattern for part files like &quot;model.part.0&quot;</span>
+    <span class="sa">r</span><span class="s1">&#39;.*_part_\d+&#39;</span><span class="p">,</span>  <span class="c1"># Alternative pattern for part files like &quot;model_part_0&quot;</span>
+    <span class="sa">r</span><span class="s1">&#39;.*-shard\d+&#39;</span><span class="p">,</span>  <span class="c1"># Pattern for shard files like &quot;model-shard1&quot;</span>
+<span class="p">]</span>
+
+<span class="n">_HF_MODEL_PATTERNS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">r</span><span class="s1">&#39;pytorch_model.*\.bin&#39;</span><span class="p">,</span>  <span class="c1"># Hugging Face PyTorch model file</span>
+    <span class="sa">r</span><span class="s1">&#39;tf_model.*\.h5&#39;</span><span class="p">,</span>  <span class="c1"># Hugging Face TensorFlow model file</span>
+    <span class="sa">r</span><span class="s1">&#39;model.*\.ckpt&#39;</span><span class="p">,</span>  <span class="c1"># Hugging Face checkpoint file</span>
+    <span class="sa">r</span><span class="s1">&#39;flax_model.*\.msgpack&#39;</span><span class="p">,</span>  <span class="c1"># Hugging Face Flax model file</span>
+    <span class="sa">r</span><span class="s1">&#39;.*\.safetensors&#39;</span><span class="p">,</span>  <span class="c1"># SafeTensors file (often used in Hugging Face models)</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="is_model_file">
+<a class="viewcode-back" href="../../../api_doc/utils/model.html#hfutils.utils.model.is_model_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_model_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine if a given filename corresponds to a model file.</span>
+
+<span class="sd">    This function checks if the provided filename matches any of the known model file extensions</span>
+<span class="sd">    or patterns, including sharded model files and Hugging Face specific patterns.</span>
+
+<span class="sd">    :param filename: The name of the file to check. Can be a full path or just the filename.</span>
+<span class="sd">    :type filename: Union[str, os.PathLike]</span>
+
+<span class="sd">    :return: True if the filename corresponds to a model file, False otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+
+<span class="sd">    :raises TypeError: If the filename is not a string or os.PathLike object.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">        &gt;&gt;&gt; is_model_file(&quot;model.pt&quot;)</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; is_model_file(&quot;data.csv&quot;)</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; is_model_file(&quot;model-00001-of-00005&quot;)</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; is_model_file(&quot;pytorch_model.bin&quot;)</span>
+<span class="sd">        True</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This function is case-insensitive and works with both file names and full paths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown file name type - </span><span class="si">{</span><span class="n">filename</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">_MODEL_EXTS</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">_MODEL_SHARD_PATTERNS</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">_HF_MODEL_PATTERNS</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.9.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.0.1/index.html">v0.0.1</a></dd>
+                        <dd><a href="../../../../v0.0.2/index.html">v0.0.2</a></dd>
+                        <dd><a href="../../../../v0.0.3/index.html">v0.0.3</a></dd>
+                        <dd><a href="../../../../v0.0.4/index.html">v0.0.4</a></dd>
+                        <dd><a href="../../../../v0.0.5/index.html">v0.0.5</a></dd>
+                        <dd><a href="../../../../v0.0.6/index.html">v0.0.6</a></dd>
+                        <dd><a href="../../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../v0.1.2/index.html">v0.1.2</a></dd>
+                        <dd><a href="../../../../v0.2.0/index.html">v0.2.0</a></dd>
+                        <dd><a href="../../../../v0.2.1/index.html">v0.2.1</a></dd>
+                        <dd><a href="../../../../v0.2.10/index.html">v0.2.10</a></dd>
+                        <dd><a href="../../../../v0.2.11/index.html">v0.2.11</a></dd>
+                        <dd><a href="../../../../v0.2.2/index.html">v0.2.2</a></dd>
+                        <dd><a href="../../../../v0.2.3/index.html">v0.2.3</a></dd>
+                        <dd><a href="../../../../v0.2.4/index.html">v0.2.4</a></dd>
+                        <dd><a href="../../../../v0.2.5/index.html">v0.2.5</a></dd>
+                        <dd><a href="../../../../v0.2.6/index.html">v0.2.6</a></dd>
+                        <dd><a href="../../../../v0.2.7/index.html">v0.2.7</a></dd>
+                        <dd><a href="../../../../v0.2.8/index.html">v0.2.8</a></dd>
+                        <dd><a href="../../../../v0.2.9/index.html">v0.2.9</a></dd>
+                        <dd><a href="../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../v0.3.3/index.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../v0.3.4/index.html">v0.3.4</a></dd>
+                        <dd><a href="../../../../v0.3.5/index.html">v0.3.5</a></dd>
+                        <dd><a href="../../../../v0.3.6/index.html">v0.3.6</a></dd>
+                        <dd><a href="../../../../v0.3.7/index.html">v0.3.7</a></dd>
+                        <dd><a href="../../../../v0.3.8/index.html">v0.3.8</a></dd>
+                        <dd><a href="../../../../v0.3.9/index.html">v0.3.9</a></dd>
+                        <dd><a href="../../../../v0.4.0/index.html">v0.4.0</a></dd>
+                        <dd><a href="../../../../v0.4.1/index.html">v0.4.1</a></dd>
+                        <dd><a href="../../../../v0.4.2/index.html">v0.4.2</a></dd>
+                        <dd><a href="../../../../v0.4.3/index.html">v0.4.3</a></dd>
+                        <dd><a href="../../../../v0.4.4/index.html">v0.4.4</a></dd>
+                        <dd><a href="../../../../v0.5.0/index.html">v0.5.0</a></dd>
+                        <dd><a href="../../../../v0.5.1/index.html">v0.5.1</a></dd>
+                        <dd><a href="../../../../v0.6.0/index.html">v0.6.0</a></dd>
+                        <dd><a href="../../../../v0.7.0/index.html">v0.7.0</a></dd>
+                        <dd><a href="../../../../v0.7.1/index.html">v0.7.1</a></dd>
+                        <dd><a href="../../../../v0.8.0/index.html">v0.8.0</a></dd>
+                        <dd><a href="../../../../v0.8.1/index.html">v0.8.1</a></dd>
+                        <dd><a href="model.html">v0.9.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
