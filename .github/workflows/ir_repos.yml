@@ -16,7 +16,7 @@ jobs:
         os:
           - 'ubuntu-latest'
         python-version:
-          - '3.8'
+          - '3.10'
 
     steps:
       - name: Get system version for Linux
