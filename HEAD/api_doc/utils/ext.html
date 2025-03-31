@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -9,15 +9,15 @@
   <title>hfutils.utils.ext &mdash; hfutils 0.8.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ce6c0465"></script>
-      <script src="../../_static/doctools.js?v=888ff710"></script>
-      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/documentation_options.js?v=ec16d22d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -116,14 +116,14 @@
     
     
   <section id="module-hfutils.utils.ext">
-<span id="hfutils-utils-ext"></span><h1>hfutils.utils.ext<a class="headerlink" href="#module-hfutils.utils.ext" title="Permalink to this heading"></a></h1>
+<span id="hfutils-utils-ext"></span><h1>hfutils.utils.ext<a class="headerlink" href="#module-hfutils.utils.ext" title="Link to this heading"></a></h1>
 <p>This module provides utilities for handling file extensions, particularly for files with composite extensions.
 It extends the standard os.path.splitext functionality to support multi-part file extensions.</p>
 <section id="splitext-with-composite">
-<h2>splitext_with_composite<a class="headerlink" href="#splitext-with-composite" title="Permalink to this heading"></a></h2>
+<h2>splitext_with_composite<a class="headerlink" href="#splitext-with-composite" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.utils.ext.splitext_with_composite">
-<span class="sig-prename descclassname"><span class="pre">hfutils.utils.ext.</span></span><span class="sig-name descname"><span class="pre">splitext_with_composite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">composite_extensions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/utils/ext.html#splitext_with_composite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.ext.splitext_with_composite" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.utils.ext.</span></span><span class="sig-name descname"><span class="pre">splitext_with_composite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">composite_extensions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/utils/ext.html#splitext_with_composite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.ext.splitext_with_composite" title="Link to this definition"></a></dt>
 <dd><p>Split a filename into a pair (root, ext) where ext is a composite extension if it matches
 one of the provided composite extensions, otherwise behaves like os.path.splitext.</p>
 <p>This function is particularly useful when dealing with files that have multi-part extensions
@@ -242,6 +242,7 @@ returns the result of os.path.splitext.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../dev/py38/api_doc/utils/ext.html">dev/py38</a></dd>
                         <dd><a href="ext.html">HEAD</a></dd>
                         <dd><a href="../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="../../../main/api_doc/utils/ext.html">main</a></dd>

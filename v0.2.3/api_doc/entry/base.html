@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -9,15 +9,15 @@
   <title>hfutils.entry.base &mdash; hfutils 0.2.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=860ec0ee"></script>
-      <script src="../../_static/doctools.js?v=888ff710"></script>
-      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/documentation_options.js?v=a47416a6"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -127,12 +127,12 @@
     
     
   <section id="module-hfutils.entry.base">
-<span id="hfutils-entry-base"></span><h1>hfutils.entry.base<a class="headerlink" href="#module-hfutils.entry.base" title="Permalink to this heading"></a></h1>
+<span id="hfutils-entry-base"></span><h1>hfutils.entry.base<a class="headerlink" href="#module-hfutils.entry.base" title="Link to this heading"></a></h1>
 <section id="context-settings">
-<h2>CONTEXT_SETTINGS<a class="headerlink" href="#context-settings" title="Permalink to this heading"></a></h2>
+<h2>CONTEXT_SETTINGS<a class="headerlink" href="#context-settings" title="Link to this heading"></a></h2>
 <dl class="py data">
 <dt class="sig sig-object py" id="hfutils.entry.base.CONTEXT_SETTINGS">
-<span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">CONTEXT_SETTINGS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'help_option_names':</span> <span class="pre">['-h',</span> <span class="pre">'--help']}</span></em><a class="headerlink" href="#hfutils.entry.base.CONTEXT_SETTINGS" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">CONTEXT_SETTINGS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'help_option_names':</span> <span class="pre">['-h',</span> <span class="pre">'--help']}</span></em><a class="headerlink" href="#hfutils.entry.base.CONTEXT_SETTINGS" title="Link to this definition"></a></dt>
 <dd><p>dict() -&gt; new empty dictionary
 dict(mapping) -&gt; new dictionary initialized from a mapping object’s</p>
 <blockquote>
@@ -152,10 +152,10 @@ for k, v in iterable:</p>
 
 </section>
 <section id="clickwarningexception">
-<h2>ClickWarningException<a class="headerlink" href="#clickwarningexception" title="Permalink to this heading"></a></h2>
+<h2>ClickWarningException<a class="headerlink" href="#clickwarningexception" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="hfutils.entry.base.ClickWarningException">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">ClickWarningException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickWarningException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickWarningException" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">ClickWarningException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickWarningException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickWarningException" title="Link to this definition"></a></dt>
 <dd><p>Custom exception class for displaying warnings in yellow color.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -164,13 +164,13 @@ for k, v in iterable:</p>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hfutils.entry.base.ClickWarningException.exit_code">
-<span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#hfutils.entry.base.ClickWarningException.exit_code" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#hfutils.entry.base.ClickWarningException.exit_code" title="Link to this definition"></a></dt>
 <dd><p>The exit code for this exception.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hfutils.entry.base.ClickWarningException.show">
-<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickWarningException.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickWarningException.show" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickWarningException.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickWarningException.show" title="Link to this definition"></a></dt>
 <dd><p>Display the warning message in yellow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -183,10 +183,10 @@ for k, v in iterable:</p>
 
 </section>
 <section id="clickerrorexception">
-<h2>ClickErrorException<a class="headerlink" href="#clickerrorexception" title="Permalink to this heading"></a></h2>
+<h2>ClickErrorException<a class="headerlink" href="#clickerrorexception" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="hfutils.entry.base.ClickErrorException">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">ClickErrorException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickErrorException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickErrorException" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">ClickErrorException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickErrorException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickErrorException" title="Link to this definition"></a></dt>
 <dd><p>Custom exception class for displaying errors in red color.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -195,13 +195,13 @@ for k, v in iterable:</p>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hfutils.entry.base.ClickErrorException.exit_code">
-<span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#hfutils.entry.base.ClickErrorException.exit_code" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#hfutils.entry.base.ClickErrorException.exit_code" title="Link to this definition"></a></dt>
 <dd><p>The exit code for this exception.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hfutils.entry.base.ClickErrorException.show">
-<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickErrorException.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickErrorException.show" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickErrorException.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickErrorException.show" title="Link to this definition"></a></dt>
 <dd><p>Display the error message in red.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -214,10 +214,10 @@ for k, v in iterable:</p>
 
 </section>
 <section id="print-exception">
-<h2>print_exception<a class="headerlink" href="#print-exception" title="Permalink to this heading"></a></h2>
+<h2>print_exception<a class="headerlink" href="#print-exception" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.entry.base.print_exception">
-<span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">print_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">err</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseException</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#print_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.print_exception" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">print_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">err</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseException</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#print_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.print_exception" title="Link to this definition"></a></dt>
 <dd><p>Print exception information, including traceback.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -231,10 +231,10 @@ for k, v in iterable:</p>
 
 </section>
 <section id="keyboardinterrupted">
-<h2>KeyboardInterrupted<a class="headerlink" href="#keyboardinterrupted" title="Permalink to this heading"></a></h2>
+<h2>KeyboardInterrupted<a class="headerlink" href="#keyboardinterrupted" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="hfutils.entry.base.KeyboardInterrupted">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">KeyboardInterrupted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#KeyboardInterrupted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">KeyboardInterrupted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#KeyboardInterrupted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted" title="Link to this definition"></a></dt>
 <dd><p>Exception class for handling keyboard interruptions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -243,7 +243,7 @@ for k, v in iterable:</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="hfutils.entry.base.KeyboardInterrupted.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#KeyboardInterrupted.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#KeyboardInterrupted.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initialize the exception.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -254,13 +254,13 @@ for k, v in iterable:</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hfutils.entry.base.KeyboardInterrupted.exit_code">
-<span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted.exit_code" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted.exit_code" title="Link to this definition"></a></dt>
 <dd><p>The exit code for this exception.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hfutils.entry.base.KeyboardInterrupted.show">
-<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted.show" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted.show" title="Link to this definition"></a></dt>
 <dd><p>Display the warning message in yellow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -273,10 +273,10 @@ for k, v in iterable:</p>
 
 </section>
 <section id="command-wrap">
-<h2>command_wrap<a class="headerlink" href="#command-wrap" title="Permalink to this heading"></a></h2>
+<h2>command_wrap<a class="headerlink" href="#command-wrap" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.entry.base.command_wrap">
-<span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">command_wrap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#command_wrap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.command_wrap" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">command_wrap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#command_wrap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.command_wrap" title="Link to this definition"></a></dt>
 <dd><p>Decorator for wrapping Click commands.</p>
 <p>This decorator catches exceptions and provides consistent error handling.</p>
 <dl class="field-list simple">
@@ -373,6 +373,7 @@ for k, v in iterable:</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../dev/py38/api_doc/entry/base.html">dev/py38</a></dd>
                         <dd><a href="../../../HEAD/api_doc/entry/base.html">HEAD</a></dd>
                         <dd><a href="../../../dev/rate/api_doc/entry/base.html">dev/rate</a></dd>
                         <dd><a href="../../../main/api_doc/entry/base.html">main</a></dd>

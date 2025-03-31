@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -9,15 +9,15 @@
   <title>hfutils.utils.type_ &mdash; hfutils 0.8.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ce6c0465"></script>
-      <script src="../../_static/doctools.js?v=888ff710"></script>
-      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/documentation_options.js?v=ec16d22d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -120,17 +120,17 @@
     
     
   <section id="module-hfutils.utils.type_">
-<span id="hfutils-utils-type"></span><h1>hfutils.utils.type_<a class="headerlink" href="#module-hfutils.utils.type_" title="Permalink to this heading"></a></h1>
+<span id="hfutils-utils-type"></span><h1>hfutils.utils.type_<a class="headerlink" href="#module-hfutils.utils.type_" title="Link to this heading"></a></h1>
 <p>This module provides functionality for determining file types and managing list item types.</p>
 <p>It includes an enumeration class for different types of list items, and a function to determine
 the type of a given file. The module also adds support for the WebP image format.</p>
 <p>The module uses the <code class="docutils literal notranslate"><span class="pre">mimetypes</span></code> library for MIME type detection and imports custom functions
 for identifying archive, model, and data files.</p>
 <section id="fileitemtype">
-<h2>FileItemType<a class="headerlink" href="#fileitemtype" title="Permalink to this heading"></a></h2>
+<h2>FileItemType<a class="headerlink" href="#fileitemtype" title="Link to this heading"></a></h2>
 <dl class="py class enum">
 <dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType">
-<em class="property"><span class="pre">enum</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.utils.type_.</span></span><span class="sig-name descname"><span class="pre">FileItemType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/utils/type_.html#FileItemType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.type_.FileItemType" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">enum</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.utils.type_.</span></span><span class="sig-name descname"><span class="pre">FileItemType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/utils/type_.html#FileItemType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.type_.FileItemType" title="Link to this definition"></a></dt>
 <dd><p>Enum class representing different types of list items.</p>
 <p>This enumeration defines various file and folder types that can be encountered
 in a file system or list of items. Each type is associated with a unique integer value.</p>
@@ -147,38 +147,38 @@ in a file system or list of items. Each type is associated with a unique integer
 <p>Valid values are as follows:</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.FILE">
-<span class="sig-name descname"><span class="pre">FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.FILE:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.FILE" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.FILE:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.FILE" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.FOLDER">
-<span class="sig-name descname"><span class="pre">FOLDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.FOLDER:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.FOLDER" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">FOLDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.FOLDER:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.FOLDER" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.IMAGE">
-<span class="sig-name descname"><span class="pre">IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.IMAGE:</span> <span class="pre">3&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.IMAGE" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.IMAGE:</span> <span class="pre">3&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.IMAGE" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.ARCHIVE">
-<span class="sig-name descname"><span class="pre">ARCHIVE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.ARCHIVE:</span> <span class="pre">4&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.ARCHIVE" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ARCHIVE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.ARCHIVE:</span> <span class="pre">4&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.ARCHIVE" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.MODEL">
-<span class="sig-name descname"><span class="pre">MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.MODEL:</span> <span class="pre">5&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.MODEL" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.MODEL:</span> <span class="pre">5&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.MODEL" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.DATA">
-<span class="sig-name descname"><span class="pre">DATA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.DATA:</span> <span class="pre">6&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.DATA" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">DATA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;FileItemType.DATA:</span> <span class="pre">6&gt;</span></em><a class="headerlink" href="#hfutils.utils.type_.FileItemType.DATA" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code> and its members also have the following methods:</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="hfutils.utils.type_.FileItemType.render_color">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">render_color</span></span><a class="headerlink" href="#hfutils.utils.type_.FileItemType.render_color" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">render_color</span></span><a class="headerlink" href="#hfutils.utils.type_.FileItemType.render_color" title="Link to this definition"></a></dt>
 <dd><p>Get the render color based on the item type.</p>
 <p>This property returns a color string associated with each item type,
 which can be used for rendering or display purposes.</p>
@@ -207,10 +207,10 @@ which can be used for rendering or display purposes.</p>
 
 </section>
 <section id="get-file-type">
-<h2>get_file_type<a class="headerlink" href="#get-file-type" title="Permalink to this heading"></a></h2>
+<h2>get_file_type<a class="headerlink" href="#get-file-type" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.utils.type_.get_file_type">
-<span class="sig-prename descclassname"><span class="pre">hfutils.utils.type_.</span></span><span class="sig-name descname"><span class="pre">get_file_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hfutils.utils.type_.FileItemType" title="hfutils.utils.type_.FileItemType"><span class="pre">FileItemType</span></a></span></span><a class="reference internal" href="../../_modules/hfutils/utils/type_.html#get_file_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.type_.get_file_type" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.utils.type_.</span></span><span class="sig-name descname"><span class="pre">get_file_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hfutils.utils.type_.FileItemType" title="hfutils.utils.type_.FileItemType"><span class="pre">FileItemType</span></a></span></span><a class="reference internal" href="../../_modules/hfutils/utils/type_.html#get_file_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.utils.type_.get_file_type" title="Link to this definition"></a></dt>
 <dd><p>Determine the type of a given file.</p>
 <p>This function analyzes the provided filename and returns the corresponding FileItemType.
 It uses various methods to determine the file type, including checking for archives,
@@ -328,6 +328,7 @@ model files, data files, and image files based on MIME types.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../dev/py38/api_doc/utils/type_.html">dev/py38</a></dd>
                         <dd><a href="../../../HEAD/api_doc/utils/type_.html">HEAD</a></dd>
                         <dd><a href="../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="type_.html">main</a></dd>
