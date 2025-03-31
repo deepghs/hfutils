@@ -1,22 +1,22 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hfutils.utils.heap &mdash; hfutils 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=add265a1"></script>
-      <script src="../../../_static/doctools.js?v=888ff710"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -155,7 +155,9 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_func</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">item</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Heap"><a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Heap</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+<div class="viewcode-block" id="Heap">
+<a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Heap</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A generic heap implementation supporting custom key functions and reverse ordering.</span>
 
@@ -177,7 +179,9 @@
 <span class="sd">        &gt;&gt;&gt; heap = Heap([&#39;a&#39;, &#39;bbb&#39;, &#39;cc&#39;], key=len, reverse=True)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Heap.__init__"><a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+<div class="viewcode-block" id="Heap.__init__">
+<a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
                  <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">key</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reverse</span> <span class="o">=</span> <span class="n">reverse</span>
@@ -186,6 +190,7 @@
             <span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_heap</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_heap</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">HeapItem</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">T</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -198,7 +203,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">HeapItem</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reverse</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Heap.push"><a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.push">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Heap.push">
+<a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.push">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Push an item onto the heap.</span>
 
@@ -207,7 +214,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_heap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new</span><span class="p">(</span><span class="n">item</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Heap.pop"><a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.pop">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Heap.pop">
+<a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.pop">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove and return the top item from the heap.</span>
 
@@ -218,6 +228,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_heap</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Pop from an empty heap&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_heap</span><span class="p">)</span><span class="o">.</span><span class="n">item</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">peek</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -231,7 +242,9 @@
             <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Peek from an empty heap&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_heap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span>
 
-<div class="viewcode-block" id="Heap.__len__"><a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.__len__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="Heap.__len__">
+<a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.__len__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the number of items in the heap.</span>
 
@@ -239,6 +252,7 @@
 <span class="sd">        :rtype: int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_heap</span><span class="p">)</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -250,7 +264,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_heap</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
 
-<div class="viewcode-block" id="Heap.__bool__"><a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.__bool__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Heap.__bool__">
+<a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.__bool__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Boolean representation of the heap.</span>
 
@@ -259,7 +275,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span></div>
 
-<div class="viewcode-block" id="Heap.__repr__"><a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.__repr__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Heap.__repr__">
+<a class="viewcode-back" href="../../../api_doc/utils/heap.html#hfutils.utils.heap.Heap.__repr__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a string representation of the heap.</span>
 
@@ -267,7 +286,9 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_heap</span><span class="p">]</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="n">items</span><span class="si">}</span><span class="s1">)&#39;</span></div></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="n">items</span><span class="si">}</span><span class="s1">)&#39;</span></div>
+</div>
+
 </pre></div>
 
 
