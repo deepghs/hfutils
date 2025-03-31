@@ -47,7 +47,7 @@ setup(
     author=meta['__AUTHOR__'],
     author_email=meta['__AUTHOR_EMAIL__'],
     license='Apache License, Version 2.0',
-    keywords='Utilities of images.',
+    keywords='huggingface, download, upload, batch processing, data processing, machine learning, ai',
     url='https://github.com/deepghs/hfutils',
 
     # environment
@@ -57,19 +57,52 @@ setup(
     extras_require=group_requirements,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
+
+        # Intended Audience
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
+        'Intended Audience :: Science/Research',
+        'Intended Audience :: Information Technology',
+
+        # License
+        'License :: OSI Approved :: MIT License',
+
+        # Programming Language
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+
+        # Operating System
+        'Operating System :: OS Independent',
+        'Operating System :: POSIX',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: MacOS',
+
+        # Technical Topics
+        'Topic :: Scientific/Engineering',
+        'Topic :: Scientific/Engineering :: Artificial Intelligence',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Internet :: File Transfer Protocol (FTP)',
+        'Topic :: Utilities',
+
+        # Data Processing Features
+        'Typing :: Typed',
+        'Natural Language :: English'
     ],
     entry_points={
         'console_scripts': [
             'hfutils=hfutils.entry:hfutilscli'
         ]
+    },
+    project_urls={
+        'Bug Reports': 'https://github.com/deepghs/hfutils/issues',
+        'Source': 'https://github.com/deepghs/hfutils',
+        'Documentation': 'https://hfutils.deepghs.org/',
     },
 )
