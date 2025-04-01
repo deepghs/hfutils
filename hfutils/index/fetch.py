@@ -4,6 +4,7 @@ import threading
 from collections import defaultdict
 from typing import Optional, Dict, Union, List
 
+from cachetools import LRUCache
 from huggingface_hub.file_download import http_get, hf_hub_url
 from huggingface_hub.utils import build_hf_headers
 from tqdm import tqdm
@@ -26,7 +27,7 @@ class ArchiveStandaloneFileHashNotMatch(Exception):
 
 
 _HF_TAR_IDX_LOCKS = defaultdict(threading.Lock)
-_HF_TAR_IDX_CACHE = {}
+_HF_TAR_IDX_CACHE = LRUCache(maxsize=192)
 
 
 def _hf_tar_get_cache_key(repo_id: str, archive_in_repo: str,
@@ -153,7 +154,7 @@ def hf_tar_get_index(repo_id: str, archive_in_repo: str,
             return idx_data
 
 
-_HF_TAR_IDX_PFILES_CACHE = {}
+_HF_TAR_IDX_PFILES_CACHE = LRUCache(maxsize=192)
 
 
 def _hf_tar_get_processed_files(repo_id: str, archive_in_repo: str,

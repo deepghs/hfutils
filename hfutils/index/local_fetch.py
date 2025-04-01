@@ -14,7 +14,9 @@ import json
 import os
 from typing import Optional, List
 
-_TAR_IDX_CACHE = {}
+from cachetools import LRUCache
+
+_TAR_IDX_CACHE = LRUCache(maxsize=192)
 
 
 def _tar_get_cache_key(archive_file: str, idx_file: Optional[str] = None):
@@ -77,7 +79,7 @@ def tar_get_index(archive_file: str, idx_file: Optional[str] = None, no_cache: b
         return idx_data
 
 
-_TAR_IDX_PFILES_CACHE = {}
+_TAR_IDX_PFILES_CACHE = LRUCache(maxsize=192)
 
 
 def _tar_get_processed_files(archive_file: str, idx_file: Optional[str] = None, no_cache: bool = False):
