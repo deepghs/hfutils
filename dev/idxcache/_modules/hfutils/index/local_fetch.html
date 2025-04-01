@@ -447,6 +447,32 @@
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">local_file</span><span class="p">)</span>
         <span class="k">raise</span></div>
 
+
+
+<div class="viewcode-block" id="tar_cache_reset">
+<a class="viewcode-back" href="../../../api_doc/index/local_fetch.html#hfutils.index.local_fetch.tar_cache_reset">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tar_cache_reset</span><span class="p">(</span><span class="n">maxsize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reset the tar index and processed files caches.</span>
+
+<span class="sd">    This function clears both the index cache and processed files cache.</span>
+<span class="sd">    Optionally, it can also resize the caches.</span>
+
+<span class="sd">    :param maxsize: Optional new maximum size for the caches.</span>
+<span class="sd">                   If provided, both caches will be recreated with this size.</span>
+<span class="sd">    :type maxsize: Optional[int]</span>
+
+<span class="sd">    :example:</span>
+<span class="sd">        &gt;&gt;&gt; tar_cache_reset(maxsize=256)  # Reset and resize caches</span>
+<span class="sd">        &gt;&gt;&gt; tar_cache_reset()  # Just clear the existing caches</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_TAR_IDX_CACHE</span><span class="p">,</span> <span class="n">_TAR_IDX_PFILES_CACHE</span>
+    <span class="n">_TAR_IDX_CACHE</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">_TAR_IDX_PFILES_CACHE</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">maxsize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_TAR_IDX_CACHE</span><span class="o">.</span><span class="n">maxsize</span> <span class="o">!=</span> <span class="n">maxsize</span><span class="p">:</span>
+        <span class="n">_TAR_IDX_CACHE</span> <span class="o">=</span> <span class="n">LRUCache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span>
+        <span class="n">_TAR_IDX_PFILES_CACHE</span> <span class="o">=</span> <span class="n">LRUCache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span></div>
+
 </pre></div>
 
 
