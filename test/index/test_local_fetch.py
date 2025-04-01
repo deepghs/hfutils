@@ -1,11 +1,12 @@
 import os.path
+from unittest.mock import MagicMock, patch
 
 import pytest
 from hbutils.testing import isolated_directory
 from natsort import natsorted
 
 from hfutils.index import tar_list_files, tar_file_exists, tar_file_download, tar_file_info, \
-    tar_file_size
+    tar_file_size, tar_cache_reset
 from test.testings import get_testfile, file_compare
 
 
@@ -178,3 +179,50 @@ class TestIndexLocalFetch:
                 local_file='empty_file',
             )
             assert os.path.getsize('empty_file') == 0
+
+
+@pytest.fixture
+def mock_lru_cache():
+    """Fixture to mock the LRUCache class and global variables."""
+    mock_cache1 = MagicMock()
+    mock_cache2 = MagicMock()
+
+    with patch('hfutils.index.local_fetch._TAR_IDX_CACHE', mock_cache1), \
+            patch('hfutils.index.local_fetch._TAR_IDX_PFILES_CACHE', mock_cache2), \
+            patch('hfutils.index.local_fetch.LRUCache') as mock_lru:
+        yield mock_cache1, mock_cache2, mock_lru
+
+
+@pytest.mark.unittest
+class TestTarCacheReset:
+    def test_reset_without_maxsize(self, mock_lru_cache):
+        """Test resetting the cache without changing the maxsize."""
+        mock_cache1, mock_cache2, _ = mock_lru_cache
+
+        tar_cache_reset()
+
+        mock_cache1.clear.assert_called_once()
+        mock_cache2.clear.assert_called_once()
+
+    def test_reset_with_same_maxsize(self, mock_lru_cache):
+        """Test resetting the cache with the same maxsize."""
+        mock_cache1, mock_cache2, mock_lru = mock_lru_cache
+        mock_cache1.maxsize = 100
+
+        tar_cache_reset(maxsize=100)
+
+        mock_cache1.clear.assert_called_once()
+        mock_cache2.clear.assert_called_once()
+        mock_lru.assert_not_called()
+
+    def test_reset_with_different_maxsize(self, mock_lru_cache):
+        """Test resetting the cache with a different maxsize."""
+        mock_cache1, mock_cache2, mock_lru = mock_lru_cache
+        mock_cache1.maxsize = 100
+
+        tar_cache_reset(maxsize=200)
+
+        mock_cache1.clear.assert_called_once()
+        mock_cache2.clear.assert_called_once()
+        assert mock_lru.call_count == 2
+        mock_lru.assert_called_with(maxsize=200)

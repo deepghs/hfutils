@@ -14,7 +14,9 @@ import json
 import os
 from typing import Optional, List
 
-_TAR_IDX_CACHE = {}
+from cachetools import LRUCache
+
+_TAR_IDX_CACHE = LRUCache(maxsize=192)
 
 
 def _tar_get_cache_key(archive_file: str, idx_file: Optional[str] = None):
@@ -77,7 +79,7 @@ def tar_get_index(archive_file: str, idx_file: Optional[str] = None, no_cache: b
         return idx_data
 
 
-_TAR_IDX_PFILES_CACHE = {}
+_TAR_IDX_PFILES_CACHE = LRUCache(maxsize=192)
 
 
 def _tar_get_processed_files(archive_file: str, idx_file: Optional[str] = None, no_cache: bool = False):
@@ -335,3 +337,26 @@ def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
         if os.path.exists(local_file):
             os.remove(local_file)
         raise
+
+
+def tar_cache_reset(maxsize: Optional[int] = None):
+    """
+    Reset the tar index and processed files caches.
+
+    This function clears both the index cache and processed files cache.
+    Optionally, it can also resize the caches.
+
+    :param maxsize: Optional new maximum size for the caches.
+                   If provided, both caches will be recreated with this size.
+    :type maxsize: Optional[int]
+
+    :example:
+        >>> tar_cache_reset(maxsize=256)  # Reset and resize caches
+        >>> tar_cache_reset()  # Just clear the existing caches
+    """
+    global _TAR_IDX_CACHE, _TAR_IDX_PFILES_CACHE
+    _TAR_IDX_CACHE.clear()
+    _TAR_IDX_PFILES_CACHE.clear()
+    if maxsize is not None and _TAR_IDX_CACHE.maxsize != maxsize:
+        _TAR_IDX_CACHE = LRUCache(maxsize=maxsize)
+        _TAR_IDX_PFILES_CACHE = LRUCache(maxsize=maxsize)

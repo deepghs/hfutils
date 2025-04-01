@@ -4,6 +4,7 @@ import threading
 from collections import defaultdict
 from typing import Optional, Dict, Union, List
 
+from cachetools import LRUCache
 from huggingface_hub.file_download import http_get, hf_hub_url
 from huggingface_hub.utils import build_hf_headers
 from tqdm import tqdm
@@ -26,7 +27,7 @@ class ArchiveStandaloneFileHashNotMatch(Exception):
 
 
 _HF_TAR_IDX_LOCKS = defaultdict(threading.Lock)
-_HF_TAR_IDX_CACHE = {}
+_HF_TAR_IDX_CACHE = LRUCache(maxsize=192)
 
 
 def _hf_tar_get_cache_key(repo_id: str, archive_in_repo: str,
@@ -153,7 +154,7 @@ def hf_tar_get_index(repo_id: str, archive_in_repo: str,
             return idx_data
 
 
-_HF_TAR_IDX_PFILES_CACHE = {}
+_HF_TAR_IDX_PFILES_CACHE = LRUCache(maxsize=192)
 
 
 def _hf_tar_get_processed_files(repo_id: str, archive_in_repo: str,
@@ -718,3 +719,27 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
         if os.path.exists(local_file):
             os.remove(local_file)
         raise
+
+
+def hf_tar_cache_reset(maxsize: Optional[int] = None):
+    """
+    Reset the tar archive index caches and optionally resize them.
+
+    :param maxsize: New maximum size for the caches. If None, only clears the caches without resizing.
+    :type maxsize: Optional[int]
+
+    This function performs two operations:
+
+    1. Clears both the index cache and processed files cache
+    2. If maxsize is provided, recreates the caches with the new size
+
+    Example::
+        >>> hf_tar_cache_reset()  # Clear caches
+        >>> hf_tar_cache_reset(maxsize=256)  # Clear and resize caches
+    """
+    global _HF_TAR_IDX_CACHE, _HF_TAR_IDX_PFILES_CACHE
+    _HF_TAR_IDX_CACHE.clear()
+    _HF_TAR_IDX_PFILES_CACHE.clear()
+    if maxsize is not None and _HF_TAR_IDX_CACHE.maxsize != maxsize:
+        _HF_TAR_IDX_CACHE = LRUCache(maxsize=maxsize)
+        _HF_TAR_IDX_PFILES_CACHE = LRUCache(maxsize=maxsize)
