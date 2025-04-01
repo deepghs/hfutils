@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.index.fetch &mdash; hfutils 0.9.0 documentation</title>
+  <title>hfutils.index.fetch &mdash; hfutils 0.10.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+      <script src="../../_static/documentation_options.js?v=82662543"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -92,6 +92,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#hf-tar-file-download">hf_tar_file_download</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#hfutils.index.fetch.hf_tar_file_download"><code class="docutils literal notranslate"><span class="pre">hf_tar_file_download()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hf-tar-cache-reset">hf_tar_cache_reset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.index.fetch.hf_tar_cache_reset"><code class="docutils literal notranslate"><span class="pre">hf_tar_cache_reset()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -567,6 +571,32 @@ without having to download the entire archive.</p></li>
 </dd></dl>
 
 </section>
+<section id="hf-tar-cache-reset">
+<h2>hf_tar_cache_reset<a class="headerlink" href="#hf-tar-cache-reset" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.index.fetch.hf_tar_cache_reset">
+<span class="sig-prename descclassname"><span class="pre">hfutils.index.fetch.</span></span><span class="sig-name descname"><span class="pre">hf_tar_cache_reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxsize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/index/fetch.html#hf_tar_cache_reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.index.fetch.hf_tar_cache_reset" title="Link to this definition"></a></dt>
+<dd><p>Reset the tar archive index caches and optionally resize them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>maxsize</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – New maximum size for the caches. If None, only clears the caches without resizing.</p>
+</dd>
+</dl>
+<p>This function performs two operations:</p>
+<ol class="arabic simple">
+<li><p>Clears both the index cache and processed files cache</p></li>
+<li><p>If maxsize is provided, recreates the caches with the new size</p></li>
+</ol>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_cache_reset</span><span class="p">()</span>  <span class="c1"># Clear caches</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_cache_reset</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>  <span class="c1"># Clear and resize caches</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -651,10 +681,9 @@ without having to download the entire archive.</p></li>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/idxcache/api_doc/index/fetch.html">dev/idxcache</a></dd>
+                        <dd><a href="../../../main/api_doc/index/fetch.html">main</a></dd>
                         <dd><a href="fetch.html">HEAD</a></dd>
                         <dd><a href="../../../dev/rate/api_doc/index/fetch.html">dev/rate</a></dd>
-                        <dd><a href="../../../main/api_doc/index/fetch.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

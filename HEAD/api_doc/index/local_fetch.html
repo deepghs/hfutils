@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.index.local_fetch &mdash; hfutils 0.9.0 documentation</title>
+  <title>hfutils.index.local_fetch &mdash; hfutils 0.10.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+      <script src="../../_static/documentation_options.js?v=82662543"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -85,6 +85,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#tar-file-download">tar_file_download</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#hfutils.index.local_fetch.tar_file_download"><code class="docutils literal notranslate"><span class="pre">tar_file_download()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tar-cache-reset">tar_cache_reset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.index.local_fetch.tar_cache_reset"><code class="docutils literal notranslate"><span class="pre">tar_cache_reset()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -353,6 +357,29 @@ is fully matched with expected file.</p></li>
 </dd></dl>
 
 </section>
+<section id="tar-cache-reset">
+<h2>tar_cache_reset<a class="headerlink" href="#tar-cache-reset" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.index.local_fetch.tar_cache_reset">
+<span class="sig-prename descclassname"><span class="pre">hfutils.index.local_fetch.</span></span><span class="sig-name descname"><span class="pre">tar_cache_reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxsize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/index/local_fetch.html#tar_cache_reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.index.local_fetch.tar_cache_reset" title="Link to this definition"></a></dt>
+<dd><p>Reset the tar index and processed files caches.</p>
+<p>This function clears both the index cache and processed files cache.
+Optionally, it can also resize the caches.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>maxsize</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Optional new maximum size for the caches.
+If provided, both caches will be recreated with this size.</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tar_cache_reset</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>  <span class="c1"># Reset and resize caches</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tar_cache_reset</span><span class="p">()</span>  <span class="c1"># Just clear the existing caches</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -437,10 +464,9 @@ is fully matched with expected file.</p></li>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/idxcache/api_doc/index/local_fetch.html">dev/idxcache</a></dd>
+                        <dd><a href="../../../main/api_doc/index/local_fetch.html">main</a></dd>
                         <dd><a href="local_fetch.html">HEAD</a></dd>
                         <dd><a href="../../../dev/rate/index.html">dev/rate</a></dd>
-                        <dd><a href="../../../main/api_doc/index/local_fetch.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

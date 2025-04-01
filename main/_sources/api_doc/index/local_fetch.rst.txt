@@ -49,3 +49,10 @@ tar_file_download
 
 
 
+tar_cache_reset
+----------------------------------------------
+
+.. autofunction:: tar_cache_reset
+
+
+

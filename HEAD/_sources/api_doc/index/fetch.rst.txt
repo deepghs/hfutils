@@ -61,3 +61,10 @@ hf_tar_file_download
 
 
 
+hf_tar_cache_reset
+----------------------------------------------
+
+.. autofunction:: hf_tar_cache_reset
+
+
+
