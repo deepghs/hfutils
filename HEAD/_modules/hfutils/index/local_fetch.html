@@ -109,6 +109,28 @@
 <span class="n">_TAR_IDX_CACHE</span> <span class="o">=</span> <span class="p">{}</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_tar_get_cache_key</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">idx_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a cache key for the tar index file.</span>
+
+<span class="sd">    :param archive_file: Path to the tar archive file.</span>
+<span class="sd">    :type archive_file: str</span>
+<span class="sd">    :param idx_file: Optional path to the index file. If not provided,</span>
+<span class="sd">                    a default index file path will be generated.</span>
+<span class="sd">    :type idx_file: Optional[str]</span>
+
+<span class="sd">    :return: The normalized cache key path.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    :example:</span>
+<span class="sd">        &gt;&gt;&gt; key = _tar_get_cache_key(&#39;archive.tar&#39;, &#39;index.json&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">body</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span>
+    <span class="n">default_index_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s1">.json&#39;</span>
+    <span class="n">idx_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">idx_file</span> <span class="ow">or</span> <span class="n">default_index_file</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">idx_file</span>
+
+
 <div class="viewcode-block" id="tar_get_index">
 <a class="viewcode-back" href="../../../api_doc/index/local_fetch.html#hfutils.index.local_fetch.tar_get_index">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">tar_get_index</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">idx_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">no_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
@@ -135,9 +157,10 @@
 <span class="sd">    :example:</span>
 <span class="sd">        &gt;&gt;&gt; index_data = tar_get_index(&#39;my_archive.tar&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">body</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span>
-    <span class="n">default_index_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s1">.json&#39;</span>
-    <span class="n">idx_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">idx_file</span> <span class="ow">or</span> <span class="n">default_index_file</span><span class="p">))</span>
+    <span class="n">idx_file</span> <span class="o">=</span> <span class="n">_tar_get_cache_key</span><span class="p">(</span>
+        <span class="n">archive_file</span><span class="o">=</span><span class="n">archive_file</span><span class="p">,</span>
+        <span class="n">idx_file</span><span class="o">=</span><span class="n">idx_file</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">no_cache</span> <span class="ow">and</span> <span class="n">idx_file</span> <span class="ow">in</span> <span class="n">_TAR_IDX_CACHE</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_TAR_IDX_CACHE</span><span class="p">[</span><span class="n">idx_file</span><span class="p">]</span>
@@ -147,6 +170,44 @@
         <span class="n">_TAR_IDX_CACHE</span><span class="p">[</span><span class="n">idx_file</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_data</span>
         <span class="k">return</span> <span class="n">idx_data</span></div>
 
+
+
+<span class="n">_TAR_IDX_PFILES_CACHE</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tar_get_processed_files</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">idx_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">no_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get processed files information from the tar archive index.</span>
+
+<span class="sd">    This internal function processes the raw index data and returns a processed</span>
+<span class="sd">    version of the files information, utilizing caching for performance.</span>
+
+<span class="sd">    :param archive_file: Path to the tar archive file.</span>
+<span class="sd">    :type archive_file: str</span>
+<span class="sd">    :param idx_file: Optional path to the index file.</span>
+<span class="sd">    :type idx_file: Optional[str]</span>
+<span class="sd">    :param no_cache: Whether to bypass the cache and force reprocessing.</span>
+<span class="sd">    :type no_cache: bool</span>
+
+<span class="sd">    :return: Processed files information dictionary.</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    :example:</span>
+<span class="sd">        &gt;&gt;&gt; files = _tar_get_processed_files(&#39;archive.tar&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cache_key</span> <span class="o">=</span> <span class="n">_tar_get_cache_key</span><span class="p">(</span><span class="n">archive_file</span><span class="o">=</span><span class="n">archive_file</span><span class="p">,</span> <span class="n">idx_file</span><span class="o">=</span><span class="n">idx_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">no_cache</span> <span class="ow">and</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="n">_TAR_IDX_PFILES_CACHE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_TAR_IDX_PFILES_CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.fetch</span><span class="w"> </span><span class="kn">import</span> <span class="n">_hf_files_process</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">tar_get_index</span><span class="p">(</span>
+            <span class="n">archive_file</span><span class="o">=</span><span class="n">archive_file</span><span class="p">,</span>
+            <span class="n">idx_file</span><span class="o">=</span><span class="n">idx_file</span><span class="p">,</span>
+            <span class="n">no_cache</span><span class="o">=</span><span class="n">no_cache</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">_hf_files_process</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">])</span>
+        <span class="n">_TAR_IDX_PFILES_CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">files</span>
+        <span class="k">return</span> <span class="n">files</span>
 
 
 <div class="viewcode-block" id="tar_list_files">
@@ -211,13 +272,12 @@
 <span class="sd">        &gt;&gt;&gt; if exists:</span>
 <span class="sd">        &gt;&gt;&gt;     print(&quot;File exists in the archive&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.fetch</span><span class="w"> </span><span class="kn">import</span> <span class="n">_hf_files_process</span><span class="p">,</span> <span class="n">_n_path</span>
-    <span class="n">index</span> <span class="o">=</span> <span class="n">tar_get_index</span><span class="p">(</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.fetch</span><span class="w"> </span><span class="kn">import</span> <span class="n">_n_path</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">_tar_get_processed_files</span><span class="p">(</span>
         <span class="n">archive_file</span><span class="o">=</span><span class="n">archive_file</span><span class="p">,</span>
         <span class="n">idx_file</span><span class="o">=</span><span class="n">idx_file</span><span class="p">,</span>
         <span class="n">no_cache</span><span class="o">=</span><span class="n">no_cache</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="n">_hf_files_process</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">_n_path</span><span class="p">(</span><span class="n">file_in_archive</span><span class="p">)</span> <span class="ow">in</span> <span class="n">files</span></div>
 
 
@@ -251,13 +311,12 @@
 <span class="sd">        &gt;&gt;&gt; info = tar_file_info(&#39;my_archive.tar&#39;, &#39;path/to/file.txt&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; print(f&quot;File size: {info[&#39;size&#39;]} bytes&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.fetch</span><span class="w"> </span><span class="kn">import</span> <span class="n">_hf_files_process</span><span class="p">,</span> <span class="n">_n_path</span>
-    <span class="n">index</span> <span class="o">=</span> <span class="n">tar_get_index</span><span class="p">(</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.fetch</span><span class="w"> </span><span class="kn">import</span> <span class="n">_n_path</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">_tar_get_processed_files</span><span class="p">(</span>
         <span class="n">archive_file</span><span class="o">=</span><span class="n">archive_file</span><span class="p">,</span>
         <span class="n">idx_file</span><span class="o">=</span><span class="n">idx_file</span><span class="p">,</span>
         <span class="n">no_cache</span><span class="o">=</span><span class="n">no_cache</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="n">_hf_files_process</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">_n_path</span><span class="p">(</span><span class="n">file_in_archive</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File </span><span class="si">{</span><span class="n">file_in_archive</span><span class="si">!r}</span><span class="s1"> not found &#39;</span>
                                 <span class="sa">f</span><span class="s1">&#39;in local archive </span><span class="si">{</span><span class="n">archive_file</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
@@ -336,15 +395,14 @@
 <span class="sd">    :example:</span>
 <span class="sd">        &gt;&gt;&gt; tar_file_download(&#39;my_archive.tar&#39;, &#39;path/to/file.txt&#39;, &#39;local_file.txt&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.fetch</span><span class="w"> </span><span class="kn">import</span> <span class="n">_hf_files_process</span><span class="p">,</span> <span class="n">_n_path</span><span class="p">,</span> <span class="n">_f_sha256</span><span class="p">,</span> \
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.fetch</span><span class="w"> </span><span class="kn">import</span> <span class="n">_n_path</span><span class="p">,</span> <span class="n">_f_sha256</span><span class="p">,</span> \
         <span class="n">ArchiveStandaloneFileIncompleteDownload</span><span class="p">,</span> <span class="n">ArchiveStandaloneFileHashNotMatch</span>
 
-    <span class="n">index</span> <span class="o">=</span> <span class="n">tar_get_index</span><span class="p">(</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">_tar_get_processed_files</span><span class="p">(</span>
         <span class="n">archive_file</span><span class="o">=</span><span class="n">archive_file</span><span class="p">,</span>
         <span class="n">idx_file</span><span class="o">=</span><span class="n">idx_file</span><span class="p">,</span>
         <span class="n">no_cache</span><span class="o">=</span><span class="n">no_cache</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="n">_hf_files_process</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">_n_path</span><span class="p">(</span><span class="n">file_in_archive</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File </span><span class="si">{</span><span class="n">file_in_archive</span><span class="si">!r}</span><span class="s1"> not found &#39;</span>
                                 <span class="sa">f</span><span class="s1">&#39;in local archive </span><span class="si">{</span><span class="n">archive_file</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
@@ -467,10 +525,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/idxcache/index.html">dev/idxcache</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
                         <dd><a href="local_fetch.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
-                        <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
