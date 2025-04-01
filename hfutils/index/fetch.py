@@ -130,6 +130,46 @@ def hf_tar_get_index(repo_id: str, archive_in_repo: str,
             return idx_data
 
 
+_HF_TAR_IDX_PFILES_CACHE = {}
+
+
+def _hf_tar_get_processed_files(repo_id: str, archive_in_repo: str,
+                                repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                                idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
+                                idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
+                                hf_token: Optional[str] = None, no_cache: bool = False):
+    cache_key = _hf_tar_get_cache_key(
+        repo_id=repo_id,
+        archive_in_repo=archive_in_repo,
+        repo_type=repo_type,
+        revision=revision,
+        idx_repo_id=idx_repo_id,
+        idx_file_in_repo=idx_file_in_repo,
+        idx_repo_type=idx_repo_type,
+        idx_revision=idx_revision
+    )
+    if not no_cache and cache_key in _HF_TAR_IDX_PFILES_CACHE:
+        return _HF_TAR_IDX_PFILES_CACHE[cache_key]
+    else:
+        index = hf_tar_get_index(
+            repo_id=repo_id,
+            archive_in_repo=archive_in_repo,
+            repo_type=repo_type,
+            revision=revision,
+
+            idx_repo_id=idx_repo_id,
+            idx_file_in_repo=idx_file_in_repo,
+            idx_repo_type=idx_repo_type,
+            idx_revision=idx_revision,
+
+            hf_token=hf_token,
+            no_cache=no_cache,
+        )
+        files = _hf_files_process(index['files'])
+        _HF_TAR_IDX_PFILES_CACHE[cache_key] = files
+        return files
+
+
 def hf_tar_list_files(repo_id: str, archive_in_repo: str,
                       repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                       idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
@@ -275,7 +315,7 @@ def hf_tar_file_exists(repo_id: str, archive_in_repo: str, file_in_archive: str,
         False
 
     """
-    index = hf_tar_get_index(
+    files = _hf_tar_get_processed_files(
         repo_id=repo_id,
         archive_in_repo=archive_in_repo,
         repo_type=repo_type,
@@ -289,7 +329,6 @@ def hf_tar_file_exists(repo_id: str, archive_in_repo: str, file_in_archive: str,
         hf_token=hf_token,
         no_cache=no_cache,
     )
-    files = _hf_files_process(index['files'])
     return _n_path(file_in_archive) in files
 
 
@@ -376,7 +415,7 @@ def hf_tar_file_info(repo_id: str, archive_in_repo: str, file_in_archive: str,
         ... )
         {'offset': 1024, 'size': 11966, 'sha256': '478d3313860519372f6a75ede287d4a7c18a2d851bbc79b3dd65caff4c716858'}
     """
-    index = hf_tar_get_index(
+    files = _hf_tar_get_processed_files(
         repo_id=repo_id,
         archive_in_repo=archive_in_repo,
         repo_type=repo_type,
@@ -390,7 +429,6 @@ def hf_tar_file_info(repo_id: str, archive_in_repo: str, file_in_archive: str,
         hf_token=hf_token,
         no_cache=no_cache,
     )
-    files = _hf_files_process(index['files'])
     if _n_path(file_in_archive) not in files:
         raise FileNotFoundError(f'File {file_in_archive!r} not found '
                                 f'in {repo_type}s/{repo_id}@{revision}/{archive_in_repo}.')
@@ -559,7 +597,7 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
         - It supports authentication via the `hf_token` parameter, which is crucial for accessing private repositories.
         - The function includes checks to avoid unnecessary downloads and to ensure the integrity of the downloaded file.
     """
-    index = hf_tar_get_index(
+    files = _hf_tar_get_processed_files(
         repo_id=repo_id,
         archive_in_repo=archive_in_repo,
         repo_type=repo_type,
@@ -573,7 +611,6 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
         hf_token=hf_token,
         no_cache=no_cache,
     )
-    files = _hf_files_process(index['files'])
     if _n_path(file_in_archive) not in files:
         raise FileNotFoundError(f'File {file_in_archive!r} not found '
                                 f'in {repo_type}s/{repo_id}@{revision}/{archive_in_repo}.')

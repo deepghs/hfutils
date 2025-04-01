@@ -62,6 +62,25 @@ def tar_get_index(archive_file: str, idx_file: Optional[str] = None, no_cache: b
         return idx_data
 
 
+_TAR_IDX_PFILES_CACHE = {}
+
+
+def _tar_get_processed_files(archive_file: str, idx_file: Optional[str] = None, no_cache: bool = False):
+    cache_key = _tar_get_cache_key(archive_file=archive_file, idx_file=idx_file)
+    if not no_cache and cache_key in _TAR_IDX_PFILES_CACHE:
+        return _TAR_IDX_PFILES_CACHE[cache_key]
+    else:
+        from .fetch import _hf_files_process
+        index = tar_get_index(
+            archive_file=archive_file,
+            idx_file=idx_file,
+            no_cache=no_cache,
+        )
+        files = _hf_files_process(index['files'])
+        _TAR_IDX_PFILES_CACHE[cache_key] = files
+        return files
+
+
 def tar_list_files(archive_file: str, idx_file: Optional[str] = None, no_cache: bool = False) -> List[str]:
     """
     List all files contained within the specified tar archive.
@@ -119,13 +138,12 @@ def tar_file_exists(archive_file: str, file_in_archive: str,
         >>> if exists:
         >>>     print("File exists in the archive")
     """
-    from .fetch import _hf_files_process, _n_path
-    index = tar_get_index(
+    from .fetch import _n_path
+    files = _tar_get_processed_files(
         archive_file=archive_file,
         idx_file=idx_file,
         no_cache=no_cache,
     )
-    files = _hf_files_process(index['files'])
     return _n_path(file_in_archive) in files
 
 
@@ -156,13 +174,12 @@ def tar_file_info(archive_file: str, file_in_archive: str,
         >>> info = tar_file_info('my_archive.tar', 'path/to/file.txt')
         >>> print(f"File size: {info['size']} bytes")
     """
-    from .fetch import _hf_files_process, _n_path
-    index = tar_get_index(
+    from .fetch import _n_path
+    files = _tar_get_processed_files(
         archive_file=archive_file,
         idx_file=idx_file,
         no_cache=no_cache,
     )
-    files = _hf_files_process(index['files'])
     if _n_path(file_in_archive) not in files:
         raise FileNotFoundError(f'File {file_in_archive!r} not found '
                                 f'in local archive {archive_file!r}.')
@@ -235,15 +252,14 @@ def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
     :example:
         >>> tar_file_download('my_archive.tar', 'path/to/file.txt', 'local_file.txt')
     """
-    from .fetch import _hf_files_process, _n_path, _f_sha256, \
+    from .fetch import _n_path, _f_sha256, \
         ArchiveStandaloneFileIncompleteDownload, ArchiveStandaloneFileHashNotMatch
 
-    index = tar_get_index(
+    files = _tar_get_processed_files(
         archive_file=archive_file,
         idx_file=idx_file,
         no_cache=no_cache,
     )
-    files = _hf_files_process(index['files'])
     if _n_path(file_in_archive) not in files:
         raise FileNotFoundError(f'File {file_in_archive!r} not found '
                                 f'in local archive {archive_file!r}.')
