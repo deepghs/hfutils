@@ -18,6 +18,21 @@ _TAR_IDX_CACHE = {}
 
 
 def _tar_get_cache_key(archive_file: str, idx_file: Optional[str] = None):
+    """
+    Generate a cache key for the tar index file.
+
+    :param archive_file: Path to the tar archive file.
+    :type archive_file: str
+    :param idx_file: Optional path to the index file. If not provided,
+                    a default index file path will be generated.
+    :type idx_file: Optional[str]
+
+    :return: The normalized cache key path.
+    :rtype: str
+
+    :example:
+        >>> key = _tar_get_cache_key('archive.tar', 'index.json')
+    """
     body, _ = os.path.splitext(archive_file)
     default_index_file = f'{body}.json'
     idx_file = os.path.normcase(os.path.normpath(idx_file or default_index_file))
@@ -66,6 +81,25 @@ _TAR_IDX_PFILES_CACHE = {}
 
 
 def _tar_get_processed_files(archive_file: str, idx_file: Optional[str] = None, no_cache: bool = False):
+    """
+    Get processed files information from the tar archive index.
+
+    This internal function processes the raw index data and returns a processed
+    version of the files information, utilizing caching for performance.
+
+    :param archive_file: Path to the tar archive file.
+    :type archive_file: str
+    :param idx_file: Optional path to the index file.
+    :type idx_file: Optional[str]
+    :param no_cache: Whether to bypass the cache and force reprocessing.
+    :type no_cache: bool
+
+    :return: Processed files information dictionary.
+    :rtype: dict
+
+    :example:
+        >>> files = _tar_get_processed_files('archive.tar')
+    """
     cache_key = _tar_get_cache_key(archive_file=archive_file, idx_file=idx_file)
     if not no_cache and cache_key in _TAR_IDX_PFILES_CACHE:
         return _TAR_IDX_PFILES_CACHE[cache_key]

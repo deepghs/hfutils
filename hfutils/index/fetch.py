@@ -33,6 +33,29 @@ def _hf_tar_get_cache_key(repo_id: str, archive_in_repo: str,
                           repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                           idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
                           idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None):
+    """
+    Generate a cache key for tar archive index.
+
+    :param repo_id: Repository identifier
+    :type repo_id: str
+    :param archive_in_repo: Path to archive file in repository
+    :type archive_in_repo: str
+    :param repo_type: Type of repository
+    :type repo_type: RepoTypeTyping
+    :param revision: Repository revision
+    :type revision: str
+    :param idx_repo_id: Index repository identifier
+    :type idx_repo_id: Optional[str]
+    :param idx_file_in_repo: Path to index file
+    :type idx_file_in_repo: Optional[str]
+    :param idx_repo_type: Index repository type
+    :type idx_repo_type: Optional[RepoTypeTyping]
+    :param idx_revision: Index repository revision
+    :type idx_revision: Optional[str]
+
+    :return: Tuple containing cache key components
+    :rtype: tuple
+    """
     body, _ = os.path.splitext(archive_in_repo)
     default_index_file = f'{body}.json'
     f_repo_id = idx_repo_id or repo_id
@@ -138,6 +161,33 @@ def _hf_tar_get_processed_files(repo_id: str, archive_in_repo: str,
                                 idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
                                 idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
                                 hf_token: Optional[str] = None, no_cache: bool = False):
+    """
+    Get processed files from a tar archive's index with caching support.
+
+    :param repo_id: Repository identifier
+    :type repo_id: str
+    :param archive_in_repo: Path to archive in repository
+    :type archive_in_repo: str
+    :param repo_type: Repository type
+    :type repo_type: RepoTypeTyping
+    :param revision: Repository revision
+    :type revision: str
+    :param idx_repo_id: Index repository identifier
+    :type idx_repo_id: Optional[str]
+    :param idx_file_in_repo: Path to index file
+    :type idx_file_in_repo: Optional[str]
+    :param idx_repo_type: Index repository type
+    :type idx_repo_type: Optional[RepoTypeTyping]
+    :param idx_revision: Index revision
+    :type idx_revision: Optional[str]
+    :param hf_token: Hugging Face token
+    :type hf_token: Optional[str]
+    :param no_cache: Whether to bypass cache
+    :type no_cache: bool
+
+    :return: Processed files dictionary
+    :rtype: Dict
+    """
     cache_key = _hf_tar_get_cache_key(
         repo_id=repo_id,
         archive_in_repo=archive_in_repo,
