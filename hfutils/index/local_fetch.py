@@ -303,7 +303,7 @@ def _tar_file_info_write(archive_file: str, info: dict, file_to_write: BinaryIO,
 
     if not no_validate:
         if file_to_write.tell() != start_pos + info['size']:
-            ArchiveStandaloneFileIncompleteDownload(
+            raise ArchiveStandaloneFileIncompleteDownload(
                 f'Expected size is {size_to_bytes_str(info["size"], sigfigs=4, system="si")}, '
                 f'but actually {size_to_bytes_str(file_to_write.tell() - start_pos, sigfigs=4, system="si")} downloaded.'
             )
