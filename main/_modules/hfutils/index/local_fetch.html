@@ -104,14 +104,14 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">cachetools</span><span class="w"> </span><span class="kn">import</span> <span class="n">LRUCache</span>
 
 <span class="n">_TAR_IDX_CACHE</span> <span class="o">=</span> <span class="n">LRUCache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">192</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_tar_get_cache_key</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">idx_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_tar_get_cache_key</span><span class="p">(</span><span class="n">archive_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">idx_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a cache key for the tar index file.</span>
 
@@ -122,15 +122,24 @@
 <span class="sd">    :type idx_file: Optional[str]</span>
 
 <span class="sd">    :return: The normalized cache key path.</span>
-<span class="sd">    :rtype: str</span>
+<span class="sd">    :rtype: Tuple[str, Optional[int], Optional[int]]</span>
 
 <span class="sd">    :example:</span>
 <span class="sd">        &gt;&gt;&gt; key = _tar_get_cache_key(&#39;archive.tar&#39;, &#39;index.json&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">body</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">archive_file</span><span class="p">)</span>
     <span class="n">default_index_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s1">.json&#39;</span>
-    <span class="n">idx_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">idx_file</span> <span class="ow">or</span> <span class="n">default_index_file</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">idx_file</span>
+    <span class="n">idx_file</span> <span class="o">=</span> <span class="n">idx_file</span> <span class="ow">or</span> <span class="n">default_index_file</span>
+    <span class="n">idx_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">idx_file</span><span class="p">))</span>
+    <span class="n">idx_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">idx_file</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">idx_file</span><span class="p">):</span>
+        <span class="n">stat</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">idx_file</span><span class="p">)</span>
+        <span class="n">mtime</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">st_size</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mtime</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">idx_file</span><span class="p">,</span> <span class="n">mtime</span><span class="p">,</span> <span class="n">size</span>
 
 
 <div class="viewcode-block" id="tar_get_index">
@@ -159,17 +168,18 @@
 <span class="sd">    :example:</span>
 <span class="sd">        &gt;&gt;&gt; index_data = tar_get_index(&#39;my_archive.tar&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">idx_file</span> <span class="o">=</span> <span class="n">_tar_get_cache_key</span><span class="p">(</span>
+    <span class="n">cache_key</span> <span class="o">=</span> <span class="n">_tar_get_cache_key</span><span class="p">(</span>
         <span class="n">archive_file</span><span class="o">=</span><span class="n">archive_file</span><span class="p">,</span>
         <span class="n">idx_file</span><span class="o">=</span><span class="n">idx_file</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">idx_file</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cache_key</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">no_cache</span> <span class="ow">and</span> <span class="n">idx_file</span> <span class="ow">in</span> <span class="n">_TAR_IDX_CACHE</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">_TAR_IDX_CACHE</span><span class="p">[</span><span class="n">idx_file</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">no_cache</span> <span class="ow">and</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="n">_TAR_IDX_CACHE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_TAR_IDX_CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">idx_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">idx_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-        <span class="n">_TAR_IDX_CACHE</span><span class="p">[</span><span class="n">idx_file</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_data</span>
+        <span class="n">_TAR_IDX_CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_data</span>
         <span class="k">return</span> <span class="n">idx_data</span></div>
 
 
@@ -554,10 +564,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/idxcache/index.html">dev/idxcache</a></dd>
+                        <dd><a href="local_fetch.html">main</a></dd>
                         <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
-                        <dd><a href="local_fetch.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
