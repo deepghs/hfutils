@@ -12,14 +12,14 @@ index files, providing a convenient interface for archive manipulation and file 
 
 import json
 import os
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 from cachetools import LRUCache
 
 _TAR_IDX_CACHE = LRUCache(maxsize=192)
 
 
-def _tar_get_cache_key(archive_file: str, idx_file: Optional[str] = None):
+def _tar_get_cache_key(archive_file: str, idx_file: Optional[str] = None) -> Tuple[str, Optional[int], Optional[int]]:
     """
     Generate a cache key for the tar index file.
 
@@ -30,15 +30,24 @@ def _tar_get_cache_key(archive_file: str, idx_file: Optional[str] = None):
     :type idx_file: Optional[str]
 
     :return: The normalized cache key path.
-    :rtype: str
+    :rtype: Tuple[str, Optional[int], Optional[int]]
 
     :example:
         >>> key = _tar_get_cache_key('archive.tar', 'index.json')
     """
     body, _ = os.path.splitext(archive_file)
     default_index_file = f'{body}.json'
-    idx_file = os.path.normcase(os.path.normpath(idx_file or default_index_file))
-    return idx_file
+    idx_file = idx_file or default_index_file
+    idx_file = os.path.realpath(os.path.expanduser(idx_file))
+    idx_file = os.path.normcase(os.path.normpath(idx_file))
+
+    if os.path.exists(idx_file):
+        stat = os.stat(idx_file)
+        mtime, size = int(stat.st_mtime), int(stat.st_size)
+    else:
+        mtime, size = None, None
+
+    return idx_file, mtime, size
 
 
 def tar_get_index(archive_file: str, idx_file: Optional[str] = None, no_cache: bool = False):
@@ -65,17 +74,18 @@ def tar_get_index(archive_file: str, idx_file: Optional[str] = None, no_cache: b
     :example:
         >>> index_data = tar_get_index('my_archive.tar')
     """
-    idx_file = _tar_get_cache_key(
+    cache_key = _tar_get_cache_key(
         archive_file=archive_file,
         idx_file=idx_file,
     )
+    idx_file, _, _ = cache_key
 
-    if not no_cache and idx_file in _TAR_IDX_CACHE:
-        return _TAR_IDX_CACHE[idx_file]
+    if not no_cache and cache_key in _TAR_IDX_CACHE:
+        return _TAR_IDX_CACHE[cache_key]
     else:
         with open(idx_file, 'r') as f:
             idx_data = json.load(f)
-        _TAR_IDX_CACHE[idx_file] = idx_data
+        _TAR_IDX_CACHE[cache_key] = idx_data
         return idx_data
 
 
