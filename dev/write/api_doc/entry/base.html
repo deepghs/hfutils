@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hfutils.entry.base &mdash; hfutils 0.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=82662543"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="hfutils.entry.cli" href="cli.html" />
+    <link rel="prev" title="hfutils.entry" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hfutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">hfutils.archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cache/index.html">hfutils.cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">hfutils.config</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">hfutils.entry</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">hfutils.entry.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#context-settings">CONTEXT_SETTINGS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.entry.base.CONTEXT_SETTINGS"><code class="docutils literal notranslate"><span class="pre">CONTEXT_SETTINGS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#clickwarningexception">ClickWarningException</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.entry.base.ClickWarningException"><code class="docutils literal notranslate"><span class="pre">ClickWarningException</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#clickerrorexception">ClickErrorException</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.entry.base.ClickErrorException"><code class="docutils literal notranslate"><span class="pre">ClickErrorException</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#print-exception">print_exception</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.entry.base.print_exception"><code class="docutils literal notranslate"><span class="pre">print_exception()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#keyboardinterrupted">KeyboardInterrupted</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.entry.base.KeyboardInterrupted"><code class="docutils literal notranslate"><span class="pre">KeyboardInterrupted</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#command-wrap">command_wrap</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.entry.base.command_wrap"><code class="docutils literal notranslate"><span class="pre">command_wrap()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html">hfutils.entry.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clone.html">hfutils.entry.clone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispatch.html">hfutils.entry.dispatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download.html">hfutils.entry.download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ils.html">hfutils.entry.ils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index_.html">hfutils.entry.index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ls.html">hfutils.entry.ls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ls_repo.html">hfutils.entry.ls_repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rollback.html">hfutils.entry.rollback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree.html">hfutils.entry.tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upload.html">hfutils.entry.upload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whoami.html">hfutils.entry.whoami</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../index/index.html">hfutils.index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">hfutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../repository/index.html">hfutils.repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">hfutils.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hfutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">hfutils.entry</a></li>
+      <li class="breadcrumb-item active">hfutils.entry.base</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/entry/base.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-hfutils.entry.base">
+<span id="hfutils-entry-base"></span><h1>hfutils.entry.base<a class="headerlink" href="#module-hfutils.entry.base" title="Link to this heading"></a></h1>
+<section id="context-settings">
+<h2>CONTEXT_SETTINGS<a class="headerlink" href="#context-settings" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="hfutils.entry.base.CONTEXT_SETTINGS">
+<span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">CONTEXT_SETTINGS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'help_option_names':</span> <span class="pre">['-h',</span> <span class="pre">'--help']}</span></em><a class="headerlink" href="#hfutils.entry.base.CONTEXT_SETTINGS" title="Link to this definition"></a></dt>
+<dd><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object’s</p>
+<blockquote>
+<div><p>(key, value) pairs</p>
+</div></blockquote>
+<dl>
+<dt>dict(iterable) -&gt; new dictionary initialized as if via:</dt><dd><p>d = {}
+for k, v in iterable:</p>
+<blockquote>
+<div><p>d[k] = v</p>
+</div></blockquote>
+</dd>
+<dt>dict(<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs) -&gt; new dictionary initialized with the name=value pairs</dt><dd><p>in the keyword argument list.  For example:  dict(one=1, two=2)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="clickwarningexception">
+<h2>ClickWarningException<a class="headerlink" href="#clickwarningexception" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="hfutils.entry.base.ClickWarningException">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">ClickWarningException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickWarningException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickWarningException" title="Link to this definition"></a></dt>
+<dd><p>Custom exception class for displaying warnings in yellow color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – The error message.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hfutils.entry.base.ClickWarningException.exit_code">
+<span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#hfutils.entry.base.ClickWarningException.exit_code" title="Link to this definition"></a></dt>
+<dd><p>The exit code for this exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hfutils.entry.base.ClickWarningException.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickWarningException.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickWarningException.show" title="Link to this definition"></a></dt>
+<dd><p>Display the warning message in yellow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>Optional</em><em>[</em><em>IO</em><em>]</em>) – File to write the output to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="clickerrorexception">
+<h2>ClickErrorException<a class="headerlink" href="#clickerrorexception" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="hfutils.entry.base.ClickErrorException">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">ClickErrorException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickErrorException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickErrorException" title="Link to this definition"></a></dt>
+<dd><p>Custom exception class for displaying errors in red color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – The error message.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hfutils.entry.base.ClickErrorException.exit_code">
+<span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#hfutils.entry.base.ClickErrorException.exit_code" title="Link to this definition"></a></dt>
+<dd><p>The exit code for this exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hfutils.entry.base.ClickErrorException.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#ClickErrorException.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.ClickErrorException.show" title="Link to this definition"></a></dt>
+<dd><p>Display the error message in red.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>Optional</em><em>[</em><em>IO</em><em>]</em>) – File to write the output to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="print-exception">
+<h2>print_exception<a class="headerlink" href="#print-exception" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.entry.base.print_exception">
+<span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">print_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">err</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseException</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#print_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.print_exception" title="Link to this definition"></a></dt>
+<dd><p>Print exception information, including traceback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>err</strong> (<em>BaseException</em>) – The exception object.</p></li>
+<li><p><strong>print</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – Custom print function. If not provided, uses built-in print.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="keyboardinterrupted">
+<h2>KeyboardInterrupted<a class="headerlink" href="#keyboardinterrupted" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="hfutils.entry.base.KeyboardInterrupted">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">KeyboardInterrupted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#KeyboardInterrupted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted" title="Link to this definition"></a></dt>
+<dd><p>Exception class for handling keyboard interruptions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>msg</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Custom message to display.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="hfutils.entry.base.KeyboardInterrupted.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#KeyboardInterrupted.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the exception.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>msg</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Custom message to display.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hfutils.entry.base.KeyboardInterrupted.exit_code">
+<span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted.exit_code" title="Link to this definition"></a></dt>
+<dd><p>The exit code for this exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hfutils.entry.base.KeyboardInterrupted.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#hfutils.entry.base.KeyboardInterrupted.show" title="Link to this definition"></a></dt>
+<dd><p>Display the warning message in yellow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>Optional</em><em>[</em><em>IO</em><em>]</em>) – File to write the output to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="command-wrap">
+<h2>command_wrap<a class="headerlink" href="#command-wrap" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.entry.base.command_wrap">
+<span class="sig-prename descclassname"><span class="pre">hfutils.entry.base.</span></span><span class="sig-name descname"><span class="pre">command_wrap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/entry/base.html#command_wrap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.entry.base.command_wrap" title="Link to this definition"></a></dt>
+<dd><p>Decorator for wrapping Click commands.</p>
+<p>This decorator catches exceptions and provides consistent error handling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Decorator function.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="hfutils.entry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cli.html" class="btn btn-neutral float-right" title="hfutils.entry.cli" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/write
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.0.1/api_doc/entry/base.html">v0.0.1</a></dd>
+                        <dd><a href="../../../../v0.0.2/api_doc/entry/base.html">v0.0.2</a></dd>
+                        <dd><a href="../../../../v0.0.3/api_doc/entry/base.html">v0.0.3</a></dd>
+                        <dd><a href="../../../../v0.0.4/api_doc/entry/base.html">v0.0.4</a></dd>
+                        <dd><a href="../../../../v0.0.5/api_doc/entry/base.html">v0.0.5</a></dd>
+                        <dd><a href="../../../../v0.0.6/api_doc/entry/base.html">v0.0.6</a></dd>
+                        <dd><a href="../../../../v0.1.0/api_doc/entry/base.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../v0.1.1/api_doc/entry/base.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../v0.1.2/api_doc/entry/base.html">v0.1.2</a></dd>
+                        <dd><a href="../../../../v0.10.0/api_doc/entry/base.html">v0.10.0</a></dd>
+                        <dd><a href="../../../../v0.2.0/api_doc/entry/base.html">v0.2.0</a></dd>
+                        <dd><a href="../../../../v0.2.1/api_doc/entry/base.html">v0.2.1</a></dd>
+                        <dd><a href="../../../../v0.2.10/api_doc/entry/base.html">v0.2.10</a></dd>
+                        <dd><a href="../../../../v0.2.11/api_doc/entry/base.html">v0.2.11</a></dd>
+                        <dd><a href="../../../../v0.2.2/api_doc/entry/base.html">v0.2.2</a></dd>
+                        <dd><a href="../../../../v0.2.3/api_doc/entry/base.html">v0.2.3</a></dd>
+                        <dd><a href="../../../../v0.2.4/api_doc/entry/base.html">v0.2.4</a></dd>
+                        <dd><a href="../../../../v0.2.5/api_doc/entry/base.html">v0.2.5</a></dd>
+                        <dd><a href="../../../../v0.2.6/api_doc/entry/base.html">v0.2.6</a></dd>
+                        <dd><a href="../../../../v0.2.7/api_doc/entry/base.html">v0.2.7</a></dd>
+                        <dd><a href="../../../../v0.2.8/api_doc/entry/base.html">v0.2.8</a></dd>
+                        <dd><a href="../../../../v0.2.9/api_doc/entry/base.html">v0.2.9</a></dd>
+                        <dd><a href="../../../../v0.3.0/api_doc/entry/base.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../v0.3.1/api_doc/entry/base.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../v0.3.2/api_doc/entry/base.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../v0.3.3/api_doc/entry/base.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../v0.3.4/api_doc/entry/base.html">v0.3.4</a></dd>
+                        <dd><a href="../../../../v0.3.5/api_doc/entry/base.html">v0.3.5</a></dd>
+                        <dd><a href="../../../../v0.3.6/api_doc/entry/base.html">v0.3.6</a></dd>
+                        <dd><a href="../../../../v0.3.7/api_doc/entry/base.html">v0.3.7</a></dd>
+                        <dd><a href="../../../../v0.3.8/api_doc/entry/base.html">v0.3.8</a></dd>
+                        <dd><a href="../../../../v0.3.9/api_doc/entry/base.html">v0.3.9</a></dd>
+                        <dd><a href="../../../../v0.4.0/api_doc/entry/base.html">v0.4.0</a></dd>
+                        <dd><a href="../../../../v0.4.1/api_doc/entry/base.html">v0.4.1</a></dd>
+                        <dd><a href="../../../../v0.4.2/api_doc/entry/base.html">v0.4.2</a></dd>
+                        <dd><a href="../../../../v0.4.3/api_doc/entry/base.html">v0.4.3</a></dd>
+                        <dd><a href="../../../../v0.4.4/api_doc/entry/base.html">v0.4.4</a></dd>
+                        <dd><a href="../../../../v0.5.0/api_doc/entry/base.html">v0.5.0</a></dd>
+                        <dd><a href="../../../../v0.5.1/api_doc/entry/base.html">v0.5.1</a></dd>
+                        <dd><a href="../../../../v0.6.0/api_doc/entry/base.html">v0.6.0</a></dd>
+                        <dd><a href="../../../../v0.7.0/api_doc/entry/base.html">v0.7.0</a></dd>
+                        <dd><a href="../../../../v0.7.1/api_doc/entry/base.html">v0.7.1</a></dd>
+                        <dd><a href="../../../../v0.8.0/api_doc/entry/base.html">v0.8.0</a></dd>
+                        <dd><a href="../../../../v0.8.1/api_doc/entry/base.html">v0.8.1</a></dd>
+                        <dd><a href="../../../../v0.9.0/api_doc/entry/base.html">v0.9.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="base.html">dev/write</a></dd>
+                        <dd><a href="../../../../HEAD/api_doc/entry/base.html">HEAD</a></dd>
+                        <dd><a href="../../../rate/api_doc/entry/base.html">dev/rate</a></dd>
+                        <dd><a href="../../../../main/api_doc/entry/base.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
