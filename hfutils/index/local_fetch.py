@@ -316,7 +316,7 @@ def _tar_file_info_write(archive_file: str, info: dict, file_to_write: BinaryIO,
                 )
 
 
-def tar_file_write_bytes(archive_file: str, file_in_archive: str, file: BinaryIO,
+def tar_file_write_bytes(archive_file: str, file_in_archive: str, bin_file: BinaryIO,
                          idx_file: Optional[str] = None, chunk_size: int = 1 << 20, no_cache: bool = False):
     """
     Write the contents of a file from the archive to a binary file object.
@@ -325,8 +325,8 @@ def tar_file_write_bytes(archive_file: str, file_in_archive: str, file: BinaryIO
     :type archive_file: str
     :param file_in_archive: Name of the file in the archive to extract.
     :type file_in_archive: str
-    :param file: Binary file object to write to.
-    :type file: BinaryIO
+    :param bin_file: Binary file object to write to.
+    :type bin_file: BinaryIO
     :param idx_file: Optional path to the index file.
     :type idx_file: Optional[str]
     :param chunk_size: Size of chunks to read/write at a time.
@@ -350,7 +350,7 @@ def tar_file_write_bytes(archive_file: str, file_in_archive: str, file: BinaryIO
     _tar_file_info_write(
         archive_file=archive_file,
         info=info,
-        file_to_write=file,
+        file_to_write=bin_file,
         chunk_size=chunk_size,
         no_validate=False,
     )

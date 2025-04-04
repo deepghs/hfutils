@@ -183,42 +183,45 @@ class TestIndexLocalFetch:
             assert os.path.getsize('empty_file') == 0
 
     def test_tar_file_write_bytes_small(self, local_narugo_test_cos5t_tars):
-        with isolated_directory(), io.BytesIO() as wf:
-            tar_file_write_bytes(
-                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
-                file_in_archive='.meta.json',
-                file=wf
-            )
-            assert wf.getvalue() == pathlib.Path(get_testfile('skin_mashu', '.meta.json')).read_bytes()
+        with isolated_directory():
+            with open('.meta.json', 'wb') as wf:
+                tar_file_write_bytes(
+                    archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                    file_in_archive='.meta.json',
+                    bin_file=wf
+                )
+            file_compare(get_testfile('skin_mashu', '.meta.json'), '.meta.json')
 
     def test_tar_file_write_bytes_small_exist(self, local_narugo_test_cos5t_tars):
         with isolated_directory({
             '.meta.json': get_testfile('skin_mashu', '.meta.json')
-        }), io.BytesIO() as wf:
-            tar_file_write_bytes(
-                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
-                file_in_archive='.meta.json',
-                file=wf
-            )
-            assert wf.getvalue() == pathlib.Path(get_testfile('skin_mashu', '.meta.json')).read_bytes()
+        }):
+            with open('.meta.json', 'wb') as wf:
+                tar_file_write_bytes(
+                    archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                    file_in_archive='.meta.json',
+                    bin_file=wf
+                )
+            file_compare(get_testfile('skin_mashu', '.meta.json'), '.meta.json')
 
     def test_tar_file_write_bytes_small_replace(self, local_narugo_test_cos5t_tars):
         with isolated_directory({
             '.meta.json': get_testfile('skin_mashu', '愚人节_奥特瑙斯.png')
-        }), io.BytesIO() as wf:
-            tar_file_write_bytes(
-                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
-                file_in_archive='.meta.json',
-                file=wf
-            )
-            assert wf.getvalue() == pathlib.Path(get_testfile('skin_mashu', '.meta.json')).read_bytes()
+        }):
+            with open('.meta.json', 'wb') as wf:
+                tar_file_write_bytes(
+                    archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                    file_in_archive='.meta.json',
+                    bin_file=wf
+                )
+            file_compare(get_testfile('skin_mashu', '.meta.json'), '.meta.json')
 
     def test_tar_file_write_bytes_lfs(self, local_narugo_test_cos5t_tars):
         with isolated_directory(), io.BytesIO() as wf:
             tar_file_write_bytes(
                 archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
                 file_in_archive='./愚人节_奥特瑙斯.png',
-                file=wf
+                bin_file=wf
             )
             assert wf.getvalue() == pathlib.Path(get_testfile('skin_mashu', '愚人节_奥特瑙斯.png')).read_bytes()
 
@@ -227,7 +230,7 @@ class TestIndexLocalFetch:
             tar_file_write_bytes(
                 archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
                 file_in_archive='./愚人节奥特瑙斯.png',
-                file=wf
+                bin_file=wf
             )
 
     def test_tar_file_write_bytes_empty(self, local_narugo_test_cos5t_tars):
@@ -235,7 +238,7 @@ class TestIndexLocalFetch:
             tar_file_write_bytes(
                 archive_file=os.path.join(local_narugo_test_cos5t_tars, 'empty_file.tar'),
                 file_in_archive='empty_file',
-                file=wf
+                bin_file=wf
             )
             assert wf.tell() == 0
             assert wf.getvalue() == b''
