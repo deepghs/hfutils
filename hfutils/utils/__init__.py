@@ -1,6 +1,7 @@
 from .archive import is_archive_or_compressed
 from .arrange import FilesGroup, FileItem, walk_files_with_groups
 from .binary import is_binary_file
+from .binary_proxy import BinaryProxyIO
 from .data import is_data_file
 from .download import download_file
 from .ext import splitext_with_composite

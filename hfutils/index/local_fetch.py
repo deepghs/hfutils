@@ -12,9 +12,11 @@ index files, providing a convenient interface for archive manipulation and file 
 
 import json
 import os
-from typing import Optional, List, Tuple
+from hashlib import sha256
+from typing import Optional, List, Tuple, BinaryIO
 
 from cachetools import LRUCache
+from hbutils.scale import size_to_bytes_str
 
 _TAR_IDX_CACHE = LRUCache(maxsize=192)
 
@@ -263,6 +265,97 @@ def tar_file_size(archive_file: str, file_in_archive: str, idx_file: Optional[st
     )['size']
 
 
+def _tar_file_info_write(archive_file: str, info: dict, file_to_write: BinaryIO,
+                         chunk_size: int = 1 << 20, no_validate: bool = False):
+    """
+    Internal function to write file contents from the archive to a file object.
+
+    This function handles the actual reading from the archive and writing to the
+    destination, including validation of file size and hash if required.
+
+    :param archive_file: Path to the tar archive file.
+    :type archive_file: str
+    :param info: Dictionary containing file metadata.
+    :type info: dict
+    :param file_to_write: File object to write the contents to.
+    :type file_to_write: BinaryIO
+    :param chunk_size: Size of chunks to read/write at a time.
+    :type chunk_size: int
+    :param no_validate: Whether to skip validation of size and hash.
+    :type no_validate: bool
+
+    :raises ArchiveStandaloneFileIncompleteDownload: If the file size doesn't match expected.
+    :raises ArchiveStandaloneFileHashNotMatch: If the file hash doesn't match expected.
+    """
+    from .fetch import ArchiveStandaloneFileIncompleteDownload, ArchiveStandaloneFileHashNotMatch
+    start_pos = file_to_write.tell()
+    file_sha = sha256() if not no_validate and info.get('sha256') else None
+    if info['size'] > 0:
+        with open(archive_file, 'rb') as rf:
+            rf.seek(info['offset'])
+            tp = info['offset'] + info['size']
+            while rf.tell() < tp:
+                read_bytes = min(tp - rf.tell(), chunk_size)
+                chunk_data = rf.read(read_bytes)
+                file_to_write.write(chunk_data)
+                if file_sha is not None:
+                    file_sha.update(chunk_data)
+
+    if not no_validate:
+        if file_to_write.tell() != start_pos + info['size']:
+            raise ArchiveStandaloneFileIncompleteDownload(
+                f'Expected size is {size_to_bytes_str(info["size"], sigfigs=4, system="si")}, '
+                f'but actually {size_to_bytes_str(file_to_write.tell() - start_pos, sigfigs=4, system="si")} downloaded.'
+            )
+
+        if file_sha is not None:
+            _sha256 = file_sha.hexdigest()
+            if _sha256 != info['sha256']:
+                raise ArchiveStandaloneFileHashNotMatch(
+                    f'Expected hash is {info["sha256"]!r}, but actually {_sha256!r} found.'
+                )
+
+
+def tar_file_write_bytes(archive_file: str, file_in_archive: str, bin_file: BinaryIO,
+                         idx_file: Optional[str] = None, chunk_size: int = 1 << 20, no_cache: bool = False):
+    """
+    Write the contents of a file from the archive to a binary file object.
+
+    :param archive_file: Path to the tar archive file.
+    :type archive_file: str
+    :param file_in_archive: Name of the file in the archive to extract.
+    :type file_in_archive: str
+    :param bin_file: Binary file object to write to.
+    :type bin_file: BinaryIO
+    :param idx_file: Optional path to the index file.
+    :type idx_file: Optional[str]
+    :param chunk_size: Size of chunks to read/write at a time.
+    :type chunk_size: int
+    :param no_cache: Whether to bypass the cache.
+    :type no_cache: bool
+
+    :raises FileNotFoundError: If the specified file is not found in the archive.
+    """
+    from .fetch import _n_path
+    files = _tar_get_processed_files(
+        archive_file=archive_file,
+        idx_file=idx_file,
+        no_cache=no_cache,
+    )
+    if _n_path(file_in_archive) not in files:
+        raise FileNotFoundError(f'File {file_in_archive!r} not found '
+                                f'in local archive {archive_file!r}.')
+
+    info = files[_n_path(file_in_archive)]
+    _tar_file_info_write(
+        archive_file=archive_file,
+        info=info,
+        file_to_write=bin_file,
+        chunk_size=chunk_size,
+        no_validate=False,
+    )
+
+
 def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
                       idx_file: Optional[str] = None, chunk_size: int = 1 << 20,
                       force_download: bool = False, no_cache: bool = False):
@@ -323,13 +416,13 @@ def tar_file_download(archive_file: str, file_in_archive: str, local_file: str,
         os.makedirs(os.path.dirname(local_file), exist_ok=True)
     try:
         with open(local_file, 'wb') as wf:
-            if info['size'] > 0:
-                with open(archive_file, 'rb') as rf:
-                    rf.seek(info['offset'])
-                    tp = info['offset'] + info['size']
-                    while rf.tell() < tp:
-                        read_bytes = min(tp - rf.tell(), chunk_size)
-                        wf.write(rf.read(read_bytes))
+            _tar_file_info_write(
+                archive_file=archive_file,
+                info=info,
+                file_to_write=wf,
+                chunk_size=chunk_size,
+                no_validate=True,
+            )
 
         if os.path.getsize(local_file) != info['size']:
             raise ArchiveStandaloneFileIncompleteDownload(

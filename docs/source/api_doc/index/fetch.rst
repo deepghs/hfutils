@@ -54,6 +54,13 @@ hf_tar_file_info
 
 
 
+hf_tar_file_write_bytes
+----------------------------------------------
+
+.. autofunction:: hf_tar_file_write_bytes
+
+
+
 hf_tar_file_download
 ----------------------------------------------
 

@@ -1,4 +1,6 @@
+import io
 import os.path
+import pathlib
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -6,7 +8,7 @@ from hbutils.testing import isolated_directory
 from natsort import natsorted
 
 from hfutils.index import tar_list_files, tar_file_exists, tar_file_download, tar_file_info, \
-    tar_file_size, tar_cache_reset
+    tar_file_size, tar_cache_reset, tar_file_write_bytes
 from test.testings import get_testfile, file_compare
 
 
@@ -179,6 +181,67 @@ class TestIndexLocalFetch:
                 local_file='empty_file',
             )
             assert os.path.getsize('empty_file') == 0
+
+    def test_tar_file_write_bytes_small(self, local_narugo_test_cos5t_tars):
+        with isolated_directory():
+            with open('.meta.json', 'wb') as wf:
+                tar_file_write_bytes(
+                    archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                    file_in_archive='.meta.json',
+                    bin_file=wf
+                )
+            file_compare(get_testfile('skin_mashu', '.meta.json'), '.meta.json')
+
+    def test_tar_file_write_bytes_small_exist(self, local_narugo_test_cos5t_tars):
+        with isolated_directory({
+            '.meta.json': get_testfile('skin_mashu', '.meta.json')
+        }):
+            with open('.meta.json', 'wb') as wf:
+                tar_file_write_bytes(
+                    archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                    file_in_archive='.meta.json',
+                    bin_file=wf
+                )
+            file_compare(get_testfile('skin_mashu', '.meta.json'), '.meta.json')
+
+    def test_tar_file_write_bytes_small_replace(self, local_narugo_test_cos5t_tars):
+        with isolated_directory({
+            '.meta.json': get_testfile('skin_mashu', '愚人节_奥特瑙斯.png')
+        }):
+            with open('.meta.json', 'wb') as wf:
+                tar_file_write_bytes(
+                    archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                    file_in_archive='.meta.json',
+                    bin_file=wf
+                )
+            file_compare(get_testfile('skin_mashu', '.meta.json'), '.meta.json')
+
+    def test_tar_file_write_bytes_lfs(self, local_narugo_test_cos5t_tars):
+        with isolated_directory(), io.BytesIO() as wf:
+            tar_file_write_bytes(
+                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                file_in_archive='./愚人节_奥特瑙斯.png',
+                bin_file=wf
+            )
+            assert wf.getvalue() == pathlib.Path(get_testfile('skin_mashu', '愚人节_奥特瑙斯.png')).read_bytes()
+
+    def test_tar_file_write_bytes_not_found(self, local_narugo_test_cos5t_tars):
+        with isolated_directory(), io.BytesIO() as wf, pytest.raises(FileNotFoundError):
+            tar_file_write_bytes(
+                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                file_in_archive='./愚人节奥特瑙斯.png',
+                bin_file=wf
+            )
+
+    def test_tar_file_write_bytes_empty(self, local_narugo_test_cos5t_tars):
+        with isolated_directory(), io.BytesIO() as wf:
+            tar_file_write_bytes(
+                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'empty_file.tar'),
+                file_in_archive='empty_file',
+                bin_file=wf
+            )
+            assert wf.tell() == 0
+            assert wf.getvalue() == b''
 
 
 @pytest.fixture

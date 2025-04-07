@@ -1,4 +1,6 @@
+import io
 import os.path
+import pathlib
 from unittest.mock import patch, MagicMock
 
 import pytest
@@ -6,7 +8,7 @@ from hbutils.testing import isolated_directory
 from natsort import natsorted
 
 from hfutils.index import hf_tar_list_files, hf_tar_file_exists, hf_tar_file_download, hf_tar_file_info, \
-    hf_tar_file_size, hf_tar_cache_reset
+    hf_tar_file_size, hf_tar_cache_reset, hf_tar_file_write_bytes
 from test.testings import get_testfile, file_compare
 
 
@@ -202,6 +204,83 @@ class TestIndexFetch:
                 local_file='2946001.',
             )
             assert os.path.getsize('2946001.') == 0
+
+    def test_hf_tar_file_write_bytes_lfs_bytes(self):
+        with isolated_directory(), io.BytesIO() as bf:
+            hf_tar_file_write_bytes(
+                repo_id='narugo/test_cos5t_tars',
+                archive_in_repo='mashu_skins.tar',
+                file_in_archive='./愚人节_奥特瑙斯.png',
+                bin_file=bf,
+            )
+            assert bf.getvalue() == pathlib.Path(get_testfile('skin_mashu', '愚人节_奥特瑙斯.png')).read_bytes()
+
+    def test_hf_tar_file_write_bytes_empty_bytes(self):
+        with isolated_directory(), io.BytesIO() as bf:
+            hf_tar_file_write_bytes(
+                repo_id='nyanko7/danbooru2023',
+                idx_repo_id='deepghs/danbooru2023_index',
+                archive_in_repo='original/data-0001.tar',
+                file_in_archive='2946001.',
+                bin_file=bf
+            )
+            assert bf.getvalue() == b''
+
+    def test_hf_tar_file_write_bytes_lfs_bytes_file(self):
+        with isolated_directory():
+            with open('愚人节_奥特瑙斯.png', 'wb') as bf:
+                hf_tar_file_write_bytes(
+                    repo_id='narugo/test_cos5t_tars',
+                    archive_in_repo='mashu_skins.tar',
+                    file_in_archive='./愚人节_奥特瑙斯.png',
+                    bin_file=bf
+                )
+            file_compare(get_testfile('skin_mashu', '愚人节_奥特瑙斯.png'), '愚人节_奥特瑙斯.png')
+
+    def test_hf_tar_file_write_bytes_empty_bytes_file(self):
+        with isolated_directory():
+            with open('2946001.', 'wb') as bf:
+                hf_tar_file_write_bytes(
+                    repo_id='nyanko7/danbooru2023',
+                    idx_repo_id='deepghs/danbooru2023_index',
+                    archive_in_repo='original/data-0001.tar',
+                    file_in_archive='2946001.',
+                    bin_file=bf
+                )
+            assert os.path.getsize('2946001.') == 0
+
+    def test_hf_tar_file_write_bytes_not_found(self):
+        with io.BytesIO() as bf, pytest.raises(FileNotFoundError):
+            hf_tar_file_write_bytes(
+                repo_id='narugo/test_cos5t_tars',
+                archive_in_repo='mashu_skins.tar',
+                file_in_archive='./愚人节奥特瑙斯.png',
+                bin_file=bf,
+            )
+
+    def test_hf_tar_file_write_bytes_lfs_bytes_append(self):
+        with isolated_directory(), io.BytesIO() as bf:
+            bf.write(b'append_prefix_')
+            hf_tar_file_write_bytes(
+                repo_id='narugo/test_cos5t_tars',
+                archive_in_repo='mashu_skins.tar',
+                file_in_archive='./愚人节_奥特瑙斯.png',
+                bin_file=bf,
+            )
+            assert bf.getvalue() == b'append_prefix_' + pathlib.Path(
+                get_testfile('skin_mashu', '愚人节_奥特瑙斯.png')).read_bytes()
+
+    def test_hf_tar_file_write_bytes_empty_bytes_append(self):
+        with isolated_directory(), io.BytesIO() as bf:
+            bf.write(b'append_prefix_')
+            hf_tar_file_write_bytes(
+                repo_id='nyanko7/danbooru2023',
+                idx_repo_id='deepghs/danbooru2023_index',
+                archive_in_repo='original/data-0001.tar',
+                file_in_archive='2946001.',
+                bin_file=bf
+            )
+            assert bf.getvalue() == b'append_prefix_'
 
 
 @pytest.fixture
