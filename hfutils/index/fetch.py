@@ -2,16 +2,18 @@ import json
 import os.path
 import threading
 from collections import defaultdict
-from typing import Optional, Dict, Union, List
+from hashlib import sha256
+from typing import Optional, Dict, Union, List, BinaryIO
 
 from cachetools import LRUCache
+from hbutils.scale import size_to_bytes_str
 from huggingface_hub.file_download import http_get, hf_hub_url
 from huggingface_hub.utils import build_hf_headers
 from tqdm import tqdm
 
 from .hash import _f_sha256
 from ..operate.base import RepoTypeTyping, get_hf_client
-from ..utils import hf_normpath
+from ..utils import hf_normpath, BinaryProxyIO
 
 
 class ArchiveStandaloneFileIncompleteDownload(Exception):
@@ -558,6 +560,74 @@ def hf_tar_file_size(repo_id: str, archive_in_repo: str, file_in_archive: str,
     )['size']
 
 
+class _WriteSHA256ValidatorProxyIO(BinaryProxyIO):
+    def __init__(self, stream: BinaryIO, need_validate: bool = True):
+        super().__init__(stream)
+        self._file_sha = sha256() if need_validate else None
+        self._sha256 = None
+
+    @property
+    def sha256(self) -> Optional[str]:
+        return self._sha256
+
+    def _on_write(self, __s):
+        if __s and self._file_sha is not None:
+            self._file_sha.update(__s)
+
+    def _after_close(self):
+        if self._file_sha is not None:
+            self._sha256 = self._file_sha.hexdigest()
+
+
+def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive: str, info: dict,
+                            file_to_write: BinaryIO, repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                            proxies: Optional[Dict] = None, user_agent: Union[Dict, str, None] = None,
+                            headers: Optional[Dict[str, str]] = None, endpoint: Optional[str] = None,
+                            silent: bool = False, hf_token: Optional[str] = None, no_validate: bool = False):
+    url_to_download = hf_hub_url(repo_id, archive_in_repo, repo_type=repo_type, revision=revision, endpoint=endpoint)
+    headers = build_hf_headers(
+        token=hf_token,
+        library_name=None,
+        library_version=None,
+        user_agent=user_agent,
+        headers=headers,
+    )
+    start_bytes = info['offset']
+    end_bytes = info['offset'] + info['size'] - 1
+    headers['Range'] = f'bytes={start_bytes}-{end_bytes}'
+
+    proxy = _WriteSHA256ValidatorProxyIO(file_to_write, need_validate=not no_validate)
+    try:
+        with tqdm(disable=True) as empty_tqdm:
+            if info['size'] > 0:
+                http_get(
+                    url_to_download,
+                    proxy,
+                    proxies=proxies,
+                    resume_size=0,
+                    headers=headers,
+                    expected_size=info['size'],
+                    displayed_filename=file_in_archive,
+                    _tqdm_bar=empty_tqdm if silent else None,
+                )
+
+        if proxy.tell() != info['size']:
+            raise ArchiveStandaloneFileIncompleteDownload(
+                f'Expected size is {size_to_bytes_str(info["size"], sigfigs=4, system="si")}, '
+                f'but actually {size_to_bytes_str(proxy.tell(), sigfigs=4, system="si")} downloaded.'
+            )
+
+        proxy.close()
+        if info.get('sha256') and not no_validate:
+            if proxy.sha256 != info['sha256']:
+                raise ArchiveStandaloneFileHashNotMatch(
+                    f'Expected hash is {info["sha256"]!r}, but actually {proxy.sha256!r} found.'
+                )
+
+    finally:
+        proxy.close()
+
+
 def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: str, local_file: str,
                          repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                          idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
@@ -668,18 +738,6 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
 
     info = files[_n_path(file_in_archive)]
 
-    url_to_download = hf_hub_url(repo_id, archive_in_repo, repo_type=repo_type, revision=revision, endpoint=endpoint)
-    headers = build_hf_headers(
-        token=hf_token,
-        library_name=None,
-        library_version=None,
-        user_agent=user_agent,
-        headers=headers,
-    )
-    start_bytes = info['offset']
-    end_bytes = info['offset'] + info['size'] - 1
-    headers['Range'] = f'bytes={start_bytes}-{end_bytes}'
-
     if not force_download and os.path.exists(local_file) and \
             os.path.isfile(local_file) and os.path.getsize(local_file) == info['size']:
         _expected_sha256 = info.get('sha256')
@@ -690,18 +748,24 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
     if os.path.dirname(local_file):
         os.makedirs(os.path.dirname(local_file), exist_ok=True)
     try:
-        with open(local_file, 'wb') as f, tqdm(disable=True) as empty_tqdm:
-            if info['size'] > 0:
-                http_get(
-                    url_to_download,
-                    f,
-                    proxies=proxies,
-                    resume_size=0,
-                    headers=headers,
-                    expected_size=info['size'],
-                    displayed_filename=file_in_archive,
-                    _tqdm_bar=empty_tqdm if silent else None,
-                )
+        with open(local_file, 'wb') as f:
+            _hf_tar_file_info_write(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                archive_in_repo=archive_in_repo,
+                file_in_archive=file_in_archive,
+                info=info,
+                file_to_write=f,
+                revision=revision,
+
+                proxies=proxies,
+                user_agent=user_agent,
+                endpoint=endpoint,
+                headers=headers,
+                silent=silent,
+                hf_token=hf_token,
+                no_validate=True,
+            )
 
         if os.path.getsize(local_file) != info['size']:
             raise ArchiveStandaloneFileIncompleteDownload(
