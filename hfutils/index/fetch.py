@@ -694,6 +694,51 @@ def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive:
         proxy.close()
 
 
+def hf_tar_write_bytes(repo_id: str, archive_in_repo: str, file_in_archive: str, bin_file: BinaryIO,
+                       repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                       idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
+                       idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
+                       proxies: Optional[Dict] = None, user_agent: Union[Dict, str, None] = None,
+                       headers: Optional[Dict[str, str]] = None, endpoint: Optional[str] = None,
+                       silent: bool = False, hf_token: Optional[str] = None, no_cache: bool = False):
+    files = _hf_tar_get_processed_files(
+        repo_id=repo_id,
+        archive_in_repo=archive_in_repo,
+        repo_type=repo_type,
+        revision=revision,
+
+        idx_repo_id=idx_repo_id,
+        idx_file_in_repo=idx_file_in_repo,
+        idx_repo_type=idx_repo_type,
+        idx_revision=idx_revision,
+
+        hf_token=hf_token,
+        no_cache=no_cache,
+    )
+    if _n_path(file_in_archive) not in files:
+        raise FileNotFoundError(f'File {file_in_archive!r} not found '
+                                f'in {repo_type}s/{repo_id}@{revision}/{archive_in_repo}.')
+
+    info = files[_n_path(file_in_archive)]
+    _hf_tar_file_info_write(
+        repo_id=repo_id,
+        repo_type=repo_type,
+        archive_in_repo=archive_in_repo,
+        file_in_archive=file_in_archive,
+        info=info,
+        file_to_write=bin_file,
+        revision=revision,
+
+        proxies=proxies,
+        user_agent=user_agent,
+        endpoint=endpoint,
+        headers=headers,
+        silent=silent,
+        hf_token=hf_token,
+        no_validate=False,
+    )
+
+
 def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: str, local_file: str,
                          repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                          idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
