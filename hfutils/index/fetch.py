@@ -701,6 +701,64 @@ def hf_tar_file_write_bytes(repo_id: str, archive_in_repo: str, file_in_archive:
                             proxies: Optional[Dict] = None, user_agent: Union[Dict, str, None] = None,
                             headers: Optional[Dict[str, str]] = None, endpoint: Optional[str] = None,
                             silent: bool = False, hf_token: Optional[str] = None, no_cache: bool = False):
+    """
+    Extract a file from a tar archive in a Hugging Face repository and write it to a binary file-like object.
+
+    This function retrieves a specific file from a tar archive stored in a Hugging Face repository
+    and writes its content to the provided binary file-like object. It uses the index information
+    to efficiently download only the necessary portion of the archive.
+
+    :param repo_id: The identifier of the repository containing the tar archive.
+    :type repo_id: str
+    :param archive_in_repo: The path to the tar archive file within the repository.
+    :type archive_in_repo: str
+    :param file_in_archive: The path to the desired file inside the tar archive.
+    :type file_in_archive: str
+    :param bin_file: The binary file-like object to write the extracted content to.
+    :type bin_file: BinaryIO
+    :param repo_type: The type of the Hugging Face repository.
+    :type repo_type: RepoTypeTyping, optional
+    :param revision: The revision of the repository.
+    :type revision: str, optional
+    :param idx_repo_id: The identifier of the index repository if different from the main repository.
+    :type idx_repo_id: Optional[str], optional
+    :param idx_file_in_repo: The path to the index file in the index repository.
+    :type idx_file_in_repo: Optional[str], optional
+    :param idx_repo_type: The type of the index repository.
+    :type idx_repo_type: Optional[RepoTypeTyping], optional
+    :param idx_revision: The revision of the index repository.
+    :type idx_revision: Optional[str], optional
+    :param proxies: Proxy settings for the HTTP request.
+    :type proxies: Optional[Dict], optional
+    :param user_agent: Custom user agent for the HTTP request.
+    :type user_agent: Union[Dict, str, None], optional
+    :param headers: Additional headers for the HTTP request.
+    :type headers: Optional[Dict[str, str]], optional
+    :param endpoint: Custom Hugging Face API endpoint.
+    :type endpoint: Optional[str], optional
+    :param silent: Whether to suppress progress bar output.
+    :type silent: bool, optional
+    :param hf_token: Hugging Face authentication token.
+    :type hf_token: Optional[str], optional
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool, optional
+
+    :raises FileNotFoundError: If the specified file is not found in the tar archive.
+    :raises ArchiveStandaloneFileIncompleteDownload: If the download is incomplete.
+    :raises ArchiveStandaloneFileHashNotMatch: If the downloaded file's hash doesn't match the expected hash.
+
+    Example::
+        >>> import io
+        >>> buffer = io.BytesIO()
+        >>> hf_tar_file_write_bytes(
+        ...     repo_id='deepghs/danbooru_newest',
+        ...     archive_in_repo='images/0000.tar',
+        ...     file_in_archive='7506000.jpg',
+        ...     bin_file=buffer
+        ... )
+        >>> # Now buffer contains the file content
+        >>> image_data = buffer.getvalue()
+    """
     files = _hf_tar_get_processed_files(
         repo_id=repo_id,
         archive_in_repo=archive_in_repo,
