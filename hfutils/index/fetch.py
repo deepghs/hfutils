@@ -561,6 +561,18 @@ def hf_tar_file_size(repo_id: str, archive_in_repo: str, file_in_archive: str,
 
 
 class _WriteSHA256ValidatorProxyIO(BinaryProxyIO):
+    """
+    A proxy IO class that calculates SHA256 hash while writing data to the underlying stream.
+
+    This class extends BinaryProxyIO to add SHA256 hash calculation functionality during write operations.
+    The calculated hash can be accessed after closing the stream.
+
+    :param stream: The binary stream to write to
+    :type stream: BinaryIO
+    :param need_validate: Whether SHA256 hash calculation is needed, defaults to True
+    :type need_validate: bool
+    """
+
     def __init__(self, stream: BinaryIO, need_validate: bool = True):
         super().__init__(stream)
         self._file_sha = sha256() if need_validate else None
@@ -568,13 +580,28 @@ class _WriteSHA256ValidatorProxyIO(BinaryProxyIO):
 
     @property
     def sha256(self) -> Optional[str]:
+        """
+        Get the calculated SHA256 hash of the written data.
+
+        :return: The hexadecimal representation of the SHA256 hash, or None if validation was disabled
+        :rtype: Optional[str]
+        """
         return self._sha256
 
     def _on_write(self, __s):
+        """
+        Update the SHA256 hash with the written data.
+
+        :param __s: The bytes being written
+        :type __s: bytes
+        """
         if __s and self._file_sha is not None:
             self._file_sha.update(__s)
 
     def _after_close(self):
+        """
+        Finalize the SHA256 hash calculation after the stream is closed.
+        """
         if self._file_sha is not None:
             self._sha256 = self._file_sha.hexdigest()
 
@@ -584,6 +611,45 @@ def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive:
                             proxies: Optional[Dict] = None, user_agent: Union[Dict, str, None] = None,
                             headers: Optional[Dict[str, str]] = None, endpoint: Optional[str] = None,
                             silent: bool = False, hf_token: Optional[str] = None, no_validate: bool = False):
+    """
+    Extract a specific file from an archive in a Hugging Face repository and write it to a file-like object.
+
+    This function downloads only the necessary portion of an archive file that contains the target file,
+    extracts it, and writes it to the provided file object. It also validates the SHA256 hash of the
+    extracted file if validation is enabled.
+
+    :param repo_id: The repository ID where the archive is located
+    :type repo_id: str
+    :param archive_in_repo: The path to the archive file within the repository
+    :type archive_in_repo: str
+    :param file_in_archive: The path to the target file within the archive
+    :type file_in_archive: str
+    :param info: Dictionary containing metadata about the file (offset, size, and optionally sha256)
+    :type info: dict
+    :param file_to_write: The binary file-like object to write the extracted content to
+    :type file_to_write: BinaryIO
+    :param repo_type: The repository type, defaults to 'dataset'
+    :type repo_type: RepoTypeTyping, optional
+    :param revision: The repository revision, defaults to 'main'
+    :type revision: str, optional
+    :param proxies: Proxy configuration for HTTP requests, defaults to None
+    :type proxies: Optional[Dict], optional
+    :param user_agent: User agent information for HTTP requests, defaults to None
+    :type user_agent: Union[Dict, str, None], optional
+    :param headers: Additional HTTP headers for requests, defaults to None
+    :type headers: Optional[Dict[str, str]], optional
+    :param endpoint: The API endpoint to use, defaults to None
+    :type endpoint: Optional[str], optional
+    :param silent: Whether to suppress download progress display, defaults to False
+    :type silent: bool, optional
+    :param hf_token: Hugging Face authentication token, defaults to None
+    :type hf_token: Optional[str], optional
+    :param no_validate: Whether to skip SHA256 hash validation, defaults to False
+    :type no_validate: bool, optional
+
+    :raises ArchiveStandaloneFileIncompleteDownload: If the downloaded file size doesn't match the expected size
+    :raises ArchiveStandaloneFileHashNotMatch: If the SHA256 hash of the downloaded file doesn't match the expected hash
+    """
     url_to_download = hf_hub_url(repo_id, archive_in_repo, repo_type=repo_type, revision=revision, endpoint=endpoint)
     headers = build_hf_headers(
         token=hf_token,
