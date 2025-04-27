@@ -121,9 +121,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests.exceptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub.hf_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoFile</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoTypeTyping</span><span class="p">,</span> <span class="n">list_files_in_repository</span><span class="p">,</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">,</span> <span class="n">get_hf_client</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.validate</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_local_file_ready</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoTypeTyping</span><span class="p">,</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">,</span> <span class="n">get_hf_client</span><span class="p">,</span> \
+    <span class="n">list_repo_files_in_repository</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.validate</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_local_file_ready</span><span class="p">,</span> <span class="n">_raw_check_local_file</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..archive</span><span class="w"> </span><span class="kn">import</span> <span class="n">archive_unpack</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span><span class="p">,</span> <span class="n">TemporaryDirectory</span><span class="p">,</span> <span class="n">hf_normpath</span>
 
@@ -283,7 +285,7 @@
 <span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
 <span class="sd">    :type hf_token: str, optional</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="n">list_files_in_repository</span><span class="p">(</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">list_repo_files_in_repository</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
         <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
         <span class="n">subdir</span><span class="o">=</span><span class="n">dir_in_repo</span><span class="p">,</span>
@@ -294,18 +296,14 @@
     <span class="p">)</span>
     <span class="n">progress</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Downloading </span><span class="si">{</span><span class="n">dir_in_repo</span><span class="si">!r}</span><span class="s1"> ...&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_download_one_file</span><span class="p">(</span><span class="n">rel_file</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_download_one_file</span><span class="p">(</span><span class="n">repo_file</span><span class="p">:</span> <span class="n">RepoFile</span><span class="p">,</span> <span class="n">rel_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">td</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">dst_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_directory</span><span class="p">,</span> <span class="n">rel_file</span><span class="p">)</span>
                 <span class="n">file_in_repo</span> <span class="o">=</span> <span class="n">hf_normpath</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dir_in_repo</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">rel_file</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst_file</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_local_file_ready</span><span class="p">(</span>
-                        <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
-                        <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst_file</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_raw_check_local_file</span><span class="p">(</span>
+                        <span class="n">repo_file</span><span class="o">=</span><span class="n">repo_file</span><span class="p">,</span>
                         <span class="n">local_file</span><span class="o">=</span><span class="n">dst_file</span><span class="p">,</span>
-                        <span class="n">file_in_repo</span><span class="o">=</span><span class="n">file_in_repo</span><span class="p">,</span>
-                        <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
-                        <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">,</span>
                         <span class="n">soft_mode</span><span class="o">=</span><span class="n">soft_mode_when_check</span><span class="p">,</span>
                 <span class="p">):</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Local file </span><span class="si">{</span><span class="n">rel_file</span><span class="si">}</span><span class="s1"> is ready, download skipped.&#39;</span><span class="p">)</span>
@@ -337,8 +335,8 @@
                 <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unexpected error when downloading </span><span class="si">{</span><span class="n">rel_file</span><span class="si">!r}</span><span class="s1"> - </span><span class="si">{</span><span class="n">err</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="n">tp</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-        <span class="n">tp</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">_download_one_file</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">tp</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">_download_one_file</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
     <span class="n">tp</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 </pre></div>
@@ -422,11 +420,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/download/index.html">dev/download</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
                         <dd><a href="download.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
                         <dd><a href="../../../../dev/write/index.html">dev/write</a></dd>
-                        <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
