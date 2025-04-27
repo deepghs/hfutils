@@ -79,7 +79,7 @@ def _raw_download_file(td: str, local_file: str, repo_id: str, file_in_repo: str
 
 def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
                           repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                          hf_token: Optional[str] = None):
+                          soft_mode_when_check: bool = False, hf_token: Optional[str] = None):
     """
     Download a file from a Hugging Face repository and save it to a local file.
 
@@ -93,19 +93,32 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
     :type revision: str
+    :param soft_mode_when_check: Just check the size of the expected file when enabled. Default is False.
+    :type soft_mode_when_check: bool
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
     """
     with TemporaryDirectory() as td:
-        _raw_download_file(
-            td=td,
-            local_file=local_file,
-            repo_id=repo_id,
-            file_in_repo=file_in_repo,
-            repo_type=repo_type,
-            revision=revision,
-            hf_token=hf_token,
-        )
+        if os.path.exists(local_file) and is_local_file_ready(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                local_file=local_file,
+                file_in_repo=file_in_repo,
+                revision=revision,
+                hf_token=hf_token,
+                soft_mode=soft_mode_when_check,
+        ):
+            logging.info(f'Local file {local_file!r} is ready, download skipped.')
+        else:
+            _raw_download_file(
+                td=td,
+                local_file=local_file,
+                repo_id=repo_id,
+                file_in_repo=file_in_repo,
+                repo_type=repo_type,
+                revision=revision,
+                hf_token=hf_token,
+            )
 
 
 def download_archive_as_directory(local_directory: str, repo_id: str, file_in_repo: str,
