@@ -39,7 +39,7 @@ unittest:
 		--cov="${RANGE_SRC_DIR}" \
 		$(if ${MIN_COVERAGE},--cov-fail-under=${MIN_COVERAGE},) \
 		$(if ${WORKERS},-n ${WORKERS},) \
-		--reruns 8 --reruns-delay 2 --only-rerun '(OSError|Timeout|HTTPError.*502|HTTPError.*504|check your connection)'
+		--reruns 8 --reruns-delay 2 --only-rerun '(OSError|Timeout|HTTPError.*429|HTTPError.*502|HTTPError.*504|check your connection|429 error)'
 
 docs:
 	$(MAKE) -C "${DOC_DIR}" build
