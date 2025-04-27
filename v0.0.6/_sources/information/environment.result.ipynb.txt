@@ -29,10 +29,10 @@
    "execution_count": 1,
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-04-07T12:12:59.205758Z",
-     "iopub.status.busy": "2025-04-07T12:12:59.205279Z",
-     "iopub.status.idle": "2025-04-07T12:13:00.366357Z",
-     "shell.execute_reply": "2025-04-07T12:13:00.365755Z"
+     "iopub.execute_input": "2025-04-27T11:06:44.444136Z",
+     "iopub.status.busy": "2025-04-27T11:06:44.443940Z",
+     "iopub.status.idle": "2025-04-27T11:06:45.604129Z",
+     "shell.execute_reply": "2025-04-27T11:06:45.603453Z"
     },
     "pycharm": {
      "name": "#%%\n"
@@ -43,8 +43,8 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "OS: Linux-6.8.0-1021-azure-x86_64-with-glibc2.39\n",
-      "Python: CPython 3.10.16\n"
+      "OS: Linux-6.11.0-1012-azure-x86_64-with-glibc2.39\n",
+      "Python: CPython 3.10.17\n"
      ]
     },
     {
@@ -53,7 +53,7 @@
      "text": [
       "CPU Brand: AMD EPYC 7763 64-Core Processor\n",
       "CPU Count: 4\n",
-      "CPU Freq: 3269.33925 MHz\n",
+      "CPU Freq: 2987.56725 MHz\n",
       "Memory Size: 15.615 GiB\n",
       "Has CUDA: No\n"
      ]
@@ -106,7 +106,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.10.16"
+   "version": "3.10.17"
   }
  },
  "nbformat": 4,
