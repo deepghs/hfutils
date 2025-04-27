@@ -142,6 +142,7 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                 file_in_repo=file_in_repo,
                 repo_type=repo_type,
                 revision=revision,
+                soft_mode_when_check=soft_mode_when_check,
             )
 
         elif archive_in_repo:

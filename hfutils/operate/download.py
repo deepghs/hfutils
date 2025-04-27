@@ -29,9 +29,11 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import List, Optional
 
 import requests.exceptions
+from huggingface_hub.hf_api import RepoFile
 
-from .base import RepoTypeTyping, list_files_in_repository, _IGNORE_PATTERN_UNSET, get_hf_client
-from .validate import is_local_file_ready
+from .base import RepoTypeTyping, _IGNORE_PATTERN_UNSET, get_hf_client, \
+    list_repo_files_in_repository
+from .validate import is_local_file_ready, _raw_check_local_file
 from ..archive import archive_unpack
 from ..utils import tqdm, TemporaryDirectory, hf_normpath
 
@@ -79,7 +81,7 @@ def _raw_download_file(td: str, local_file: str, repo_id: str, file_in_repo: str
 
 def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
                           repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                          hf_token: Optional[str] = None):
+                          soft_mode_when_check: bool = False, hf_token: Optional[str] = None):
     """
     Download a file from a Hugging Face repository and save it to a local file.
 
@@ -93,19 +95,32 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
     :type revision: str
+    :param soft_mode_when_check: Just check the size of the expected file when enabled. Default is False.
+    :type soft_mode_when_check: bool
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
     """
     with TemporaryDirectory() as td:
-        _raw_download_file(
-            td=td,
-            local_file=local_file,
-            repo_id=repo_id,
-            file_in_repo=file_in_repo,
-            repo_type=repo_type,
-            revision=revision,
-            hf_token=hf_token,
-        )
+        if os.path.exists(local_file) and is_local_file_ready(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                local_file=local_file,
+                file_in_repo=file_in_repo,
+                revision=revision,
+                hf_token=hf_token,
+                soft_mode=soft_mode_when_check,
+        ):
+            logging.info(f'Local file {local_file!r} is ready, download skipped.')
+        else:
+            _raw_download_file(
+                td=td,
+                local_file=local_file,
+                repo_id=repo_id,
+                file_in_repo=file_in_repo,
+                repo_type=repo_type,
+                revision=revision,
+                hf_token=hf_token,
+            )
 
 
 def download_archive_as_directory(local_directory: str, repo_id: str, file_in_repo: str,
@@ -170,7 +185,7 @@ def download_directory_as_directory(
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
     """
-    files = list_files_in_repository(
+    files = list_repo_files_in_repository(
         repo_id=repo_id,
         repo_type=repo_type,
         subdir=dir_in_repo,
@@ -181,18 +196,14 @@ def download_directory_as_directory(
     )
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
 
-    def _download_one_file(rel_file):
+    def _download_one_file(repo_file: RepoFile, rel_file: str):
         with TemporaryDirectory() as td:
             try:
                 dst_file = os.path.join(local_directory, rel_file)
                 file_in_repo = hf_normpath(f'{dir_in_repo}/{rel_file}')
-                if os.path.exists(dst_file) and is_local_file_ready(
-                        repo_id=repo_id,
-                        repo_type=repo_type,
+                if os.path.exists(dst_file) and _raw_check_local_file(
+                        repo_file=repo_file,
                         local_file=dst_file,
-                        file_in_repo=file_in_repo,
-                        revision=revision,
-                        hf_token=hf_token,
                         soft_mode=soft_mode_when_check,
                 ):
                     logging.info(f'Local file {rel_file} is ready, download skipped.')
@@ -224,6 +235,6 @@ def download_directory_as_directory(
                 logging.exception(f'Unexpected error when downloading {rel_file!r} - {err!r}')
 
     tp = ThreadPoolExecutor(max_workers=max_workers)
-    for file in files:
-        tp.submit(_download_one_file, file)
+    for item, file in files:
+        tp.submit(_download_one_file, item, file)
     tp.shutdown(wait=True)
