@@ -19,7 +19,7 @@ import logging
 import os
 import re
 from functools import lru_cache
-from typing import Literal, List, Optional, Union, Iterator
+from typing import Literal, List, Optional, Union, Iterator, Tuple
 
 from huggingface_hub import HfApi, HfFileSystem
 from huggingface_hub.hf_api import RepoFolder, RepoFile
@@ -204,6 +204,67 @@ def list_all_with_pattern(
             yield from all_items
 
 
+def list_repo_files_in_repository(
+        repo_id: str, repo_type: RepoTypeTyping = 'dataset',
+        subdir: str = '', pattern: str = '**/*', revision: str = 'main',
+        ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+        hf_token: Optional[str] = None, silent: bool = False) -> List[Tuple[RepoFile, str]]:
+    """
+    List repository files with their paths in a Hugging Face repository.
+
+    This function returns a list of tuples containing RepoFile objects and their corresponding paths
+    that match the given pattern and are not ignored by the ignored patterns.
+
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param repo_type: The type of the repository ('dataset', 'model', 'space'). Default is 'dataset'.
+    :type repo_type: RepoTypeTyping
+    :param subdir: The subdirectory to list files from. Default is an empty string (root directory).
+    :type subdir: str
+    :param pattern: Wildcard pattern of the target files. Default is `**/*` (all files).
+    :type pattern: str
+    :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is 'main'.
+    :type revision: str
+    :param ignore_patterns: List of file patterns to ignore. If not set, uses default ignore patterns.
+    :type ignore_patterns: List[str]
+    :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
+    :type hf_token: Optional[str]
+    :param silent: If True, suppresses progress bar. Default is False.
+    :type silent: bool
+
+    :return: A list of tuples containing RepoFile objects and their corresponding paths.
+    :rtype: List[Tuple[RepoFile, str]]
+
+    :example:
+
+        >>> files = list_repo_files_in_repository("username/repo", pattern="*.txt")
+        >>> for repo_file, path in files:
+        ...     print(f"File: {path}, Size: {repo_file.size}")
+    """
+    if ignore_patterns is _IGNORE_PATTERN_UNSET:
+        ignore_patterns = _DEFAULT_IGNORE_PATTERNS
+
+    if subdir and subdir != '.':
+        pattern = f'{subdir}/{pattern}'
+
+    result = []
+    for item in list_all_with_pattern(
+            repo_id=repo_id,
+            repo_type=repo_type,
+            revision=revision,
+            pattern=pattern,
+            hf_token=hf_token,
+            silent=silent,
+    ):
+        if isinstance(item, RepoFile):
+            path = hf_normpath(os.path.relpath(item.path, start=subdir or '.'))
+            segments = list(filter(bool, re.split(r'[\\/]+', path)))
+            if not _is_file_ignored(segments, ignore_patterns):
+                result.append((item, path))
+
+    return result
+
+
 def list_files_in_repository(
         repo_id: str, repo_type: RepoTypeTyping = 'dataset',
         subdir: str = '', pattern: str = '**/*', revision: str = 'main',
@@ -213,7 +274,7 @@ def list_files_in_repository(
     List files in a Hugging Face repository based on the given parameters.
 
     This function retrieves a list of file paths in a specified repository that match
-    the given pattern and are not ignored by the ignore patterns.
+    the given pattern and are not ignored by the ignored patterns.
 
     :param repo_id: The identifier of the repository.
     :type repo_id: str
@@ -241,25 +302,15 @@ def list_files_in_repository(
         >>> print(files)
         ['file1.txt', 'folder/file2.txt']
     """
-    if ignore_patterns is _IGNORE_PATTERN_UNSET:
-        ignore_patterns = _DEFAULT_IGNORE_PATTERNS
-
-    if subdir and subdir != '.':
-        pattern = f'{subdir}/{pattern}'
-
-    result = []
-    for item in list_all_with_pattern(
+    return [
+        path for _, path in list_repo_files_in_repository(
             repo_id=repo_id,
             repo_type=repo_type,
-            revision=revision,
+            subdir=subdir,
             pattern=pattern,
+            revision=revision,
+            ignore_patterns=ignore_patterns,
             hf_token=hf_token,
             silent=silent,
-    ):
-        if isinstance(item, RepoFile):
-            path = hf_normpath(os.path.relpath(item.path, start=subdir or '.'))
-            segments = list(filter(bool, re.split(r'[\\/]+', path)))
-            if not _is_file_ignored(segments, ignore_patterns):
-                result.append(path)
-
-    return result
+        )
+    ]
