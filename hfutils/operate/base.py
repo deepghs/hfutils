@@ -209,6 +209,38 @@ def list_repo_files_in_repository(
         subdir: str = '', pattern: str = '**/*', revision: str = 'main',
         ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
         hf_token: Optional[str] = None, silent: bool = False) -> List[Tuple[RepoFile, str]]:
+    """
+    List repository files with their paths in a Hugging Face repository.
+
+    This function returns a list of tuples containing RepoFile objects and their corresponding paths
+    that match the given pattern and are not ignored by the ignored patterns.
+
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param repo_type: The type of the repository ('dataset', 'model', 'space'). Default is 'dataset'.
+    :type repo_type: RepoTypeTyping
+    :param subdir: The subdirectory to list files from. Default is an empty string (root directory).
+    :type subdir: str
+    :param pattern: Wildcard pattern of the target files. Default is `**/*` (all files).
+    :type pattern: str
+    :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is 'main'.
+    :type revision: str
+    :param ignore_patterns: List of file patterns to ignore. If not set, uses default ignore patterns.
+    :type ignore_patterns: List[str]
+    :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
+    :type hf_token: Optional[str]
+    :param silent: If True, suppresses progress bar. Default is False.
+    :type silent: bool
+
+    :return: A list of tuples containing RepoFile objects and their corresponding paths.
+    :rtype: List[Tuple[RepoFile, str]]
+
+    :example:
+
+        >>> files = list_repo_files_in_repository("username/repo", pattern="*.txt")
+        >>> for repo_file, path in files:
+        ...     print(f"File: {path}, Size: {repo_file.size}")
+    """
     if ignore_patterns is _IGNORE_PATTERN_UNSET:
         ignore_patterns = _DEFAULT_IGNORE_PATTERNS
 
