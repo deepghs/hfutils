@@ -12,13 +12,45 @@ from test.testings import get_testfile, file_compare, dir_compare
 class TestOperateDownload:
     def test_download_file_to_file(self):
         target_file = get_testfile('mashu.png')
-        with isolated_directory():
+
+        call_times = 0
+
+        def _my_download(*args, **kwargs):
+            nonlocal call_times
+            call_times += 1
+            return _raw_download_file(*args, **kwargs)
+
+        with patch('hfutils.operate.download._raw_download_file', _my_download), \
+                isolated_directory():
             download_file_to_file(
                 'mashu_download.png',
                 repo_id='deepghs/game_character_skins',
                 file_in_repo='fgo/1/常夏的泳装Ver_02.png',
             )
             file_compare(target_file, 'mashu_download.png')
+
+        assert call_times == 1
+
+    def test_download_file_to_file_skip(self):
+        target_file = get_testfile('mashu.png')
+
+        call_times = 0
+
+        def _my_download(*args, **kwargs):
+            nonlocal call_times
+            call_times += 1
+            return _raw_download_file(*args, **kwargs)
+
+        with patch('hfutils.operate.download._raw_download_file', _my_download), \
+                isolated_directory({'mashu_download.png': target_file}):
+            download_file_to_file(
+                'mashu_download.png',
+                repo_id='deepghs/game_character_skins',
+                file_in_repo='fgo/1/常夏的泳装Ver_02.png',
+            )
+            file_compare(target_file, 'mashu_download.png')
+
+        assert call_times == 0
 
     def test_download_archive_as_directory(self):
         target_dir = get_testfile('surtr_ds')
