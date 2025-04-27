@@ -61,7 +61,7 @@ jobs:
           - 'windows-2019'
           - 'macos-13'
         python-version:
-          - '3.8.0'
+          - '3.8'
 
     steps:
       - name: Get system version for Linux
