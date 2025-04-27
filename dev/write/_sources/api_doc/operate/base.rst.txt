@@ -27,6 +27,13 @@ list_all_with_pattern
 
 
 
+list_repo_files_in_repository
+----------------------------------------
+
+.. autofunction:: list_repo_files_in_repository
+
+
+
 list_files_in_repository
 ----------------------------------------
 
