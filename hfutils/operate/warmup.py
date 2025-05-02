@@ -20,7 +20,7 @@ from ..utils import hf_normpath
 
 
 def hf_warmup_file(repo_id: str, filename: str, repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                   hf_token: Optional[str] = None):
+                   hf_token: Optional[str] = None, cache_dir: Optional[str] = None):
     """
     Download and cache a single file from Huggingface repository.
 
@@ -44,13 +44,15 @@ def hf_warmup_file(repo_id: str, filename: str, repo_type: RepoTypeTyping = 'dat
         filename=filename,
         revision=revision,
         token=hf_token,
+        cache_dir=cache_dir,
     )
 
 
 def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '**/*',
                         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                         silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
-                        max_workers: int = 8, max_retries: int = 5, hf_token: Optional[str] = None):
+                        max_workers: int = 8, max_retries: int = 5, hf_token: Optional[str] = None,
+                        cache_dir: Optional[str] = None):
     """
     Download and cache an entire directory from Huggingface repository with concurrent processing.
 
@@ -87,7 +89,7 @@ def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '**
         ignore_patterns=ignore_patterns,
         hf_token=hf_token,
     )
-    progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
+    progress = tqdm(files, disable=silent, desc=f'Downloading {dir_in_repo!r} ...')
 
     def _warmup_one_file(repo_file: RepoFile, rel_file: str):
         """
@@ -110,6 +112,7 @@ def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '**
                         filename=file_in_repo,
                         revision=revision,
                         token=hf_token,
+                        cache_dir=cache_dir,
                     )
                 except requests.exceptions.RequestException as err:
                     if tries < max_retries:
