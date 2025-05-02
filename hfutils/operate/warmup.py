@@ -24,19 +24,24 @@ def hf_warmup_file(repo_id: str, filename: str, repo_type: RepoTypeTyping = 'dat
     """
     Download and cache a single file from Huggingface repository.
 
-    :param repo_id: ID of the huggingface repository
+    :param repo_id: ID of the huggingface repository (e.g., 'username/repository')
     :type repo_id: str
-    :param filename: Name of the file to download
+    :param filename: Name of the file to download including path within repository
     :type filename: str
     :param repo_type: Type of repository ('dataset', 'model', etc.)
     :type repo_type: RepoTypeTyping
     :param revision: Git revision to use, defaults to 'main'
     :type revision: str
-    :param hf_token: Huggingface authentication token
+    :param hf_token: Huggingface authentication token for private repositories
     :type hf_token: Optional[str]
+    :param cache_dir: Directory to cache the downloaded file, if None uses default cache
+    :type cache_dir: Optional[str]
 
     :return: Local path to the downloaded file
     :rtype: str
+
+    Example:
+        >>> local_path = hf_warmup_file('bert-base-uncased', 'config.json', repo_type='model')
     """
     return hf_hub_download(
         repo_id=repo_id,
@@ -56,11 +61,11 @@ def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '**
     """
     Download and cache an entire directory from Huggingface repository with concurrent processing.
 
-    :param repo_id: ID of the huggingface repository
+    :param repo_id: ID of the huggingface repository (e.g., 'username/repository')
     :type repo_id: str
     :param dir_in_repo: Directory path within the repository to download
     :type dir_in_repo: str
-    :param pattern: Glob pattern for filtering files
+    :param pattern: Glob pattern for filtering files (e.g., '*.txt' for text files only)
     :type pattern: str
     :param repo_type: Type of repository ('dataset', 'model', etc.)
     :type repo_type: RepoTypeTyping
@@ -68,16 +73,19 @@ def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '**
     :type revision: str
     :param silent: Whether to hide progress bar
     :type silent: bool
-    :param ignore_patterns: List of patterns to ignore
+    :param ignore_patterns: List of patterns to ignore during download
     :type ignore_patterns: List[str]
     :param max_workers: Maximum number of concurrent download workers
     :type max_workers: int
     :param max_retries: Maximum number of retry attempts for failed downloads
     :type max_retries: int
-    :param hf_token: Huggingface authentication token
+    :param hf_token: Huggingface authentication token for private repositories
     :type hf_token: Optional[str]
+    :param cache_dir: Directory to cache the downloaded files
+    :type cache_dir: Optional[str]
 
     Example:
+        >>> # Downloads all .txt files from the 'data' directory using 4 workers
         >>> hf_warmup_directory('username/repo', 'data', '*.txt', max_workers=4)
     """
     files = list_repo_files_in_repository(
