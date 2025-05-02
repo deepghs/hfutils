@@ -10,6 +10,7 @@ from .rollback import _add_rollback_subcommand
 from .squash import _add_squash_subcommand
 from .tree import _add_tree_subcommand
 from .upload import _add_upload_subcommand
+from .warmup import _add_warmup_subcommand
 from .whoami import _add_whoami_subcommand
 
 _DECORATORS = [
@@ -25,6 +26,7 @@ _DECORATORS = [
     _add_ils_subcommand,
     _add_squash_subcommand,
     _add_duplicate_subcommand,
+    _add_warmup_subcommand,
 ]
 
 cli = hfutilcli
