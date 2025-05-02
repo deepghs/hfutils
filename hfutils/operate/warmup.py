@@ -1,3 +1,10 @@
+"""
+Huggingface File Management Module
+
+This module provides utilities for managing and downloading files from Huggingface repositories.
+It includes functions for warming up (pre-downloading) individual files and entire directories
+from Huggingface repositories, with support for concurrent downloads, retries, and progress tracking.
+"""
 import logging
 from concurrent.futures import ThreadPoolExecutor
 from typing import Optional, List
@@ -14,7 +21,23 @@ from ..utils import hf_normpath
 
 def hf_warmup_file(repo_id: str, filename: str, repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                    hf_token: Optional[str] = None):
-    # the same as hf_hub_download
+    """
+    Download and cache a single file from Huggingface repository.
+
+    :param repo_id: ID of the huggingface repository
+    :type repo_id: str
+    :param filename: Name of the file to download
+    :type filename: str
+    :param repo_type: Type of repository ('dataset', 'model', etc.)
+    :type repo_type: RepoTypeTyping
+    :param revision: Git revision to use, defaults to 'main'
+    :type revision: str
+    :param hf_token: Huggingface authentication token
+    :type hf_token: Optional[str]
+
+    :return: Local path to the downloaded file
+    :rtype: str
+    """
     return hf_hub_download(
         repo_id=repo_id,
         repo_type=repo_type,
@@ -28,6 +51,33 @@ def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '**
                         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                         silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
                         max_workers: int = 8, max_retries: int = 5, hf_token: Optional[str] = None):
+    """
+    Download and cache an entire directory from Huggingface repository with concurrent processing.
+
+    :param repo_id: ID of the huggingface repository
+    :type repo_id: str
+    :param dir_in_repo: Directory path within the repository to download
+    :type dir_in_repo: str
+    :param pattern: Glob pattern for filtering files
+    :type pattern: str
+    :param repo_type: Type of repository ('dataset', 'model', etc.)
+    :type repo_type: RepoTypeTyping
+    :param revision: Git revision to use
+    :type revision: str
+    :param silent: Whether to hide progress bar
+    :type silent: bool
+    :param ignore_patterns: List of patterns to ignore
+    :type ignore_patterns: List[str]
+    :param max_workers: Maximum number of concurrent download workers
+    :type max_workers: int
+    :param max_retries: Maximum number of retry attempts for failed downloads
+    :type max_retries: int
+    :param hf_token: Huggingface authentication token
+    :type hf_token: Optional[str]
+
+    Example:
+        >>> hf_warmup_directory('username/repo', 'data', '*.txt', max_workers=4)
+    """
     files = list_repo_files_in_repository(
         repo_id=repo_id,
         repo_type=repo_type,
@@ -40,6 +90,14 @@ def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '**
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
 
     def _warmup_one_file(repo_file: RepoFile, rel_file: str):
+        """
+        Internal helper function to download a single file with retry mechanism.
+
+        :param repo_file: Repository file object
+        :type repo_file: RepoFile
+        :param rel_file: Relative path of the file
+        :type rel_file: str
+        """
         _ = repo_file
         try:
             file_in_repo = hf_normpath(f'{dir_in_repo}/{rel_file}')
