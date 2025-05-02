@@ -1,17 +1,23 @@
 import json
 import os.path
 import threading
+import warnings
 from collections import defaultdict
-from typing import Optional, Dict, Union, List
+from hashlib import sha256
+from typing import Optional, Dict, Union, List, BinaryIO
 
+import huggingface_hub
 from cachetools import LRUCache
+from hbutils.scale import size_to_bytes_str
+from hbutils.testing import vpip
+from huggingface_hub import constants
 from huggingface_hub.file_download import http_get, hf_hub_url
 from huggingface_hub.utils import build_hf_headers
 from tqdm import tqdm
 
 from .hash import _f_sha256
 from ..operate.base import RepoTypeTyping, get_hf_client
-from ..utils import hf_normpath
+from ..utils import hf_normpath, BinaryProxyIO
 
 
 class ArchiveStandaloneFileIncompleteDownload(Exception):
@@ -558,6 +564,259 @@ def hf_tar_file_size(repo_id: str, archive_in_repo: str, file_in_archive: str,
     )['size']
 
 
+class _WriteSHA256ValidatorProxyIO(BinaryProxyIO):
+    """
+    A proxy IO class that calculates SHA256 hash while writing data to the underlying stream.
+
+    This class extends BinaryProxyIO to add SHA256 hash calculation functionality during write operations.
+    The calculated hash can be accessed after closing the stream.
+
+    :param stream: The binary stream to write to
+    :type stream: BinaryIO
+    :param need_validate: Whether SHA256 hash calculation is needed, defaults to True
+    :type need_validate: bool
+    """
+
+    def __init__(self, stream: BinaryIO, need_validate: bool = True):
+        super().__init__(stream)
+        self._file_sha = sha256() if need_validate else None
+        self._sha256 = None
+
+    @property
+    def sha256(self) -> Optional[str]:
+        """
+        Get the calculated SHA256 hash of the written data.
+
+        :return: The hexadecimal representation of the SHA256 hash, or None if validation was disabled
+        :rtype: Optional[str]
+        """
+        return self._sha256
+
+    def _on_write(self, __s):
+        """
+        Update the SHA256 hash with the written data.
+
+        :param __s: The bytes being written
+        :type __s: bytes
+        """
+        if __s and self._file_sha is not None:
+            self._file_sha.update(__s)
+
+    def _after_close(self):
+        """
+        Finalize the SHA256 hash calculation after the stream is closed.
+        """
+        if self._file_sha is not None:
+            self._sha256 = self._file_sha.hexdigest()
+
+
+def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive: str, info: dict,
+                            file_to_write: BinaryIO, repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                            proxies: Optional[Dict] = None, user_agent: Union[Dict, str, None] = None,
+                            headers: Optional[Dict[str, str]] = None, endpoint: Optional[str] = None,
+                            silent: bool = False, hf_token: Optional[str] = None, no_validate: bool = False):
+    """
+    Extract a specific file from an archive in a Hugging Face repository and write it to a file-like object.
+
+    This function downloads only the necessary portion of an archive file that contains the target file,
+    extracts it, and writes it to the provided file object. It also validates the SHA256 hash of the
+    extracted file if validation is enabled.
+
+    :param repo_id: The repository ID where the archive is located
+    :type repo_id: str
+    :param archive_in_repo: The path to the archive file within the repository
+    :type archive_in_repo: str
+    :param file_in_archive: The path to the target file within the archive
+    :type file_in_archive: str
+    :param info: Dictionary containing metadata about the file (offset, size, and optionally sha256)
+    :type info: dict
+    :param file_to_write: The binary file-like object to write the extracted content to
+    :type file_to_write: BinaryIO
+    :param repo_type: The repository type, defaults to 'dataset'
+    :type repo_type: RepoTypeTyping, optional
+    :param revision: The repository revision, defaults to 'main'
+    :type revision: str, optional
+    :param proxies: Proxy configuration for HTTP requests, defaults to None
+    :type proxies: Optional[Dict], optional
+    :param user_agent: User agent information for HTTP requests, defaults to None
+    :type user_agent: Union[Dict, str, None], optional
+    :param headers: Additional HTTP headers for requests, defaults to None
+    :type headers: Optional[Dict[str, str]], optional
+    :param endpoint: The API endpoint to use, defaults to None
+    :type endpoint: Optional[str], optional
+    :param silent: Whether to suppress download progress display, defaults to False
+    :type silent: bool, optional
+    :param hf_token: Hugging Face authentication token, defaults to None
+    :type hf_token: Optional[str], optional
+    :param no_validate: Whether to skip SHA256 hash validation, defaults to False
+    :type no_validate: bool, optional
+
+    :raises ArchiveStandaloneFileIncompleteDownload: If the downloaded file size doesn't match the expected size
+    :raises ArchiveStandaloneFileHashNotMatch: If the SHA256 hash of the downloaded file doesn't match the expected hash
+    """
+    url_to_download = hf_hub_url(repo_id, archive_in_repo, repo_type=repo_type, revision=revision, endpoint=endpoint)
+    headers = build_hf_headers(
+        token=hf_token,
+        library_name=None,
+        library_version=None,
+        user_agent=user_agent,
+        headers=headers,
+    )
+    start_bytes = info['offset']
+    end_bytes = info['offset'] + info['size'] - 1
+    headers['Range'] = f'bytes={start_bytes}-{end_bytes}'
+
+    proxy = _WriteSHA256ValidatorProxyIO(file_to_write, need_validate=not no_validate)
+    try:
+        with tqdm(disable=True) as empty_tqdm:
+            if info['size'] > 0:
+                http_get(
+                    url_to_download,
+                    proxy,
+                    proxies=proxies,
+                    resume_size=0,
+                    headers=headers,
+                    expected_size=info['size'],
+                    displayed_filename=file_in_archive,
+                    _tqdm_bar=empty_tqdm if silent else None,
+                )
+
+        if proxy.tell() != info['size']:
+            raise ArchiveStandaloneFileIncompleteDownload(
+                f'Expected size is {size_to_bytes_str(info["size"], sigfigs=4, system="si")}, '
+                f'but actually {size_to_bytes_str(proxy.tell(), sigfigs=4, system="si")} downloaded.'
+            )
+
+        proxy.close()
+        if info.get('sha256') and not no_validate:
+            if proxy.sha256 != info['sha256']:
+                raise ArchiveStandaloneFileHashNotMatch(
+                    f'Expected hash is {info["sha256"]!r}, but actually {proxy.sha256!r} found.'
+                )
+
+    finally:
+        proxy.close()
+
+
+def _check_hf_transfer_conflict():
+    if constants.HF_HUB_ENABLE_HF_TRANSFER and vpip('huggingface_hub') < '0.31':
+        warnings.warn(f"You are trying to use huggingface_hub=={huggingface_hub.__version__} "
+                      f"with hf_transfer enabled at the same time, this may cause unexpected error "
+                      f"(see: https://github.com/huggingface/huggingface_hub/issues/2978 for more details). "
+                      f"We strongly recommend you to upgrade huggingface_hub to 0.31.0 or higher version, "
+                      f"or simply disable the hf_transfer.")
+
+
+def hf_tar_file_write_bytes(repo_id: str, archive_in_repo: str, file_in_archive: str, bin_file: BinaryIO,
+                            repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
+                            idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
+                            idx_repo_type: Optional[RepoTypeTyping] = None, idx_revision: Optional[str] = None,
+                            proxies: Optional[Dict] = None, user_agent: Union[Dict, str, None] = None,
+                            headers: Optional[Dict[str, str]] = None, endpoint: Optional[str] = None,
+                            silent: bool = False, hf_token: Optional[str] = None, no_cache: bool = False):
+    """
+    Extract a file from a tar archive in a Hugging Face repository and write it to a binary file-like object.
+
+    This function retrieves a specific file from a tar archive stored in a Hugging Face repository
+    and writes its content to the provided binary file-like object. It uses the index information
+    to efficiently download only the necessary portion of the archive.
+
+    :param repo_id: The identifier of the repository containing the tar archive.
+    :type repo_id: str
+    :param archive_in_repo: The path to the tar archive file within the repository.
+    :type archive_in_repo: str
+    :param file_in_archive: The path to the desired file inside the tar archive.
+    :type file_in_archive: str
+    :param bin_file: The binary file-like object to write the extracted content to.
+    :type bin_file: BinaryIO
+    :param repo_type: The type of the Hugging Face repository.
+    :type repo_type: RepoTypeTyping, optional
+    :param revision: The revision of the repository.
+    :type revision: str, optional
+    :param idx_repo_id: The identifier of the index repository if different from the main repository.
+    :type idx_repo_id: Optional[str], optional
+    :param idx_file_in_repo: The path to the index file in the index repository.
+    :type idx_file_in_repo: Optional[str], optional
+    :param idx_repo_type: The type of the index repository.
+    :type idx_repo_type: Optional[RepoTypeTyping], optional
+    :param idx_revision: The revision of the index repository.
+    :type idx_revision: Optional[str], optional
+    :param proxies: Proxy settings for the HTTP request.
+    :type proxies: Optional[Dict], optional
+    :param user_agent: Custom user agent for the HTTP request.
+    :type user_agent: Union[Dict, str, None], optional
+    :param headers: Additional headers for the HTTP request.
+    :type headers: Optional[Dict[str, str]], optional
+    :param endpoint: Custom Hugging Face API endpoint.
+    :type endpoint: Optional[str], optional
+    :param silent: Whether to suppress progress bar output.
+    :type silent: bool, optional
+    :param hf_token: Hugging Face authentication token.
+    :type hf_token: Optional[str], optional
+    :param no_cache: Whether to bypass the cache and force a new index file reading.
+    :type no_cache: bool, optional
+
+    :raises FileNotFoundError: If the specified file is not found in the tar archive.
+    :raises ArchiveStandaloneFileIncompleteDownload: If the download is incomplete.
+    :raises ArchiveStandaloneFileHashNotMatch: If the downloaded file's hash doesn't match the expected hash.
+
+    Example::
+        >>> import io
+        >>> buffer = io.BytesIO()
+        >>> hf_tar_file_write_bytes(
+        ...     repo_id='deepghs/danbooru_newest',
+        ...     archive_in_repo='images/0000.tar',
+        ...     file_in_archive='7506000.jpg',
+        ...     bin_file=buffer
+        ... )
+        >>> # Now buffer contains the file content
+        >>> image_data = buffer.getvalue()
+
+    .. warning::
+
+        This function will probably get conflict with `hf_transfer`,
+        so please make sure to upgrade to `huggingface_hub>=0.31` or
+        disable the `hf_transfer` when running this function.
+    """
+    _check_hf_transfer_conflict()
+    files = _hf_tar_get_processed_files(
+        repo_id=repo_id,
+        archive_in_repo=archive_in_repo,
+        repo_type=repo_type,
+        revision=revision,
+
+        idx_repo_id=idx_repo_id,
+        idx_file_in_repo=idx_file_in_repo,
+        idx_repo_type=idx_repo_type,
+        idx_revision=idx_revision,
+
+        hf_token=hf_token,
+        no_cache=no_cache,
+    )
+    if _n_path(file_in_archive) not in files:
+        raise FileNotFoundError(f'File {file_in_archive!r} not found '
+                                f'in {repo_type}s/{repo_id}@{revision}/{archive_in_repo}.')
+
+    info = files[_n_path(file_in_archive)]
+    _hf_tar_file_info_write(
+        repo_id=repo_id,
+        repo_type=repo_type,
+        archive_in_repo=archive_in_repo,
+        file_in_archive=file_in_archive,
+        info=info,
+        file_to_write=bin_file,
+        revision=revision,
+
+        proxies=proxies,
+        user_agent=user_agent,
+        endpoint=endpoint,
+        headers=headers,
+        silent=silent,
+        hf_token=hf_token,
+        no_validate=False,
+    )
+
+
 def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: str, local_file: str,
                          repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                          idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
@@ -647,7 +906,14 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
           without having to download the entire archive.
         - It supports authentication via the `hf_token` parameter, which is crucial for accessing private repositories.
         - The function includes checks to avoid unnecessary downloads and to ensure the integrity of the downloaded file.
+
+    .. warning::
+
+        This function will probably get conflict with `hf_transfer`,
+        so please make sure to upgrade to `huggingface_hub>=0.31` or
+        disable the `hf_transfer` when running this function.
     """
+    _check_hf_transfer_conflict()
     files = _hf_tar_get_processed_files(
         repo_id=repo_id,
         archive_in_repo=archive_in_repo,
@@ -668,18 +934,6 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
 
     info = files[_n_path(file_in_archive)]
 
-    url_to_download = hf_hub_url(repo_id, archive_in_repo, repo_type=repo_type, revision=revision, endpoint=endpoint)
-    headers = build_hf_headers(
-        token=hf_token,
-        library_name=None,
-        library_version=None,
-        user_agent=user_agent,
-        headers=headers,
-    )
-    start_bytes = info['offset']
-    end_bytes = info['offset'] + info['size'] - 1
-    headers['Range'] = f'bytes={start_bytes}-{end_bytes}'
-
     if not force_download and os.path.exists(local_file) and \
             os.path.isfile(local_file) and os.path.getsize(local_file) == info['size']:
         _expected_sha256 = info.get('sha256')
@@ -690,18 +944,24 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
     if os.path.dirname(local_file):
         os.makedirs(os.path.dirname(local_file), exist_ok=True)
     try:
-        with open(local_file, 'wb') as f, tqdm(disable=True) as empty_tqdm:
-            if info['size'] > 0:
-                http_get(
-                    url_to_download,
-                    f,
-                    proxies=proxies,
-                    resume_size=0,
-                    headers=headers,
-                    expected_size=info['size'],
-                    displayed_filename=file_in_archive,
-                    _tqdm_bar=empty_tqdm if silent else None,
-                )
+        with open(local_file, 'wb') as f:
+            _hf_tar_file_info_write(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                archive_in_repo=archive_in_repo,
+                file_in_archive=file_in_archive,
+                info=info,
+                file_to_write=f,
+                revision=revision,
+
+                proxies=proxies,
+                user_agent=user_agent,
+                endpoint=endpoint,
+                headers=headers,
+                silent=silent,
+                hf_token=hf_token,
+                no_validate=True,
+            )
 
         if os.path.getsize(local_file) != info['size']:
             raise ArchiveStandaloneFileIncompleteDownload(

@@ -42,6 +42,13 @@ tar_file_info
 
 
 
+tar_file_write_bytes
+----------------------------------------------
+
+.. autofunction:: tar_file_write_bytes
+
+
+
 tar_file_download
 ----------------------------------------------
 

@@ -12,6 +12,7 @@ hfutils.utils
     archive
     arrange
     binary
+    binary_proxy
     data
     ext
     heap
