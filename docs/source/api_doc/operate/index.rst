@@ -14,4 +14,5 @@ hfutils.operate
     duplicate
     upload
     validate
+    warmup
 
