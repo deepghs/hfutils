@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.index.fetch &mdash; hfutils 0.10.0 documentation</title>
+  <title>hfutils.index.fetch &mdash; hfutils 0.11.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=82662543"></script>
+      <script src="../../_static/documentation_options.js?v=f3b36f1a"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -88,6 +88,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#hf-tar-file-info">hf_tar_file_info</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#hfutils.index.fetch.hf_tar_file_info"><code class="docutils literal notranslate"><span class="pre">hf_tar_file_info()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hf-tar-file-write-bytes">hf_tar_file_write_bytes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.index.fetch.hf_tar_file_write_bytes"><code class="docutils literal notranslate"><span class="pre">hf_tar_file_write_bytes()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#hf-tar-file-download">hf_tar_file_download</a><ul>
@@ -480,6 +484,69 @@ get the file information by explicitly assigning the <code class="docutils liter
 </dd></dl>
 
 </section>
+<section id="hf-tar-file-write-bytes">
+<h2>hf_tar_file_write_bytes<a class="headerlink" href="#hf-tar-file-write-bytes" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.index.fetch.hf_tar_file_write_bytes">
+<span class="sig-prename descclassname"><span class="pre">hfutils.index.fetch.</span></span><span class="sig-name descname"><span class="pre">hf_tar_file_write_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive_in_repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_in_archive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BinaryIO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx_repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx_file_in_repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx_repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx_revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/index/fetch.html#hf_tar_file_write_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.index.fetch.hf_tar_file_write_bytes" title="Link to this definition"></a></dt>
+<dd><p>Extract a file from a tar archive in a Hugging Face repository and write it to a binary file-like object.</p>
+<p>This function retrieves a specific file from a tar archive stored in a Hugging Face repository
+and writes its content to the provided binary file-like object. It uses the index information
+to efficiently download only the necessary portion of the archive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository containing the tar archive.</p></li>
+<li><p><strong>archive_in_repo</strong> (<em>str</em>) – The path to the tar archive file within the repository.</p></li>
+<li><p><strong>file_in_archive</strong> (<em>str</em>) – The path to the desired file inside the tar archive.</p></li>
+<li><p><strong>bin_file</strong> (<em>BinaryIO</em>) – The binary file-like object to write the extracted content to.</p></li>
+<li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em><em>, </em><em>optional</em>) – The type of the Hugging Face repository.</p></li>
+<li><p><strong>revision</strong> (<em>str</em><em>, </em><em>optional</em>) – The revision of the repository.</p></li>
+<li><p><strong>idx_repo_id</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The identifier of the index repository if different from the main repository.</p></li>
+<li><p><strong>idx_file_in_repo</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The path to the index file in the index repository.</p></li>
+<li><p><strong>idx_repo_type</strong> (<em>Optional</em><em>[</em><em>RepoTypeTyping</em><em>]</em><em>, </em><em>optional</em>) – The type of the index repository.</p></li>
+<li><p><strong>idx_revision</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The revision of the index repository.</p></li>
+<li><p><strong>proxies</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em><em>, </em><em>optional</em>) – Proxy settings for the HTTP request.</p></li>
+<li><p><strong>user_agent</strong> (<em>Union</em><em>[</em><em>Dict</em><em>, </em><em>str</em><em>, </em><em>None</em><em>]</em><em>, </em><em>optional</em>) – Custom user agent for the HTTP request.</p></li>
+<li><p><strong>headers</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Additional headers for the HTTP request.</p></li>
+<li><p><strong>endpoint</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Custom Hugging Face API endpoint.</p></li>
+<li><p><strong>silent</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to suppress progress bar output.</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Hugging Face authentication token.</p></li>
+<li><p><strong>no_cache</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to bypass the cache and force a new index file reading.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the specified file is not found in the tar archive.</p></li>
+<li><p><a class="reference internal" href="#hfutils.index.fetch.ArchiveStandaloneFileIncompleteDownload" title="hfutils.index.fetch.ArchiveStandaloneFileIncompleteDownload"><strong>ArchiveStandaloneFileIncompleteDownload</strong></a> – If the download is incomplete.</p></li>
+<li><p><a class="reference internal" href="#hfutils.index.fetch.ArchiveStandaloneFileHashNotMatch" title="hfutils.index.fetch.ArchiveStandaloneFileHashNotMatch"><strong>ArchiveStandaloneFileHashNotMatch</strong></a> – If the downloaded file’s hash doesn’t match the expected hash.</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hf_tar_file_write_bytes</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/danbooru_newest&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">archive_in_repo</span><span class="o">=</span><span class="s1">&#39;images/0000.tar&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">file_in_archive</span><span class="o">=</span><span class="s1">&#39;7506000.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">bin_file</span><span class="o">=</span><span class="n">buffer</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Now buffer contains the file content</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_data</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function will probably get conflict with <cite>hf_transfer</cite>,
+so please make sure to upgrade to <cite>huggingface_hub&gt;=0.31</cite> or
+disable the <cite>hf_transfer</cite> when running this function.</p>
+</div>
+</dd></dl>
+
+</section>
 <section id="hf-tar-file-download">
 <h2>hf_tar_file_download<a class="headerlink" href="#hf-tar-file-download" title="Link to this heading"></a></h2>
 <dl class="py function">
@@ -567,6 +634,12 @@ without having to download the entire archive.</p></li>
 <li><p>It supports authentication via the <cite>hf_token</cite> parameter, which is crucial for accessing private repositories.</p></li>
 <li><p>The function includes checks to avoid unnecessary downloads and to ensure the integrity of the downloaded file.</p></li>
 </ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function will probably get conflict with <cite>hf_transfer</cite>,
+so please make sure to upgrade to <cite>huggingface_hub&gt;=0.31</cite> or
+disable the <cite>hf_transfer</cite> when running this function.</p>
 </div>
 </dd></dl>
 
@@ -682,10 +755,9 @@ without having to download the entire archive.</p></li>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/write/api_doc/index/fetch.html">dev/write</a></dd>
+                        <dd><a href="fetch.html">main</a></dd>
                         <dd><a href="../../../HEAD/api_doc/index/fetch.html">HEAD</a></dd>
                         <dd><a href="../../../dev/rate/api_doc/index/fetch.html">dev/rate</a></dd>
-                        <dd><a href="fetch.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
