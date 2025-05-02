@@ -93,12 +93,16 @@
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hashlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">sha256</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">BinaryIO</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">huggingface_hub</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cachetools</span><span class="w"> </span><span class="kn">import</span> <span class="n">LRUCache</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.scale</span><span class="w"> </span><span class="kn">import</span> <span class="n">size_to_bytes_str</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">vpip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub.file_download</span><span class="w"> </span><span class="kn">import</span> <span class="n">http_get</span><span class="p">,</span> <span class="n">hf_hub_url</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_hf_headers</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
@@ -807,6 +811,15 @@
         <span class="n">proxy</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_hf_transfer_conflict</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">constants</span><span class="o">.</span><span class="n">HF_HUB_ENABLE_HF_TRANSFER</span> <span class="ow">and</span> <span class="n">vpip</span><span class="p">(</span><span class="s1">&#39;huggingface_hub&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="s1">&#39;0.31&#39;</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You are trying to use huggingface_hub==</span><span class="si">{</span><span class="n">huggingface_hub</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> &quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;with hf_transfer enabled at the same time, this may cause unexpected error &quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;(see: https://github.com/huggingface/huggingface_hub/issues/2978 for more details). &quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;We strongly recommend you to upgrade huggingface_hub to 0.31.0 or higher version, &quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;or simply disable the hf_transfer.&quot;</span><span class="p">)</span>
+
+
 <div class="viewcode-block" id="hf_tar_file_write_bytes">
 <a class="viewcode-back" href="../../../api_doc/index/fetch.html#hfutils.index.fetch.hf_tar_file_write_bytes">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">hf_tar_file_write_bytes</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">archive_in_repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_in_archive</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bin_file</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span>
@@ -873,7 +886,14 @@
 <span class="sd">        ... )</span>
 <span class="sd">        &gt;&gt;&gt; # Now buffer contains the file content</span>
 <span class="sd">        &gt;&gt;&gt; image_data = buffer.getvalue()</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        This function will probably get conflict with `hf_transfer`,</span>
+<span class="sd">        so please make sure to upgrade to `huggingface_hub&gt;=0.31` or</span>
+<span class="sd">        disable the `hf_transfer` when running this function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_check_hf_transfer_conflict</span><span class="p">()</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">_hf_tar_get_processed_files</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
         <span class="n">archive_in_repo</span><span class="o">=</span><span class="n">archive_in_repo</span><span class="p">,</span>
@@ -1004,7 +1024,14 @@
 <span class="sd">          without having to download the entire archive.</span>
 <span class="sd">        - It supports authentication via the `hf_token` parameter, which is crucial for accessing private repositories.</span>
 <span class="sd">        - The function includes checks to avoid unnecessary downloads and to ensure the integrity of the downloaded file.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        This function will probably get conflict with `hf_transfer`,</span>
+<span class="sd">        so please make sure to upgrade to `huggingface_hub&gt;=0.31` or</span>
+<span class="sd">        disable the `hf_transfer` when running this function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_check_hf_transfer_conflict</span><span class="p">()</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">_hf_tar_get_processed_files</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
         <span class="n">archive_in_repo</span><span class="o">=</span><span class="n">archive_in_repo</span><span class="p">,</span>
@@ -1179,10 +1206,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                        <dd><a href="fetch.html">dev/write</a></dd>
                         <dd><a href="../../../../../HEAD/index.html">HEAD</a></dd>
                         <dd><a href="../../../../rate/index.html">dev/rate</a></dd>
-                        <dd><a href="fetch.html">dev/write</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

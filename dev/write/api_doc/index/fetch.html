@@ -538,6 +538,12 @@ to efficiently download only the necessary portion of the archive.</p>
 </div>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function will probably get conflict with <cite>hf_transfer</cite>,
+so please make sure to upgrade to <cite>huggingface_hub&gt;=0.31</cite> or
+disable the <cite>hf_transfer</cite> when running this function.</p>
+</div>
 </dd></dl>
 
 </section>
@@ -628,6 +634,12 @@ without having to download the entire archive.</p></li>
 <li><p>It supports authentication via the <cite>hf_token</cite> parameter, which is crucial for accessing private repositories.</p></li>
 <li><p>The function includes checks to avoid unnecessary downloads and to ensure the integrity of the downloaded file.</p></li>
 </ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function will probably get conflict with <cite>hf_transfer</cite>,
+so please make sure to upgrade to <cite>huggingface_hub&gt;=0.31</cite> or
+disable the <cite>hf_transfer</cite> when running this function.</p>
 </div>
 </dd></dl>
 
@@ -743,10 +755,10 @@ without having to download the entire archive.</p></li>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../main/api_doc/index/fetch.html">main</a></dd>
+                        <dd><a href="fetch.html">dev/write</a></dd>
                         <dd><a href="../../../../HEAD/api_doc/index/fetch.html">HEAD</a></dd>
                         <dd><a href="../../../rate/api_doc/index/fetch.html">dev/rate</a></dd>
-                        <dd><a href="fetch.html">dev/write</a></dd>
+                        <dd><a href="../../../../main/api_doc/index/fetch.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
