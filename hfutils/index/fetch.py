@@ -1,12 +1,16 @@
 import json
 import os.path
 import threading
+import warnings
 from collections import defaultdict
 from hashlib import sha256
 from typing import Optional, Dict, Union, List, BinaryIO
 
+import huggingface_hub
 from cachetools import LRUCache
 from hbutils.scale import size_to_bytes_str
+from hbutils.testing import vpip
+from huggingface_hub import constants
 from huggingface_hub.file_download import http_get, hf_hub_url
 from huggingface_hub.utils import build_hf_headers
 from tqdm import tqdm
@@ -694,6 +698,15 @@ def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive:
         proxy.close()
 
 
+def _check_hf_transfer_conflict():
+    if constants.HF_HUB_ENABLE_HF_TRANSFER and vpip('huggingface_hub') < '0.31':
+        warnings.warn(f"You are trying to use huggingface_hub=={huggingface_hub.__version__} "
+                      f"with hf_transfer enabled at the same time, this may cause unexpected error "
+                      f"(see: https://github.com/huggingface/huggingface_hub/issues/2978 for more details). "
+                      f"We strongly recommend you to upgrade huggingface_hub to 0.31.0 or higher version, "
+                      f"or simply disable the hf_transfer.")
+
+
 def hf_tar_file_write_bytes(repo_id: str, archive_in_repo: str, file_in_archive: str, bin_file: BinaryIO,
                             repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
                             idx_repo_id: Optional[str] = None, idx_file_in_repo: Optional[str] = None,
@@ -758,7 +771,14 @@ def hf_tar_file_write_bytes(repo_id: str, archive_in_repo: str, file_in_archive:
         ... )
         >>> # Now buffer contains the file content
         >>> image_data = buffer.getvalue()
+
+    .. warning::
+
+        This function will probably get conflict with `hf_transfer`,
+        so please make sure to upgrade to `huggingface_hub>=0.31` or
+        disable the `hf_transfer` when running this function.
     """
+    _check_hf_transfer_conflict()
     files = _hf_tar_get_processed_files(
         repo_id=repo_id,
         archive_in_repo=archive_in_repo,
@@ -886,7 +906,14 @@ def hf_tar_file_download(repo_id: str, archive_in_repo: str, file_in_archive: st
           without having to download the entire archive.
         - It supports authentication via the `hf_token` parameter, which is crucial for accessing private repositories.
         - The function includes checks to avoid unnecessary downloads and to ensure the integrity of the downloaded file.
+
+    .. warning::
+
+        This function will probably get conflict with `hf_transfer`,
+        so please make sure to upgrade to `huggingface_hub>=0.31` or
+        disable the `hf_transfer` when running this function.
     """
+    _check_hf_transfer_conflict()
     files = _hf_tar_get_processed_files(
         repo_id=repo_id,
         archive_in_repo=archive_in_repo,
