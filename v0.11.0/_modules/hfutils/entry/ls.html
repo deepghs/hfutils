@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hfutils.entry.ls &mdash; hfutils 0.11.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=f3b36f1a"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            hfutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/archive/index.html">hfutils.archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/cache/index.html">hfutils.cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">hfutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/entry/index.html">hfutils.entry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/index/index.html">hfutils.index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">hfutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/repository/index.html">hfutils.repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">hfutils.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">hfutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">hfutils.entry.ls</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for hfutils.entry.ls</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tzlocal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">configure_http_backend</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub.hf_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoFolder</span><span class="p">,</span> <span class="n">RepoFile</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">CONTEXT_SETTINGS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..operate.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">REPO_TYPES</span><span class="p">,</span> <span class="n">get_hf_client</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_requests_session</span><span class="p">,</span> <span class="n">FileItemType</span><span class="p">,</span> <span class="n">get_file_type</span>
+
+
+<div class="viewcode-block" id="ListItem">
+<a class="viewcode-back" href="../../../api_doc/entry/ls.html#hfutils.entry.ls.ListItem">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ListItem</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing a list item.</span>
+
+<span class="sd">    :param item: The item object.</span>
+<span class="sd">    :type item: Union[RepoFolder, RepoFile]</span>
+<span class="sd">    :param base_dir: The base directory.</span>
+<span class="sd">    :type base_dir: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">RepoFolder</span><span class="p">,</span> <span class="n">RepoFile</span><span class="p">],</span> <span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_dir</span> <span class="o">=</span> <span class="n">base_dir</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">RepoFolder</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">get_file_type</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_ls_subcommand</span><span class="p">(</span><span class="n">cli</span><span class="p">:</span> <span class="n">click</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">click</span><span class="o">.</span><span class="n">Group</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add the &#39;ls&#39; subcommand to the CLI.</span>
+
+<span class="sd">    :param cli: The Click CLI application.</span>
+<span class="sd">    :type cli: click.Group</span>
+<span class="sd">    :return: The modified Click CLI application.</span>
+<span class="sd">    :rtype: click.Group</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@cli</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;ls&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;List files from HuggingFace repository.</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+                            <span class="s1">&#39;Set environment $HF_TOKEN to use your own access token.&#39;</span><span class="p">,</span>
+                 <span class="n">context_settings</span><span class="o">=</span><span class="n">CONTEXT_SETTINGS</span><span class="p">)</span>
+    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="s1">&#39;--repository&#39;</span><span class="p">,</span> <span class="s1">&#39;repo_id&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Repository to download from.&#39;</span><span class="p">)</span>
+    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-t&#39;</span><span class="p">,</span> <span class="s1">&#39;--type&#39;</span><span class="p">,</span> <span class="s1">&#39;repo_type&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Choice</span><span class="p">(</span><span class="n">REPO_TYPES</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;dataset&#39;</span><span class="p">,</span>
+                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Type of the HuggingFace repository.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="s1">&#39;--directory&#39;</span><span class="p">,</span> <span class="s1">&#39;dir_in_repo&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Directory in repository to download the full directory tree.&#39;</span><span class="p">)</span>
+    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-R&#39;</span><span class="p">,</span> <span class="s1">&#39;--revision&#39;</span><span class="p">,</span> <span class="s1">&#39;revision&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span>
+                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Revision of repository.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;--all&#39;</span><span class="p">,</span> <span class="s1">&#39;show_all&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Show all files, including hidden files.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;-l&#39;</span><span class="p">,</span> <span class="s1">&#39;--list&#39;</span><span class="p">,</span> <span class="s1">&#39;show_detailed&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                  <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Show detailed file information.&#39;</span><span class="p">,</span> <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ls</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">show_all</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">show_detailed</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List files from a HuggingFace repository.</span>
+
+<span class="sd">        :param repo_id: The identifier of the repository.</span>
+<span class="sd">        :type repo_id: str</span>
+<span class="sd">        :param repo_type: The type of the HuggingFace repository.</span>
+<span class="sd">        :type repo_type: str</span>
+<span class="sd">        :param dir_in_repo: The directory in the repository to list files from.</span>
+<span class="sd">        :type dir_in_repo: str</span>
+<span class="sd">        :param revision: The revision of the repository.</span>
+<span class="sd">        :type revision: str</span>
+<span class="sd">        :param show_all: Flag to indicate whether to show all files, including hidden files.</span>
+<span class="sd">        :type show_all: bool</span>
+<span class="sd">        :param show_detailed: Flag to indicate whether to show detailed file information.</span>
+<span class="sd">        :type show_detailed: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">configure_http_backend</span><span class="p">(</span><span class="n">get_requests_session</span><span class="p">)</span>
+
+        <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">()</span>
+        <span class="n">items</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ListItem</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">hf_client</span><span class="o">.</span><span class="n">list_repo_tree</span><span class="p">(</span>
+                <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+                <span class="n">repo_type</span><span class="o">=</span><span class="n">repo_type</span><span class="p">,</span>
+                <span class="n">path_in_repo</span><span class="o">=</span><span class="n">dir_in_repo</span><span class="p">,</span>
+                <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
+                <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">expand</span><span class="o">=</span><span class="n">show_detailed</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">relpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">show_all</span> <span class="ow">and</span> <span class="n">relpath</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="n">item</span> <span class="o">=</span> <span class="n">ListItem</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">)</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">show_detailed</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">click</span><span class="o">.</span><span class="n">style</span><span class="p">(</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">base_dir</span><span class="p">),</span>
+                    <span class="n">fg</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">render_color</span>
+                <span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">show_detailed</span><span class="p">:</span>
+            <span class="n">max_size_length</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">max_commit_info_length</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span><span class="p">:</span>
+                    <span class="n">size_text</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">size_text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="n">max_size_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_size_length</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">size_text</span><span class="p">))</span>
+
+                <span class="n">commit_text</span> <span class="o">=</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">last_commit</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="n">keepends</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">max_commit_info_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_commit_info_length</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">commit_text</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;d&#39;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span> <span class="k">else</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;L&#39;</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">lfs</span> <span class="k">else</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+                <span class="n">commit_text</span> <span class="o">=</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">last_commit</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="n">keepends</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_commit_info_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">commit_text</span><span class="p">))</span> <span class="o">+</span>
+                    <span class="n">click</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">commit_text</span><span class="p">,</span> <span class="n">underline</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                    <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">FileItemType</span><span class="o">.</span><span class="n">FOLDER</span><span class="p">:</span>
+                    <span class="n">size_text</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">size_text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="n">size_text</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_size_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">size_text</span><span class="p">))</span> <span class="o">+</span> <span class="n">size_text</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">size_text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">last_commit</span><span class="o">.</span><span class="n">oid</span><span class="p">[:</span><span class="mi">8</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">commit_time</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">last_commit</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">tzlocal</span><span class="o">.</span><span class="n">get_localzone</span><span class="p">())</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">commit_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M %Z&#39;</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">click</span><span class="o">.</span><span class="n">style</span><span class="p">(</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">base_dir</span><span class="p">),</span>
+                    <span class="n">fg</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">render_color</span>
+                <span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">cli</span>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.11.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.0.1/index.html">v0.0.1</a></dd>
+                        <dd><a href="../../../../v0.0.2/index.html">v0.0.2</a></dd>
+                        <dd><a href="../../../../v0.0.3/index.html">v0.0.3</a></dd>
+                        <dd><a href="../../../../v0.0.4/index.html">v0.0.4</a></dd>
+                        <dd><a href="../../../../v0.0.5/index.html">v0.0.5</a></dd>
+                        <dd><a href="../../../../v0.0.6/index.html">v0.0.6</a></dd>
+                        <dd><a href="../../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../v0.1.2/index.html">v0.1.2</a></dd>
+                        <dd><a href="../../../../v0.10.0/index.html">v0.10.0</a></dd>
+                        <dd><a href="ls.html">v0.11.0</a></dd>
+                        <dd><a href="../../../../v0.2.0/index.html">v0.2.0</a></dd>
+                        <dd><a href="../../../../v0.2.1/index.html">v0.2.1</a></dd>
+                        <dd><a href="../../../../v0.2.10/index.html">v0.2.10</a></dd>
+                        <dd><a href="../../../../v0.2.11/index.html">v0.2.11</a></dd>
+                        <dd><a href="../../../../v0.2.2/index.html">v0.2.2</a></dd>
+                        <dd><a href="../../../../v0.2.3/index.html">v0.2.3</a></dd>
+                        <dd><a href="../../../../v0.2.4/index.html">v0.2.4</a></dd>
+                        <dd><a href="../../../../v0.2.5/index.html">v0.2.5</a></dd>
+                        <dd><a href="../../../../v0.2.6/index.html">v0.2.6</a></dd>
+                        <dd><a href="../../../../v0.2.7/index.html">v0.2.7</a></dd>
+                        <dd><a href="../../../../v0.2.8/index.html">v0.2.8</a></dd>
+                        <dd><a href="../../../../v0.2.9/index.html">v0.2.9</a></dd>
+                        <dd><a href="../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../v0.3.3/index.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../v0.3.4/index.html">v0.3.4</a></dd>
+                        <dd><a href="../../../../v0.3.5/index.html">v0.3.5</a></dd>
+                        <dd><a href="../../../../v0.3.6/index.html">v0.3.6</a></dd>
+                        <dd><a href="../../../../v0.3.7/index.html">v0.3.7</a></dd>
+                        <dd><a href="../../../../v0.3.8/index.html">v0.3.8</a></dd>
+                        <dd><a href="../../../../v0.3.9/index.html">v0.3.9</a></dd>
+                        <dd><a href="../../../../v0.4.0/index.html">v0.4.0</a></dd>
+                        <dd><a href="../../../../v0.4.1/index.html">v0.4.1</a></dd>
+                        <dd><a href="../../../../v0.4.2/index.html">v0.4.2</a></dd>
+                        <dd><a href="../../../../v0.4.3/index.html">v0.4.3</a></dd>
+                        <dd><a href="../../../../v0.4.4/index.html">v0.4.4</a></dd>
+                        <dd><a href="../../../../v0.5.0/index.html">v0.5.0</a></dd>
+                        <dd><a href="../../../../v0.5.1/index.html">v0.5.1</a></dd>
+                        <dd><a href="../../../../v0.6.0/index.html">v0.6.0</a></dd>
+                        <dd><a href="../../../../v0.7.0/index.html">v0.7.0</a></dd>
+                        <dd><a href="../../../../v0.7.1/index.html">v0.7.1</a></dd>
+                        <dd><a href="../../../../v0.8.0/index.html">v0.8.0</a></dd>
+                        <dd><a href="../../../../v0.8.1/index.html">v0.8.1</a></dd>
+                        <dd><a href="../../../../v0.9.0/index.html">v0.9.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
