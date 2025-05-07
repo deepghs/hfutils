@@ -1,5 +1,5 @@
 hbutils>=0.10.1
-huggingface_hub>=0.29
+huggingface_hub>=0.31.0
 tqdm
 requests
 click>=7
