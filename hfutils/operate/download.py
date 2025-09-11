@@ -26,12 +26,12 @@ import logging
 import os.path
 import shutil
 from concurrent.futures import ThreadPoolExecutor
-from typing import List, Optional
+from typing import Optional
 
 import requests.exceptions
 from huggingface_hub.hf_api import RepoFile
 
-from .base import RepoTypeTyping, _IGNORE_PATTERN_UNSET, get_hf_client, \
+from .base import RepoTypeTyping, get_hf_client, \
     list_repo_files_in_repository
 from .validate import is_local_file_ready, _raw_check_local_file
 from ..archive import archive_unpack
@@ -151,9 +151,8 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
 
 
 def download_directory_as_directory(
-        local_directory: str, repo_id: str, dir_in_repo: str = '.', pattern: str = '**/*',
-        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-        silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+        local_directory: str, repo_id: str, dir_in_repo: str = '.', pattern: str = '*',
+        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main', silent: bool = False,
         max_workers: int = 8, max_retries: int = 5,
         soft_mode_when_check: bool = False, hf_token: Optional[str] = None
 ):
@@ -174,8 +173,6 @@ def download_directory_as_directory(
     :type revision: str
     :param silent: If True, suppress progress bar output.
     :type silent: bool
-    :param ignore_patterns: List of file patterns to ignore.
-    :type ignore_patterns: List[str]
     :param max_workers: Max workers when downloading. Default is ``8``.
     :type max_workers: int
     :param max_retries: Max retry times when downloading. Default is ``5``.
@@ -191,7 +188,6 @@ def download_directory_as_directory(
         subdir=dir_in_repo,
         pattern=pattern,
         revision=revision,
-        ignore_patterns=ignore_patterns,
         hf_token=hf_token,
     )
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
@@ -233,6 +229,7 @@ def download_directory_as_directory(
                 progress.update()
             except Exception as err:
                 logging.exception(f'Unexpected error when downloading {rel_file!r} - {err!r}')
+                raise
 
     tp = ThreadPoolExecutor(max_workers=max_workers)
     for item, file in files:

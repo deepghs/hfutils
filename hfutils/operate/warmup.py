@@ -7,7 +7,7 @@ from Huggingface repositories, with support for concurrent downloads, retries, a
 """
 import logging
 from concurrent.futures import ThreadPoolExecutor
-from typing import Optional, List
+from typing import Optional
 
 import requests
 from huggingface_hub import hf_hub_download
@@ -15,7 +15,6 @@ from huggingface_hub.hf_api import RepoFile
 from tqdm import tqdm
 
 from .base import RepoTypeTyping, list_repo_files_in_repository
-from .download import _IGNORE_PATTERN_UNSET
 from ..utils import hf_normpath
 
 
@@ -53,9 +52,8 @@ def hf_warmup_file(repo_id: str, filename: str, repo_type: RepoTypeTyping = 'dat
     )
 
 
-def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '**/*',
-                        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-                        silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '*',
+                        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main', silent: bool = False,
                         max_workers: int = 8, max_retries: int = 5, hf_token: Optional[str] = None,
                         cache_dir: Optional[str] = None):
     """
@@ -73,8 +71,6 @@ def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '**
     :type revision: str
     :param silent: Whether to hide progress bar
     :type silent: bool
-    :param ignore_patterns: List of patterns to ignore during download
-    :type ignore_patterns: List[str]
     :param max_workers: Maximum number of concurrent download workers
     :type max_workers: int
     :param max_retries: Maximum number of retry attempts for failed downloads
@@ -94,7 +90,6 @@ def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '**
         subdir=dir_in_repo,
         pattern=pattern,
         revision=revision,
-        ignore_patterns=ignore_patterns,
         hf_token=hf_token,
     )
     progress = tqdm(files, disable=silent, desc=f'Downloading {dir_in_repo!r} ...')

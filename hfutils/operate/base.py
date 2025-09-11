@@ -14,18 +14,15 @@ These utilities are designed to simplify working with Hugging Face repositories,
 when dealing with datasets, models, and spaces.
 """
 
-import fnmatch
-import logging
 import os
-import re
 from functools import lru_cache
-from typing import Literal, List, Optional, Union, Iterator, Tuple
+from typing import Literal, List, Optional, Union, Tuple
 
+import wcmatch.fnmatch as fnmatch
 from huggingface_hub import HfApi, HfFileSystem
 from huggingface_hub.hf_api import RepoFolder, RepoFile
-from huggingface_hub.utils import HfHubHTTPError
 
-from ..utils import parse_hf_fs_path, hf_fs_path, tqdm, hf_normpath
+from ..utils import hf_normpath
 
 RepoTypeTyping = Literal['dataset', 'model', 'space']
 REPO_TYPES = ['dataset', 'model', 'space']
@@ -94,45 +91,61 @@ def get_hf_fs(hf_token: Optional[str] = None) -> HfFileSystem:
     return HfFileSystem(token=hf_token or _get_hf_token(), use_listings_cache=False)
 
 
-_DEFAULT_IGNORE_PATTERNS = ['.git*']
-_IGNORE_PATTERN_UNSET = object()
+def _fn_path_pattern_norm(pattern: Union[List[str], str]) -> Union[List[str], str]:
+    if isinstance(pattern, (list, tuple)):
+        return [hf_normpath(p) for p in pattern]
+    else:
+        return hf_normpath(pattern)
 
 
-def _is_file_ignored(file_segments: List[str], ignore_patterns: List[str]) -> bool:
-    """
-    Check if a file should be ignored based on the given ignore patterns.
+def _fn_path_pattern_subdir_single(pattern: str, subdir: str) -> str:
+    if pattern.startswith('!'):
+        pattern = f'!{subdir}/{pattern[1:]}'
+    else:
+        pattern = f'{subdir}/{pattern}'
+    pattern = hf_normpath(pattern)
+    return pattern
 
-    This function checks each segment of the file path against the provided ignore patterns.
-    If any segment matches any of the patterns, the file is considered ignored.
 
-    :param file_segments: The segments of the file path.
-    :type file_segments: List[str]
-    :param ignore_patterns: List of file patterns to ignore.
-    :type ignore_patterns: List[str]
+def _fn_path_pattern_subdir(pattern: Union[List[str], str], subdir: str) -> Union[List[str], str]:
+    if isinstance(pattern, (list, tuple)):
+        return [_fn_path_pattern_subdir_single(p, subdir) for p in pattern]
+    else:
+        return _fn_path_pattern_subdir_single(pattern, subdir)
 
-    :return: True if the file should be ignored, False otherwise.
-    :rtype: bool
 
-    :example:
+def hf_repo_glob(
+        repo_id: str, pattern: Union[List[str], str] = '*', repo_type: RepoTypeTyping = 'dataset',
+        revision: str = 'main', include_files: bool = True, include_directories: bool = False,
+        hf_token: Optional[str] = None,
+) -> List[Union[RepoFile, RepoFolder]]:
+    hf_client = get_hf_client(hf_token=hf_token)
+    pattern = _fn_path_pattern_norm(pattern)
 
-        >>> _is_file_ignored(['folder', 'file.txt'], ['.git*', '*.log'])
-        False
-        >>> _is_file_ignored(['folder', '.gitignore'], ['.git*', '*.log'])
-        True
-    """
-    for segment in file_segments:
-        for pattern in ignore_patterns:
-            if fnmatch.fnmatch(segment, pattern):
-                return True
+    items = []
+    for item in hf_client.list_repo_tree(
+            repo_id=repo_id,
+            repo_type=repo_type,
+            revision=revision,
+            recursive=True,
+    ):
+        if (
+                (include_files and isinstance(item, RepoFile)) or
+                (include_directories and isinstance(item, RepoFolder))
+        ) and fnmatch.fnmatch(
+            filename=hf_normpath(item.rfilename),
+            patterns=pattern,
+            flags=(fnmatch.CASE | fnmatch.NEGATE | fnmatch.NEGATEALL | fnmatch.DOTMATCH),
+        ):
+            items.append(item)
 
-    return False
+    return items
 
 
 def list_all_with_pattern(
-        repo_id: str, pattern: str = '**/*', repo_type: RepoTypeTyping = 'dataset',
-        revision: str = 'main', startup_batch: int = 500, batch_factor: float = 0.8,
-        hf_token: Optional[str] = None, silent: bool = False
-) -> Iterator[Union[RepoFile, RepoFolder]]:
+        repo_id: str, pattern: Union[List[str], str] = '*', repo_type: RepoTypeTyping = 'dataset',
+        revision: str = 'main', hf_token: Optional[str] = None
+) -> List[Union[RepoFile, RepoFolder]]:
     """
     List all files and folders in a Hugging Face repository matching a given pattern.
 
@@ -141,23 +154,17 @@ def list_all_with_pattern(
 
     :param repo_id: The identifier of the repository.
     :type repo_id: str
-    :param pattern: Wildcard pattern to match files and folders. Default is `**/*` (all files and folders).
+    :param pattern: Wildcard pattern to match files and folders. Default is `*` (all files and folders).
     :type pattern: str
     :param repo_type: The type of the repository ('dataset', 'model', 'space'). Default is 'dataset'.
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is 'main'.
     :type revision: str
-    :param startup_batch: Initial batch size for retrieving path information. Default is 500.
-    :type startup_batch: int
-    :param batch_factor: Factor to reduce batch size if a request fails. Default is 0.8.
-    :type batch_factor: float
     :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
     :type hf_token: Optional[str]
-    :param silent: If True, suppresses progress bar. Default is False.
-    :type silent: bool
 
     :return: An iterator of RepoFile and RepoFolder objects matching the pattern.
-    :rtype: Iterator[Union[RepoFile, RepoFolder]]
+    :rtype: List[Union[RepoFile, RepoFolder]]
 
     :raises HfHubHTTPError: If there's an error in the API request that's not related to batch size.
 
@@ -166,49 +173,25 @@ def list_all_with_pattern(
         >>> for item in list_all_with_pattern("username/repo", pattern="*.txt"):
         ...     print(item.path)
     """
-    hf_fs = get_hf_fs(hf_token=hf_token)
-    hf_client = get_hf_client(hf_token=hf_token)
+    return hf_repo_glob(
+        repo_id=repo_id,
+        repo_type=repo_type,
+        revision=revision,
+        pattern=pattern,
+        hf_token=hf_token,
+        include_files=True,
+        include_directories=True,
+    )
 
-    try:
-        raw_paths = hf_fs.glob(hf_fs_path(
-            repo_id=repo_id,
-            repo_type=repo_type,
-            filename=pattern,
-            revision=revision,
-        ))
-    except FileNotFoundError:
-        return
-    paths = [parse_hf_fs_path(path).filename for path in raw_paths]
 
-    offset, batch_size = 0, startup_batch
-    progress = tqdm(total=len(paths), desc='Paths Info', silent=silent)
-    while offset < len(paths):
-        batch_paths = paths[offset:offset + batch_size]
-        try:
-            all_items = hf_client.get_paths_info(
-                repo_id=repo_id,
-                repo_type=repo_type,
-                paths=batch_paths,
-                revision=revision,
-            )
-        except HfHubHTTPError as err:
-            if err.response.status_code == 413:
-                new_batch_size = max(1, int(round(batch_size * batch_factor)))
-                logging.warning(f'Reducing batch size {batch_size} --> {new_batch_size} ...')
-                batch_size = new_batch_size
-                continue
-            raise
-        else:
-            progress.update(len(all_items))
-            offset += len(all_items)
-            yield from all_items
+_PATTERN_UNSET = object()
+_DEFAULT_PATTERN_WITH_IGNORE = ['*', '!.git*']
 
 
 def list_repo_files_in_repository(
         repo_id: str, repo_type: RepoTypeTyping = 'dataset',
-        subdir: str = '', pattern: str = '**/*', revision: str = 'main',
-        ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
-        hf_token: Optional[str] = None, silent: bool = False) -> List[Tuple[RepoFile, str]]:
+        subdir: str = '', pattern: Union[List[str], str] = _PATTERN_UNSET, revision: str = 'main',
+        hf_token: Optional[str] = None) -> List[Tuple[RepoFile, str]]:
     """
     List repository files with their paths in a Hugging Face repository.
 
@@ -221,16 +204,12 @@ def list_repo_files_in_repository(
     :type repo_type: RepoTypeTyping
     :param subdir: The subdirectory to list files from. Default is an empty string (root directory).
     :type subdir: str
-    :param pattern: Wildcard pattern of the target files. Default is `**/*` (all files).
+    :param pattern: Wildcard pattern of the target files. Default is `*` (all files).
     :type pattern: str
     :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is 'main'.
     :type revision: str
-    :param ignore_patterns: List of file patterns to ignore. If not set, uses default ignore patterns.
-    :type ignore_patterns: List[str]
     :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
     :type hf_token: Optional[str]
-    :param silent: If True, suppresses progress bar. Default is False.
-    :type silent: bool
 
     :return: A list of tuples containing RepoFile objects and their corresponding paths.
     :rtype: List[Tuple[RepoFile, str]]
@@ -241,35 +220,31 @@ def list_repo_files_in_repository(
         >>> for repo_file, path in files:
         ...     print(f"File: {path}, Size: {repo_file.size}")
     """
-    if ignore_patterns is _IGNORE_PATTERN_UNSET:
-        ignore_patterns = _DEFAULT_IGNORE_PATTERNS
-
+    if pattern is _PATTERN_UNSET:
+        pattern = _DEFAULT_PATTERN_WITH_IGNORE
     if subdir and subdir != '.':
-        pattern = f'{subdir}/{pattern}'
+        pattern = _fn_path_pattern_subdir(pattern, subdir)
 
     result = []
-    for item in list_all_with_pattern(
+    for item in hf_repo_glob(
             repo_id=repo_id,
             repo_type=repo_type,
             revision=revision,
             pattern=pattern,
+            include_files=True,
+            include_directories=False,
             hf_token=hf_token,
-            silent=silent,
     ):
-        if isinstance(item, RepoFile):
-            path = hf_normpath(os.path.relpath(item.path, start=subdir or '.'))
-            segments = list(filter(bool, re.split(r'[\\/]+', path)))
-            if not _is_file_ignored(segments, ignore_patterns):
-                result.append((item, path))
+        path = hf_normpath(os.path.relpath(item.path, start=subdir or '.'))
+        result.append((item, path))
 
     return result
 
 
 def list_files_in_repository(
         repo_id: str, repo_type: RepoTypeTyping = 'dataset',
-        subdir: str = '', pattern: str = '**/*', revision: str = 'main',
-        ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
-        hf_token: Optional[str] = None, silent: bool = False) -> List[str]:
+        subdir: str = '', pattern: Union[List[str], str] = _PATTERN_UNSET, revision: str = 'main',
+        hf_token: Optional[str] = None) -> List[str]:
     """
     List files in a Hugging Face repository based on the given parameters.
 
@@ -282,16 +257,12 @@ def list_files_in_repository(
     :type repo_type: RepoTypeTyping
     :param subdir: The subdirectory to list files from. Default is an empty string (root directory).
     :type subdir: str
-    :param pattern: Wildcard pattern of the target files. Default is `**/*` (all files).
+    :param pattern: Wildcard pattern of the target files. Default is `*` (all files).
     :type pattern: str
     :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is 'main'.
     :type revision: str
-    :param ignore_patterns: List of file patterns to ignore. If not set, uses default ignore patterns.
-    :type ignore_patterns: List[str]
     :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
     :type hf_token: Optional[str]
-    :param silent: If True, suppresses progress bar. Default is False.
-    :type silent: bool
 
     :return: A list of file paths that match the criteria.
     :rtype: List[str]
@@ -309,8 +280,6 @@ def list_files_in_repository(
             subdir=subdir,
             pattern=pattern,
             revision=revision,
-            ignore_patterns=ignore_patterns,
             hf_token=hf_token,
-            silent=silent,
         )
     ]

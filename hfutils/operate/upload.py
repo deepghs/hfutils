@@ -10,12 +10,12 @@ import math
 import os.path
 import re
 import time
-from typing import Optional, List, Union
+from typing import Optional, Union
 
 from hbutils.string import plural_word
 from huggingface_hub import CommitOperationAdd, CommitOperationDelete
 
-from .base import RepoTypeTyping, get_hf_client, list_files_in_repository, _IGNORE_PATTERN_UNSET
+from .base import RepoTypeTyping, get_hf_client, list_files_in_repository
 from ..archive import get_archive_type, archive_pack, archive_writer, archive_splitext
 from ..config.meta import __VERSION__
 from ..utils import walk_files, TemporaryDirectory, tqdm, walk_files_with_groups, FilesGroup, hf_normpath
@@ -168,8 +168,7 @@ _PATH_SEP = re.compile(r'[/\\]+')
 def upload_directory_as_directory(
         local_directory, repo_id: str, path_in_repo: str, pattern: Optional[str] = None,
         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-        message: Optional[str] = None, time_suffix: bool = True,
-        clear: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+        message: Optional[str] = None, time_suffix: bool = True, clear: bool = False,
         hf_token: Optional[str] = None, operation_chunk_size: Optional[int] = None,
         upload_timespan: float = 5.0,
 ):
@@ -194,8 +193,6 @@ def upload_directory_as_directory(
     :type time_suffix: bool
     :param clear: If True, remove files in the repository not present in the local directory.
     :type clear: bool
-    :param ignore_patterns: List of file patterns to ignore.
-    :type ignore_patterns: List[str]
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
     :param operation_chunk_size: Chunk size of the operations. All the operations will be
@@ -232,7 +229,6 @@ def upload_directory_as_directory(
                 repo_type=repo_type,
                 subdir=path_in_repo,
                 revision=revision,
-                ignore_patterns=ignore_patterns,
                 hf_token=hf_token
             )
         }
