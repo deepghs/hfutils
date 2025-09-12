@@ -133,25 +133,49 @@ and need to analyze or manage file structures and metadata.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.repository.size.</span></span><span class="sig-name descname"><span class="pre">RepoFileItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_lfs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lfs_sha256</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blob_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/repository/size.html#RepoFileItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.repository.size.RepoFileItem" title="Link to this definition"></a></dt>
 <dd><p>Represents a file item in a Hugging Face repository.</p>
 <p>This class encapsulates metadata about a single file, including its path,
-size, LFS status, and blob ID.</p>
+size, LFS status, and blob ID. It provides methods for creating instances
+from RepoFile objects and accessing file information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> – The file path relative to the repository root.</p></li>
-<li><p><strong>size</strong> – The size of the file in bytes.</p></li>
-<li><p><strong>is_lfs</strong> – Whether the file is stored using Git LFS.</p></li>
-<li><p><strong>lfs_sha256</strong> – The SHA256 hash of the LFS file, if applicable.</p></li>
-<li><p><strong>blob_id</strong> – The Git blob ID of the file.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – The file path relative to the repository root.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – The size of the file in bytes.</p></li>
+<li><p><strong>is_lfs</strong> (<em>bool</em>) – Whether the file is stored using Git LFS.</p></li>
+<li><p><strong>lfs_sha256</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The SHA256 hash of the LFS file, if applicable.</p></li>
+<li><p><strong>blob_id</strong> (<em>str</em>) – The Git blob ID of the file.</p></li>
 </ul>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub.hf_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo_file</span> <span class="o">=</span> <span class="n">RepoFile</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;model.bin&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">blob_id</span><span class="o">=</span><span class="s2">&quot;abc123&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">item</span> <span class="o">=</span> <span class="n">RepoFileItem</span><span class="o">.</span><span class="n">from_repo_file</span><span class="p">(</span><span class="n">repo_file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+<span class="go">model.bin</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="hfutils.repository.size.RepoFileItem.__repr__">
 <span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/repository/size.html#RepoFileItem.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.repository.size.RepoFileItem.__repr__" title="Link to this definition"></a></dt>
 <dd><p>Return a string representation of the RepoFileItem.</p>
+<p>The representation includes the file path, size in human-readable format,
+and LFS status if applicable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A formatted string representation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">item</span> <span class="o">=</span> <span class="n">RepoFileItem</span><span class="p">(</span><span class="s2">&quot;model.bin&quot;</span><span class="p">,</span> <span class="mi">1048576</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;sha256hash&quot;</span><span class="p">,</span> <span class="s2">&quot;blob123&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+<span class="go">&lt;RepoFileItem model.bin, size: 1.05 MB (LFS)&gt;</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -160,15 +184,29 @@ size, LFS status, and blob ID.</p>
 <dt class="sig sig-object py" id="hfutils.repository.size.RepoFileItem.from_repo_file">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_repo_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">RepoFile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hfutils.repository.size.RepoFileItem" title="hfutils.repository.size.RepoFileItem"><span class="pre">RepoFileItem</span></a></span></span><a class="reference internal" href="../../_modules/hfutils/repository/size.html#RepoFileItem.from_repo_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.repository.size.RepoFileItem.from_repo_file" title="Link to this definition"></a></dt>
 <dd><p>Create a RepoFileItem from a RepoFile object.</p>
+<p>This method converts a RepoFile object from the Hugging Face Hub API
+into a RepoFileItem instance, handling LFS metadata and path normalization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>repo_file</strong> – The RepoFile object to convert.</p></li>
-<li><p><strong>subdir</strong> – The subdirectory to use as the base path (default: ‘’).</p></li>
+<li><p><strong>repo_file</strong> (<em>RepoFile</em>) – The RepoFile object to convert.</p></li>
+<li><p><strong>subdir</strong> (<em>str</em>) – The subdirectory to use as the base path (default: ‘’).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A new RepoFileItem instance.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hfutils.repository.size.RepoFileItem" title="hfutils.repository.size.RepoFileItem">RepoFileItem</a></p>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repo_file</span> <span class="o">=</span> <span class="n">RepoFile</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;data/file.txt&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">blob_id</span><span class="o">=</span><span class="s2">&quot;def456&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">item</span> <span class="o">=</span> <span class="n">RepoFileItem</span><span class="o">.</span><span class="n">from_repo_file</span><span class="p">(</span><span class="n">repo_file</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+<span class="go">file.txt</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -177,9 +215,22 @@ size, LFS status, and blob ID.</p>
 <dt class="sig sig-object py" id="hfutils.repository.size.RepoFileItem.path_segments">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path_segments</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#hfutils.repository.size.RepoFileItem.path_segments" title="Link to this definition"></a></dt>
 <dd><p>Get the path segments of the file.</p>
+<p>This property splits the file path into individual segments, which is
+useful for path-based sorting and hierarchical operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A tuple of path segments.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple[str, …]</p>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">item</span> <span class="o">=</span> <span class="n">RepoFileItem</span><span class="p">(</span><span class="s2">&quot;folder/subfolder/file.txt&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;abc123&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path_segments</span><span class="p">)</span>
+<span class="go">(&#39;folder&#39;, &#39;subfolder&#39;, &#39;file.txt&#39;)</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -194,28 +245,53 @@ size, LFS status, and blob ID.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.repository.size.</span></span><span class="sig-name descname"><span class="pre">RepoFileList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#hfutils.repository.size.RepoFileItem" title="hfutils.repository.size.RepoFileItem"><span class="pre">RepoFileItem</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/repository/size.html#RepoFileList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.repository.size.RepoFileList" title="Link to this definition"></a></dt>
 <dd><p>Represents a list of RepoFileItems with additional metadata and utility methods.</p>
 <p>This class provides a way to manage and analyze a collection of files from a
-Hugging Face repository, including information about the repository itself.</p>
+Hugging Face repository, including information about the repository itself.
+It implements the Sequence interface and provides methods for visualization
+and analysis of the file collection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>repo_id</strong> – The ID of the repository.</p></li>
-<li><p><strong>items</strong> – A list of RepoFileItem objects.</p></li>
-<li><p><strong>repo_type</strong> – The type of the repository (default: ‘dataset’).</p></li>
-<li><p><strong>revision</strong> – The revision of the repository (default: ‘main’).</p></li>
-<li><p><strong>subdir</strong> – The subdirectory within the repository (default: ‘’).</p></li>
+<li><p><strong>repo_id</strong> (<em>str</em>) – The ID of the repository.</p></li>
+<li><p><strong>items</strong> (<em>List</em><em>[</em><a class="reference internal" href="#hfutils.repository.size.RepoFileItem" title="hfutils.repository.size.RepoFileItem"><em>RepoFileItem</em></a><em>]</em>) – A list of RepoFileItem objects.</p></li>
+<li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em>) – The type of the repository (default: ‘dataset’).</p></li>
+<li><p><strong>revision</strong> (<em>str</em>) – The revision of the repository (default: ‘main’).</p></li>
+<li><p><strong>subdir</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The subdirectory within the repository (default: ‘’).</p></li>
 </ul>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">RepoFileItem</span><span class="p">(</span><span class="s2">&quot;file1.txt&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;abc&quot;</span><span class="p">),</span>
+<span class="gp">... </span>         <span class="n">RepoFileItem</span><span class="p">(</span><span class="s2">&quot;file2.txt&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;def&quot;</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file_list</span> <span class="o">=</span> <span class="n">RepoFileList</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">))</span>
+<span class="go">2</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="hfutils.repository.size.RepoFileList.__getitem__">
 <span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/repository/size.html#RepoFileList.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.repository.size.RepoFileList.__getitem__" title="Link to this definition"></a></dt>
 <dd><p>Get a RepoFileItem by index.</p>
+<p>This method allows the RepoFileList to be accessed like a regular list
+or sequence, supporting both integer indices and slicing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>index</strong> – The index of the item to retrieve.</p>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The index of the item to retrieve.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The RepoFileItem at the specified index.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hfutils.repository.size.RepoFileItem" title="hfutils.repository.size.RepoFileItem">RepoFileItem</a></p>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_list</span> <span class="o">=</span> <span class="n">RepoFileList</span><span class="p">(</span><span class="s2">&quot;repo&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">,</span> <span class="n">item3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_item</span> <span class="o">=</span> <span class="n">file_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">first_item</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -233,6 +309,17 @@ Hugging Face repository, including information about the repository itself.</p>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The number of RepoFileItems in the list.</p>
 </dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_list</span> <span class="o">=</span> <span class="n">RepoFileList</span><span class="p">(</span><span class="s2">&quot;repo&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">))</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd>
 </dl>
 </dd></dl>
 
@@ -240,9 +327,25 @@ Hugging Face repository, including information about the repository itself.</p>
 <dt class="sig sig-object py" id="hfutils.repository.size.RepoFileList.__repr__">
 <span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/repository/size.html#RepoFileList.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.repository.size.RepoFileList.__repr__" title="Link to this definition"></a></dt>
 <dd><p>Return a string representation of the RepoFileList.</p>
+<p>This method provides a tree-like visualization of the file list,
+showing the repository information and contained files in a
+hierarchical format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A formatted string representation of the file list.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_list</span> <span class="o">=</span> <span class="n">RepoFileList</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span>
+<span class="go">username/repo (2 files, 1.05 MB)</span>
+<span class="go">├── &lt;RepoFileItem file1.txt, size: 512 KB&gt;</span>
+<span class="go">└── &lt;RepoFileItem file2.txt, size: 512 KB&gt;</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -251,12 +354,29 @@ Hugging Face repository, including information about the repository itself.</p>
 <dt class="sig sig-object py" id="hfutils.repository.size.RepoFileList.repr">
 <span class="sig-name descname"><span class="pre">repr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/repository/size.html#RepoFileList.repr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.repository.size.RepoFileList.repr" title="Link to this definition"></a></dt>
 <dd><p>Generate a custom string representation of the RepoFileList.</p>
+<p>This method allows customization of the number of items displayed
+in the tree representation, which is useful for large file lists.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>max_items</strong> – The maximum number of items to include in the representation (default: 10).</p>
+<dd class="field-odd"><p><strong>max_items</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – The maximum number of items to include in the representation (default: 10).</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A formatted string representation of the file list.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_list</span> <span class="o">=</span> <span class="n">RepoFileList</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">many_items</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">file_list</span><span class="o">.</span><span class="n">repr</span><span class="p">(</span><span class="n">max_items</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+<span class="go">username/repo (100 files, 10.5 MB)</span>
+<span class="go">├── &lt;RepoFileItem file1.txt, size: 512 KB&gt;</span>
+<span class="go">├── &lt;RepoFileItem file2.txt, size: 512 KB&gt;</span>
+<span class="go">├── ...</span>
+<span class="go">└── ... (100 files) in total ...</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -265,9 +385,23 @@ Hugging Face repository, including information about the repository itself.</p>
 <dt class="sig sig-object py" id="hfutils.repository.size.RepoFileList.total_size">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#hfutils.repository.size.RepoFileList.total_size" title="Link to this definition"></a></dt>
 <dd><p>Get the total size of all files in the list.</p>
+<p>This property calculates and returns the sum of all file sizes
+in the collection, which is useful for understanding the overall
+storage requirements of the repository or subdirectory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The total size in bytes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_list</span> <span class="o">=</span> <span class="n">RepoFileList</span><span class="p">(</span><span class="s2">&quot;repo&quot;</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total size: </span><span class="si">{</span><span class="n">file_list</span><span class="o">.</span><span class="n">total_size</span><span class="si">}</span><span class="s2"> bytes&quot;</span><span class="p">)</span>
+<span class="go">Total size: 1048576 bytes</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -279,33 +413,44 @@ Hugging Face repository, including information about the repository itself.</p>
 <h2>hf_hub_repo_analysis<a class="headerlink" href="#hf-hub-repo-analysis" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.repository.size.hf_hub_repo_analysis">
-<span class="sig-prename descclassname"><span class="pre">hfutils.repository.size.</span></span><span class="sig-name descname"><span class="pre">hf_hub_repo_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'**/*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'none'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'path'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'size'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'path'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hfutils.repository.size.RepoFileList" title="hfutils.repository.size.RepoFileList"><span class="pre">RepoFileList</span></a></span></span><a class="reference internal" href="../../_modules/hfutils/repository/size.html#hf_hub_repo_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.repository.size.hf_hub_repo_analysis" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.repository.size.</span></span><span class="sig-name descname"><span class="pre">hf_hub_repo_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'none'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'path'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'size'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'path'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#hfutils.repository.size.RepoFileList" title="hfutils.repository.size.RepoFileList"><span class="pre">RepoFileList</span></a></span></span><a class="reference internal" href="../../_modules/hfutils/repository/size.html#hf_hub_repo_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.repository.size.hf_hub_repo_analysis" title="Link to this definition"></a></dt>
 <dd><p>Analyze the contents of a Hugging Face repository.</p>
 <p>This function retrieves file information from a specified repository and creates
-a RepoFileList object containing detailed information about each file.</p>
+a RepoFileList object containing detailed information about each file. It supports
+pattern matching, subdirectory filtering, and various sorting options.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>repo_id</strong> – The ID of the repository to analyze.</p></li>
-<li><p><strong>pattern</strong> – A glob pattern to filter files (default: ‘<a href="#id1"><span class="problematic" id="id2">**</span></a>/<a href="#id3"><span class="problematic" id="id4">*</span></a>’).</p></li>
-<li><p><strong>repo_type</strong> – The type of the repository (default: ‘dataset’).</p></li>
-<li><p><strong>revision</strong> – The revision of the repository to analyze (default: ‘main’).</p></li>
-<li><p><strong>hf_token</strong> – The Hugging Face API token (optional).</p></li>
-<li><p><strong>silent</strong> – Whether to suppress output (default: False).</p></li>
-<li><p><strong>subdir</strong> – The subdirectory within the repository to analyze (default: ‘’).</p></li>
-<li><p><strong>sort_by</strong> – How to sort the file list (‘none’, ‘path’, or ‘size’) (default: ‘path’).</p></li>
-<li><p><strong>kwargs</strong> – Additional keyword arguments to pass to list_all_with_pattern.</p></li>
+<li><p><strong>repo_id</strong> (<em>str</em>) – The ID of the repository to analyze.</p></li>
+<li><p><strong>pattern</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – A glob pattern or list of patterns to filter files (default: ‘*’).</p></li>
+<li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em>) – The type of the repository (default: ‘dataset’).</p></li>
+<li><p><strong>revision</strong> (<em>str</em>) – The revision of the repository to analyze (default: ‘main’).</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The Hugging Face API token (optional).</p></li>
+<li><p><strong>subdir</strong> (<em>str</em>) – The subdirectory within the repository to analyze (default: ‘’).</p></li>
+<li><p><strong>sort_by</strong> (<em>SortByTyping</em>) – How to sort the file list (‘none’, ‘path’, or ‘size’) (default: ‘path’).</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to list_all_with_pattern.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A RepoFileList object containing the analysis results.</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p>May raise exceptions related to API access or file operations.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hfutils.repository.size.RepoFileList" title="hfutils.repository.size.RepoFileList">RepoFileList</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p>May raise exceptions related to API access or file operations.</p>
 </dd>
 </dl>
 <dl>
-<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">hf_hub_repo_analysis</span><span class="p">(</span><span class="s1">&#39;username/repo&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;*.txt&#39;</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Analyze all files in a model repository</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">hf_hub_repo_analysis</span><span class="p">(</span><span class="s1">&#39;bert-base-uncased&#39;</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s2"> files&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Analyze only text files in a specific subdirectory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">hf_hub_repo_analysis</span><span class="p">(</span><span class="s1">&#39;username/dataset&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                             <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;*.txt&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                             <span class="n">subdir</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                             <span class="n">sort_by</span><span class="o">=</span><span class="s1">&#39;size&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
