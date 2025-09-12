@@ -18,7 +18,7 @@ from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS, command_wrap, ClickErrorException
 from ..operate import hf_warmup_file, hf_warmup_directory
-from ..operate.base import REPO_TYPES, RepoTypeTyping, _IGNORE_PATTERN_UNSET
+from ..operate.base import REPO_TYPES, RepoTypeTyping
 from ..utils import get_requests_session
 
 
@@ -121,11 +121,10 @@ def _add_warmup_subcommand(cli: click.Group) -> click.Group:
                 repo_id=repo_id,
                 repo_type=repo_type,
                 dir_in_repo=dir_in_repo,
-                pattern=wildcard or '**/*',
+                pattern=wildcard or (['*', '!.git*'] if not show_all else '*'),
                 revision=revision,
                 silent=False,
                 max_workers=max_workers,
-                ignore_patterns=_IGNORE_PATTERN_UNSET if not show_all else [],
             )
 
         else:

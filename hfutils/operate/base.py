@@ -20,6 +20,7 @@ from typing import Literal, List, Optional, Union, Tuple
 
 import wcmatch.fnmatch as fnmatch
 from huggingface_hub import HfApi, HfFileSystem
+from huggingface_hub.errors import RepositoryNotFoundError, GatedRepoError, DisabledRepoError, RevisionNotFoundError
 from huggingface_hub.hf_api import RepoFolder, RepoFile
 
 from ..utils import hf_normpath
@@ -117,34 +118,40 @@ def _fn_path_pattern_subdir(pattern: Union[List[str], str], subdir: str) -> Unio
 def hf_repo_glob(
         repo_id: str, pattern: Union[List[str], str] = '*', repo_type: RepoTypeTyping = 'dataset',
         revision: str = 'main', include_files: bool = True, include_directories: bool = False,
-        hf_token: Optional[str] = None,
+        raise_when_base_not_exist: bool = False, hf_token: Optional[str] = None,
 ) -> List[Union[RepoFile, RepoFolder]]:
     hf_client = get_hf_client(hf_token=hf_token)
     pattern = _fn_path_pattern_norm(pattern)
 
     items = []
-    for item in hf_client.list_repo_tree(
-            repo_id=repo_id,
-            repo_type=repo_type,
-            revision=revision,
-            recursive=True,
-    ):
-        if (
-                (include_files and isinstance(item, RepoFile)) or
-                (include_directories and isinstance(item, RepoFolder))
-        ) and fnmatch.fnmatch(
-            filename=hf_normpath(item.rfilename),
-            patterns=pattern,
-            flags=(fnmatch.CASE | fnmatch.NEGATE | fnmatch.NEGATEALL | fnmatch.DOTMATCH),
+    try:
+        for item in hf_client.list_repo_tree(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                revision=revision,
+                recursive=True,
         ):
-            items.append(item)
+            if (
+                    (include_files and isinstance(item, RepoFile)) or
+                    (include_directories and isinstance(item, RepoFolder))
+            ) and fnmatch.fnmatch(
+                filename=hf_normpath(item.path),
+                patterns=pattern,
+                flags=(fnmatch.CASE | fnmatch.NEGATE | fnmatch.NEGATEALL | fnmatch.DOTMATCH),
+            ):
+                items.append(item)
+    except (RepositoryNotFoundError, GatedRepoError, DisabledRepoError, RevisionNotFoundError):
+        if raise_when_base_not_exist:
+            raise
+        else:
+            return []
 
     return items
 
 
 def list_all_with_pattern(
         repo_id: str, pattern: Union[List[str], str] = '*', repo_type: RepoTypeTyping = 'dataset',
-        revision: str = 'main', hf_token: Optional[str] = None
+        revision: str = 'main', raise_when_base_not_exist: bool = False, hf_token: Optional[str] = None
 ) -> List[Union[RepoFile, RepoFolder]]:
     """
     List all files and folders in a Hugging Face repository matching a given pattern.
@@ -181,6 +188,7 @@ def list_all_with_pattern(
         hf_token=hf_token,
         include_files=True,
         include_directories=True,
+        raise_when_base_not_exist=raise_when_base_not_exist,
     )
 
 
@@ -191,7 +199,7 @@ _DEFAULT_PATTERN_WITH_IGNORE = ['*', '!.git*']
 def list_repo_files_in_repository(
         repo_id: str, repo_type: RepoTypeTyping = 'dataset',
         subdir: str = '', pattern: Union[List[str], str] = _PATTERN_UNSET, revision: str = 'main',
-        hf_token: Optional[str] = None) -> List[Tuple[RepoFile, str]]:
+        raise_when_base_not_exist: bool = False, hf_token: Optional[str] = None) -> List[Tuple[RepoFile, str]]:
     """
     List repository files with their paths in a Hugging Face repository.
 
@@ -233,6 +241,7 @@ def list_repo_files_in_repository(
             pattern=pattern,
             include_files=True,
             include_directories=False,
+            raise_when_base_not_exist=raise_when_base_not_exist,
             hf_token=hf_token,
     ):
         path = hf_normpath(os.path.relpath(item.path, start=subdir or '.'))
@@ -244,7 +253,7 @@ def list_repo_files_in_repository(
 def list_files_in_repository(
         repo_id: str, repo_type: RepoTypeTyping = 'dataset',
         subdir: str = '', pattern: Union[List[str], str] = _PATTERN_UNSET, revision: str = 'main',
-        hf_token: Optional[str] = None) -> List[str]:
+        raise_when_base_not_exist: bool = False, hf_token: Optional[str] = None) -> List[str]:
     """
     List files in a Hugging Face repository based on the given parameters.
 
@@ -280,6 +289,7 @@ def list_files_in_repository(
             subdir=subdir,
             pattern=pattern,
             revision=revision,
+            raise_when_base_not_exist=raise_when_base_not_exist,
             hf_token=hf_token,
         )
     ]

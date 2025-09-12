@@ -19,7 +19,7 @@ from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS, command_wrap, ClickErrorException
 from ..operate import download_file_to_file, download_archive_as_directory, download_directory_as_directory
-from ..operate.base import REPO_TYPES, RepoTypeTyping, _IGNORE_PATTERN_UNSET
+from ..operate.base import REPO_TYPES, RepoTypeTyping
 from ..utils import get_requests_session
 
 
@@ -162,13 +162,12 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                 local_directory=output_path,
                 repo_id=repo_id,
                 dir_in_repo=dir_in_repo,
-                pattern=wildcard or '**/*',
+                pattern=wildcard or (['*', '!.git*'] if not show_all else '*'),
                 repo_type=repo_type,
                 revision=revision,
                 silent=False,
                 max_workers=max_workers,
                 soft_mode_when_check=soft_mode_when_check,
-                ignore_patterns=_IGNORE_PATTERN_UNSET if not show_all else [],
             )
 
         else:

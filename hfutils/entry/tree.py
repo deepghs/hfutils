@@ -104,7 +104,7 @@ def _get_tree(repo_id: str, repo_type: RepoTypeTyping, dir_in_repo: str,
             repo_type=repo_type,
             subdir=dir_in_repo,
             revision=revision,
-            ignore_patterns=[],
+            pattern=['*'],
     ):
         filename = hf_normpath(os.path.relpath(filepath, dir_in_repo))
         segments = re.split(r'[\\/]+', filename)
