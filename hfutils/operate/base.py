@@ -57,11 +57,11 @@ def get_hf_client(hf_token: Optional[str] = None) -> HfApi:
     :return: An instance of the Hugging Face API client.
     :rtype: HfApi
 
-    :example:
+    Example::
 
         >>> client = get_hf_client()
         >>> # Use client to interact with Hugging Face API
-        >>> client.list_repos(organization="huggingface")
+        >>> client.list_models(organization="huggingface")
     """
     return HfApi(token=hf_token or _get_hf_token())
 
@@ -81,7 +81,7 @@ def get_hf_fs(hf_token: Optional[str] = None) -> HfFileSystem:
     :return: An instance of the Hugging Face file system.
     :rtype: HfFileSystem
 
-    :example:
+    Example::
 
         >>> fs = get_hf_fs()
         >>> # Use fs to interact with Hugging Face file system
@@ -93,6 +93,18 @@ def get_hf_fs(hf_token: Optional[str] = None) -> HfFileSystem:
 
 
 def _fn_path_pattern_norm(pattern: Union[List[str], str]) -> Union[List[str], str]:
+    """
+    Normalize file path patterns using the Hugging Face path normalization.
+
+    This function takes a pattern or list of patterns and normalizes them using
+    the hf_normpath function to ensure consistent path formatting.
+
+    :param pattern: A single pattern string or list of pattern strings to normalize.
+    :type pattern: Union[List[str], str]
+
+    :return: Normalized pattern(s) in the same format as input.
+    :rtype: Union[List[str], str]
+    """
     if isinstance(pattern, (list, tuple)):
         return [hf_normpath(p) for p in pattern]
     else:
@@ -100,6 +112,20 @@ def _fn_path_pattern_norm(pattern: Union[List[str], str]) -> Union[List[str], st
 
 
 def _fn_path_pattern_subdir_single(pattern: str, subdir: str) -> str:
+    """
+    Adjust a single pattern to work within a subdirectory.
+
+    This function modifies a pattern to be relative to a specific subdirectory.
+    It handles negation patterns (starting with '!') appropriately.
+
+    :param pattern: The pattern to adjust.
+    :type pattern: str
+    :param subdir: The subdirectory to prepend to the pattern.
+    :type subdir: str
+
+    :return: The adjusted pattern for the subdirectory.
+    :rtype: str
+    """
     if pattern.startswith('!'):
         pattern = f'!{subdir}/{pattern[1:]}'
     else:
@@ -109,6 +135,20 @@ def _fn_path_pattern_subdir_single(pattern: str, subdir: str) -> str:
 
 
 def _fn_path_pattern_subdir(pattern: Union[List[str], str], subdir: str) -> Union[List[str], str]:
+    """
+    Adjust patterns to work within a subdirectory.
+
+    This function modifies patterns to be relative to a specific subdirectory,
+    handling both single patterns and lists of patterns.
+
+    :param pattern: The pattern(s) to adjust.
+    :type pattern: Union[List[str], str]
+    :param subdir: The subdirectory to prepend to the patterns.
+    :type subdir: str
+
+    :return: The adjusted pattern(s) for the subdirectory.
+    :rtype: Union[List[str], str]
+    """
     if isinstance(pattern, (list, tuple)):
         return [_fn_path_pattern_subdir_single(p, subdir) for p in pattern]
     else:
@@ -120,6 +160,45 @@ def hf_repo_glob(
         revision: str = 'main', include_files: bool = True, include_directories: bool = False,
         raise_when_base_not_exist: bool = False, hf_token: Optional[str] = None,
 ) -> List[Union[RepoFile, RepoFolder]]:
+    """
+    Glob files and directories in a Hugging Face repository using pattern matching.
+
+    This function performs pattern matching on files and directories in a Hugging Face
+    repository, similar to filesystem globbing. It supports wildcard patterns and
+    negation patterns for flexible file selection.
+
+    :param repo_id: The identifier of the repository.
+    :type repo_id: str
+    :param pattern: Wildcard pattern(s) to match files and folders. Default is '*' (all items).
+    :type pattern: Union[List[str], str]
+    :param repo_type: The type of the repository ('dataset', 'model', 'space'). Default is 'dataset'.
+    :type repo_type: RepoTypeTyping
+    :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is 'main'.
+    :type revision: str
+    :param include_files: Whether to include files in the results. Default is True.
+    :type include_files: bool
+    :param include_directories: Whether to include directories in the results. Default is False.
+    :type include_directories: bool
+    :param raise_when_base_not_exist: Whether to raise an exception when the repository doesn't exist. Default is False.
+    :type raise_when_base_not_exist: bool
+    :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
+    :type hf_token: Optional[str]
+
+    :return: A list of RepoFile and/or RepoFolder objects matching the pattern.
+    :rtype: List[Union[RepoFile, RepoFolder]]
+
+    :raises RepositoryNotFoundError: If the repository is not found and raise_when_base_not_exist is True.
+    :raises GatedRepoError: If the repository is gated and raise_when_base_not_exist is True.
+    :raises DisabledRepoError: If the repository is disabled and raise_when_base_not_exist is True.
+    :raises RevisionNotFoundError: If the revision is not found and raise_when_base_not_exist is True.
+
+    Example::
+
+        >>> # Get all Python files in a repository
+        >>> files = hf_repo_glob("username/repo", pattern="*.py")
+        >>> # Get all files except hidden ones
+        >>> files = hf_repo_glob("username/repo", pattern=["*", "!.*"])
+    """
     hf_client = get_hf_client(hf_token=hf_token)
     pattern = _fn_path_pattern_norm(pattern)
 
@@ -157,28 +236,30 @@ def list_all_with_pattern(
     List all files and folders in a Hugging Face repository matching a given pattern.
 
     This function retrieves information about files and folders in a repository that match
-    the specified pattern. It uses batching to handle large repositories efficiently.
+    the specified pattern. It includes both files and directories in the results.
 
     :param repo_id: The identifier of the repository.
     :type repo_id: str
-    :param pattern: Wildcard pattern to match files and folders. Default is `*` (all files and folders).
-    :type pattern: str
+    :param pattern: Wildcard pattern(s) to match files and folders. Default is '*' (all files and folders).
+    :type pattern: Union[List[str], str]
     :param repo_type: The type of the repository ('dataset', 'model', 'space'). Default is 'dataset'.
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is 'main'.
     :type revision: str
+    :param raise_when_base_not_exist: Whether to raise an exception when the repository doesn't exist. Default is False.
+    :type raise_when_base_not_exist: bool
     :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
     :type hf_token: Optional[str]
 
-    :return: An iterator of RepoFile and RepoFolder objects matching the pattern.
+    :return: A list of RepoFile and RepoFolder objects matching the pattern.
     :rtype: List[Union[RepoFile, RepoFolder]]
 
-    :raises HfHubHTTPError: If there's an error in the API request that's not related to batch size.
+    Example::
 
-    :example:
-
-        >>> for item in list_all_with_pattern("username/repo", pattern="*.txt"):
-        ...     print(item.path)
+        >>> # List all items matching a pattern
+        >>> items = list_all_with_pattern("username/repo", pattern="*.txt")
+        >>> for item in items:
+        ...     print(f"{'File' if isinstance(item, RepoFile) else 'Folder'}: {item.path}")
     """
     return hf_repo_glob(
         repo_id=repo_id,
@@ -203,8 +284,8 @@ def list_repo_files_in_repository(
     """
     List repository files with their paths in a Hugging Face repository.
 
-    This function returns a list of tuples containing RepoFile objects and their corresponding paths
-    that match the given pattern and are not ignored by the ignored patterns.
+    This function returns a list of tuples containing RepoFile objects and their corresponding
+    relative paths that match the given pattern. By default, it excludes git-related files.
 
     :param repo_id: The identifier of the repository.
     :type repo_id: str
@@ -212,17 +293,19 @@ def list_repo_files_in_repository(
     :type repo_type: RepoTypeTyping
     :param subdir: The subdirectory to list files from. Default is an empty string (root directory).
     :type subdir: str
-    :param pattern: Wildcard pattern of the target files. Default is `*` (all files).
-    :type pattern: str
+    :param pattern: Wildcard pattern(s) of the target files. Default includes all files except git files.
+    :type pattern: Union[List[str], str]
     :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is 'main'.
     :type revision: str
+    :param raise_when_base_not_exist: Whether to raise an exception when the repository doesn't exist. Default is False.
+    :type raise_when_base_not_exist: bool
     :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
     :type hf_token: Optional[str]
 
-    :return: A list of tuples containing RepoFile objects and their corresponding paths.
+    :return: A list of tuples containing RepoFile objects and their corresponding relative paths.
     :rtype: List[Tuple[RepoFile, str]]
 
-    :example:
+    Example::
 
         >>> files = list_repo_files_in_repository("username/repo", pattern="*.txt")
         >>> for repo_file, path in files:
@@ -258,7 +341,8 @@ def list_files_in_repository(
     List files in a Hugging Face repository based on the given parameters.
 
     This function retrieves a list of file paths in a specified repository that match
-    the given pattern and are not ignored by the ignored patterns.
+    the given pattern. By default, it excludes git-related files and returns only
+    the relative paths as strings.
 
     :param repo_id: The identifier of the repository.
     :type repo_id: str
@@ -266,21 +350,25 @@ def list_files_in_repository(
     :type repo_type: RepoTypeTyping
     :param subdir: The subdirectory to list files from. Default is an empty string (root directory).
     :type subdir: str
-    :param pattern: Wildcard pattern of the target files. Default is `*` (all files).
-    :type pattern: str
+    :param pattern: Wildcard pattern(s) of the target files. Default includes all files except git files.
+    :type pattern: Union[List[str], str]
     :param revision: The revision of the repository (e.g., branch, tag, commit hash). Default is 'main'.
     :type revision: str
+    :param raise_when_base_not_exist: Whether to raise an exception when the repository doesn't exist. Default is False.
+    :type raise_when_base_not_exist: bool
     :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
     :type hf_token: Optional[str]
 
     :return: A list of file paths that match the criteria.
     :rtype: List[str]
 
-    :example:
+    Example::
 
-        >>> files = list_files_in_repository("username/repo", pattern="*.txt", ignore_patterns=[".git*", "*.log"])
+        >>> files = list_files_in_repository("username/repo", pattern="*.txt")
         >>> print(files)
         ['file1.txt', 'folder/file2.txt']
+        >>> # List files in a specific subdirectory
+        >>> files = list_files_in_repository("username/repo", subdir="data", pattern="*.json")
     """
     return [
         path for _, path in list_repo_files_in_repository(

@@ -7,7 +7,7 @@ from Huggingface repositories, with support for concurrent downloads, retries, a
 """
 import logging
 from concurrent.futures import ThreadPoolExecutor
-from typing import Optional
+from typing import Optional, Union, List
 
 import requests
 from huggingface_hub import hf_hub_download
@@ -23,11 +23,15 @@ def hf_warmup_file(repo_id: str, filename: str, repo_type: RepoTypeTyping = 'dat
     """
     Download and cache a single file from Huggingface repository.
 
+    This function downloads a specific file from a Huggingface repository and caches it locally.
+    It's useful for pre-downloading files that will be accessed later, ensuring they're available
+    in the local cache for faster subsequent access.
+
     :param repo_id: ID of the huggingface repository (e.g., 'username/repository')
     :type repo_id: str
     :param filename: Name of the file to download including path within repository
     :type filename: str
-    :param repo_type: Type of repository ('dataset', 'model', etc.)
+    :param repo_type: Type of repository ('dataset', 'model', etc.), defaults to 'dataset'
     :type repo_type: RepoTypeTyping
     :param revision: Git revision to use, defaults to 'main'
     :type revision: str
@@ -39,8 +43,11 @@ def hf_warmup_file(repo_id: str, filename: str, repo_type: RepoTypeTyping = 'dat
     :return: Local path to the downloaded file
     :rtype: str
 
-    Example:
+    Example::
+        >>> # Download a model configuration file
         >>> local_path = hf_warmup_file('bert-base-uncased', 'config.json', repo_type='model')
+        >>> # Download a dataset file with specific revision
+        >>> local_path = hf_warmup_file('username/dataset', 'data/train.csv', revision='v1.0')
     """
     return hf_hub_download(
         repo_id=repo_id,
@@ -52,37 +59,45 @@ def hf_warmup_file(repo_id: str, filename: str, repo_type: RepoTypeTyping = 'dat
     )
 
 
-def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '*',
+def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: Union[List[str], str] = '*',
                         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main', silent: bool = False,
                         max_workers: int = 8, max_retries: int = 5, hf_token: Optional[str] = None,
                         cache_dir: Optional[str] = None):
     """
     Download and cache an entire directory from Huggingface repository with concurrent processing.
 
+    This function efficiently downloads multiple files from a directory in a Huggingface repository
+    using concurrent workers. It includes retry mechanisms for failed downloads and progress tracking.
+    This is particularly useful for pre-downloading large datasets or model repositories.
+
     :param repo_id: ID of the huggingface repository (e.g., 'username/repository')
     :type repo_id: str
-    :param dir_in_repo: Directory path within the repository to download
+    :param dir_in_repo: Directory path within the repository to download, defaults to '.' (root)
     :type dir_in_repo: str
-    :param pattern: Glob pattern for filtering files (e.g., '*.txt' for text files only)
-    :type pattern: str
-    :param repo_type: Type of repository ('dataset', 'model', etc.)
+    :param pattern: Glob pattern for filtering files (e.g., '*.txt' for text files only), defaults to '*'
+    :type pattern: Union[List[str], str]
+    :param repo_type: Type of repository ('dataset', 'model', etc.), defaults to 'dataset'
     :type repo_type: RepoTypeTyping
-    :param revision: Git revision to use
+    :param revision: Git revision to use, defaults to 'main'
     :type revision: str
-    :param silent: Whether to hide progress bar
+    :param silent: Whether to hide progress bar, defaults to False
     :type silent: bool
-    :param max_workers: Maximum number of concurrent download workers
+    :param max_workers: Maximum number of concurrent download workers, defaults to 8
     :type max_workers: int
-    :param max_retries: Maximum number of retry attempts for failed downloads
+    :param max_retries: Maximum number of retry attempts for failed downloads, defaults to 5
     :type max_retries: int
     :param hf_token: Huggingface authentication token for private repositories
     :type hf_token: Optional[str]
     :param cache_dir: Directory to cache the downloaded files
     :type cache_dir: Optional[str]
 
-    Example:
-        >>> # Downloads all .txt files from the 'data' directory using 4 workers
+    Example::
+        >>> # Download all files from the root directory
+        >>> hf_warmup_directory('username/dataset')
+        >>> # Download only .txt files from the 'data' directory using 4 workers
         >>> hf_warmup_directory('username/repo', 'data', '*.txt', max_workers=4)
+        >>> # Download with custom retry settings and silent mode
+        >>> hf_warmup_directory('username/repo', 'models', max_retries=3, silent=True)
     """
     files = list_repo_files_in_repository(
         repo_id=repo_id,
@@ -98,9 +113,13 @@ def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: str = '*'
         """
         Internal helper function to download a single file with retry mechanism.
 
-        :param repo_file: Repository file object
+        This function handles the download of individual files with automatic retry logic
+        for handling transient network errors. It updates the progress bar upon successful
+        completion and logs any errors encountered during the process.
+
+        :param repo_file: Repository file object containing file metadata
         :type repo_file: RepoFile
-        :param rel_file: Relative path of the file
+        :param rel_file: Relative path of the file within the directory
         :type rel_file: str
         """
         _ = repo_file
