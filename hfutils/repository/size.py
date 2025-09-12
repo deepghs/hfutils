@@ -18,7 +18,7 @@ import os.path
 from collections.abc import Sequence
 from dataclasses import dataclass
 from operator import itemgetter
-from typing import Optional, List, Literal, Tuple
+from typing import Optional, List, Literal, Tuple, Union
 
 from hbutils.scale import size_to_bytes_str
 from hbutils.string import plural_word, format_tree
@@ -197,8 +197,8 @@ SortByTyping = Literal['none', 'path', 'size']
 
 
 def hf_hub_repo_analysis(
-        repo_id: str, pattern: str = '**/*', repo_type: RepoTypeTyping = 'dataset',
-        revision: str = 'main', hf_token: Optional[str] = None, silent: bool = False,
+        repo_id: str, pattern: Union[List[str], str] = '*', repo_type: RepoTypeTyping = 'dataset',
+        revision: str = 'main', hf_token: Optional[str] = None,
         subdir: str = '', sort_by: SortByTyping = 'path', **kwargs,
 ) -> RepoFileList:
     """
@@ -212,7 +212,6 @@ def hf_hub_repo_analysis(
     :param repo_type: The type of the repository (default: 'dataset').
     :param revision: The revision of the repository to analyze (default: 'main').
     :param hf_token: The Hugging Face API token (optional).
-    :param silent: Whether to suppress output (default: False).
     :param subdir: The subdirectory within the repository to analyze (default: '').
     :param sort_by: How to sort the file list ('none', 'path', or 'size') (default: 'path').
     :param kwargs: Additional keyword arguments to pass to list_all_with_pattern.
@@ -226,7 +225,8 @@ def hf_hub_repo_analysis(
         >>> print(result)
     """
     if subdir and subdir != '.':
-        pattern = f'{subdir}/{pattern}'
+        from ..operate.base import _fn_path_pattern_subdir
+        pattern = _fn_path_pattern_subdir(pattern, subdir)
 
     file_items = []
     for item in list_all_with_pattern(
@@ -235,7 +235,6 @@ def hf_hub_repo_analysis(
             revision=revision,
             pattern=pattern,
             hf_token=hf_token,
-            silent=silent,
             **kwargs
     ):
         if isinstance(item, RepoFile):
