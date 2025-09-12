@@ -57,7 +57,7 @@ class TestOperateDownload:
         with isolated_directory():
             download_archive_as_directory(
                 'download_dir',
-                repo_id='narugo/test_ds_repo',
+                repo_id='narugo1992/test_ds_repo',
                 file_in_repo='surtr_dataset.zip',
             )
             dir_compare(target_dir, 'download_dir')

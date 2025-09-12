@@ -16,7 +16,7 @@ from test.testings import get_testfile, file_compare
 class TestIndexFetch:
     def test_hf_tar_list_files(self):
         files = hf_tar_list_files(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
         )
         assert len(files) == 17
@@ -29,29 +29,29 @@ class TestIndexFetch:
 
     def test_hf_tar_file_exists(self):
         assert hf_tar_file_exists(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
             file_in_archive='.meta.json'
         )
         assert hf_tar_file_exists(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
             file_in_archive='愚人节_奥特瑙斯.png'
         )
         assert hf_tar_file_exists(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
             file_in_archive='./愚人节_奥特瑙斯.png'
         )
         assert not hf_tar_file_exists(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
             file_in_archive='愚人节奥特瑙斯.png'
         )
 
     def test_hf_tar_file_info(self):
         assert hf_tar_file_info(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
             file_in_archive='.meta.json'
         ) == {
@@ -60,7 +60,7 @@ class TestIndexFetch:
                    'size': 8968
                }
         assert hf_tar_file_info(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
             file_in_archive='愚人节_奥特瑙斯.png'
         ) == {
@@ -69,7 +69,7 @@ class TestIndexFetch:
                    'size': 255276
                }
         assert hf_tar_file_info(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
             file_in_archive='./愚人节_奥特瑙斯.png'
         ) == {
@@ -79,30 +79,30 @@ class TestIndexFetch:
                }
         with pytest.raises(FileNotFoundError):
             _ = hf_tar_file_info(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='愚人节奥特瑙斯.png'
             )
 
     def test_hf_tar_file_size(self):
         assert hf_tar_file_size(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
             file_in_archive='.meta.json'
         ) == 8968
         assert hf_tar_file_size(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
             file_in_archive='愚人节_奥特瑙斯.png'
         ) == 255276
         assert hf_tar_file_size(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             archive_in_repo='mashu_skins.tar',
             file_in_archive='./愚人节_奥特瑙斯.png'
         ) == 255276
         with pytest.raises(FileNotFoundError):
             _ = hf_tar_file_size(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='愚人节奥特瑙斯.png'
             )
@@ -110,7 +110,7 @@ class TestIndexFetch:
     def test_hf_tar_file_download_small(self):
         with isolated_directory():
             hf_tar_file_download(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='.meta.json',
                 local_file='.meta.json'
@@ -122,7 +122,7 @@ class TestIndexFetch:
             '.meta.json': get_testfile('skin_mashu', '.meta.json')
         }):
             hf_tar_file_download(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='.meta.json',
                 local_file='.meta.json'
@@ -134,7 +134,7 @@ class TestIndexFetch:
             '.meta.json': get_testfile('skin_mashu', '愚人节_奥特瑙斯.png')
         }):
             hf_tar_file_download(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='.meta.json',
                 local_file='.meta.json'
@@ -144,7 +144,7 @@ class TestIndexFetch:
     def test_hf_tar_file_download_lfs(self):
         with isolated_directory():
             hf_tar_file_download(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='./愚人节_奥特瑙斯.png',
                 local_file='愚人节_奥特瑙斯.png'
@@ -156,7 +156,7 @@ class TestIndexFetch:
             '愚人节_奥特瑙斯.png': get_testfile('skin_mashu', '愚人节_奥特瑙斯.png')
         }):
             hf_tar_file_download(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='./愚人节_奥特瑙斯.png',
                 local_file='愚人节_奥特瑙斯.png'
@@ -168,7 +168,7 @@ class TestIndexFetch:
             '愚人节_奥特瑙斯.png': get_testfile('skin_mashu', '.meta.json')
         }):
             hf_tar_file_download(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='./愚人节_奥特瑙斯.png',
                 local_file='愚人节_奥特瑙斯.png'
@@ -178,7 +178,7 @@ class TestIndexFetch:
     def test_hf_tar_file_download_not_found(self):
         with isolated_directory(), pytest.raises(FileNotFoundError):
             hf_tar_file_download(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='./愚人节奥特瑙斯.png',
                 local_file='愚人节_奥特瑙斯.png'
@@ -187,7 +187,7 @@ class TestIndexFetch:
     def test_hf_tar_file_download_subdir(self):
         with isolated_directory():
             hf_tar_file_download(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='ex3.tar',
                 file_in_archive='artoria_caster_third_ascension_fate/sankaku_21305298.jpg',
                 local_file='f/ac.jpg'
@@ -208,7 +208,7 @@ class TestIndexFetch:
     def test_hf_tar_file_write_bytes_lfs_bytes(self):
         with isolated_directory(), io.BytesIO() as bf:
             hf_tar_file_write_bytes(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='./愚人节_奥特瑙斯.png',
                 bin_file=bf,
@@ -230,7 +230,7 @@ class TestIndexFetch:
         with isolated_directory():
             with open('愚人节_奥特瑙斯.png', 'wb') as bf:
                 hf_tar_file_write_bytes(
-                    repo_id='narugo/test_cos5t_tars',
+                    repo_id='narugo1992/test_cos5t_tars',
                     archive_in_repo='mashu_skins.tar',
                     file_in_archive='./愚人节_奥特瑙斯.png',
                     bin_file=bf
@@ -252,7 +252,7 @@ class TestIndexFetch:
     def test_hf_tar_file_write_bytes_not_found(self):
         with io.BytesIO() as bf, pytest.raises(FileNotFoundError):
             hf_tar_file_write_bytes(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='./愚人节奥特瑙斯.png',
                 bin_file=bf,
@@ -262,7 +262,7 @@ class TestIndexFetch:
         with isolated_directory(), io.BytesIO() as bf:
             bf.write(b'append_prefix_')
             hf_tar_file_write_bytes(
-                repo_id='narugo/test_cos5t_tars',
+                repo_id='narugo1992/test_cos5t_tars',
                 archive_in_repo='mashu_skins.tar',
                 file_in_archive='./愚人节_奥特瑙斯.png',
                 bin_file=bf,

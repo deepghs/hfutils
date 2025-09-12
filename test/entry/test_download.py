@@ -24,7 +24,7 @@ class TestEntryDownload:
         with isolated_directory():
             result = simulate_entry(hfutilscli, [
                 'hfutils', 'download',
-                '-r', 'narugo/test_ds_repo',
+                '-r', 'narugo1992/test_ds_repo',
                 '-a', 'surtr_dataset.zip',
                 '-o', 'download_dir'
             ])

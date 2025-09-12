@@ -8,7 +8,7 @@ from hfutils.operate import download_directory_as_directory
 def local_narugo_test_cos5t_tars():
     with TemporaryDirectory() as td:
         download_directory_as_directory(
-            repo_id='narugo/test_cos5t_tars',
+            repo_id='narugo1992/test_cos5t_tars',
             repo_type='dataset',
             local_directory=td,
         )

@@ -24,7 +24,7 @@ class TestOperateBase:
 
     def test_list_files_in_repository_revision(self):
         files = list_files_in_repository(
-            repo_id='narugo/test_ds_repo',
+            repo_id='narugo1992/test_ds_repo',
             repo_type='dataset',
             revision='another_branch',
         )

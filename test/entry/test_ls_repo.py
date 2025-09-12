@@ -27,8 +27,8 @@ class TestEntryLsRepo:
         ])
         assert result.exitcode == 0
         repos = click.unstyle(result.stdout).splitlines(keepends=False)
-        assert 'narugo/manual_packs' in repos
-        assert 'narugo/csip_v1_info' in repos
+        assert 'narugo1992/manual_packs' in repos
+        assert 'narugo1992/csip_v1_info' in repos
 
     def test_ls_repo_space(self):
         result = simulate_entry(hfutilscli, [
@@ -36,8 +36,8 @@ class TestEntryLsRepo:
         ])
         assert result.exitcode == 0
         repos = click.unstyle(result.stdout).splitlines(keepends=False)
-        assert 'narugo/jupyterlab' in repos
-        assert 'narugo/CDC_anime_demo' in repos
+        assert 'narugo1992/jupyterlab' in repos
+        assert 'narugo1992/CDC_anime_demo' in repos
 
     def test_ls_repo_model(self):
         result = simulate_entry(hfutilscli, [
@@ -45,9 +45,9 @@ class TestEntryLsRepo:
         ])
         assert result.exitcode == 0
         repos = click.unstyle(result.stdout).splitlines(keepends=False)
-        assert 'narugo/gchar_models' in repos
-        assert 'narugo/test_v1.5_kristen' in repos
-        assert 'narugo/test_v1.5_nian' in repos
+        assert 'narugo1992/gchar_models' in repos
+        assert 'narugo1992/test_v1.5_kristen' in repos
+        assert 'narugo1992/test_v1.5_nian' in repos
 
     def test_ls_repo_anonymous(self, no_hf_token):
         result = simulate_entry(hfutilscli, [
