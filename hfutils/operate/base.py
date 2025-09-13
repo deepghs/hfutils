@@ -18,10 +18,10 @@ import os
 from functools import lru_cache
 from typing import Literal, List, Optional, Union, Tuple
 
-import wcmatch.fnmatch as fnmatch
 from huggingface_hub import HfApi, HfFileSystem
 from huggingface_hub.errors import RepositoryNotFoundError, GatedRepoError, DisabledRepoError, RevisionNotFoundError
 from huggingface_hub.hf_api import RepoFolder, RepoFile
+from wcmatch import glob
 
 from ..utils import hf_normpath
 
@@ -156,7 +156,7 @@ def _fn_path_pattern_subdir(pattern: Union[List[str], str], subdir: str) -> Unio
 
 
 def hf_repo_glob(
-        repo_id: str, pattern: Union[List[str], str] = '*', repo_type: RepoTypeTyping = 'dataset',
+        repo_id: str, pattern: Union[List[str], str] = '**/*', repo_type: RepoTypeTyping = 'dataset',
         revision: str = 'main', include_files: bool = True, include_directories: bool = False,
         raise_when_base_not_exist: bool = False, hf_token: Optional[str] = None,
 ) -> List[Union[RepoFile, RepoFolder]]:
@@ -167,9 +167,25 @@ def hf_repo_glob(
     repository, similar to filesystem globbing. It supports wildcard patterns and
     negation patterns for flexible file selection.
 
+    .. note::
+        Pattern matching syntax supports:
+
+        - `*`: Matches everything except slashes (single level)
+        - `**`: Matches zero or more directories recursively (requires GLOBSTAR flag, which is enabled)
+        - `?`: Matches any single character
+        - `[seq]`: Matches any character in sequence
+        - `[!seq]`: Matches any character not in sequence
+        - `!pattern`: Negation pattern when used at start (requires NEGATE flag, which is enabled)
+        - Multiple patterns can be provided as a list
+        - Negation patterns filter out matches from inclusion patterns
+        - Dot files are matched by default (DOTMATCH flag is enabled)
+
+        Note that `*` only matches at a single directory level, while `**/*` matches
+        recursively including subdirectories and the top level.
+
     :param repo_id: The identifier of the repository.
     :type repo_id: str
-    :param pattern: Wildcard pattern(s) to match files and folders. Default is '*' (all items).
+    :param pattern: Wildcard pattern(s) to match files and folders. Default is '**/*' (all items).
     :type pattern: Union[List[str], str]
     :param repo_type: The type of the repository ('dataset', 'model', 'space'). Default is 'dataset'.
     :type repo_type: RepoTypeTyping
@@ -197,7 +213,9 @@ def hf_repo_glob(
         >>> # Get all Python files in a repository
         >>> files = hf_repo_glob("username/repo", pattern="*.py")
         >>> # Get all files except hidden ones
-        >>> files = hf_repo_glob("username/repo", pattern=["*", "!.*"])
+        >>> files = hf_repo_glob("username/repo", pattern=["**/*", "!.*"])
+        >>> # Get only directories
+        >>> dirs = hf_repo_glob("username/repo", pattern="**/*", include_files=False, include_directories=True)
     """
     hf_client = get_hf_client(hf_token=hf_token)
     pattern = _fn_path_pattern_norm(pattern)
@@ -213,10 +231,10 @@ def hf_repo_glob(
             if (
                     (include_files and isinstance(item, RepoFile)) or
                     (include_directories and isinstance(item, RepoFolder))
-            ) and fnmatch.fnmatch(
+            ) and glob.globmatch(
                 filename=hf_normpath(item.path),
                 patterns=pattern,
-                flags=(fnmatch.CASE | fnmatch.NEGATE | fnmatch.NEGATEALL | fnmatch.DOTMATCH),
+                flags=(glob.CASE | glob.NEGATE | glob.NEGATEALL | glob.DOTMATCH | glob.GLOBSTAR),
             ):
                 items.append(item)
     except (RepositoryNotFoundError, GatedRepoError, DisabledRepoError, RevisionNotFoundError):
@@ -229,7 +247,7 @@ def hf_repo_glob(
 
 
 def list_all_with_pattern(
-        repo_id: str, pattern: Union[List[str], str] = '*', repo_type: RepoTypeTyping = 'dataset',
+        repo_id: str, pattern: Union[List[str], str] = '**/*', repo_type: RepoTypeTyping = 'dataset',
         revision: str = 'main', raise_when_base_not_exist: bool = False, hf_token: Optional[str] = None
 ) -> List[Union[RepoFile, RepoFolder]]:
     """
@@ -240,7 +258,7 @@ def list_all_with_pattern(
 
     :param repo_id: The identifier of the repository.
     :type repo_id: str
-    :param pattern: Wildcard pattern(s) to match files and folders. Default is '*' (all files and folders).
+    :param pattern: Wildcard pattern(s) to match files and folders. Default is '**/*' (all files and folders).
     :type pattern: Union[List[str], str]
     :param repo_type: The type of the repository ('dataset', 'model', 'space'). Default is 'dataset'.
     :type repo_type: RepoTypeTyping
@@ -274,7 +292,7 @@ def list_all_with_pattern(
 
 
 _PATTERN_UNSET = object()
-_DEFAULT_PATTERN_WITH_IGNORE = ['*', '!.git*']
+_DEFAULT_PATTERN_WITH_IGNORE = ['**/*', '!.git*']
 
 
 def list_repo_files_in_repository(

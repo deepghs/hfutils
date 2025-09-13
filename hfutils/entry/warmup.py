@@ -121,7 +121,7 @@ def _add_warmup_subcommand(cli: click.Group) -> click.Group:
                 repo_id=repo_id,
                 repo_type=repo_type,
                 dir_in_repo=dir_in_repo,
-                pattern=wildcard or (['*', '!.git*'] if not show_all else '*'),
+                pattern=wildcard or (['**/*', '!.git*'] if not show_all else '*'),
                 revision=revision,
                 silent=False,
                 max_workers=max_workers,

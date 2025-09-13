@@ -59,7 +59,7 @@ def hf_warmup_file(repo_id: str, filename: str, repo_type: RepoTypeTyping = 'dat
     )
 
 
-def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: Union[List[str], str] = '*',
+def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: Union[List[str], str] = '**/*',
                         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main', silent: bool = False,
                         max_workers: int = 8, max_retries: int = 5, hf_token: Optional[str] = None,
                         cache_dir: Optional[str] = None):
@@ -74,7 +74,7 @@ def hf_warmup_directory(repo_id: str, dir_in_repo: str = '.', pattern: Union[Lis
     :type repo_id: str
     :param dir_in_repo: Directory path within the repository to download, defaults to '.' (root)
     :type dir_in_repo: str
-    :param pattern: Glob pattern for filtering files (e.g., '*.txt' for text files only), defaults to '*'
+    :param pattern: Glob pattern for filtering files (e.g., '*.txt' for text files only), defaults to '**/*'
     :type pattern: Union[List[str], str]
     :param repo_type: Type of repository ('dataset', 'model', etc.), defaults to 'dataset'
     :type repo_type: RepoTypeTyping

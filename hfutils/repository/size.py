@@ -311,7 +311,7 @@ SortByTyping = Literal['none', 'path', 'size']
 
 
 def hf_hub_repo_analysis(
-        repo_id: str, pattern: Union[List[str], str] = '*', repo_type: RepoTypeTyping = 'dataset',
+        repo_id: str, pattern: Union[List[str], str] = '**/*', repo_type: RepoTypeTyping = 'dataset',
         revision: str = 'main', hf_token: Optional[str] = None,
         subdir: str = '', sort_by: SortByTyping = 'path', **kwargs,
 ) -> RepoFileList:
@@ -324,7 +324,7 @@ def hf_hub_repo_analysis(
 
     :param repo_id: The ID of the repository to analyze.
     :type repo_id: str
-    :param pattern: A glob pattern or list of patterns to filter files (default: '*').
+    :param pattern: A glob pattern or list of patterns to filter files (default: '**/*').
     :type pattern: Union[List[str], str]
     :param repo_type: The type of the repository (default: 'dataset').
     :type repo_type: RepoTypeTyping

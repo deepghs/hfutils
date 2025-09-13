@@ -78,6 +78,47 @@ class TestOperateBase:
         should_not_exists_2 = ['mobilenetv3_v0_dist', 'caformer_s36_v0']
         assert not (set(should_not_exists_2) & set(files))
 
+    def test_list_files_in_repository_model_low(self):
+        files = list_files_in_repository(
+            'deepghs/anime_real_cls', repo_type='model',
+            pattern=['*', '!.git*'],
+        )
+        should_exists = [
+            'README.md',
+        ]
+        assert (set(should_exists) & set(files)) == set(should_exists)
+        assert not (set(should_not_exists) & set(files))
+
+        should_not_exists_2 = [
+            'mobilenetv3_v0_dist',
+            'caformer_s36_v0',
+            'caformer_s36_v0/meta.json',
+            'caformer_s36_v0/metrics.json',
+            'caformer_s36_v0/model.ckpt',
+            'caformer_s36_v0/model.onnx',
+            'caformer_s36_v0/plot_confusion.png',
+            'caformer_s36_v0/plot_f1_curve.png',
+            'caformer_s36_v0/plot_p_curve.png',
+            'caformer_s36_v0/plot_pr_curve.png',
+            'caformer_s36_v0/plot_r_curve.png',
+            'caformer_s36_v0/plot_roc_curve.png',
+            'caformer_s36_v0/plot_sample_anime.png',
+            'caformer_s36_v0/plot_sample_real.png',
+            'mobilenetv3_v0_dist/meta.json',
+            'mobilenetv3_v0_dist/metrics.json',
+            'mobilenetv3_v0_dist/model.ckpt',
+            'mobilenetv3_v0_dist/model.onnx',
+            'mobilenetv3_v0_dist/plot_confusion.png',
+            'mobilenetv3_v0_dist/plot_f1_curve.png',
+            'mobilenetv3_v0_dist/plot_p_curve.png',
+            'mobilenetv3_v0_dist/plot_pr_curve.png',
+            'mobilenetv3_v0_dist/plot_r_curve.png',
+            'mobilenetv3_v0_dist/plot_roc_curve.png',
+            'mobilenetv3_v0_dist/plot_sample_anime.png',
+            'mobilenetv3_v0_dist/plot_sample_real.png'
+        ]
+        assert not (set(should_not_exists_2) & set(files))
+
     def test_list_files_in_repository_subdir(self):
         files = list_files_in_repository('deepghs/anime_real_cls', repo_type='model', subdir='caformer_s36_v0')
         should_exists = [

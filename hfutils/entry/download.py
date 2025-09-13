@@ -162,7 +162,7 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
                 local_directory=output_path,
                 repo_id=repo_id,
                 dir_in_repo=dir_in_repo,
-                pattern=wildcard or (['*', '!.git*'] if not show_all else '*'),
+                pattern=wildcard or (['**/*', '!.git*'] if not show_all else '*'),
                 repo_type=repo_type,
                 revision=revision,
                 silent=False,

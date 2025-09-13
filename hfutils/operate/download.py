@@ -188,7 +188,7 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
 
 
 def download_directory_as_directory(
-        local_directory: str, repo_id: str, dir_in_repo: str = '.', pattern: Union[List[str], str] = '*',
+        local_directory: str, repo_id: str, dir_in_repo: str = '.', pattern: Union[List[str], str] = '**/*',
         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main', silent: bool = False,
         max_workers: int = 8, max_retries: int = 5,
         soft_mode_when_check: bool = False, hf_token: Optional[str] = None
