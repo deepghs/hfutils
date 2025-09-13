@@ -1,7 +1,9 @@
 import pytest
+from huggingface_hub.errors import RepositoryNotFoundError
+from huggingface_hub.hf_api import RepoFile
 from natsort import natsorted
 
-from hfutils.operate import list_files_in_repository, list_all_with_pattern
+from hfutils.operate import list_files_in_repository, list_all_with_pattern, hf_repo_glob
 
 should_not_exists = [
     '.gitignore',
@@ -11,6 +13,167 @@ should_not_exists = [
 
 @pytest.mark.unittest
 class TestOperateBase:
+    def test_hf_repo_glob(self):
+        repo_files = hf_repo_glob('deepghs/anime_real_cls', repo_type='model')
+        for repo_file in repo_files:
+            assert isinstance(repo_file, RepoFile)
+        files = [repo_file.path for repo_file in repo_files]
+        should_exists = [
+            '.gitattributes',
+            'README.md',
+            'caformer_s36_v0/meta.json',
+            'caformer_s36_v0/metrics.json',
+            'caformer_s36_v0/model.ckpt',
+            'caformer_s36_v0/model.onnx',
+            'caformer_s36_v0/plot_confusion.png',
+            'caformer_s36_v0/plot_f1_curve.png',
+            'caformer_s36_v0/plot_p_curve.png',
+            'caformer_s36_v0/plot_pr_curve.png',
+            'caformer_s36_v0/plot_r_curve.png',
+            'caformer_s36_v0/plot_roc_curve.png',
+            'caformer_s36_v0/plot_sample_anime.png',
+            'caformer_s36_v0/plot_sample_real.png',
+            'mobilenetv3_v0_dist/meta.json',
+            'mobilenetv3_v0_dist/metrics.json',
+            'mobilenetv3_v0_dist/model.ckpt',
+            'mobilenetv3_v0_dist/model.onnx',
+            'mobilenetv3_v0_dist/plot_confusion.png',
+            'mobilenetv3_v0_dist/plot_f1_curve.png',
+            'mobilenetv3_v0_dist/plot_p_curve.png',
+            'mobilenetv3_v0_dist/plot_pr_curve.png',
+            'mobilenetv3_v0_dist/plot_r_curve.png',
+            'mobilenetv3_v0_dist/plot_roc_curve.png',
+            'mobilenetv3_v0_dist/plot_sample_anime.png',
+            'mobilenetv3_v0_dist/plot_sample_real.png'
+        ]
+        assert (set(should_exists) & set(files)) == set(should_exists)
+
+        should_not_exists_2 = ['mobilenetv3_v0_dist', 'caformer_s36_v0']
+        assert not (set(should_not_exists_2) & set(files))
+
+    def test_hf_repo_glob_with_pattern(self):
+        repo_files = hf_repo_glob('deepghs/anime_real_cls', repo_type='model', pattern=['*', '!.git*'])
+        for repo_file in repo_files:
+            assert isinstance(repo_file, RepoFile)
+        files = [repo_file.path for repo_file in repo_files]
+        should_exists = [
+            'README.md',
+        ]
+        assert (set(should_exists) & set(files)) == set(should_exists)
+        assert not (set(should_not_exists) & set(files))
+
+        should_not_exists_2 = [
+            'mobilenetv3_v0_dist',
+            'caformer_s36_v0',
+            'caformer_s36_v0/meta.json',
+            'caformer_s36_v0/metrics.json',
+            'caformer_s36_v0/model.ckpt',
+            'caformer_s36_v0/model.onnx',
+            'caformer_s36_v0/plot_confusion.png',
+            'caformer_s36_v0/plot_f1_curve.png',
+            'caformer_s36_v0/plot_p_curve.png',
+            'caformer_s36_v0/plot_pr_curve.png',
+            'caformer_s36_v0/plot_r_curve.png',
+            'caformer_s36_v0/plot_roc_curve.png',
+            'caformer_s36_v0/plot_sample_anime.png',
+            'caformer_s36_v0/plot_sample_real.png',
+            'mobilenetv3_v0_dist/meta.json',
+            'mobilenetv3_v0_dist/metrics.json',
+            'mobilenetv3_v0_dist/model.ckpt',
+            'mobilenetv3_v0_dist/model.onnx',
+            'mobilenetv3_v0_dist/plot_confusion.png',
+            'mobilenetv3_v0_dist/plot_f1_curve.png',
+            'mobilenetv3_v0_dist/plot_p_curve.png',
+            'mobilenetv3_v0_dist/plot_pr_curve.png',
+            'mobilenetv3_v0_dist/plot_r_curve.png',
+            'mobilenetv3_v0_dist/plot_roc_curve.png',
+            'mobilenetv3_v0_dist/plot_sample_anime.png',
+            'mobilenetv3_v0_dist/plot_sample_real.png'
+        ]
+        assert not (set(should_not_exists_2) & set(files))
+
+    def test_hf_repo_glob_return_path(self):
+        files = hf_repo_glob('deepghs/anime_real_cls', repo_type='model', return_path=True)
+        should_exists = [
+            '.gitattributes',
+            'README.md',
+            'caformer_s36_v0/meta.json',
+            'caformer_s36_v0/metrics.json',
+            'caformer_s36_v0/model.ckpt',
+            'caformer_s36_v0/model.onnx',
+            'caformer_s36_v0/plot_confusion.png',
+            'caformer_s36_v0/plot_f1_curve.png',
+            'caformer_s36_v0/plot_p_curve.png',
+            'caformer_s36_v0/plot_pr_curve.png',
+            'caformer_s36_v0/plot_r_curve.png',
+            'caformer_s36_v0/plot_roc_curve.png',
+            'caformer_s36_v0/plot_sample_anime.png',
+            'caformer_s36_v0/plot_sample_real.png',
+            'mobilenetv3_v0_dist/meta.json',
+            'mobilenetv3_v0_dist/metrics.json',
+            'mobilenetv3_v0_dist/model.ckpt',
+            'mobilenetv3_v0_dist/model.onnx',
+            'mobilenetv3_v0_dist/plot_confusion.png',
+            'mobilenetv3_v0_dist/plot_f1_curve.png',
+            'mobilenetv3_v0_dist/plot_p_curve.png',
+            'mobilenetv3_v0_dist/plot_pr_curve.png',
+            'mobilenetv3_v0_dist/plot_r_curve.png',
+            'mobilenetv3_v0_dist/plot_roc_curve.png',
+            'mobilenetv3_v0_dist/plot_sample_anime.png',
+            'mobilenetv3_v0_dist/plot_sample_real.png'
+        ]
+        assert (set(should_exists) & set(files)) == set(should_exists)
+
+        should_not_exists_2 = ['mobilenetv3_v0_dist', 'caformer_s36_v0']
+        assert not (set(should_not_exists_2) & set(files))
+
+    def test_hf_repo_glob_return_path_with_pattern(self):
+        files = hf_repo_glob('deepghs/anime_real_cls', repo_type='model',
+                             pattern=['*', '!.git*'], return_path=True)
+        should_exists = [
+            'README.md',
+        ]
+        assert (set(should_exists) & set(files)) == set(should_exists)
+        assert not (set(should_not_exists) & set(files))
+
+        should_not_exists_2 = [
+            'mobilenetv3_v0_dist',
+            'caformer_s36_v0',
+            'caformer_s36_v0/meta.json',
+            'caformer_s36_v0/metrics.json',
+            'caformer_s36_v0/model.ckpt',
+            'caformer_s36_v0/model.onnx',
+            'caformer_s36_v0/plot_confusion.png',
+            'caformer_s36_v0/plot_f1_curve.png',
+            'caformer_s36_v0/plot_p_curve.png',
+            'caformer_s36_v0/plot_pr_curve.png',
+            'caformer_s36_v0/plot_r_curve.png',
+            'caformer_s36_v0/plot_roc_curve.png',
+            'caformer_s36_v0/plot_sample_anime.png',
+            'caformer_s36_v0/plot_sample_real.png',
+            'mobilenetv3_v0_dist/meta.json',
+            'mobilenetv3_v0_dist/metrics.json',
+            'mobilenetv3_v0_dist/model.ckpt',
+            'mobilenetv3_v0_dist/model.onnx',
+            'mobilenetv3_v0_dist/plot_confusion.png',
+            'mobilenetv3_v0_dist/plot_f1_curve.png',
+            'mobilenetv3_v0_dist/plot_p_curve.png',
+            'mobilenetv3_v0_dist/plot_pr_curve.png',
+            'mobilenetv3_v0_dist/plot_r_curve.png',
+            'mobilenetv3_v0_dist/plot_roc_curve.png',
+            'mobilenetv3_v0_dist/plot_sample_anime.png',
+            'mobilenetv3_v0_dist/plot_sample_real.png'
+        ]
+        assert not (set(should_not_exists_2) & set(files))
+
+    def test_hf_repo_glob_repo_not_exist(self):
+        assert hf_repo_glob('deepghs/highres_datasets', repo_type='model') == []
+
+    def test_hf_repo_glob_repo_not_exist_raise(self):
+        with pytest.raises(RepositoryNotFoundError):
+            hf_repo_glob('deepghs/highres_datasets', repo_type='model',
+                         raise_when_base_not_exist=True)
+
     def test_list_files_in_repository(self):
         files = list_files_in_repository('deepghs/highres_datasets')
         should_exists = [
