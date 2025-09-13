@@ -432,7 +432,7 @@
 <div class="viewcode-block" id="hf_hub_repo_analysis">
 <a class="viewcode-back" href="../../../api_doc/repository/size.html#hfutils.repository.size.hf_hub_repo_analysis">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">hf_hub_repo_analysis</span><span class="p">(</span>
-        <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span>
         <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">subdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sort_by</span><span class="p">:</span> <span class="n">SortByTyping</span> <span class="o">=</span> <span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RepoFileList</span><span class="p">:</span>
@@ -445,7 +445,7 @@
 
 <span class="sd">    :param repo_id: The ID of the repository to analyze.</span>
 <span class="sd">    :type repo_id: str</span>
-<span class="sd">    :param pattern: A glob pattern or list of patterns to filter files (default: &#39;*&#39;).</span>
+<span class="sd">    :param pattern: A glob pattern or list of patterns to filter files (default: &#39;**/*&#39;).</span>
 <span class="sd">    :type pattern: Union[List[str], str]</span>
 <span class="sd">    :param repo_type: The type of the repository (default: &#39;dataset&#39;).</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
