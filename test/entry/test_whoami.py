@@ -28,7 +28,7 @@ class TestEntryWhoami:
         assert result.exitcode == 0
         text = click.unstyle(result.stdout)
         lines = text.splitlines(keepends=False)
-        assert 'Hi, @narugo (full name: narugo1992).' in lines
+        assert 'Hi, @narugo1992 (full name: Naomi Rue Golding).' in lines
         assert 'You can access all resources with this identification.' in lines
         for org_info in [
             '@waifu-research-department (full name: The Waifu Research Department)',

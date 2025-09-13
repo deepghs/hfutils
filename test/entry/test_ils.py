@@ -10,7 +10,7 @@ class TestEntryIls:
     def test_simple_ils_basic(self):
         result = simulate_entry(hfutilscli, [
             'hfutils', 'ils',
-            '-r', 'narugo/test_cos5t_tars',
+            '-r', 'narugo1992/test_cos5t_tars',
             '-a', 'mashu_skins.tar',
         ])
         assert result.exitcode == 0
@@ -37,7 +37,7 @@ class TestEntryIls:
     def test_ils_desc(self):
         result = simulate_entry(hfutilscli, [
             'hfutils', 'ils',
-            '-r', 'narugo/test_cos5t_tars',
+            '-r', 'narugo1992/test_cos5t_tars',
             '-a', 'mashu_skins.tar',
             '-o', 'desc',
         ])
@@ -63,7 +63,7 @@ class TestEntryIls:
         ]
 
     def test_ils_default(self):
-        result = simulate_entry(hfutilscli, ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar'])
+        result = simulate_entry(hfutilscli, ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "常夏的泳装Ver_02.png",
@@ -87,7 +87,7 @@ class TestEntryIls:
 
     def test_ils_desc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-o',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-o',
                                  'desc'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
@@ -112,7 +112,7 @@ class TestEntryIls:
 
     def test_ils_name_asc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
                                  'name'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
@@ -137,7 +137,7 @@ class TestEntryIls:
 
     def test_ils_name_desc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
                                  'name', '-o', 'desc'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
@@ -162,7 +162,7 @@ class TestEntryIls:
 
     def test_ils_size_asc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
                                  'size'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
@@ -187,7 +187,7 @@ class TestEntryIls:
 
     def test_ils_size_desc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
                                  'size', '-o', 'desc'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
@@ -212,7 +212,7 @@ class TestEntryIls:
 
     def test_ils_detailed_default(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l'])
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "   1536 |     常夏的泳装Ver_02.png 217.118 KiB a5e55da02440901b249f215135fb6dc2745ed7872b310989ac2426408cd2b88d",
@@ -236,7 +236,7 @@ class TestEntryIls:
 
     def test_ils_detailed_desc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-o',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-o',
                                  'desc'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
@@ -261,7 +261,7 @@ class TestEntryIls:
 
     def test_ils_detailed_name_asc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
                                  'name'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
@@ -286,7 +286,7 @@ class TestEntryIls:
 
     def test_ils_detailed_name_desc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
                                  'name', '-o', 'desc'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
@@ -311,7 +311,7 @@ class TestEntryIls:
 
     def test_ils_detailed_size_asc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
                                  'size'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
@@ -336,7 +336,7 @@ class TestEntryIls:
 
     def test_ils_detailed_size_desc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
                                  'size', '-o', 'desc'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
@@ -361,10 +361,10 @@ class TestEntryIls:
 
     def test_ils_information(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-I'])
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-I'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
-            "Repo ID: narugo/test_cos5t_tars",
+            "Repo ID: narugo1992/test_cos5t_tars",
             "Repo Type: dataset",
             "Revision: main",
             "Archive File: mashu_skins.tar",
@@ -395,11 +395,11 @@ class TestEntryIls:
 
     def test_ils_information_not_match(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo/test_cos5t_tars', '-a', 'mashu_skins.tar', '-I', '-i',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-I', '-i',
                                  'ex3.json'])
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
-            "Repo ID: narugo/test_cos5t_tars",
+            "Repo ID: narugo1992/test_cos5t_tars",
             "Repo Type: dataset",
             "Revision: main",
             "Archive File: mashu_skins.tar",

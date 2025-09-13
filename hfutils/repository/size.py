@@ -18,7 +18,7 @@ import os.path
 from collections.abc import Sequence
 from dataclasses import dataclass
 from operator import itemgetter
-from typing import Optional, List, Literal, Tuple
+from typing import Optional, List, Literal, Tuple, Union
 
 from hbutils.scale import size_to_bytes_str
 from hbutils.string import plural_word, format_tree
@@ -35,13 +35,26 @@ class RepoFileItem:
     Represents a file item in a Hugging Face repository.
 
     This class encapsulates metadata about a single file, including its path,
-    size, LFS status, and blob ID.
+    size, LFS status, and blob ID. It provides methods for creating instances
+    from RepoFile objects and accessing file information.
 
     :param path: The file path relative to the repository root.
+    :type path: str
     :param size: The size of the file in bytes.
+    :type size: int
     :param is_lfs: Whether the file is stored using Git LFS.
+    :type is_lfs: bool
     :param lfs_sha256: The SHA256 hash of the LFS file, if applicable.
+    :type lfs_sha256: Optional[str]
     :param blob_id: The Git blob ID of the file.
+    :type blob_id: str
+
+    Example::
+        >>> from huggingface_hub.hf_api import RepoFile
+        >>> repo_file = RepoFile(path="model.bin", size=1024, blob_id="abc123")
+        >>> item = RepoFileItem.from_repo_file(repo_file)
+        >>> print(item.path)
+        model.bin
     """
 
     path: str
@@ -55,9 +68,21 @@ class RepoFileItem:
         """
         Create a RepoFileItem from a RepoFile object.
 
+        This method converts a RepoFile object from the Hugging Face Hub API
+        into a RepoFileItem instance, handling LFS metadata and path normalization.
+
         :param repo_file: The RepoFile object to convert.
+        :type repo_file: RepoFile
         :param subdir: The subdirectory to use as the base path (default: '').
+        :type subdir: str
         :return: A new RepoFileItem instance.
+        :rtype: RepoFileItem
+
+        Example::
+            >>> repo_file = RepoFile(path="data/file.txt", size=512, blob_id="def456")
+            >>> item = RepoFileItem.from_repo_file(repo_file, subdir="data")
+            >>> print(item.path)
+            file.txt
         """
         subdir = subdir or '.'
         return cls(
@@ -73,7 +98,16 @@ class RepoFileItem:
         """
         Get the path segments of the file.
 
+        This property splits the file path into individual segments, which is
+        useful for path-based sorting and hierarchical operations.
+
         :return: A tuple of path segments.
+        :rtype: Tuple[str, ...]
+
+        Example::
+            >>> item = RepoFileItem("folder/subfolder/file.txt", 100, False, None, "abc123")
+            >>> print(item.path_segments)
+            ('folder', 'subfolder', 'file.txt')
         """
         return tuple(seg for seg in self.path.split('/') if seg and seg != '.')
 
@@ -81,7 +115,16 @@ class RepoFileItem:
         """
         Return a string representation of the RepoFileItem.
 
+        The representation includes the file path, size in human-readable format,
+        and LFS status if applicable.
+
         :return: A formatted string representation.
+        :rtype: str
+
+        Example::
+            >>> item = RepoFileItem("model.bin", 1048576, True, "sha256hash", "blob123")
+            >>> print(repr(item))
+            <RepoFileItem model.bin, size: 1.05 MB (LFS)>
         """
         return (f'<{self.__class__.__name__} {self.path}, size: {size_to_bytes_str(self.size, sigfigs=3, system="si")}'
                 f'{" (LFS)" if self.is_lfs else ""}>')
@@ -93,12 +136,26 @@ class RepoFileList(Sequence):
 
     This class provides a way to manage and analyze a collection of files from a
     Hugging Face repository, including information about the repository itself.
+    It implements the Sequence interface and provides methods for visualization
+    and analysis of the file collection.
 
     :param repo_id: The ID of the repository.
+    :type repo_id: str
     :param items: A list of RepoFileItem objects.
+    :type items: List[RepoFileItem]
     :param repo_type: The type of the repository (default: 'dataset').
+    :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (default: 'main').
+    :type revision: str
     :param subdir: The subdirectory within the repository (default: '').
+    :type subdir: Optional[str]
+
+    Example::
+        >>> items = [RepoFileItem("file1.txt", 100, False, None, "abc"),
+        ...          RepoFileItem("file2.txt", 200, False, None, "def")]
+        >>> file_list = RepoFileList("username/repo", items)
+        >>> print(len(file_list))
+        2
     """
 
     def __init__(self, repo_id: str, items: List[RepoFileItem],
@@ -116,8 +173,18 @@ class RepoFileList(Sequence):
         """
         Get a RepoFileItem by index.
 
+        This method allows the RepoFileList to be accessed like a regular list
+        or sequence, supporting both integer indices and slicing.
+
         :param index: The index of the item to retrieve.
+        :type index: int
         :return: The RepoFileItem at the specified index.
+        :rtype: RepoFileItem
+
+        Example::
+            >>> file_list = RepoFileList("repo", [item1, item2, item3])
+            >>> first_item = file_list[0]
+            >>> print(first_item.path)
         """
         return self._file_items[index]
 
@@ -126,6 +193,12 @@ class RepoFileList(Sequence):
         Get the number of items in the list.
 
         :return: The number of RepoFileItems in the list.
+        :rtype: int
+
+        Example::
+            >>> file_list = RepoFileList("repo", [item1, item2])
+            >>> print(len(file_list))
+            2
         """
         return len(self._file_items)
 
@@ -134,7 +207,17 @@ class RepoFileList(Sequence):
         """
         Get the total size of all files in the list.
 
+        This property calculates and returns the sum of all file sizes
+        in the collection, which is useful for understanding the overall
+        storage requirements of the repository or subdirectory.
+
         :return: The total size in bytes.
+        :rtype: int
+
+        Example::
+            >>> file_list = RepoFileList("repo", items)
+            >>> print(f"Total size: {file_list.total_size} bytes")
+            Total size: 1048576 bytes
         """
         return self._total_size
 
@@ -142,8 +225,13 @@ class RepoFileList(Sequence):
         """
         Generate a tree representation of the file list.
 
+        This internal method creates a tree structure for visualization
+        purposes, including repository information and file details.
+
         :param max_items: The maximum number of items to include in the tree (default: 10).
+        :type max_items: Optional[int]
         :return: A tuple containing the tree title and list of tree nodes.
+        :rtype: Tuple[str, List[Tuple[str, List]]]
         """
         title = hf_fs_path(
             repo_id=self.repo_id,
@@ -171,7 +259,19 @@ class RepoFileList(Sequence):
         """
         Return a string representation of the RepoFileList.
 
+        This method provides a tree-like visualization of the file list,
+        showing the repository information and contained files in a
+        hierarchical format.
+
         :return: A formatted string representation of the file list.
+        :rtype: str
+
+        Example::
+            >>> file_list = RepoFileList("username/repo", items)
+            >>> print(file_list)
+            username/repo (2 files, 1.05 MB)
+            ├── <RepoFileItem file1.txt, size: 512 KB>
+            └── <RepoFileItem file2.txt, size: 512 KB>
         """
         return format_tree(
             self._tree(),
@@ -183,8 +283,22 @@ class RepoFileList(Sequence):
         """
         Generate a custom string representation of the RepoFileList.
 
+        This method allows customization of the number of items displayed
+        in the tree representation, which is useful for large file lists.
+
         :param max_items: The maximum number of items to include in the representation (default: 10).
+        :type max_items: Optional[int]
         :return: A formatted string representation of the file list.
+        :rtype: str
+
+        Example::
+            >>> file_list = RepoFileList("username/repo", many_items)
+            >>> print(file_list.repr(max_items=5))
+            username/repo (100 files, 10.5 MB)
+            ├── <RepoFileItem file1.txt, size: 512 KB>
+            ├── <RepoFileItem file2.txt, size: 512 KB>
+            ├── ...
+            └── ... (100 files) in total ...
         """
         return format_tree(
             self._tree(max_items=max_items),
@@ -197,36 +311,54 @@ SortByTyping = Literal['none', 'path', 'size']
 
 
 def hf_hub_repo_analysis(
-        repo_id: str, pattern: str = '**/*', repo_type: RepoTypeTyping = 'dataset',
-        revision: str = 'main', hf_token: Optional[str] = None, silent: bool = False,
+        repo_id: str, pattern: Union[List[str], str] = '**/*', repo_type: RepoTypeTyping = 'dataset',
+        revision: str = 'main', hf_token: Optional[str] = None,
         subdir: str = '', sort_by: SortByTyping = 'path', **kwargs,
 ) -> RepoFileList:
     """
     Analyze the contents of a Hugging Face repository.
 
     This function retrieves file information from a specified repository and creates
-    a RepoFileList object containing detailed information about each file.
+    a RepoFileList object containing detailed information about each file. It supports
+    pattern matching, subdirectory filtering, and various sorting options.
 
     :param repo_id: The ID of the repository to analyze.
-    :param pattern: A glob pattern to filter files (default: '**/*').
+    :type repo_id: str
+    :param pattern: A glob pattern or list of patterns to filter files (default: '**/*').
+    :type pattern: Union[List[str], str]
     :param repo_type: The type of the repository (default: 'dataset').
+    :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository to analyze (default: 'main').
+    :type revision: str
     :param hf_token: The Hugging Face API token (optional).
-    :param silent: Whether to suppress output (default: False).
+    :type hf_token: Optional[str]
     :param subdir: The subdirectory within the repository to analyze (default: '').
+    :type subdir: str
     :param sort_by: How to sort the file list ('none', 'path', or 'size') (default: 'path').
+    :type sort_by: SortByTyping
     :param kwargs: Additional keyword arguments to pass to list_all_with_pattern.
+    :type kwargs: dict
 
     :return: A RepoFileList object containing the analysis results.
+    :rtype: RepoFileList
 
     :raises: May raise exceptions related to API access or file operations.
 
-    Usage:
-        >>> result = hf_hub_repo_analysis('username/repo', pattern='*.txt', repo_type='model')
+    Example::
+        >>> # Analyze all files in a model repository
+        >>> result = hf_hub_repo_analysis('bert-base-uncased', repo_type='model')
+        >>> print(f"Found {len(result)} files")
+        >>>
+        >>> # Analyze only text files in a specific subdirectory
+        >>> result = hf_hub_repo_analysis('username/dataset',
+        ...                              pattern='*.txt',
+        ...                              subdir='data',
+        ...                              sort_by='size')
         >>> print(result)
     """
     if subdir and subdir != '.':
-        pattern = f'{subdir}/{pattern}'
+        from ..operate.base import _fn_path_pattern_subdir
+        pattern = _fn_path_pattern_subdir(pattern, subdir)
 
     file_items = []
     for item in list_all_with_pattern(
@@ -235,7 +367,6 @@ def hf_hub_repo_analysis(
             revision=revision,
             pattern=pattern,
             hf_token=hf_token,
-            silent=silent,
             **kwargs
     ):
         if isinstance(item, RepoFile):

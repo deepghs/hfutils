@@ -142,7 +142,6 @@ class TestRepoFileList:
     def test_hf_hub_repo_analysis(self):
         repo_file_list = hf_hub_repo_analysis(
             repo_id='deepghs/gelbooru_index',
-            silent=True,
         )
         assert repo_file_list.repo_id == 'deepghs/gelbooru_index'
         assert repo_file_list.repo_type == 'dataset'
@@ -159,7 +158,6 @@ class TestRepoFileList:
     def test_hf_hub_repo_analysis_subdir(self):
         repo_file_list = hf_hub_repo_analysis(
             repo_id='deepghs/gelbooru_index',
-            silent=True,
             subdir='tables',
         )
         assert repo_file_list.repo_id == 'deepghs/gelbooru_index'

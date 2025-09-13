@@ -26,12 +26,12 @@ import logging
 import os.path
 import shutil
 from concurrent.futures import ThreadPoolExecutor
-from typing import List, Optional
+from typing import Optional, Union, List
 
 import requests.exceptions
 from huggingface_hub.hf_api import RepoFile
 
-from .base import RepoTypeTyping, _IGNORE_PATTERN_UNSET, get_hf_client, \
+from .base import RepoTypeTyping, get_hf_client, \
     list_repo_files_in_repository
 from .validate import is_local_file_ready, _raw_check_local_file
 from ..archive import archive_unpack
@@ -45,21 +45,34 @@ def _raw_download_file(td: str, local_file: str, repo_id: str, file_in_repo: str
     Download a file from a Hugging Face repository to a temporary directory and then move it to the final location.
 
     This internal function handles the actual download process using the Hugging Face Hub client.
+    It downloads the file to a temporary location first and then moves it to the final destination
+    to ensure atomic file operations and prevent partial downloads from corrupting the target file.
 
-    :param td: Temporary directory path.
+    :param td: Temporary directory path where the file will be initially downloaded.
     :type td: str
     :param local_file: The final local file path where the downloaded file will be moved.
     :type local_file: str
-    :param repo_id: The identifier of the repository.
+    :param repo_id: The identifier of the repository (e.g., 'username/repo-name').
     :type repo_id: str
-    :param file_in_repo: The file path within the repository.
+    :param file_in_repo: The file path within the repository relative to the repository root.
     :type file_in_repo: str
     :param repo_type: The type of the repository ('dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping
-    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :param revision: The revision of the repository (e.g., branch name, tag, commit hash).
     :type revision: str
-    :param hf_token: Hugging Face token for API client.
+    :param hf_token: Hugging Face authentication token for accessing private repositories.
     :type hf_token: str, optional
+
+    Example::
+        >>> import tempfile
+        >>> with tempfile.TemporaryDirectory() as td:
+        ...     _raw_download_file(
+        ...         td=td,
+        ...         local_file="/path/to/local/file.txt",
+        ...         repo_id="username/dataset",
+        ...         file_in_repo="data/file.txt",
+        ...         repo_type="dataset"
+        ...     )
     """
     hf_client = get_hf_client(hf_token=hf_token)
     relative_filename = os.path.join(*file_in_repo.split("/"))
@@ -85,20 +98,32 @@ def download_file_to_file(local_file: str, repo_id: str, file_in_repo: str,
     """
     Download a file from a Hugging Face repository and save it to a local file.
 
-    :param local_file: The local file path to save the downloaded file.
+    This function downloads a single file from a Hugging Face repository to a specified local path.
+    It includes validation to check if the local file already exists and is up-to-date, skipping
+    the download if the file is already present and valid.
+
+    :param local_file: The local file path where the downloaded file will be saved.
     :type local_file: str
-    :param repo_id: The identifier of the repository.
+    :param repo_id: The identifier of the repository (e.g., 'username/repo-name').
     :type repo_id: str
-    :param file_in_repo: The file path within the repository.
+    :param file_in_repo: The file path within the repository relative to the repository root.
     :type file_in_repo: str
     :param repo_type: The type of the repository ('dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping
-    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :param revision: The revision of the repository (e.g., branch name, tag, commit hash).
     :type revision: str
-    :param soft_mode_when_check: Just check the size of the expected file when enabled. Default is False.
+    :param soft_mode_when_check: If True, only check the file size for validation instead of full integrity check.
     :type soft_mode_when_check: bool
-    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
+    :param hf_token: Hugging Face authentication token for accessing private repositories.
     :type hf_token: str, optional
+
+    Example::
+        >>> download_file_to_file(
+        ...     local_file="./local_model.bin",
+        ...     repo_id="username/my-model",
+        ...     file_in_repo="pytorch_model.bin",
+        ...     repo_type="model"
+        ... )
     """
     with TemporaryDirectory() as td:
         if os.path.exists(local_file) and is_local_file_ready(
@@ -129,20 +154,32 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
     """
     Download an archive file from a Hugging Face repository and extract it to a local directory.
 
-    :param local_directory: The local directory path to extract the downloaded archive.
+    This function downloads an archive file (such as ZIP, TAR, etc.) from a Hugging Face repository
+    and automatically extracts its contents to the specified local directory. It supports password-protected
+    archives and handles the extraction process transparently.
+
+    :param local_directory: The local directory path where the archive contents will be extracted.
     :type local_directory: str
-    :param repo_id: The identifier of the repository.
+    :param repo_id: The identifier of the repository (e.g., 'username/repo-name').
     :type repo_id: str
-    :param file_in_repo: The file path within the repository.
+    :param file_in_repo: The archive file path within the repository relative to the repository root.
     :type file_in_repo: str
     :param repo_type: The type of the repository ('dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping
-    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :param revision: The revision of the repository (e.g., branch name, tag, commit hash).
     :type revision: str
-    :param password: The password of the archive file.
+    :param password: The password for extracting password-protected archives.
     :type password: str, optional
-    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
+    :param hf_token: Hugging Face authentication token for accessing private repositories.
     :type hf_token: str, optional
+
+    Example::
+        >>> download_archive_as_directory(
+        ...     local_directory="./extracted_data",
+        ...     repo_id="username/dataset",
+        ...     file_in_repo="data.zip",
+        ...     repo_type="dataset"
+        ... )
     """
     with TemporaryDirectory() as td:
         archive_file = os.path.join(td, os.path.basename(file_in_repo))
@@ -151,39 +188,51 @@ def download_archive_as_directory(local_directory: str, repo_id: str, file_in_re
 
 
 def download_directory_as_directory(
-        local_directory: str, repo_id: str, dir_in_repo: str = '.', pattern: str = '**/*',
-        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-        silent: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+        local_directory: str, repo_id: str, dir_in_repo: str = '.', pattern: Union[List[str], str] = '**/*',
+        repo_type: RepoTypeTyping = 'dataset', revision: str = 'main', silent: bool = False,
         max_workers: int = 8, max_retries: int = 5,
         soft_mode_when_check: bool = False, hf_token: Optional[str] = None
 ):
     """
     Download all files in a directory from a Hugging Face repository to a local directory.
 
-    :param local_directory: The local directory path to save the downloaded files.
+    This function recursively downloads all files from a specified directory in a Hugging Face repository
+    to a local directory. It supports concurrent downloads with configurable worker threads, retry mechanisms
+    for failed downloads, and pattern-based file filtering. The function maintains the directory structure
+    from the repository in the local destination.
+
+    :param local_directory: The local directory path where downloaded files will be saved.
     :type local_directory: str
-    :param repo_id: The identifier of the repository.
+    :param repo_id: The identifier of the repository (e.g., 'username/repo-name').
     :type repo_id: str
-    :param dir_in_repo: The directory path within the repository.
+    :param dir_in_repo: The directory path within the repository to download. Use '.' for repository root.
     :type dir_in_repo: str
-    :param pattern: Patterns for filtering.
-    :type pattern: str
+    :param pattern: File patterns for filtering which files to download. Can be a single pattern string or list of patterns.
+    :type pattern: Union[List[str], str]
     :param repo_type: The type of the repository ('dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping
-    :param revision: The revision of the repository (e.g., branch, tag, commit hash).
+    :param revision: The revision of the repository (e.g., branch name, tag, commit hash).
     :type revision: str
-    :param silent: If True, suppress progress bar output.
+    :param silent: If True, suppress progress bar output during download.
     :type silent: bool
-    :param ignore_patterns: List of file patterns to ignore.
-    :type ignore_patterns: List[str]
-    :param max_workers: Max workers when downloading. Default is ``8``.
+    :param max_workers: Maximum number of concurrent download threads.
     :type max_workers: int
-    :param max_retries: Max retry times when downloading. Default is ``5``.
+    :param max_retries: Maximum number of retry attempts for failed downloads.
     :type max_retries: int
-    :param soft_mode_when_check: Just check the size of the expected file when enabled. Default is False.
+    :param soft_mode_when_check: If True, only check file size for validation instead of full integrity check.
     :type soft_mode_when_check: bool
-    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
+    :param hf_token: Hugging Face authentication token for accessing private repositories.
     :type hf_token: str, optional
+
+    Example::
+        >>> download_directory_as_directory(
+        ...     local_directory="./local_dataset",
+        ...     repo_id="username/my-dataset",
+        ...     dir_in_repo="data",
+        ...     pattern="*.json",
+        ...     repo_type="dataset",
+        ...     max_workers=4
+        ... )
     """
     files = list_repo_files_in_repository(
         repo_id=repo_id,
@@ -191,12 +240,19 @@ def download_directory_as_directory(
         subdir=dir_in_repo,
         pattern=pattern,
         revision=revision,
-        ignore_patterns=ignore_patterns,
         hf_token=hf_token,
     )
     progress = tqdm(files, silent=silent, desc=f'Downloading {dir_in_repo!r} ...')
 
     def _download_one_file(repo_file: RepoFile, rel_file: str):
+        """
+        Download a single file with retry mechanism and progress tracking.
+
+        :param repo_file: The repository file metadata object.
+        :type repo_file: RepoFile
+        :param rel_file: The relative file path within the directory.
+        :type rel_file: str
+        """
         with TemporaryDirectory() as td:
             try:
                 dst_file = os.path.join(local_directory, rel_file)
@@ -233,6 +289,7 @@ def download_directory_as_directory(
                 progress.update()
             except Exception as err:
                 logging.exception(f'Unexpected error when downloading {rel_file!r} - {err!r}')
+                raise
 
     tp = ThreadPoolExecutor(max_workers=max_workers)
     for item, file in files:

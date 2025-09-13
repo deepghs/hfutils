@@ -1,7 +1,19 @@
 """
 This module provides functions for uploading files and directories to Hugging Face repositories.
 
-The module uses the Hugging Face Hub API client for repository operations.
+The module uses the Hugging Face Hub API client for repository operations and supports various
+upload strategies including single file uploads, directory-to-archive uploads, and direct
+directory uploads with optional chunking for large datasets.
+
+Example::
+    >>> # Upload a single file
+    >>> upload_file_to_file('local.txt', 'user/repo', 'remote.txt')
+
+    >>> # Upload directory as archive
+    >>> upload_directory_as_archive('data/', 'user/repo', 'data.zip')
+
+    >>> # Upload directory structure
+    >>> upload_directory_as_directory('data/', 'user/repo', 'dataset/')
 """
 
 import datetime
@@ -10,12 +22,12 @@ import math
 import os.path
 import re
 import time
-from typing import Optional, List, Union
+from typing import Optional, Union
 
 from hbutils.string import plural_word
 from huggingface_hub import CommitOperationAdd, CommitOperationDelete
 
-from .base import RepoTypeTyping, get_hf_client, list_files_in_repository, _IGNORE_PATTERN_UNSET
+from .base import RepoTypeTyping, get_hf_client, list_files_in_repository
 from ..archive import get_archive_type, archive_pack, archive_writer, archive_splitext
 from ..config.meta import __VERSION__
 from ..utils import walk_files, TemporaryDirectory, tqdm, walk_files_with_groups, FilesGroup, hf_normpath
@@ -27,25 +39,31 @@ def upload_file_to_file(local_file, repo_id: str, file_in_repo: str,
     """
     Upload a local file to a specified path in a Hugging Face repository.
 
+    This function uploads a single local file to a repository on Hugging Face Hub.
+    It's the most basic upload operation and is useful for adding or updating
+    individual files in a repository.
+
     :param local_file: The local file path to be uploaded.
     :type local_file: str
-    :param repo_id: The identifier of the repository.
+    :param repo_id: The identifier of the repository in format 'username/repo-name'.
     :type repo_id: str
-    :param file_in_repo: The file path within the repository.
+    :param file_in_repo: The target file path within the repository.
     :type file_in_repo: str
     :param repo_type: The type of the repository ('dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
     :type revision: str
-    :param message: The commit message for the upload.
+    :param message: The commit message for the upload. If None, a default message is generated.
     :type message: Optional[str]
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
 
     :raises: Any exception raised by the Hugging Face Hub API client.
 
-    This function uses the Hugging Face Hub API client to upload a single file to a specified
-    repository. It's useful for adding or updating individual files in a repository.
+    Example::
+        >>> upload_file_to_file('model.pkl', 'user/my-model', 'pytorch_model.bin')
+        >>> upload_file_to_file('data.csv', 'user/my-dataset', 'train.csv',
+        ...                     message='Add training data')
     """
     hf_client = get_hf_client(hf_token)
     hf_client.upload_file(
@@ -67,24 +85,30 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
     """
     Upload a local directory as an archive file to a specified path in a Hugging Face repository.
 
+    This function compresses the specified local directory into an archive file and then
+    uploads it to the Hugging Face repository. It's useful for uploading entire directories
+    as a single compressed file, which can be more efficient for large directories with
+    many small files. The function supports splitting large archives into multiple parts
+    if size limits are specified.
+
     :param local_directory: The local directory path to be uploaded.
     :type local_directory: str
-    :param repo_id: The identifier of the repository.
+    :param repo_id: The identifier of the repository in format 'username/repo-name'.
     :type repo_id: str
-    :param archive_in_repo: The archive file path within the repository.
+    :param archive_in_repo: The archive file path within the repository (determines compression format).
     :type archive_in_repo: str
-    :param pattern: A pattern to filter files in the local directory.
+    :param pattern: A pattern to filter files in the local directory (glob-style pattern).
     :type pattern: Optional[str]
     :param repo_type: The type of the repository ('dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
     :type revision: str
-    :param message: The commit message for the upload.
+    :param message: The commit message for the upload. If None, a default message is generated.
     :type message: Optional[str]
     :param silent: If True, suppress progress bar output.
     :type silent: bool
     :param group_method: Method for grouping files (None for default, int for segment count).
-                         Only applied when ``max_total_size`` is assigned.
+                         Only applied when ``max_size_per_pack`` is assigned.
     :type group_method: Optional[Union[str, int]]
     :param max_size_per_pack: Maximum total size for each group (can be string like "1GB").
                               When assigned, this function will try to upload with multiple archive files.
@@ -94,9 +118,17 @@ def upload_directory_as_archive(local_directory, repo_id: str, archive_in_repo: 
 
     :raises: Any exception raised during archive creation or file upload.
 
-    This function compresses the specified local directory into an archive file and then
-    uploads it to the Hugging Face repository. It's useful for uploading entire directories
-    as a single file, which can be more efficient for large directories.
+    Example::
+        >>> # Upload directory as single archive
+        >>> upload_directory_as_archive('data/', 'user/repo', 'dataset.zip')
+
+        >>> # Upload with file filtering
+        >>> upload_directory_as_archive('images/', 'user/repo', 'images.tar.gz',
+        ...                             pattern='*.jpg')
+
+        >>> # Upload with size limit (creates multiple parts)
+        >>> upload_directory_as_archive('large_data/', 'user/repo', 'data.zip',
+        ...                             max_size_per_pack='1GB')
     """
     archive_type = get_archive_type(archive_in_repo)
     with TemporaryDirectory() as td:
@@ -168,34 +200,36 @@ _PATH_SEP = re.compile(r'[/\\]+')
 def upload_directory_as_directory(
         local_directory, repo_id: str, path_in_repo: str, pattern: Optional[str] = None,
         repo_type: RepoTypeTyping = 'dataset', revision: str = 'main',
-        message: Optional[str] = None, time_suffix: bool = True,
-        clear: bool = False, ignore_patterns: List[str] = _IGNORE_PATTERN_UNSET,
+        message: Optional[str] = None, time_suffix: bool = True, clear: bool = False,
         hf_token: Optional[str] = None, operation_chunk_size: Optional[int] = None,
         upload_timespan: float = 5.0,
 ):
     """
     Upload a local directory and its files to a specified path in a Hugging Face repository.
 
+    This function uploads a local directory to a Hugging Face repository while maintaining
+    its directory structure. It provides advanced features like chunked uploads for large
+    datasets, automatic cleanup of removed files, and progress tracking. This is the most
+    comprehensive upload function for directory structures.
+
     :param local_directory: The local directory path to be uploaded.
     :type local_directory: str
-    :param repo_id: The identifier of the repository.
+    :param repo_id: The identifier of the repository in format 'username/repo-name'.
     :type repo_id: str
-    :param path_in_repo: The directory path within the repository.
+    :param path_in_repo: The target directory path within the repository.
     :type path_in_repo: str
-    :param pattern: A pattern to filter files in the local directory.
+    :param pattern: A pattern to filter files in the local directory (glob-style pattern).
     :type pattern: Optional[str]
     :param repo_type: The type of the repository ('dataset', 'model', 'space').
     :type repo_type: RepoTypeTyping
     :param revision: The revision of the repository (e.g., branch, tag, commit hash).
     :type revision: str
-    :param message: The commit message for the upload.
+    :param message: The commit message for the upload. If None, a default message is generated.
     :type message: Optional[str]
     :param time_suffix: If True, append a timestamp to the commit message.
     :type time_suffix: bool
     :param clear: If True, remove files in the repository not present in the local directory.
     :type clear: bool
-    :param ignore_patterns: List of file patterns to ignore.
-    :type ignore_patterns: List[str]
     :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.
     :type hf_token: str, optional
     :param operation_chunk_size: Chunk size of the operations. All the operations will be
@@ -205,10 +239,6 @@ def upload_directory_as_directory(
     :type upload_timespan: float
 
     :raises: Any exception raised during the upload process.
-
-    This function uploads a local directory to a Hugging Face repository, maintaining its
-    structure. It can handle large directories by chunking the upload process and provides
-    options for clearing existing files and ignoring specific patterns.
 
     .. note::
         When `operation_chunk_size` is set, multiple commits will be created. When some commits fail,
@@ -222,6 +252,22 @@ def upload_directory_as_directory(
         The rate limit of HuggingFace repository commit creation is approximately 120 commits / hour.
         So if you really have a large number of chunks to create, please set the `upload_timespan` to a value
         no less than `30.0` to make sure your uploading will not be rate-limited.
+
+    Example::
+        >>> # Basic directory upload
+        >>> upload_directory_as_directory('data/', 'user/repo', 'dataset/')
+
+        >>> # Upload with file filtering
+        >>> upload_directory_as_directory('models/', 'user/repo', 'checkpoints/',
+        ...                               pattern='*.pth')
+
+        >>> # Chunked upload for large datasets
+        >>> upload_directory_as_directory('large_dataset/', 'user/repo', 'data/',
+        ...                               operation_chunk_size=100, upload_timespan=30.0)
+
+        >>> # Upload with cleanup of removed files
+        >>> upload_directory_as_directory('updated_data/', 'user/repo', 'data/',
+        ...                               clear=True)
     """
     hf_client = get_hf_client(hf_token)
     if clear:
@@ -232,7 +278,6 @@ def upload_directory_as_directory(
                 repo_type=repo_type,
                 subdir=path_in_repo,
                 revision=revision,
-                ignore_patterns=ignore_patterns,
                 hf_token=hf_token
             )
         }

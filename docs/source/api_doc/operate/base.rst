@@ -20,6 +20,13 @@ get_hf_fs
 
 
 
+hf_repo_glob
+----------------------------------------
+
+.. autofunction:: hf_repo_glob
+
+
+
 list_all_with_pattern
 ----------------------------------------
 
