@@ -39,6 +39,12 @@ def _get_hf_token() -> Optional[str]:
 
     :return: The Hugging Face token if set, otherwise None.
     :rtype: Optional[str]
+
+    Example::
+
+        >>> token = _get_hf_token()
+        >>> print(token is not None)
+        True  # if HF_TOKEN is set in environment
     """
     return os.environ.get('HF_TOKEN')
 
@@ -49,7 +55,8 @@ def get_hf_client(hf_token: Optional[str] = None) -> HfApi:
     Get the Hugging Face API client.
 
     This function returns an instance of the Hugging Face API client. If a token is not provided,
-    it attempts to use the token from the environment variable.
+    it attempts to use the token from the environment variable. The client is cached to avoid
+    creating multiple instances with the same token.
 
     :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
     :type hf_token: Optional[str]
@@ -61,7 +68,7 @@ def get_hf_client(hf_token: Optional[str] = None) -> HfApi:
 
         >>> client = get_hf_client()
         >>> # Use client to interact with Hugging Face API
-        >>> client.list_models(organization="huggingface")
+        >>> models = client.list_models(limit=5)
     """
     return HfApi(token=hf_token or _get_hf_token())
 
@@ -85,7 +92,7 @@ def get_hf_fs(hf_token: Optional[str] = None) -> HfFileSystem:
 
         >>> fs = get_hf_fs()
         >>> # Use fs to interact with Hugging Face file system
-        >>> fs.ls("dataset/example")
+        >>> files = fs.ls("datasets/squad")
     """
     # use_listings_cache=False is necessary
     # or the result of glob and ls will be cached, the unittest will down
@@ -104,6 +111,12 @@ def _fn_path_pattern_norm(pattern: Union[List[str], str]) -> Union[List[str], st
 
     :return: Normalized pattern(s) in the same format as input.
     :rtype: Union[List[str], str]
+
+    Example::
+
+        >>> pattern = _fn_path_pattern_norm("./data//files/*.txt")
+        >>> print(pattern)
+        data/files/*.txt
     """
     if isinstance(pattern, (list, tuple)):
         return [hf_normpath(p) for p in pattern]
@@ -116,7 +129,8 @@ def _fn_path_pattern_subdir_single(pattern: str, subdir: str) -> str:
     Adjust a single pattern to work within a subdirectory.
 
     This function modifies a pattern to be relative to a specific subdirectory.
-    It handles negation patterns (starting with '!') appropriately.
+    It handles negation patterns (starting with '!') appropriately by preserving
+    the negation while prepending the subdirectory path.
 
     :param pattern: The pattern to adjust.
     :type pattern: str
@@ -125,6 +139,15 @@ def _fn_path_pattern_subdir_single(pattern: str, subdir: str) -> str:
 
     :return: The adjusted pattern for the subdirectory.
     :rtype: str
+
+    Example::
+
+        >>> pattern = _fn_path_pattern_subdir_single("*.txt", "data")
+        >>> print(pattern)
+        data/*.txt
+        >>> neg_pattern = _fn_path_pattern_subdir_single("!*.log", "logs")
+        >>> print(neg_pattern)
+        !logs/*.log
     """
     if pattern.startswith('!'):
         pattern = f'!{subdir}/{pattern[1:]}'
@@ -139,7 +162,8 @@ def _fn_path_pattern_subdir(pattern: Union[List[str], str], subdir: str) -> Unio
     Adjust patterns to work within a subdirectory.
 
     This function modifies patterns to be relative to a specific subdirectory,
-    handling both single patterns and lists of patterns.
+    handling both single patterns and lists of patterns. It preserves the input
+    type and applies subdirectory adjustment to each pattern.
 
     :param pattern: The pattern(s) to adjust.
     :type pattern: Union[List[str], str]
@@ -148,6 +172,12 @@ def _fn_path_pattern_subdir(pattern: Union[List[str], str], subdir: str) -> Unio
 
     :return: The adjusted pattern(s) for the subdirectory.
     :rtype: Union[List[str], str]
+
+    Example::
+
+        >>> patterns = _fn_path_pattern_subdir(["*.txt", "!*.log"], "data")
+        >>> print(patterns)
+        ['data/*.txt', '!data/*.log']
     """
     if isinstance(pattern, (list, tuple)):
         return [_fn_path_pattern_subdir_single(p, subdir) for p in pattern]
@@ -158,8 +188,8 @@ def _fn_path_pattern_subdir(pattern: Union[List[str], str], subdir: str) -> Unio
 def hf_repo_glob(
         repo_id: str, pattern: Union[List[str], str] = '**/*', repo_type: RepoTypeTyping = 'dataset',
         revision: str = 'main', include_files: bool = True, include_directories: bool = False,
-        raise_when_base_not_exist: bool = False, hf_token: Optional[str] = None,
-) -> List[Union[RepoFile, RepoFolder]]:
+        raise_when_base_not_exist: bool = False, return_path: bool = False, hf_token: Optional[str] = None,
+) -> List[Union[RepoFile, RepoFolder, str]]:
     """
     Glob files and directories in a Hugging Face repository using pattern matching.
 
@@ -170,12 +200,12 @@ def hf_repo_glob(
     .. note::
         Pattern matching syntax supports:
 
-        - `*`: Matches everything except slashes (single level)
-        - `**`: Matches zero or more directories recursively (requires GLOBSTAR flag, which is enabled)
-        - `?`: Matches any single character
-        - `[seq]`: Matches any character in sequence
-        - `[!seq]`: Matches any character not in sequence
-        - `!pattern`: Negation pattern when used at start (requires NEGATE flag, which is enabled)
+        - ``*``: Matches everything except slashes (single level)
+        - ``**``: Matches zero or more directories recursively (requires GLOBSTAR flag, which is enabled)
+        - ``?``: Matches any single character
+        - ``[seq]``: Matches any character in sequence
+        - ``[!seq]``: Matches any character not in sequence
+        - ``!pattern``: Negation pattern when used at start (requires NEGATE flag, which is enabled)
         - Multiple patterns can be provided as a list
         - Negation patterns filter out matches from inclusion patterns
         - Dot files are matched by default (DOTMATCH flag is enabled)
@@ -197,11 +227,13 @@ def hf_repo_glob(
     :type include_directories: bool
     :param raise_when_base_not_exist: Whether to raise an exception when the repository doesn't exist. Default is False.
     :type raise_when_base_not_exist: bool
+    :param return_path: Whether to return file paths as strings instead of RepoFile/RepoFolder objects. Default is False.
+    :type return_path: bool
     :param hf_token: Hugging Face token for API client. If not provided, uses the 'HF_TOKEN' environment variable.
     :type hf_token: Optional[str]
 
-    :return: A list of RepoFile and/or RepoFolder objects matching the pattern.
-    :rtype: List[Union[RepoFile, RepoFolder]]
+    :return: A list of RepoFile and/or RepoFolder objects matching the pattern, or strings if return_path is True.
+    :rtype: List[Union[RepoFile, RepoFolder, str]]
 
     :raises RepositoryNotFoundError: If the repository is not found and raise_when_base_not_exist is True.
     :raises GatedRepoError: If the repository is gated and raise_when_base_not_exist is True.
@@ -216,6 +248,8 @@ def hf_repo_glob(
         >>> files = hf_repo_glob("username/repo", pattern=["**/*", "!.*"])
         >>> # Get only directories
         >>> dirs = hf_repo_glob("username/repo", pattern="**/*", include_files=False, include_directories=True)
+        >>> # Get paths as strings
+        >>> paths = hf_repo_glob("username/repo", pattern="*.txt", return_path=True)
     """
     hf_client = get_hf_client(hf_token=hf_token)
     pattern = _fn_path_pattern_norm(pattern)
@@ -236,7 +270,10 @@ def hf_repo_glob(
                 patterns=pattern,
                 flags=(glob.CASE | glob.NEGATE | glob.NEGATEALL | glob.DOTMATCH | glob.GLOBSTAR),
             ):
-                items.append(item)
+                if return_path:
+                    items.append(hf_normpath(item.path))
+                else:
+                    items.append(item)
     except (RepositoryNotFoundError, GatedRepoError, DisabledRepoError, RevisionNotFoundError):
         if raise_when_base_not_exist:
             raise
@@ -254,7 +291,7 @@ def list_all_with_pattern(
     List all files and folders in a Hugging Face repository matching a given pattern.
 
     This function retrieves information about files and folders in a repository that match
-    the specified pattern. It includes both files and directories in the results.
+    the specified pattern. It includes both files and directories in the results by default.
 
     :param repo_id: The identifier of the repository.
     :type repo_id: str
@@ -303,7 +340,8 @@ def list_repo_files_in_repository(
     List repository files with their paths in a Hugging Face repository.
 
     This function returns a list of tuples containing RepoFile objects and their corresponding
-    relative paths that match the given pattern. By default, it excludes git-related files.
+    relative paths that match the given pattern. By default, it excludes git-related files
+    using the pattern ['**/*', '!.git*'].
 
     :param repo_id: The identifier of the repository.
     :type repo_id: str
