@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.operate.download &mdash; hfutils 0.11.1 documentation</title>
+  <title>hfutils.operate.download &mdash; hfutils 0.12.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=57cbeb03"></script>
+      <script src="../../../_static/documentation_options.js?v=61ccb1f1"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -118,12 +118,12 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests.exceptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub.hf_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoFile</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoTypeTyping</span><span class="p">,</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">,</span> <span class="n">get_hf_client</span><span class="p">,</span> \
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoTypeTyping</span><span class="p">,</span> <span class="n">get_hf_client</span><span class="p">,</span> \
     <span class="n">list_repo_files_in_repository</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.validate</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_local_file_ready</span><span class="p">,</span> <span class="n">_raw_check_local_file</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..archive</span><span class="w"> </span><span class="kn">import</span> <span class="n">archive_unpack</span>
@@ -137,21 +137,34 @@
 <span class="sd">    Download a file from a Hugging Face repository to a temporary directory and then move it to the final location.</span>
 
 <span class="sd">    This internal function handles the actual download process using the Hugging Face Hub client.</span>
+<span class="sd">    It downloads the file to a temporary location first and then moves it to the final destination</span>
+<span class="sd">    to ensure atomic file operations and prevent partial downloads from corrupting the target file.</span>
 
-<span class="sd">    :param td: Temporary directory path.</span>
+<span class="sd">    :param td: Temporary directory path where the file will be initially downloaded.</span>
 <span class="sd">    :type td: str</span>
 <span class="sd">    :param local_file: The final local file path where the downloaded file will be moved.</span>
 <span class="sd">    :type local_file: str</span>
-<span class="sd">    :param repo_id: The identifier of the repository.</span>
+<span class="sd">    :param repo_id: The identifier of the repository (e.g., &#39;username/repo-name&#39;).</span>
 <span class="sd">    :type repo_id: str</span>
-<span class="sd">    :param file_in_repo: The file path within the repository.</span>
+<span class="sd">    :param file_in_repo: The file path within the repository relative to the repository root.</span>
 <span class="sd">    :type file_in_repo: str</span>
 <span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;).</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
-<span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash).</span>
+<span class="sd">    :param revision: The revision of the repository (e.g., branch name, tag, commit hash).</span>
 <span class="sd">    :type revision: str</span>
-<span class="sd">    :param hf_token: Hugging Face token for API client.</span>
+<span class="sd">    :param hf_token: Hugging Face authentication token for accessing private repositories.</span>
 <span class="sd">    :type hf_token: str, optional</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; import tempfile</span>
+<span class="sd">        &gt;&gt;&gt; with tempfile.TemporaryDirectory() as td:</span>
+<span class="sd">        ...     _raw_download_file(</span>
+<span class="sd">        ...         td=td,</span>
+<span class="sd">        ...         local_file=&quot;/path/to/local/file.txt&quot;,</span>
+<span class="sd">        ...         repo_id=&quot;username/dataset&quot;,</span>
+<span class="sd">        ...         file_in_repo=&quot;data/file.txt&quot;,</span>
+<span class="sd">        ...         repo_type=&quot;dataset&quot;</span>
+<span class="sd">        ...     )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
     <span class="n">relative_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="o">*</span><span class="n">file_in_repo</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span>
@@ -179,20 +192,32 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download a file from a Hugging Face repository and save it to a local file.</span>
 
-<span class="sd">    :param local_file: The local file path to save the downloaded file.</span>
+<span class="sd">    This function downloads a single file from a Hugging Face repository to a specified local path.</span>
+<span class="sd">    It includes validation to check if the local file already exists and is up-to-date, skipping</span>
+<span class="sd">    the download if the file is already present and valid.</span>
+
+<span class="sd">    :param local_file: The local file path where the downloaded file will be saved.</span>
 <span class="sd">    :type local_file: str</span>
-<span class="sd">    :param repo_id: The identifier of the repository.</span>
+<span class="sd">    :param repo_id: The identifier of the repository (e.g., &#39;username/repo-name&#39;).</span>
 <span class="sd">    :type repo_id: str</span>
-<span class="sd">    :param file_in_repo: The file path within the repository.</span>
+<span class="sd">    :param file_in_repo: The file path within the repository relative to the repository root.</span>
 <span class="sd">    :type file_in_repo: str</span>
 <span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;).</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
-<span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash).</span>
+<span class="sd">    :param revision: The revision of the repository (e.g., branch name, tag, commit hash).</span>
 <span class="sd">    :type revision: str</span>
-<span class="sd">    :param soft_mode_when_check: Just check the size of the expected file when enabled. Default is False.</span>
+<span class="sd">    :param soft_mode_when_check: If True, only check the file size for validation instead of full integrity check.</span>
 <span class="sd">    :type soft_mode_when_check: bool</span>
-<span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
+<span class="sd">    :param hf_token: Hugging Face authentication token for accessing private repositories.</span>
 <span class="sd">    :type hf_token: str, optional</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; download_file_to_file(</span>
+<span class="sd">        ...     local_file=&quot;./local_model.bin&quot;,</span>
+<span class="sd">        ...     repo_id=&quot;username/my-model&quot;,</span>
+<span class="sd">        ...     file_in_repo=&quot;pytorch_model.bin&quot;,</span>
+<span class="sd">        ...     repo_type=&quot;model&quot;</span>
+<span class="sd">        ... )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">td</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">local_file</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_local_file_ready</span><span class="p">(</span>
@@ -226,20 +251,32 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download an archive file from a Hugging Face repository and extract it to a local directory.</span>
 
-<span class="sd">    :param local_directory: The local directory path to extract the downloaded archive.</span>
+<span class="sd">    This function downloads an archive file (such as ZIP, TAR, etc.) from a Hugging Face repository</span>
+<span class="sd">    and automatically extracts its contents to the specified local directory. It supports password-protected</span>
+<span class="sd">    archives and handles the extraction process transparently.</span>
+
+<span class="sd">    :param local_directory: The local directory path where the archive contents will be extracted.</span>
 <span class="sd">    :type local_directory: str</span>
-<span class="sd">    :param repo_id: The identifier of the repository.</span>
+<span class="sd">    :param repo_id: The identifier of the repository (e.g., &#39;username/repo-name&#39;).</span>
 <span class="sd">    :type repo_id: str</span>
-<span class="sd">    :param file_in_repo: The file path within the repository.</span>
+<span class="sd">    :param file_in_repo: The archive file path within the repository relative to the repository root.</span>
 <span class="sd">    :type file_in_repo: str</span>
 <span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;).</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
-<span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash).</span>
+<span class="sd">    :param revision: The revision of the repository (e.g., branch name, tag, commit hash).</span>
 <span class="sd">    :type revision: str</span>
-<span class="sd">    :param password: The password of the archive file.</span>
+<span class="sd">    :param password: The password for extracting password-protected archives.</span>
 <span class="sd">    :type password: str, optional</span>
-<span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
+<span class="sd">    :param hf_token: Hugging Face authentication token for accessing private repositories.</span>
 <span class="sd">    :type hf_token: str, optional</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; download_archive_as_directory(</span>
+<span class="sd">        ...     local_directory=&quot;./extracted_data&quot;,</span>
+<span class="sd">        ...     repo_id=&quot;username/dataset&quot;,</span>
+<span class="sd">        ...     file_in_repo=&quot;data.zip&quot;,</span>
+<span class="sd">        ...     repo_type=&quot;dataset&quot;</span>
+<span class="sd">        ... )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">td</span><span class="p">:</span>
         <span class="n">archive_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_in_repo</span><span class="p">))</span>
@@ -251,39 +288,51 @@
 <div class="viewcode-block" id="download_directory_as_directory">
 <a class="viewcode-back" href="../../../api_doc/operate/download.html#hfutils.operate.download.download_directory_as_directory">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">download_directory_as_directory</span><span class="p">(</span>
-        <span class="n">local_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span>
-        <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
-        <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">,</span>
+        <span class="n">local_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">soft_mode_when_check</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download all files in a directory from a Hugging Face repository to a local directory.</span>
 
-<span class="sd">    :param local_directory: The local directory path to save the downloaded files.</span>
+<span class="sd">    This function recursively downloads all files from a specified directory in a Hugging Face repository</span>
+<span class="sd">    to a local directory. It supports concurrent downloads with configurable worker threads, retry mechanisms</span>
+<span class="sd">    for failed downloads, and pattern-based file filtering. The function maintains the directory structure</span>
+<span class="sd">    from the repository in the local destination.</span>
+
+<span class="sd">    :param local_directory: The local directory path where downloaded files will be saved.</span>
 <span class="sd">    :type local_directory: str</span>
-<span class="sd">    :param repo_id: The identifier of the repository.</span>
+<span class="sd">    :param repo_id: The identifier of the repository (e.g., &#39;username/repo-name&#39;).</span>
 <span class="sd">    :type repo_id: str</span>
-<span class="sd">    :param dir_in_repo: The directory path within the repository.</span>
+<span class="sd">    :param dir_in_repo: The directory path within the repository to download. Use &#39;.&#39; for repository root.</span>
 <span class="sd">    :type dir_in_repo: str</span>
-<span class="sd">    :param pattern: Patterns for filtering.</span>
-<span class="sd">    :type pattern: str</span>
+<span class="sd">    :param pattern: File patterns for filtering which files to download. Can be a single pattern string or list of patterns.</span>
+<span class="sd">    :type pattern: Union[List[str], str]</span>
 <span class="sd">    :param repo_type: The type of the repository (&#39;dataset&#39;, &#39;model&#39;, &#39;space&#39;).</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
-<span class="sd">    :param revision: The revision of the repository (e.g., branch, tag, commit hash).</span>
+<span class="sd">    :param revision: The revision of the repository (e.g., branch name, tag, commit hash).</span>
 <span class="sd">    :type revision: str</span>
-<span class="sd">    :param silent: If True, suppress progress bar output.</span>
+<span class="sd">    :param silent: If True, suppress progress bar output during download.</span>
 <span class="sd">    :type silent: bool</span>
-<span class="sd">    :param ignore_patterns: List of file patterns to ignore.</span>
-<span class="sd">    :type ignore_patterns: List[str]</span>
-<span class="sd">    :param max_workers: Max workers when downloading. Default is ``8``.</span>
+<span class="sd">    :param max_workers: Maximum number of concurrent download threads.</span>
 <span class="sd">    :type max_workers: int</span>
-<span class="sd">    :param max_retries: Max retry times when downloading. Default is ``5``.</span>
+<span class="sd">    :param max_retries: Maximum number of retry attempts for failed downloads.</span>
 <span class="sd">    :type max_retries: int</span>
-<span class="sd">    :param soft_mode_when_check: Just check the size of the expected file when enabled. Default is False.</span>
+<span class="sd">    :param soft_mode_when_check: If True, only check file size for validation instead of full integrity check.</span>
 <span class="sd">    :type soft_mode_when_check: bool</span>
-<span class="sd">    :param hf_token: Huggingface token for API client, use ``HF_TOKEN`` variable if not assigned.</span>
+<span class="sd">    :param hf_token: Hugging Face authentication token for accessing private repositories.</span>
 <span class="sd">    :type hf_token: str, optional</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; download_directory_as_directory(</span>
+<span class="sd">        ...     local_directory=&quot;./local_dataset&quot;,</span>
+<span class="sd">        ...     repo_id=&quot;username/my-dataset&quot;,</span>
+<span class="sd">        ...     dir_in_repo=&quot;data&quot;,</span>
+<span class="sd">        ...     pattern=&quot;*.json&quot;,</span>
+<span class="sd">        ...     repo_type=&quot;dataset&quot;,</span>
+<span class="sd">        ...     max_workers=4</span>
+<span class="sd">        ... )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">list_repo_files_in_repository</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
@@ -291,12 +340,19 @@
         <span class="n">subdir</span><span class="o">=</span><span class="n">dir_in_repo</span><span class="p">,</span>
         <span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span>
         <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
-        <span class="n">ignore_patterns</span><span class="o">=</span><span class="n">ignore_patterns</span><span class="p">,</span>
         <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">progress</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Downloading </span><span class="si">{</span><span class="n">dir_in_repo</span><span class="si">!r}</span><span class="s1"> ...&#39;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_download_one_file</span><span class="p">(</span><span class="n">repo_file</span><span class="p">:</span> <span class="n">RepoFile</span><span class="p">,</span> <span class="n">rel_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Download a single file with retry mechanism and progress tracking.</span>
+
+<span class="sd">        :param repo_file: The repository file metadata object.</span>
+<span class="sd">        :type repo_file: RepoFile</span>
+<span class="sd">        :param rel_file: The relative file path within the directory.</span>
+<span class="sd">        :type rel_file: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">td</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">dst_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_directory</span><span class="p">,</span> <span class="n">rel_file</span><span class="p">)</span>
@@ -333,6 +389,7 @@
                 <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unexpected error when downloading </span><span class="si">{</span><span class="n">rel_file</span><span class="si">!r}</span><span class="s1"> - </span><span class="si">{</span><span class="n">err</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">raise</span>
 
     <span class="n">tp</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
@@ -422,10 +479,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/glob/index.html">dev/glob</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
                         <dd><a href="download.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
-                        <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

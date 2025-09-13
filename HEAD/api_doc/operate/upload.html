@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.operate.upload &mdash; hfutils 0.11.1 documentation</title>
+  <title>hfutils.operate.upload &mdash; hfutils 0.12.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=57cbeb03"></script>
+      <script src="../../_static/documentation_options.js?v=61ccb1f1"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -118,22 +118,42 @@
   <section id="module-hfutils.operate.upload">
 <span id="hfutils-operate-upload"></span><h1>hfutils.operate.upload<a class="headerlink" href="#module-hfutils.operate.upload" title="Link to this heading"></a></h1>
 <p>This module provides functions for uploading files and directories to Hugging Face repositories.</p>
-<p>The module uses the Hugging Face Hub API client for repository operations.</p>
+<p>The module uses the Hugging Face Hub API client for repository operations and supports various
+upload strategies including single file uploads, directory-to-archive uploads, and direct
+directory uploads with optional chunking for large datasets.</p>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Upload a single file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_file_to_file</span><span class="p">(</span><span class="s1">&#39;local.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;user/repo&#39;</span><span class="p">,</span> <span class="s1">&#39;remote.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Upload directory as archive</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_directory_as_archive</span><span class="p">(</span><span class="s1">&#39;data/&#39;</span><span class="p">,</span> <span class="s1">&#39;user/repo&#39;</span><span class="p">,</span> <span class="s1">&#39;data.zip&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Upload directory structure</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_directory_as_directory</span><span class="p">(</span><span class="s1">&#39;data/&#39;</span><span class="p">,</span> <span class="s1">&#39;user/repo&#39;</span><span class="p">,</span> <span class="s1">&#39;dataset/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 <section id="upload-file-to-file">
 <h2>upload_file_to_file<a class="headerlink" href="#upload-file-to-file" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.operate.upload.upload_file_to_file">
 <span class="sig-prename descclassname"><span class="pre">hfutils.operate.upload.</span></span><span class="sig-name descname"><span class="pre">upload_file_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_in_repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/operate/upload.html#upload_file_to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.upload.upload_file_to_file" title="Link to this definition"></a></dt>
 <dd><p>Upload a local file to a specified path in a Hugging Face repository.</p>
+<p>This function uploads a single local file to a repository on Hugging Face Hub.
+It’s the most basic upload operation and is useful for adding or updating
+individual files in a repository.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>local_file</strong> (<em>str</em>) – The local file path to be uploaded.</p></li>
-<li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository.</p></li>
-<li><p><strong>file_in_repo</strong> (<em>str</em>) – The file path within the repository.</p></li>
+<li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository in format ‘username/repo-name’.</p></li>
+<li><p><strong>file_in_repo</strong> (<em>str</em>) – The target file path within the repository.</p></li>
 <li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em>) – The type of the repository (‘dataset’, ‘model’, ‘space’).</p></li>
 <li><p><strong>revision</strong> (<em>str</em>) – The revision of the repository (e.g., branch, tag, commit hash).</p></li>
-<li><p><strong>message</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The commit message for the upload.</p></li>
+<li><p><strong>message</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The commit message for the upload. If None, a default message is generated.</p></li>
 <li><p><strong>hf_token</strong> (<em>str</em><em>, </em><em>optional</em>) – Huggingface token for API client, use <code class="docutils literal notranslate"><span class="pre">HF_TOKEN</span></code> variable if not assigned.</p></li>
 </ul>
 </dd>
@@ -141,8 +161,14 @@
 <dd class="field-even"><p>Any exception raised by the Hugging Face Hub API client.</p>
 </dd>
 </dl>
-<p>This function uses the Hugging Face Hub API client to upload a single file to a specified
-repository. It’s useful for adding or updating individual files in a repository.</p>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">upload_file_to_file</span><span class="p">(</span><span class="s1">&#39;model.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;user/my-model&#39;</span><span class="p">,</span> <span class="s1">&#39;pytorch_model.bin&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_file_to_file</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;user/my-dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;train.csv&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Add training data&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -152,19 +178,24 @@ repository. It’s useful for adding or updating individual files in a repositor
 <dt class="sig sig-object py" id="hfutils.operate.upload.upload_directory_as_archive">
 <span class="sig-prename descclassname"><span class="pre">hfutils.operate.upload.</span></span><span class="sig-name descname"><span class="pre">upload_directory_as_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive_in_repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_size_per_pack</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/operate/upload.html#upload_directory_as_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.upload.upload_directory_as_archive" title="Link to this definition"></a></dt>
 <dd><p>Upload a local directory as an archive file to a specified path in a Hugging Face repository.</p>
+<p>This function compresses the specified local directory into an archive file and then
+uploads it to the Hugging Face repository. It’s useful for uploading entire directories
+as a single compressed file, which can be more efficient for large directories with
+many small files. The function supports splitting large archives into multiple parts
+if size limits are specified.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>local_directory</strong> (<em>str</em>) – The local directory path to be uploaded.</p></li>
-<li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository.</p></li>
-<li><p><strong>archive_in_repo</strong> (<em>str</em>) – The archive file path within the repository.</p></li>
-<li><p><strong>pattern</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A pattern to filter files in the local directory.</p></li>
+<li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository in format ‘username/repo-name’.</p></li>
+<li><p><strong>archive_in_repo</strong> (<em>str</em>) – The archive file path within the repository (determines compression format).</p></li>
+<li><p><strong>pattern</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A pattern to filter files in the local directory (glob-style pattern).</p></li>
 <li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em>) – The type of the repository (‘dataset’, ‘model’, ‘space’).</p></li>
 <li><p><strong>revision</strong> (<em>str</em>) – The revision of the repository (e.g., branch, tag, commit hash).</p></li>
-<li><p><strong>message</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The commit message for the upload.</p></li>
+<li><p><strong>message</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The commit message for the upload. If None, a default message is generated.</p></li>
 <li><p><strong>silent</strong> (<em>bool</em>) – If True, suppress progress bar output.</p></li>
 <li><p><strong>group_method</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – Method for grouping files (None for default, int for segment count).
-Only applied when <code class="docutils literal notranslate"><span class="pre">max_total_size</span></code> is assigned.</p></li>
+Only applied when <code class="docutils literal notranslate"><span class="pre">max_size_per_pack</span></code> is assigned.</p></li>
 <li><p><strong>max_size_per_pack</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em><em>]</em>) – Maximum total size for each group (can be string like “1GB”).
 When assigned, this function will try to upload with multiple archive files.</p></li>
 <li><p><strong>hf_token</strong> (<em>str</em><em>, </em><em>optional</em>) – Huggingface token for API client, use <code class="docutils literal notranslate"><span class="pre">HF_TOKEN</span></code> variable if not assigned.</p></li>
@@ -174,9 +205,23 @@ When assigned, this function will try to upload with multiple archive files.</p>
 <dd class="field-even"><p>Any exception raised during archive creation or file upload.</p>
 </dd>
 </dl>
-<p>This function compresses the specified local directory into an archive file and then
-uploads it to the Hugging Face repository. It’s useful for uploading entire directories
-as a single file, which can be more efficient for large directories.</p>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Upload directory as single archive</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_directory_as_archive</span><span class="p">(</span><span class="s1">&#39;data/&#39;</span><span class="p">,</span> <span class="s1">&#39;user/repo&#39;</span><span class="p">,</span> <span class="s1">&#39;dataset.zip&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Upload with file filtering</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_directory_as_archive</span><span class="p">(</span><span class="s1">&#39;images/&#39;</span><span class="p">,</span> <span class="s1">&#39;user/repo&#39;</span><span class="p">,</span> <span class="s1">&#39;images.tar.gz&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                            <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;*.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Upload with size limit (creates multiple parts)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_directory_as_archive</span><span class="p">(</span><span class="s1">&#39;large_data/&#39;</span><span class="p">,</span> <span class="s1">&#39;user/repo&#39;</span><span class="p">,</span> <span class="s1">&#39;data.zip&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                            <span class="n">max_size_per_pack</span><span class="o">=</span><span class="s1">&#39;1GB&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -184,21 +229,24 @@ as a single file, which can be more efficient for large directories.</p>
 <h2>upload_directory_as_directory<a class="headerlink" href="#upload-directory-as-directory" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.operate.upload.upload_directory_as_directory">
-<span class="sig-prename descclassname"><span class="pre">hfutils.operate.upload.</span></span><span class="sig-name descname"><span class="pre">upload_directory_as_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_in_repo:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type:</span> <span class="pre">~typing.Literal['dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'space']</span> <span class="pre">=</span> <span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_suffix:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_patterns:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation_chunk_size:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_timespan:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">5.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/operate/upload.html#upload_directory_as_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.upload.upload_directory_as_directory" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.operate.upload.</span></span><span class="sig-name descname"><span class="pre">upload_directory_as_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_in_repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation_chunk_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_timespan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/operate/upload.html#upload_directory_as_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.upload.upload_directory_as_directory" title="Link to this definition"></a></dt>
 <dd><p>Upload a local directory and its files to a specified path in a Hugging Face repository.</p>
+<p>This function uploads a local directory to a Hugging Face repository while maintaining
+its directory structure. It provides advanced features like chunked uploads for large
+datasets, automatic cleanup of removed files, and progress tracking. This is the most
+comprehensive upload function for directory structures.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>local_directory</strong> (<em>str</em>) – The local directory path to be uploaded.</p></li>
-<li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository.</p></li>
-<li><p><strong>path_in_repo</strong> (<em>str</em>) – The directory path within the repository.</p></li>
-<li><p><strong>pattern</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A pattern to filter files in the local directory.</p></li>
+<li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository in format ‘username/repo-name’.</p></li>
+<li><p><strong>path_in_repo</strong> (<em>str</em>) – The target directory path within the repository.</p></li>
+<li><p><strong>pattern</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A pattern to filter files in the local directory (glob-style pattern).</p></li>
 <li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em>) – The type of the repository (‘dataset’, ‘model’, ‘space’).</p></li>
 <li><p><strong>revision</strong> (<em>str</em>) – The revision of the repository (e.g., branch, tag, commit hash).</p></li>
-<li><p><strong>message</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The commit message for the upload.</p></li>
+<li><p><strong>message</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The commit message for the upload. If None, a default message is generated.</p></li>
 <li><p><strong>time_suffix</strong> (<em>bool</em>) – If True, append a timestamp to the commit message.</p></li>
 <li><p><strong>clear</strong> (<em>bool</em>) – If True, remove files in the repository not present in the local directory.</p></li>
-<li><p><strong>ignore_patterns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of file patterns to ignore.</p></li>
 <li><p><strong>hf_token</strong> (<em>str</em><em>, </em><em>optional</em>) – Huggingface token for API client, use <code class="docutils literal notranslate"><span class="pre">HF_TOKEN</span></code> variable if not assigned.</p></li>
 <li><p><strong>operation_chunk_size</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Chunk size of the operations. All the operations will be
 separated into multiple commits when this is set.</p></li>
@@ -209,9 +257,6 @@ separated into multiple commits when this is set.</p></li>
 <dd class="field-even"><p>Any exception raised during the upload process.</p>
 </dd>
 </dl>
-<p>This function uploads a local directory to a Hugging Face repository, maintaining its
-structure. It can handle large directories by chunking the upload process and provides
-options for clearing existing files and ignoring specific patterns.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When <cite>operation_chunk_size</cite> is set, multiple commits will be created. When some commits fail,
@@ -228,6 +273,28 @@ API cannot guarantee the atomic feature of your data. So <strong>this function i
 So if you really have a large number of chunks to create, please set the <cite>upload_timespan</cite> to a value
 no less than <cite>30.0</cite> to make sure your uploading will not be rate-limited.</p>
 </div>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Basic directory upload</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_directory_as_directory</span><span class="p">(</span><span class="s1">&#39;data/&#39;</span><span class="p">,</span> <span class="s1">&#39;user/repo&#39;</span><span class="p">,</span> <span class="s1">&#39;dataset/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Upload with file filtering</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_directory_as_directory</span><span class="p">(</span><span class="s1">&#39;models/&#39;</span><span class="p">,</span> <span class="s1">&#39;user/repo&#39;</span><span class="p">,</span> <span class="s1">&#39;checkpoints/&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                              <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;*.pth&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Chunked upload for large datasets</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_directory_as_directory</span><span class="p">(</span><span class="s1">&#39;large_dataset/&#39;</span><span class="p">,</span> <span class="s1">&#39;user/repo&#39;</span><span class="p">,</span> <span class="s1">&#39;data/&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                              <span class="n">operation_chunk_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">upload_timespan</span><span class="o">=</span><span class="mf">30.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Upload with cleanup of removed files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_directory_as_directory</span><span class="p">(</span><span class="s1">&#39;updated_data/&#39;</span><span class="p">,</span> <span class="s1">&#39;user/repo&#39;</span><span class="p">,</span> <span class="s1">&#39;data/&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                              <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -318,10 +385,9 @@ no less than <cite>30.0</cite> to make sure your uploading will not be rate-limi
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/glob/api_doc/operate/upload.html">dev/glob</a></dd>
+                        <dd><a href="../../../main/api_doc/operate/upload.html">main</a></dd>
                         <dd><a href="upload.html">HEAD</a></dd>
                         <dd><a href="../../../dev/rate/api_doc/operate/upload.html">dev/rate</a></dd>
-                        <dd><a href="../../../main/api_doc/operate/upload.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.operate.base &mdash; hfutils 0.11.1 documentation</title>
+  <title>hfutils.operate.base &mdash; hfutils 0.12.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=57cbeb03"></script>
+      <script src="../../_static/documentation_options.js?v=61ccb1f1"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -69,6 +69,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#get-hf-fs">get_hf_fs</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#hfutils.operate.base.get_hf_fs"><code class="docutils literal notranslate"><span class="pre">get_hf_fs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hf-repo-glob">hf_repo_glob</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfutils.operate.base.hf_repo_glob"><code class="docutils literal notranslate"><span class="pre">hf_repo_glob()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#list-all-with-pattern">list_all_with_pattern</a><ul>
@@ -144,8 +148,9 @@ when dealing with datasets, models, and spaces.</p>
 <span class="sig-prename descclassname"><span class="pre">hfutils.operate.base.</span></span><span class="sig-name descname"><span class="pre">get_hf_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">HfApi</span></span></span><a class="reference internal" href="../../_modules/hfutils/operate/base.html#get_hf_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.base.get_hf_client" title="Link to this definition"></a></dt>
 <dd><p>Get the Hugging Face API client.</p>
 <p>This function returns an instance of the Hugging Face API client. If a token is not provided,
-it attempts to use the token from the environment variable.</p>
-<dl class="field-list">
+it attempts to use the token from the environment variable. The client is cached to avoid
+creating multiple instances with the same token.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Hugging Face token for API client. If not provided, uses the ‘HF_TOKEN’ environment variable.</p>
 </dd>
@@ -155,14 +160,13 @@ it attempts to use the token from the environment variable.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>HfApi</p>
 </dd>
-<dt class="field-even">Example<span class="colon">:</span></dt>
-<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">()</span>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Use client to interact with Hugging Face API</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">list_repos</span><span class="p">(</span><span class="n">organization</span><span class="o">=</span><span class="s2">&quot;huggingface&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">models</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_models</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
-</dd>
-</dl>
 </dd></dl>
 
 </section>
@@ -175,7 +179,7 @@ it attempts to use the token from the environment variable.</p>
 <p>This function returns an instance of the Hugging Face file system. If a token is not provided,
 it attempts to use the token from the environment variable. The file system is configured
 not to use listings cache to ensure fresh results.</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Hugging Face token for API client. If not provided, uses the ‘HF_TOKEN’ environment variable.</p>
 </dd>
@@ -185,14 +189,82 @@ not to use listings cache to ensure fresh results.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>HfFileSystem</p>
 </dd>
-<dt class="field-even">Example<span class="colon">:</span></dt>
-<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">get_hf_fs</span><span class="p">()</span>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">get_hf_fs</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Use fs to interact with Hugging Face file system</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span><span class="o">.</span><span class="n">ls</span><span class="p">(</span><span class="s2">&quot;dataset/example&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">ls</span><span class="p">(</span><span class="s2">&quot;datasets/squad&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+</section>
+<section id="hf-repo-glob">
+<h2>hf_repo_glob<a class="headerlink" href="#hf-repo-glob" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="hfutils.operate.base.hf_repo_glob">
+<span class="sig-prename descclassname"><span class="pre">hfutils.operate.base.</span></span><span class="sig-name descname"><span class="pre">hf_repo_glob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'**/*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_directories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_when_base_not_exist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RepoFile</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">RepoFolder</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/hfutils/operate/base.html#hf_repo_glob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.base.hf_repo_glob" title="Link to this definition"></a></dt>
+<dd><p>Glob files and directories in a Hugging Face repository using pattern matching.</p>
+<p>This function performs pattern matching on files and directories in a Hugging Face
+repository, similar to filesystem globbing. It supports wildcard patterns and
+negation patterns for flexible file selection.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Pattern matching syntax supports:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">*</span></code>: Matches everything except slashes (single level)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">**</span></code>: Matches zero or more directories recursively (requires GLOBSTAR flag, which is enabled)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">?</span></code>: Matches any single character</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[seq]</span></code>: Matches any character in sequence</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[!seq]</span></code>: Matches any character not in sequence</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">!pattern</span></code>: Negation pattern when used at start (requires NEGATE flag, which is enabled)</p></li>
+<li><p>Multiple patterns can be provided as a list</p></li>
+<li><p>Negation patterns filter out matches from inclusion patterns</p></li>
+<li><p>Dot files are matched by default (DOTMATCH flag is enabled)</p></li>
+</ul>
+<p>Note that <cite>*</cite> only matches at a single directory level, while <cite>**/*</cite> matches
+recursively including subdirectories and the top level.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository.</p></li>
+<li><p><strong>pattern</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – Wildcard pattern(s) to match files and folders. Default is ‘<a href="#id1"><span class="problematic" id="id2">**</span></a>/<a href="#id3"><span class="problematic" id="id4">*</span></a>’ (all items).</p></li>
+<li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em>) – The type of the repository (‘dataset’, ‘model’, ‘space’). Default is ‘dataset’.</p></li>
+<li><p><strong>revision</strong> (<em>str</em>) – The revision of the repository (e.g., branch, tag, commit hash). Default is ‘main’.</p></li>
+<li><p><strong>include_files</strong> (<em>bool</em>) – Whether to include files in the results. Default is True.</p></li>
+<li><p><strong>include_directories</strong> (<em>bool</em>) – Whether to include directories in the results. Default is False.</p></li>
+<li><p><strong>raise_when_base_not_exist</strong> (<em>bool</em>) – Whether to raise an exception when the repository doesn’t exist. Default is False.</p></li>
+<li><p><strong>return_path</strong> (<em>bool</em>) – Whether to return file paths as strings instead of RepoFile/RepoFolder objects. Default is False.</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Hugging Face token for API client. If not provided, uses the ‘HF_TOKEN’ environment variable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of RepoFile and/or RepoFolder objects matching the pattern, or strings if return_path is True.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Union[RepoFile, RepoFolder, str]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RepositoryNotFoundError</strong> – If the repository is not found and raise_when_base_not_exist is True.</p></li>
+<li><p><strong>GatedRepoError</strong> – If the repository is gated and raise_when_base_not_exist is True.</p></li>
+<li><p><strong>DisabledRepoError</strong> – If the repository is disabled and raise_when_base_not_exist is True.</p></li>
+<li><p><strong>RevisionNotFoundError</strong> – If the revision is not found and raise_when_base_not_exist is True.</p></li>
+</ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get all Python files in a repository</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">hf_repo_glob</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;*.py&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get all files except hidden ones</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">hf_repo_glob</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;**/*&quot;</span><span class="p">,</span> <span class="s2">&quot;!.*&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get only directories</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dirs</span> <span class="o">=</span> <span class="n">hf_repo_glob</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;**/*&quot;</span><span class="p">,</span> <span class="n">include_files</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_directories</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get paths as strings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paths</span> <span class="o">=</span> <span class="n">hf_repo_glob</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;*.txt&quot;</span><span class="p">,</span> <span class="n">return_path</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
@@ -200,39 +272,35 @@ not to use listings cache to ensure fresh results.</p>
 <h2>list_all_with_pattern<a class="headerlink" href="#list-all-with-pattern" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.operate.base.list_all_with_pattern">
-<span class="sig-prename descclassname"><span class="pre">hfutils.operate.base.</span></span><span class="sig-name descname"><span class="pre">list_all_with_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'**/*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startup_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">RepoFile</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">RepoFolder</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/hfutils/operate/base.html#list_all_with_pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.base.list_all_with_pattern" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.operate.base.</span></span><span class="sig-name descname"><span class="pre">list_all_with_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'**/*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dataset'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'model'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'space'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_when_base_not_exist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RepoFile</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">RepoFolder</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/hfutils/operate/base.html#list_all_with_pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.base.list_all_with_pattern" title="Link to this definition"></a></dt>
 <dd><p>List all files and folders in a Hugging Face repository matching a given pattern.</p>
 <p>This function retrieves information about files and folders in a repository that match
-the specified pattern. It uses batching to handle large repositories efficiently.</p>
-<dl class="field-list">
+the specified pattern. It includes both files and directories in the results by default.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository.</p></li>
-<li><p><strong>pattern</strong> (<em>str</em>) – Wildcard pattern to match files and folders. Default is <cite>**/*</cite> (all files and folders).</p></li>
+<li><p><strong>pattern</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – Wildcard pattern(s) to match files and folders. Default is ‘<a href="#id5"><span class="problematic" id="id6">**</span></a>/<a href="#id7"><span class="problematic" id="id8">*</span></a>’ (all files and folders).</p></li>
 <li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em>) – The type of the repository (‘dataset’, ‘model’, ‘space’). Default is ‘dataset’.</p></li>
 <li><p><strong>revision</strong> (<em>str</em>) – The revision of the repository (e.g., branch, tag, commit hash). Default is ‘main’.</p></li>
-<li><p><strong>startup_batch</strong> (<em>int</em>) – Initial batch size for retrieving path information. Default is 500.</p></li>
-<li><p><strong>batch_factor</strong> (<em>float</em>) – Factor to reduce batch size if a request fails. Default is 0.8.</p></li>
+<li><p><strong>raise_when_base_not_exist</strong> (<em>bool</em>) – Whether to raise an exception when the repository doesn’t exist. Default is False.</p></li>
 <li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Hugging Face token for API client. If not provided, uses the ‘HF_TOKEN’ environment variable.</p></li>
-<li><p><strong>silent</strong> (<em>bool</em>) – If True, suppresses progress bar. Default is False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An iterator of RepoFile and RepoFolder objects matching the pattern.</p>
+<dd class="field-even"><p>A list of RepoFile and RepoFolder objects matching the pattern.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Iterator[Union[RepoFile, RepoFolder]]</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>HfHubHTTPError</strong> – If there’s an error in the API request that’s not related to batch size.</p>
-</dd>
-<dt class="field-odd">Example<span class="colon">:</span></dt>
-<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">list_all_with_pattern</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;*.txt&quot;</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-</pre></div>
-</div>
+<dd class="field-odd"><p>List[Union[RepoFile, RepoFolder]]</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># List all items matching a pattern</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">items</span> <span class="o">=</span> <span class="n">list_all_with_pattern</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;*.txt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;File&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span><span class="w"> </span><span class="n">RepoFile</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;Folder&#39;</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
@@ -240,37 +308,36 @@ the specified pattern. It uses batching to handle large repositories efficiently
 <h2>list_repo_files_in_repository<a class="headerlink" href="#list-repo-files-in-repository" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.operate.base.list_repo_files_in_repository">
-<span class="sig-prename descclassname"><span class="pre">hfutils.operate.base.</span></span><span class="sig-name descname"><span class="pre">list_repo_files_in_repository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type:</span> <span class="pre">~typing.Literal['dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'space']</span> <span class="pre">=</span> <span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subdir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'**/*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_patterns:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">RepoFile</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/hfutils/operate/base.html#list_repo_files_in_repository"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.base.list_repo_files_in_repository" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.operate.base.</span></span><span class="sig-name descname"><span class="pre">list_repo_files_in_repository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type:</span> <span class="pre">~typing.Literal['dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'space']</span> <span class="pre">=</span> <span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subdir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern:</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_when_base_not_exist:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">RepoFile</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/hfutils/operate/base.html#list_repo_files_in_repository"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.base.list_repo_files_in_repository" title="Link to this definition"></a></dt>
 <dd><p>List repository files with their paths in a Hugging Face repository.</p>
-<p>This function returns a list of tuples containing RepoFile objects and their corresponding paths
-that match the given pattern and are not ignored by the ignored patterns.</p>
-<dl class="field-list">
+<p>This function returns a list of tuples containing RepoFile objects and their corresponding
+relative paths that match the given pattern. By default, it excludes git-related files
+using the pattern [’<a href="#id9"><span class="problematic" id="id10">**</span></a>/<em>’, ‘!.git</em>’].</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository.</p></li>
 <li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em>) – The type of the repository (‘dataset’, ‘model’, ‘space’). Default is ‘dataset’.</p></li>
 <li><p><strong>subdir</strong> (<em>str</em>) – The subdirectory to list files from. Default is an empty string (root directory).</p></li>
-<li><p><strong>pattern</strong> (<em>str</em>) – Wildcard pattern of the target files. Default is <cite>**/*</cite> (all files).</p></li>
+<li><p><strong>pattern</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – Wildcard pattern(s) of the target files. Default includes all files except git files.</p></li>
 <li><p><strong>revision</strong> (<em>str</em>) – The revision of the repository (e.g., branch, tag, commit hash). Default is ‘main’.</p></li>
-<li><p><strong>ignore_patterns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of file patterns to ignore. If not set, uses default ignore patterns.</p></li>
+<li><p><strong>raise_when_base_not_exist</strong> (<em>bool</em>) – Whether to raise an exception when the repository doesn’t exist. Default is False.</p></li>
 <li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Hugging Face token for API client. If not provided, uses the ‘HF_TOKEN’ environment variable.</p></li>
-<li><p><strong>silent</strong> (<em>bool</em>) – If True, suppresses progress bar. Default is False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of tuples containing RepoFile objects and their corresponding paths.</p>
+<dd class="field-even"><p>A list of tuples containing RepoFile objects and their corresponding relative paths.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Tuple[RepoFile, str]]</p>
 </dd>
-<dt class="field-even">Example<span class="colon">:</span></dt>
-<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">list_repo_files_in_repository</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;*.txt&quot;</span><span class="p">)</span>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">list_repo_files_in_repository</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;*.txt&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">repo_file</span><span class="p">,</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">, Size: </span><span class="si">{</span><span class="n">repo_file</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</dd>
-</dl>
 </dd></dl>
 
 </section>
@@ -278,21 +345,21 @@ that match the given pattern and are not ignored by the ignored patterns.</p>
 <h2>list_files_in_repository<a class="headerlink" href="#list-files-in-repository" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="hfutils.operate.base.list_files_in_repository">
-<span class="sig-prename descclassname"><span class="pre">hfutils.operate.base.</span></span><span class="sig-name descname"><span class="pre">list_files_in_repository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type:</span> <span class="pre">~typing.Literal['dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'space']</span> <span class="pre">=</span> <span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subdir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'**/*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_patterns:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/hfutils/operate/base.html#list_files_in_repository"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.base.list_files_in_repository" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hfutils.operate.base.</span></span><span class="sig-name descname"><span class="pre">list_files_in_repository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_type:</span> <span class="pre">~typing.Literal['dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'space']</span> <span class="pre">=</span> <span class="pre">'dataset'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subdir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern:</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_when_base_not_exist:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/hfutils/operate/base.html#list_files_in_repository"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.operate.base.list_files_in_repository" title="Link to this definition"></a></dt>
 <dd><p>List files in a Hugging Face repository based on the given parameters.</p>
 <p>This function retrieves a list of file paths in a specified repository that match
-the given pattern and are not ignored by the ignored patterns.</p>
-<dl class="field-list">
+the given pattern. By default, it excludes git-related files and returns only
+the relative paths as strings.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>repo_id</strong> (<em>str</em>) – The identifier of the repository.</p></li>
 <li><p><strong>repo_type</strong> (<em>RepoTypeTyping</em>) – The type of the repository (‘dataset’, ‘model’, ‘space’). Default is ‘dataset’.</p></li>
 <li><p><strong>subdir</strong> (<em>str</em>) – The subdirectory to list files from. Default is an empty string (root directory).</p></li>
-<li><p><strong>pattern</strong> (<em>str</em>) – Wildcard pattern of the target files. Default is <cite>**/*</cite> (all files).</p></li>
+<li><p><strong>pattern</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – Wildcard pattern(s) of the target files. Default includes all files except git files.</p></li>
 <li><p><strong>revision</strong> (<em>str</em>) – The revision of the repository (e.g., branch, tag, commit hash). Default is ‘main’.</p></li>
-<li><p><strong>ignore_patterns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of file patterns to ignore. If not set, uses default ignore patterns.</p></li>
+<li><p><strong>raise_when_base_not_exist</strong> (<em>bool</em>) – Whether to raise an exception when the repository doesn’t exist. Default is False.</p></li>
 <li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Hugging Face token for API client. If not provided, uses the ‘HF_TOKEN’ environment variable.</p></li>
-<li><p><strong>silent</strong> (<em>bool</em>) – If True, suppresses progress bar. Default is False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -301,14 +368,15 @@ the given pattern and are not ignored by the ignored patterns.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[str]</p>
 </dd>
-<dt class="field-even">Example<span class="colon">:</span></dt>
-<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">list_files_in_repository</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;*.txt&quot;</span><span class="p">,</span> <span class="n">ignore_patterns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;.git*&quot;</span><span class="p">,</span> <span class="s2">&quot;*.log&quot;</span><span class="p">])</span>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">list_files_in_repository</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;*.txt&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
 <span class="go">[&#39;file1.txt&#39;, &#39;folder/file2.txt&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># List files in a specific subdirectory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">list_files_in_repository</span><span class="p">(</span><span class="s2">&quot;username/repo&quot;</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;*.json&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</dd>
-</dl>
 </dd></dl>
 
 </section>
@@ -399,10 +467,9 @@ the given pattern and are not ignored by the ignored patterns.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/glob/api_doc/operate/base.html">dev/glob</a></dd>
+                        <dd><a href="../../../main/api_doc/operate/base.html">main</a></dd>
                         <dd><a href="base.html">HEAD</a></dd>
                         <dd><a href="../../../dev/rate/api_doc/operate/base.html">dev/rate</a></dd>
-                        <dd><a href="../../../main/api_doc/operate/base.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

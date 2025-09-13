@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hfutils.operate.warmup &mdash; hfutils 0.11.1 documentation</title>
+  <title>hfutils.operate.warmup &mdash; hfutils 0.12.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=57cbeb03"></script>
+      <script src="../../../_static/documentation_options.js?v=61ccb1f1"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -99,7 +99,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
@@ -107,7 +107,6 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoTypeTyping</span><span class="p">,</span> <span class="n">list_repo_files_in_repository</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.download</span><span class="w"> </span><span class="kn">import</span> <span class="n">_IGNORE_PATTERN_UNSET</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_normpath</span>
 
 
@@ -118,11 +117,15 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download and cache a single file from Huggingface repository.</span>
 
+<span class="sd">    This function downloads a specific file from a Huggingface repository and caches it locally.</span>
+<span class="sd">    It&#39;s useful for pre-downloading files that will be accessed later, ensuring they&#39;re available</span>
+<span class="sd">    in the local cache for faster subsequent access.</span>
+
 <span class="sd">    :param repo_id: ID of the huggingface repository (e.g., &#39;username/repository&#39;)</span>
 <span class="sd">    :type repo_id: str</span>
 <span class="sd">    :param filename: Name of the file to download including path within repository</span>
 <span class="sd">    :type filename: str</span>
-<span class="sd">    :param repo_type: Type of repository (&#39;dataset&#39;, &#39;model&#39;, etc.)</span>
+<span class="sd">    :param repo_type: Type of repository (&#39;dataset&#39;, &#39;model&#39;, etc.), defaults to &#39;dataset&#39;</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
 <span class="sd">    :param revision: Git revision to use, defaults to &#39;main&#39;</span>
 <span class="sd">    :type revision: str</span>
@@ -134,8 +137,11 @@
 <span class="sd">    :return: Local path to the downloaded file</span>
 <span class="sd">    :rtype: str</span>
 
-<span class="sd">    Example:</span>
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; # Download a model configuration file</span>
 <span class="sd">        &gt;&gt;&gt; local_path = hf_warmup_file(&#39;bert-base-uncased&#39;, &#39;config.json&#39;, repo_type=&#39;model&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; # Download a dataset file with specific revision</span>
+<span class="sd">        &gt;&gt;&gt; local_path = hf_warmup_file(&#39;username/dataset&#39;, &#39;data/train.csv&#39;, revision=&#39;v1.0&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">hf_hub_download</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
@@ -150,40 +156,45 @@
 
 <div class="viewcode-block" id="hf_warmup_directory">
 <a class="viewcode-back" href="../../../api_doc/operate/warmup.html#hfutils.operate.warmup.hf_warmup_directory">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">hf_warmup_directory</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span>
-                        <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
-                        <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_IGNORE_PATTERN_UNSET</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hf_warmup_directory</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_in_repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span>
+                        <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                         <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                         <span class="n">cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download and cache an entire directory from Huggingface repository with concurrent processing.</span>
 
+<span class="sd">    This function efficiently downloads multiple files from a directory in a Huggingface repository</span>
+<span class="sd">    using concurrent workers. It includes retry mechanisms for failed downloads and progress tracking.</span>
+<span class="sd">    This is particularly useful for pre-downloading large datasets or model repositories.</span>
+
 <span class="sd">    :param repo_id: ID of the huggingface repository (e.g., &#39;username/repository&#39;)</span>
 <span class="sd">    :type repo_id: str</span>
-<span class="sd">    :param dir_in_repo: Directory path within the repository to download</span>
+<span class="sd">    :param dir_in_repo: Directory path within the repository to download, defaults to &#39;.&#39; (root)</span>
 <span class="sd">    :type dir_in_repo: str</span>
-<span class="sd">    :param pattern: Glob pattern for filtering files (e.g., &#39;*.txt&#39; for text files only)</span>
-<span class="sd">    :type pattern: str</span>
-<span class="sd">    :param repo_type: Type of repository (&#39;dataset&#39;, &#39;model&#39;, etc.)</span>
+<span class="sd">    :param pattern: Glob pattern for filtering files (e.g., &#39;*.txt&#39; for text files only), defaults to &#39;**/*&#39;</span>
+<span class="sd">    :type pattern: Union[List[str], str]</span>
+<span class="sd">    :param repo_type: Type of repository (&#39;dataset&#39;, &#39;model&#39;, etc.), defaults to &#39;dataset&#39;</span>
 <span class="sd">    :type repo_type: RepoTypeTyping</span>
-<span class="sd">    :param revision: Git revision to use</span>
+<span class="sd">    :param revision: Git revision to use, defaults to &#39;main&#39;</span>
 <span class="sd">    :type revision: str</span>
-<span class="sd">    :param silent: Whether to hide progress bar</span>
+<span class="sd">    :param silent: Whether to hide progress bar, defaults to False</span>
 <span class="sd">    :type silent: bool</span>
-<span class="sd">    :param ignore_patterns: List of patterns to ignore during download</span>
-<span class="sd">    :type ignore_patterns: List[str]</span>
-<span class="sd">    :param max_workers: Maximum number of concurrent download workers</span>
+<span class="sd">    :param max_workers: Maximum number of concurrent download workers, defaults to 8</span>
 <span class="sd">    :type max_workers: int</span>
-<span class="sd">    :param max_retries: Maximum number of retry attempts for failed downloads</span>
+<span class="sd">    :param max_retries: Maximum number of retry attempts for failed downloads, defaults to 5</span>
 <span class="sd">    :type max_retries: int</span>
 <span class="sd">    :param hf_token: Huggingface authentication token for private repositories</span>
 <span class="sd">    :type hf_token: Optional[str]</span>
 <span class="sd">    :param cache_dir: Directory to cache the downloaded files</span>
 <span class="sd">    :type cache_dir: Optional[str]</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; # Downloads all .txt files from the &#39;data&#39; directory using 4 workers</span>
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; # Download all files from the root directory</span>
+<span class="sd">        &gt;&gt;&gt; hf_warmup_directory(&#39;username/dataset&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; # Download only .txt files from the &#39;data&#39; directory using 4 workers</span>
 <span class="sd">        &gt;&gt;&gt; hf_warmup_directory(&#39;username/repo&#39;, &#39;data&#39;, &#39;*.txt&#39;, max_workers=4)</span>
+<span class="sd">        &gt;&gt;&gt; # Download with custom retry settings and silent mode</span>
+<span class="sd">        &gt;&gt;&gt; hf_warmup_directory(&#39;username/repo&#39;, &#39;models&#39;, max_retries=3, silent=True)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">list_repo_files_in_repository</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
@@ -191,7 +202,6 @@
         <span class="n">subdir</span><span class="o">=</span><span class="n">dir_in_repo</span><span class="p">,</span>
         <span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span>
         <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
-        <span class="n">ignore_patterns</span><span class="o">=</span><span class="n">ignore_patterns</span><span class="p">,</span>
         <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">progress</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Downloading </span><span class="si">{</span><span class="n">dir_in_repo</span><span class="si">!r}</span><span class="s1"> ...&#39;</span><span class="p">)</span>
@@ -200,9 +210,13 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Internal helper function to download a single file with retry mechanism.</span>
 
-<span class="sd">        :param repo_file: Repository file object</span>
+<span class="sd">        This function handles the download of individual files with automatic retry logic</span>
+<span class="sd">        for handling transient network errors. It updates the progress bar upon successful</span>
+<span class="sd">        completion and logs any errors encountered during the process.</span>
+
+<span class="sd">        :param repo_file: Repository file object containing file metadata</span>
 <span class="sd">        :type repo_file: RepoFile</span>
-<span class="sd">        :param rel_file: Relative path of the file</span>
+<span class="sd">        :param rel_file: Relative path of the file within the directory</span>
 <span class="sd">        :type rel_file: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_</span> <span class="o">=</span> <span class="n">repo_file</span>
@@ -319,10 +333,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/glob/index.html">dev/glob</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
                         <dd><a href="warmup.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
-                        <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
