@@ -131,6 +131,12 @@
 
 <span class="sd">    :return: The Hugging Face token if set, otherwise None.</span>
 <span class="sd">    :rtype: Optional[str]</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; token = _get_hf_token()</span>
+<span class="sd">        &gt;&gt;&gt; print(token is not None)</span>
+<span class="sd">        True  # if HF_TOKEN is set in environment</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HF_TOKEN&#39;</span><span class="p">)</span>
 
@@ -143,7 +149,8 @@
 <span class="sd">    Get the Hugging Face API client.</span>
 
 <span class="sd">    This function returns an instance of the Hugging Face API client. If a token is not provided,</span>
-<span class="sd">    it attempts to use the token from the environment variable.</span>
+<span class="sd">    it attempts to use the token from the environment variable. The client is cached to avoid</span>
+<span class="sd">    creating multiple instances with the same token.</span>
 
 <span class="sd">    :param hf_token: Hugging Face token for API client. If not provided, uses the &#39;HF_TOKEN&#39; environment variable.</span>
 <span class="sd">    :type hf_token: Optional[str]</span>
@@ -155,7 +162,7 @@
 
 <span class="sd">        &gt;&gt;&gt; client = get_hf_client()</span>
 <span class="sd">        &gt;&gt;&gt; # Use client to interact with Hugging Face API</span>
-<span class="sd">        &gt;&gt;&gt; client.list_models(organization=&quot;huggingface&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; models = client.list_models(limit=5)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">HfApi</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">hf_token</span> <span class="ow">or</span> <span class="n">_get_hf_token</span><span class="p">())</span></div>
 
@@ -182,7 +189,7 @@
 
 <span class="sd">        &gt;&gt;&gt; fs = get_hf_fs()</span>
 <span class="sd">        &gt;&gt;&gt; # Use fs to interact with Hugging Face file system</span>
-<span class="sd">        &gt;&gt;&gt; fs.ls(&quot;dataset/example&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; files = fs.ls(&quot;datasets/squad&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># use_listings_cache=False is necessary</span>
     <span class="c1"># or the result of glob and ls will be cached, the unittest will down</span>
@@ -202,6 +209,12 @@
 
 <span class="sd">    :return: Normalized pattern(s) in the same format as input.</span>
 <span class="sd">    :rtype: Union[List[str], str]</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; pattern = _fn_path_pattern_norm(&quot;./data//files/*.txt&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(pattern)</span>
+<span class="sd">        data/files/*.txt</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">hf_normpath</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pattern</span><span class="p">]</span>
@@ -214,7 +227,8 @@
 <span class="sd">    Adjust a single pattern to work within a subdirectory.</span>
 
 <span class="sd">    This function modifies a pattern to be relative to a specific subdirectory.</span>
-<span class="sd">    It handles negation patterns (starting with &#39;!&#39;) appropriately.</span>
+<span class="sd">    It handles negation patterns (starting with &#39;!&#39;) appropriately by preserving</span>
+<span class="sd">    the negation while prepending the subdirectory path.</span>
 
 <span class="sd">    :param pattern: The pattern to adjust.</span>
 <span class="sd">    :type pattern: str</span>
@@ -223,6 +237,15 @@
 
 <span class="sd">    :return: The adjusted pattern for the subdirectory.</span>
 <span class="sd">    :rtype: str</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; pattern = _fn_path_pattern_subdir_single(&quot;*.txt&quot;, &quot;data&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(pattern)</span>
+<span class="sd">        data/*.txt</span>
+<span class="sd">        &gt;&gt;&gt; neg_pattern = _fn_path_pattern_subdir_single(&quot;!*.log&quot;, &quot;logs&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(neg_pattern)</span>
+<span class="sd">        !logs/*.log</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">pattern</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">):</span>
         <span class="n">pattern</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;!</span><span class="si">{</span><span class="n">subdir</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">pattern</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -237,7 +260,8 @@
 <span class="sd">    Adjust patterns to work within a subdirectory.</span>
 
 <span class="sd">    This function modifies patterns to be relative to a specific subdirectory,</span>
-<span class="sd">    handling both single patterns and lists of patterns.</span>
+<span class="sd">    handling both single patterns and lists of patterns. It preserves the input</span>
+<span class="sd">    type and applies subdirectory adjustment to each pattern.</span>
 
 <span class="sd">    :param pattern: The pattern(s) to adjust.</span>
 <span class="sd">    :type pattern: Union[List[str], str]</span>
@@ -246,6 +270,12 @@
 
 <span class="sd">    :return: The adjusted pattern(s) for the subdirectory.</span>
 <span class="sd">    :rtype: Union[List[str], str]</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; patterns = _fn_path_pattern_subdir([&quot;*.txt&quot;, &quot;!*.log&quot;], &quot;data&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(patterns)</span>
+<span class="sd">        [&#39;data/*.txt&#39;, &#39;!data/*.log&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">_fn_path_pattern_subdir_single</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">subdir</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pattern</span><span class="p">]</span>
@@ -258,8 +288,8 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">hf_repo_glob</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;**/*&#39;</span><span class="p">,</span> <span class="n">repo_type</span><span class="p">:</span> <span class="n">RepoTypeTyping</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span><span class="p">,</span>
         <span class="n">revision</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">include_files</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">include_directories</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">raise_when_base_not_exist</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">RepoFile</span><span class="p">,</span> <span class="n">RepoFolder</span><span class="p">]]:</span>
+        <span class="n">raise_when_base_not_exist</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">return_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">RepoFile</span><span class="p">,</span> <span class="n">RepoFolder</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Glob files and directories in a Hugging Face repository using pattern matching.</span>
 
@@ -270,12 +300,12 @@
 <span class="sd">    .. note::</span>
 <span class="sd">        Pattern matching syntax supports:</span>
 
-<span class="sd">        - `*`: Matches everything except slashes (single level)</span>
-<span class="sd">        - `**`: Matches zero or more directories recursively (requires GLOBSTAR flag, which is enabled)</span>
-<span class="sd">        - `?`: Matches any single character</span>
-<span class="sd">        - `[seq]`: Matches any character in sequence</span>
-<span class="sd">        - `[!seq]`: Matches any character not in sequence</span>
-<span class="sd">        - `!pattern`: Negation pattern when used at start (requires NEGATE flag, which is enabled)</span>
+<span class="sd">        - ``*``: Matches everything except slashes (single level)</span>
+<span class="sd">        - ``**``: Matches zero or more directories recursively (requires GLOBSTAR flag, which is enabled)</span>
+<span class="sd">        - ``?``: Matches any single character</span>
+<span class="sd">        - ``[seq]``: Matches any character in sequence</span>
+<span class="sd">        - ``[!seq]``: Matches any character not in sequence</span>
+<span class="sd">        - ``!pattern``: Negation pattern when used at start (requires NEGATE flag, which is enabled)</span>
 <span class="sd">        - Multiple patterns can be provided as a list</span>
 <span class="sd">        - Negation patterns filter out matches from inclusion patterns</span>
 <span class="sd">        - Dot files are matched by default (DOTMATCH flag is enabled)</span>
@@ -297,11 +327,13 @@
 <span class="sd">    :type include_directories: bool</span>
 <span class="sd">    :param raise_when_base_not_exist: Whether to raise an exception when the repository doesn&#39;t exist. Default is False.</span>
 <span class="sd">    :type raise_when_base_not_exist: bool</span>
+<span class="sd">    :param return_path: Whether to return file paths as strings instead of RepoFile/RepoFolder objects. Default is False.</span>
+<span class="sd">    :type return_path: bool</span>
 <span class="sd">    :param hf_token: Hugging Face token for API client. If not provided, uses the &#39;HF_TOKEN&#39; environment variable.</span>
 <span class="sd">    :type hf_token: Optional[str]</span>
 
-<span class="sd">    :return: A list of RepoFile and/or RepoFolder objects matching the pattern.</span>
-<span class="sd">    :rtype: List[Union[RepoFile, RepoFolder]]</span>
+<span class="sd">    :return: A list of RepoFile and/or RepoFolder objects matching the pattern, or strings if return_path is True.</span>
+<span class="sd">    :rtype: List[Union[RepoFile, RepoFolder, str]]</span>
 
 <span class="sd">    :raises RepositoryNotFoundError: If the repository is not found and raise_when_base_not_exist is True.</span>
 <span class="sd">    :raises GatedRepoError: If the repository is gated and raise_when_base_not_exist is True.</span>
@@ -316,6 +348,8 @@
 <span class="sd">        &gt;&gt;&gt; files = hf_repo_glob(&quot;username/repo&quot;, pattern=[&quot;**/*&quot;, &quot;!.*&quot;])</span>
 <span class="sd">        &gt;&gt;&gt; # Get only directories</span>
 <span class="sd">        &gt;&gt;&gt; dirs = hf_repo_glob(&quot;username/repo&quot;, pattern=&quot;**/*&quot;, include_files=False, include_directories=True)</span>
+<span class="sd">        &gt;&gt;&gt; # Get paths as strings</span>
+<span class="sd">        &gt;&gt;&gt; paths = hf_repo_glob(&quot;username/repo&quot;, pattern=&quot;*.txt&quot;, return_path=True)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
     <span class="n">pattern</span> <span class="o">=</span> <span class="n">_fn_path_pattern_norm</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
@@ -336,7 +370,10 @@
                 <span class="n">patterns</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span>
                 <span class="n">flags</span><span class="o">=</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">CASE</span> <span class="o">|</span> <span class="n">glob</span><span class="o">.</span><span class="n">NEGATE</span> <span class="o">|</span> <span class="n">glob</span><span class="o">.</span><span class="n">NEGATEALL</span> <span class="o">|</span> <span class="n">glob</span><span class="o">.</span><span class="n">DOTMATCH</span> <span class="o">|</span> <span class="n">glob</span><span class="o">.</span><span class="n">GLOBSTAR</span><span class="p">),</span>
             <span class="p">):</span>
-                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">return_path</span><span class="p">:</span>
+                    <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hf_normpath</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">RepositoryNotFoundError</span><span class="p">,</span> <span class="n">GatedRepoError</span><span class="p">,</span> <span class="n">DisabledRepoError</span><span class="p">,</span> <span class="n">RevisionNotFoundError</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">raise_when_base_not_exist</span><span class="p">:</span>
             <span class="k">raise</span>
@@ -357,7 +394,7 @@
 <span class="sd">    List all files and folders in a Hugging Face repository matching a given pattern.</span>
 
 <span class="sd">    This function retrieves information about files and folders in a repository that match</span>
-<span class="sd">    the specified pattern. It includes both files and directories in the results.</span>
+<span class="sd">    the specified pattern. It includes both files and directories in the results by default.</span>
 
 <span class="sd">    :param repo_id: The identifier of the repository.</span>
 <span class="sd">    :type repo_id: str</span>
@@ -409,7 +446,8 @@
 <span class="sd">    List repository files with their paths in a Hugging Face repository.</span>
 
 <span class="sd">    This function returns a list of tuples containing RepoFile objects and their corresponding</span>
-<span class="sd">    relative paths that match the given pattern. By default, it excludes git-related files.</span>
+<span class="sd">    relative paths that match the given pattern. By default, it excludes git-related files</span>
+<span class="sd">    using the pattern [&#39;**/*&#39;, &#39;!.git*&#39;].</span>
 
 <span class="sd">    :param repo_id: The identifier of the repository.</span>
 <span class="sd">    :type repo_id: str</span>
