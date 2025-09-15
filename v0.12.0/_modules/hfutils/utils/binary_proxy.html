@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hfutils.utils.binary_proxy &mdash; hfutils 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=61ccb1f1"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            hfutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/archive/index.html">hfutils.archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/cache/index.html">hfutils.cache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">hfutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/entry/index.html">hfutils.entry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/index/index.html">hfutils.index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">hfutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/repository/index.html">hfutils.repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">hfutils.utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">hfutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">hfutils.utils.binary_proxy</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for hfutils.utils.binary_proxy</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">BinaryProxyIO module provides a proxy implementation for binary I/O operations.</span>
+
+<span class="sd">This module defines a class that wraps a binary stream and implements the BinaryIO interface,</span>
+<span class="sd">primarily focusing on write operations while providing stubs for other operations.</span>
+<span class="sd">It can be used as a base class for implementing custom binary I/O handlers that need</span>
+<span class="sd">to intercept or modify write operations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnsupportedOperation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryIO</span>
+
+
+<div class="viewcode-block" id="BinaryProxyIO">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BinaryProxyIO</span><span class="p">(</span><span class="n">BinaryIO</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A proxy class that implements the BinaryIO interface, wrapping another binary stream.</span>
+
+<span class="sd">    This class primarily supports write operations, while other operations raise</span>
+<span class="sd">    :class:`io.UnsupportedOperation` exceptions by default. It can be extended by overriding</span>
+<span class="sd">    the ``_on_write`` and ``_after_close`` methods to implement custom behavior.</span>
+
+<span class="sd">    :param stream: The binary stream to wrap</span>
+<span class="sd">    :type stream: BinaryIO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the proxy with a binary stream.</span>
+
+<span class="sd">        :param stream: The binary stream to wrap</span>
+<span class="sd">        :type stream: BinaryIO</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stream</span> <span class="o">=</span> <span class="n">stream</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="BinaryProxyIO.__enter__">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.__enter__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enter the runtime context related to this object.</span>
+
+<span class="sd">        :return: Self</span>
+<span class="sd">        :rtype: BinaryProxyIO</span>
+<span class="sd">        :raises ValueError: If the file is already closed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.close">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.close">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close the file.</span>
+
+<span class="sd">        This method sets the internal closed flag to True and calls _after_close.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_after_close</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_after_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hook method called after closing the file.</span>
+
+<span class="sd">        This method can be overridden in subclasses to implement custom behavior</span>
+<span class="sd">        when the file is closed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="BinaryProxyIO.fileno">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.fileno">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fileno</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the underlying file descriptor.</span>
+
+<span class="sd">        :raises UnsupportedOperation: Always, as this operation is not supported</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="n">UnsupportedOperation</span><span class="p">(</span><span class="s2">&quot;fileno&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.flush">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.flush">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Flush the write buffers.</span>
+
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        :raises UnsupportedOperation: Always, as this operation is not supported</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">UnsupportedOperation</span><span class="p">(</span><span class="s2">&quot;flush&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.isatty">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.isatty">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">isatty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return whether this is an &#39;interactive&#39; stream.</span>
+
+<span class="sd">        :return: Always False</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.read">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.read">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__n</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read up to n bytes from the object and return them.</span>
+
+<span class="sd">        :param __n: Number of bytes to read</span>
+<span class="sd">        :type __n: int, optional</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        :raises UnsupportedOperation: Always, as this operation is not supported</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">UnsupportedOperation</span><span class="p">(</span><span class="s2">&quot;read&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.readable">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.readable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">readable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return whether the file is readable.</span>
+
+<span class="sd">        :return: Always False</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.readline">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.readline">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">readline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__limit</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read and return one line from the stream.</span>
+
+<span class="sd">        :param __limit: Maximum number of bytes to read</span>
+<span class="sd">        :type __limit: int, optional</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        :raises UnsupportedOperation: Always, as this operation is not supported</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">UnsupportedOperation</span><span class="p">(</span><span class="s2">&quot;readline&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.readlines">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.readlines">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">readlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__hint</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a list of lines from the stream.</span>
+
+<span class="sd">        :param __hint: Maximum number of bytes to read</span>
+<span class="sd">        :type __hint: int, optional</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        :raises UnsupportedOperation: Always, as this operation is not supported</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">UnsupportedOperation</span><span class="p">(</span><span class="s2">&quot;readlines&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.seek">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.seek">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__offset</span><span class="p">,</span> <span class="n">__whence</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change the stream position.</span>
+
+<span class="sd">        :param __offset: Offset relative to position indicated by whence</span>
+<span class="sd">        :type __offset: int</span>
+<span class="sd">        :param __whence: Position from which offset is applied</span>
+<span class="sd">        :type __whence: int, optional</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        :raises UnsupportedOperation: Always, as this operation is not supported</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">UnsupportedOperation</span><span class="p">(</span><span class="s2">&quot;seek&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.seekable">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.seekable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">seekable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return whether the file supports seeking.</span>
+
+<span class="sd">        :return: Always False</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.tell">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.tell">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the current stream position.</span>
+
+<span class="sd">        :return: Current position in the file</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.truncate">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.truncate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">truncate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__size</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Truncate the file to at most size bytes.</span>
+
+<span class="sd">        :param __size: Size to truncate to</span>
+<span class="sd">        :type __size: int, optional</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        :raises UnsupportedOperation: Always, as this operation is not supported</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">UnsupportedOperation</span><span class="p">(</span><span class="s2">&quot;truncate&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.writable">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.writable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">writable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return whether the file is writable.</span>
+
+<span class="sd">        :return: Always True</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.write">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.write">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__s</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write bytes to the file.</span>
+
+<span class="sd">        This method writes the bytes to the wrapped stream, updates the position,</span>
+<span class="sd">        calls the _on_write hook, and returns the number of bytes written.</span>
+
+<span class="sd">        :param __s: Bytes to write</span>
+<span class="sd">        :type __s: bytes</span>
+<span class="sd">        :return: Number of bytes written</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">__s</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">__s</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_on_write</span><span class="p">(</span><span class="n">__s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">__s</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_on_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__s</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hook method called after writing data.</span>
+
+<span class="sd">        This method can be overridden in subclasses to implement custom behavior</span>
+<span class="sd">        when data is written to the file.</span>
+
+<span class="sd">        :param __s: The bytes that were written</span>
+<span class="sd">        :type __s: bytes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="BinaryProxyIO.writelines">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.writelines">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">writelines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__lines</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write a list of lines to the file.</span>
+
+<span class="sd">        :param __lines: List of byte strings to write</span>
+<span class="sd">        :type __lines: list[bytes]</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">__lines</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the next line from the file.</span>
+
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        :raises UnsupportedOperation: Always, as this operation is not supported</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">UnsupportedOperation</span><span class="p">(</span><span class="s2">&quot;__next__&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BinaryProxyIO.__iter__">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.__iter__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return self as an iterator.</span>
+
+<span class="sd">        :return: Self</span>
+<span class="sd">        :rtype: BinaryProxyIO</span>
+<span class="sd">        :raises ValueError: If the file is closed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I/O operation on closed file.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="BinaryProxyIO.__exit__">
+<a class="viewcode-back" href="../../../api_doc/utils/binary_proxy.html#hfutils.utils.binary_proxy.BinaryProxyIO.__exit__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__t</span><span class="p">,</span> <span class="n">__value</span><span class="p">,</span> <span class="n">__traceback</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exit the runtime context related to this object.</span>
+
+<span class="sd">        :param __t: Exception type</span>
+<span class="sd">        :param __value: Exception value</span>
+<span class="sd">        :param __traceback: Exception traceback</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.12.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.0.1/index.html">v0.0.1</a></dd>
+                        <dd><a href="../../../../v0.0.2/index.html">v0.0.2</a></dd>
+                        <dd><a href="../../../../v0.0.3/index.html">v0.0.3</a></dd>
+                        <dd><a href="../../../../v0.0.4/index.html">v0.0.4</a></dd>
+                        <dd><a href="../../../../v0.0.5/index.html">v0.0.5</a></dd>
+                        <dd><a href="../../../../v0.0.6/index.html">v0.0.6</a></dd>
+                        <dd><a href="../../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../v0.1.2/index.html">v0.1.2</a></dd>
+                        <dd><a href="../../../../v0.10.0/index.html">v0.10.0</a></dd>
+                        <dd><a href="../../../../v0.11.0/index.html">v0.11.0</a></dd>
+                        <dd><a href="../../../../v0.11.1/index.html">v0.11.1</a></dd>
+                        <dd><a href="binary_proxy.html">v0.12.0</a></dd>
+                        <dd><a href="../../../../v0.2.0/index.html">v0.2.0</a></dd>
+                        <dd><a href="../../../../v0.2.1/index.html">v0.2.1</a></dd>
+                        <dd><a href="../../../../v0.2.10/index.html">v0.2.10</a></dd>
+                        <dd><a href="../../../../v0.2.11/index.html">v0.2.11</a></dd>
+                        <dd><a href="../../../../v0.2.2/index.html">v0.2.2</a></dd>
+                        <dd><a href="../../../../v0.2.3/index.html">v0.2.3</a></dd>
+                        <dd><a href="../../../../v0.2.4/index.html">v0.2.4</a></dd>
+                        <dd><a href="../../../../v0.2.5/index.html">v0.2.5</a></dd>
+                        <dd><a href="../../../../v0.2.6/index.html">v0.2.6</a></dd>
+                        <dd><a href="../../../../v0.2.7/index.html">v0.2.7</a></dd>
+                        <dd><a href="../../../../v0.2.8/index.html">v0.2.8</a></dd>
+                        <dd><a href="../../../../v0.2.9/index.html">v0.2.9</a></dd>
+                        <dd><a href="../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../v0.3.3/index.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../v0.3.4/index.html">v0.3.4</a></dd>
+                        <dd><a href="../../../../v0.3.5/index.html">v0.3.5</a></dd>
+                        <dd><a href="../../../../v0.3.6/index.html">v0.3.6</a></dd>
+                        <dd><a href="../../../../v0.3.7/index.html">v0.3.7</a></dd>
+                        <dd><a href="../../../../v0.3.8/index.html">v0.3.8</a></dd>
+                        <dd><a href="../../../../v0.3.9/index.html">v0.3.9</a></dd>
+                        <dd><a href="../../../../v0.4.0/index.html">v0.4.0</a></dd>
+                        <dd><a href="../../../../v0.4.1/index.html">v0.4.1</a></dd>
+                        <dd><a href="../../../../v0.4.2/index.html">v0.4.2</a></dd>
+                        <dd><a href="../../../../v0.4.3/index.html">v0.4.3</a></dd>
+                        <dd><a href="../../../../v0.4.4/index.html">v0.4.4</a></dd>
+                        <dd><a href="../../../../v0.5.0/index.html">v0.5.0</a></dd>
+                        <dd><a href="../../../../v0.5.1/index.html">v0.5.1</a></dd>
+                        <dd><a href="../../../../v0.6.0/index.html">v0.6.0</a></dd>
+                        <dd><a href="../../../../v0.7.0/index.html">v0.7.0</a></dd>
+                        <dd><a href="../../../../v0.7.1/index.html">v0.7.1</a></dd>
+                        <dd><a href="../../../../v0.8.0/index.html">v0.8.0</a></dd>
+                        <dd><a href="../../../../v0.8.1/index.html">v0.8.1</a></dd>
+                        <dd><a href="../../../../v0.9.0/index.html">v0.9.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../dev/rate/index.html">dev/rate</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
