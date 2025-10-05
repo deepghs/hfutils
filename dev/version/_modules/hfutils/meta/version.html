@@ -103,7 +103,7 @@
 <span class="sd">- Self-hosted compatible projects: Open source projects that implement HF-compatible APIs</span>
 
 <span class="sd">The identification mechanism works by checking the /api/version endpoint. Official huggingface.co</span>
-<span class="sd">returns 404 for this endpoint, while enterprise and self-hosted deployments return site metadata.</span>
+<span class="sd">returns 401 for this endpoint, while enterprise and self-hosted deployments return site metadata.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
@@ -134,22 +134,25 @@
 <span class="sd">    :type api: str</span>
 <span class="sd">    :param version: The version of the site deployment (&#39;official&#39;, &#39;custom&#39;, or specific version)</span>
 <span class="sd">    :type version: str</span>
+<span class="sd">    :param endpoint: The API endpoint URL of the site</span>
+<span class="sd">    :type endpoint: str</span>
 
 <span class="sd">    Example::</span>
 
 <span class="sd">        &gt;&gt;&gt; # Official Hugging Face hub</span>
-<span class="sd">        &gt;&gt;&gt; site_info = HfSiteInfo(name=&#39;HuggingFace (Official)&#39;, api=&#39;huggingface&#39;, version=&#39;official&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; site_info = HfSiteInfo(name=&#39;HuggingFace (Official)&#39;, api=&#39;huggingface&#39;, version=&#39;official&#39;, endpoint=&#39;https://huggingface.co&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; print(f&quot;{site_info.api} ({site_info.version})&quot;)</span>
 <span class="sd">        huggingface (official)</span>
 
 <span class="sd">        &gt;&gt;&gt; # Self-hosted project</span>
-<span class="sd">        &gt;&gt;&gt; site_info = HfSiteInfo(name=&#39;Custom Hub (1.2.3)&#39;, api=&#39;custom-hub&#39;, version=&#39;1.2.3&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; site_info = HfSiteInfo(name=&#39;Custom Hub (1.2.3)&#39;, api=&#39;custom-hub&#39;, version=&#39;1.2.3&#39;, endpoint=&#39;https://my-hub.com&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; print(f&quot;{site_info.api} v{site_info.version}&quot;)</span>
 <span class="sd">        custom-hub v1.2.3</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">api</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span></div>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span></div>
 
 
 
@@ -208,12 +211,14 @@
                 <span class="n">name</span><span class="o">=</span><span class="s1">&#39;HuggingFace (Official)&#39;</span><span class="p">,</span>
                 <span class="n">api</span><span class="o">=</span><span class="s1">&#39;huggingface&#39;</span><span class="p">,</span>
                 <span class="n">version</span><span class="o">=</span><span class="s1">&#39;official&#39;</span><span class="p">,</span>
+                <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">HfSiteInfo</span><span class="p">(</span>
                 <span class="n">name</span><span class="o">=</span><span class="s1">&#39;HuggingFace (Custom Enterprise)&#39;</span><span class="p">,</span>
                 <span class="n">api</span><span class="o">=</span><span class="s1">&#39;huggingface&#39;</span><span class="p">,</span>
                 <span class="n">version</span><span class="o">=</span><span class="s1">&#39;custom&#39;</span><span class="p">,</span>
+                <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">hf_raise_for_status</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
@@ -222,6 +227,7 @@
             <span class="n">name</span><span class="o">=</span><span class="n">meta_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">meta_info</span><span class="p">[</span><span class="s2">&quot;api&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">meta_info</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span>
             <span class="n">api</span><span class="o">=</span><span class="n">meta_info</span><span class="p">[</span><span class="s1">&#39;api&#39;</span><span class="p">],</span>
             <span class="n">version</span><span class="o">=</span><span class="n">meta_info</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">],</span>
+            <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 </pre></div>
