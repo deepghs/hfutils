@@ -23,7 +23,7 @@ def mock_404_response():
 @pytest.mark.unittest
 class TestMetaVersion:
     def test_hf_site_info(self):
-        assert hf_site_info() == HfSiteInfo(site='huggingface')
+        assert hf_site_info() == HfSiteInfo(site='huggingface', version='official')
 
     @patch('hfutils.meta.version.get_session')
     def test_hf_site_info_404_response(self, mock_get_session, mock_404_response):
@@ -31,7 +31,15 @@ class TestMetaVersion:
         mock_session.post.return_value = mock_404_response
         mock_get_session.return_value = mock_session
 
-        assert hf_site_info() == HfSiteInfo(site='huggingface')
+        assert hf_site_info() == HfSiteInfo(site='huggingface', version='official')
+
+    @patch('hfutils.meta.version.get_session')
+    def test_hf_site_info_404_response_custom(self, mock_get_session, mock_404_response):
+        mock_session = MagicMock()
+        mock_session.post.return_value = mock_404_response
+        mock_get_session.return_value = mock_session
+
+        assert hf_site_info(endpoint='https://hf.custom.co') == HfSiteInfo(site='huggingface', version='custom')
 
     @patch('hfutils.meta.version.get_session')
     def test_hf_site_info_non_404_response(self, mock_get_session, mock_non_404_response):
