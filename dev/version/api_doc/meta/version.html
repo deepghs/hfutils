@@ -124,7 +124,7 @@ returns 404 for this endpoint, while enterprise and self-hosted deployments retu
 <h2>HfSiteInfo<a class="headerlink" href="#hfsiteinfo" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="hfutils.meta.version.HfSiteInfo">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.meta.version.</span></span><span class="sig-name descname"><span class="pre">HfSiteInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">site</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/meta/version.html#HfSiteInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.meta.version.HfSiteInfo" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hfutils.meta.version.</span></span><span class="sig-name descname"><span class="pre">HfSiteInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">site</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hfutils/meta/version.html#HfSiteInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hfutils.meta.version.HfSiteInfo" title="Link to this definition"></a></dt>
 <dd><p>Data class containing information about a Hugging Face site.</p>
 <p>This class holds metadata about a Hugging Face deployment, including
 the site identifier and version information. It can represent:</p>
@@ -136,6 +136,7 @@ the site identifier and version information. It can represent:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The human-readable name of the site deployment</p></li>
 <li><p><strong>site</strong> (<em>str</em>) – The site identifier (e.g., ‘huggingface’ for official hub or enterprise)</p></li>
 <li><p><strong>version</strong> (<em>str</em>) – The version of the site deployment (‘official’, ‘custom’, or specific version)</p></li>
 </ul>
@@ -143,12 +144,12 @@ the site identifier and version information. It can represent:</p>
 </dl>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Official Hugging Face hub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">site_info</span> <span class="o">=</span> <span class="n">HfSiteInfo</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="s1">&#39;huggingface&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;official&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">site_info</span> <span class="o">=</span> <span class="n">HfSiteInfo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;HuggingFace (Official)&#39;</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="s1">&#39;huggingface&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;official&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">site_info</span><span class="o">.</span><span class="n">site</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">site_info</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 <span class="go">huggingface (official)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Self-hosted project</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">site_info</span> <span class="o">=</span> <span class="n">HfSiteInfo</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="s1">&#39;custom-hub&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;1.2.3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">site_info</span> <span class="o">=</span> <span class="n">HfSiteInfo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Custom Hub (1.2.3)&#39;</span><span class="p">,</span> <span class="n">site</span><span class="o">=</span><span class="s1">&#39;custom-hub&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;1.2.3&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">site_info</span><span class="o">.</span><span class="n">site</span><span class="si">}</span><span class="s2"> v</span><span class="si">{</span><span class="n">site_info</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="go">custom-hub v1.2.3</span>
 </pre></div>
@@ -164,13 +165,13 @@ the site identifier and version information. It can represent:</p>
 <dd><p>Retrieve information about a Hugging Face site deployment.</p>
 <p>This function queries the /api/version endpoint to determine the type of deployment:</p>
 <ol class="arabic simple">
-<li><p>Official Hugging Face (huggingface.co): Returns 404 for /api/version, identified as ‘official’</p></li>
-<li><p>Hugging Face Enterprise: Returns site metadata with site=’huggingface’ but version=’custom’</p></li>
+<li><p>Official Hugging Face (huggingface.co): Returns 401 for /api/version, identified as ‘official’</p></li>
+<li><p>Hugging Face Enterprise: Returns 401 for /api/version but not on official domain, identified as ‘custom’</p></li>
 <li><p>Self-hosted compatible projects: Returns custom site name and version information</p></li>
 </ol>
-<p>The identification mechanism relies on the fact that the official huggingface.co does not
-expose a /api/version endpoint (returns 404), while enterprise deployments and self-hosted
-projects that maintain API compatibility do provide this endpoint with site metadata.</p>
+<p>The identification mechanism relies on the fact that the official huggingface.co and enterprise
+deployments return 401 for the /api/version endpoint without proper authentication, while
+self-hosted projects that maintain API compatibility provide this endpoint with site metadata.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -185,7 +186,7 @@ projects that maintain API compatibility do provide this endpoint with site meta
 <dd class="field-odd"><p><a class="reference internal" href="#hfutils.meta.version.HfSiteInfo" title="hfutils.meta.version.HfSiteInfo">HfSiteInfo</a></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>requests.HTTPError</strong> – If the API request fails (except for 404 on official hub)</p>
+<dd class="field-even"><p><strong>requests.HTTPError</strong> – If the API request fails (except for 401 on Hugging Face deployments)</p>
 </dd>
 </dl>
 <p>Example:</p>
