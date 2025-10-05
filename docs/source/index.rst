@@ -32,6 +32,7 @@ Overview
     api_doc/config/index
     api_doc/entry/index
     api_doc/index/index
+    api_doc/meta/index
     api_doc/operate/index
     api_doc/repository/index
     api_doc/utils/index
