@@ -29,10 +29,10 @@
    "execution_count": 1,
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-09-15T03:10:47.097151Z",
-     "iopub.status.busy": "2025-09-15T03:10:47.096979Z",
-     "iopub.status.idle": "2025-09-15T03:10:48.403433Z",
-     "shell.execute_reply": "2025-09-15T03:10:48.402753Z"
+     "iopub.execute_input": "2025-10-05T10:55:15.514973Z",
+     "iopub.status.busy": "2025-10-05T10:55:15.514794Z",
+     "iopub.status.idle": "2025-10-05T10:55:16.774039Z",
+     "shell.execute_reply": "2025-10-05T10:55:16.773470Z"
     },
     "pycharm": {
      "name": "#%%\n"
@@ -51,10 +51,10 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "CPU Brand: AMD EPYC 7763 64-Core Processor\n",
+      "CPU Brand: Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz\n",
       "CPU Count: 4\n",
-      "CPU Freq: 3121.37525 MHz\n",
-      "Memory Size: 15.621 GiB\n",
+      "CPU Freq: 3502.7 MHz\n",
+      "Memory Size: 15.620 GiB\n",
       "Has CUDA: No\n"
      ]
     }
