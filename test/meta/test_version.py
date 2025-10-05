@@ -9,7 +9,7 @@ from hfutils.meta import hf_site_info, HfSiteInfo
 def mock_non_401_response():
     mock_response = MagicMock()
     mock_response.status_code = 200
-    mock_response.json.return_value = {'name': 'MyCustomSite LOL', 'site': 'custom_site', 'version': '1.0.0'}
+    mock_response.json.return_value = {'name': 'MyCustomSite LOL', 'api': 'custom_site', 'version': '1.0.0'}
     return mock_response
 
 
@@ -25,7 +25,7 @@ class TestMetaVersion:
     def test_hf_site_info(self):
         assert hf_site_info() == HfSiteInfo(
             name='HuggingFace (Official)',
-            site='huggingface',
+            api='huggingface',
             version='official',
         )
 
@@ -37,7 +37,7 @@ class TestMetaVersion:
 
         assert hf_site_info() == HfSiteInfo(
             name='HuggingFace (Official)',
-            site='huggingface',
+            api='huggingface',
             version='official',
         )
 
@@ -49,7 +49,7 @@ class TestMetaVersion:
 
         assert hf_site_info(endpoint='https://hf.custom.co') == HfSiteInfo(
             name='HuggingFace (Custom Enterprise)',
-            site='huggingface',
+            api='huggingface',
             version='custom',
         )
 
@@ -61,6 +61,6 @@ class TestMetaVersion:
 
         assert hf_site_info() == HfSiteInfo(
             name='MyCustomSite LOL',
-            site='custom_site',
+            api='custom_site',
             version='1.0.0',
         )

@@ -35,25 +35,25 @@ class HfSiteInfo:
 
     :param name: The human-readable name of the site deployment
     :type name: str
-    :param site: The site identifier (e.g., 'huggingface' for official hub or enterprise)
-    :type site: str
+    :param api: The site identifier (e.g., 'huggingface' for official hub or enterprise)
+    :type api: str
     :param version: The version of the site deployment ('official', 'custom', or specific version)
     :type version: str
 
     Example::
 
         >>> # Official Hugging Face hub
-        >>> site_info = HfSiteInfo(name='HuggingFace (Official)', site='huggingface', version='official')
-        >>> print(f"{site_info.site} ({site_info.version})")
+        >>> site_info = HfSiteInfo(name='HuggingFace (Official)', api='huggingface', version='official')
+        >>> print(f"{site_info.api} ({site_info.version})")
         huggingface (official)
 
         >>> # Self-hosted project
-        >>> site_info = HfSiteInfo(name='Custom Hub (1.2.3)', site='custom-hub', version='1.2.3')
-        >>> print(f"{site_info.site} v{site_info.version}")
+        >>> site_info = HfSiteInfo(name='Custom Hub (1.2.3)', api='custom-hub', version='1.2.3')
+        >>> print(f"{site_info.api} v{site_info.version}")
         custom-hub v1.2.3
     """
     name: str
-    site: str
+    api: str
     version: str
 
 
@@ -84,17 +84,17 @@ def hf_site_info(endpoint: Optional[str] = None, hf_token: Optional[str] = None)
 
         >>> # Query official Hugging Face hub
         >>> info = hf_site_info()
-        >>> print(f"{info.site} ({info.version})")
+        >>> print(f"{info.api} ({info.version})")
         huggingface (official)
 
         >>> # Query Hugging Face enterprise deployment
         >>> info = hf_site_info(endpoint='https://company.huggingface.co')
-        >>> print(f"{info.site} ({info.version})")
+        >>> print(f"{info.api} ({info.version})")
         huggingface (custom)
 
         >>> # Query self-hosted compatible project
         >>> info = hf_site_info(endpoint='https://my-custom-hub.com')
-        >>> print(f"{info.site} v{info.version}")
+        >>> print(f"{info.api} v{info.version}")
         my-custom-hub v2.1.0
     """
     endpoint = endpoint or ENDPOINT
@@ -108,20 +108,20 @@ def hf_site_info(endpoint: Optional[str] = None, hf_token: Optional[str] = None)
         if is_huggingface_official:
             return HfSiteInfo(
                 name='HuggingFace (Official)',
-                site='huggingface',
+                api='huggingface',
                 version='official',
             )
         else:
             return HfSiteInfo(
                 name='HuggingFace (Custom Enterprise)',
-                site='huggingface',
+                api='huggingface',
                 version='custom',
             )
     else:
         hf_raise_for_status(r)
         meta_info = r.json()
         return HfSiteInfo(
-            name=meta_info.get('name') or f'{meta_info["site"].capitalize()} ({meta_info["version"]})',
-            site=meta_info['site'],
+            name=meta_info.get('name') or f'{meta_info["api"].capitalize()} ({meta_info["version"]})',
+            api=meta_info['api'],
             version=meta_info['version'],
         )
