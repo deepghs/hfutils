@@ -1226,3 +1226,4 @@ fabric.properties
 .benchmarks
 !/hfutils/utils/irregular_repo.json
 /venv*
+/.env*
