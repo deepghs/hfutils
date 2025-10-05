@@ -10,7 +10,7 @@ Hugging Face. The module distinguishes between:
 - Self-hosted compatible projects: Open source projects that implement HF-compatible APIs
 
 The identification mechanism works by checking the /api/version endpoint. Official huggingface.co
-returns 404 for this endpoint, while enterprise and self-hosted deployments return site metadata.
+returns 401 for this endpoint, while enterprise and self-hosted deployments return site metadata.
 """
 
 from dataclasses import dataclass
@@ -39,22 +39,25 @@ class HfSiteInfo:
     :type api: str
     :param version: The version of the site deployment ('official', 'custom', or specific version)
     :type version: str
+    :param endpoint: The API endpoint URL of the site
+    :type endpoint: str
 
     Example::
 
         >>> # Official Hugging Face hub
-        >>> site_info = HfSiteInfo(name='HuggingFace (Official)', api='huggingface', version='official')
+        >>> site_info = HfSiteInfo(name='HuggingFace (Official)', api='huggingface', version='official', endpoint='https://huggingface.co')
         >>> print(f"{site_info.api} ({site_info.version})")
         huggingface (official)
 
         >>> # Self-hosted project
-        >>> site_info = HfSiteInfo(name='Custom Hub (1.2.3)', api='custom-hub', version='1.2.3')
+        >>> site_info = HfSiteInfo(name='Custom Hub (1.2.3)', api='custom-hub', version='1.2.3', endpoint='https://my-hub.com')
         >>> print(f"{site_info.api} v{site_info.version}")
         custom-hub v1.2.3
     """
     name: str
     api: str
     version: str
+    endpoint: str
 
 
 def hf_site_info(endpoint: Optional[str] = None, hf_token: Optional[str] = None) -> HfSiteInfo:
@@ -110,12 +113,14 @@ def hf_site_info(endpoint: Optional[str] = None, hf_token: Optional[str] = None)
                 name='HuggingFace (Official)',
                 api='huggingface',
                 version='official',
+                endpoint=endpoint,
             )
         else:
             return HfSiteInfo(
                 name='HuggingFace (Custom Enterprise)',
                 api='huggingface',
                 version='custom',
+                endpoint=endpoint,
             )
     else:
         hf_raise_for_status(r)
@@ -124,4 +129,5 @@ def hf_site_info(endpoint: Optional[str] = None, hf_token: Optional[str] = None)
             name=meta_info.get('name') or f'{meta_info["api"].capitalize()} ({meta_info["version"]})',
             api=meta_info['api'],
             version=meta_info['version'],
+            endpoint=endpoint,
         )

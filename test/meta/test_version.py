@@ -27,6 +27,7 @@ class TestMetaVersion:
             name='HuggingFace (Official)',
             api='huggingface',
             version='official',
+            endpoint='https://huggingface.co',
         )
 
     @patch('hfutils.meta.version.get_session')
@@ -39,6 +40,7 @@ class TestMetaVersion:
             name='HuggingFace (Official)',
             api='huggingface',
             version='official',
+            endpoint='https://huggingface.co',
         )
 
     @patch('hfutils.meta.version.get_session')
@@ -51,6 +53,7 @@ class TestMetaVersion:
             name='HuggingFace (Custom Enterprise)',
             api='huggingface',
             version='custom',
+            endpoint='https://hf.custom.co',
         )
 
     @patch('hfutils.meta.version.get_session')
@@ -63,4 +66,11 @@ class TestMetaVersion:
             name='MyCustomSite LOL',
             api='custom_site',
             version='1.0.0',
+            endpoint='https://huggingface.co',
+        )
+        assert hf_site_info(endpoint='https://hf.custom.co') == HfSiteInfo(
+            name='MyCustomSite LOL',
+            api='custom_site',
+            version='1.0.0',
+            endpoint='https://hf.custom.co',
         )
