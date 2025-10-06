@@ -4,6 +4,7 @@ from huggingface_hub import configure_http_backend
 from huggingface_hub.utils import LocalTokenNotFoundError
 
 from .base import CONTEXT_SETTINGS
+from ..meta import hf_site_info
 from ..operate.base import get_hf_client
 from ..utils import get_requests_session
 
@@ -39,6 +40,18 @@ def _add_whoami_subcommand(cli: click.Group) -> click.Group:
             click.echo(f'Hi, {click.style(f"@{username}", fg="green", bold=True)} '
                        f'(full name: {click.style(info["fullname"], underline=True)}'
                        f'{", PRO" if info["isPro"] else ""}).')
+
+            site_info = hf_site_info()
+            if site_info.api == 'huggingface' and site_info.version == 'official':
+                click.echo(f'Connected to {click.style(site_info.name, fg="yellow", bold=True)}.')
+            elif site_info.api == 'huggingface':
+                click.echo(f'Connected to {click.style(site_info.name, fg="bright_yellow", bold=True)} '
+                           f'({click.style(site_info.endpoint, fg="bright_blue", underline=True)}).')
+            else:
+                click.echo(f'Connected to {click.style(site_info.name, fg="magenta", bold=True)} '
+                           f'(backend: {click.style(f"{site_info.api} v{site_info.version}", fg="cyan")} '
+                           f'at {click.style(site_info.endpoint, fg="bright_blue", underline=True)}).')
+
             click.echo(f'You can access all resources with this identification.')
             if info['orgs']:
                 click.echo(f'You have entered {plural_word(len(info["orgs"]), "organizations")}:')
