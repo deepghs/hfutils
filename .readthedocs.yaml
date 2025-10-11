@@ -10,9 +10,13 @@ build:
   tools:
     python: "3.10"
 
+formats:
+  - pdf
+  - epub
+
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
-  configuration: docs/conf.py
+  configuration: docs/source/conf.py
 
 # Optionally, but recommended,
 # declare the Python requirements required to build your documentation
@@ -25,4 +29,5 @@ python:
     - requirements: requirements-rar.txt
     - requirements: requirements-build.txt
     - requirements: requirements-transfer.txt
-        
+    - method: pip
+      path: .
