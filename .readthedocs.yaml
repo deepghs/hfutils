@@ -23,7 +23,7 @@ build:
 
 formats:
   - pdf
-  - epub
+#  - epub
 
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
