@@ -9,6 +9,17 @@ build:
   os: ubuntu-24.04
   tools:
     python: "3.10"
+  apt_packages:
+    - graphviz
+    - pandoc
+    - texlive-latex-base
+    - make
+    - wget
+    - curl
+    - cloc
+    - zip
+    - unzip
+    - unrar
 
 formats:
   - pdf
