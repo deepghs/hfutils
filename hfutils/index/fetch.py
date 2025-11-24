@@ -699,7 +699,7 @@ def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive:
 
 
 def _check_hf_transfer_conflict():
-    if constants.HF_HUB_ENABLE_HF_TRANSFER and vpip('huggingface_hub') < '0.31':
+    if vpip('huggingface_hub') < '0.31' and constants.HF_HUB_ENABLE_HF_TRANSFER:
         warnings.warn(f"You are trying to use huggingface_hub=={huggingface_hub.__version__} "
                       f"with hf_transfer enabled at the same time, this may cause unexpected error "
                       f"(see: https://github.com/huggingface/huggingface_hub/issues/2978 for more details). "
