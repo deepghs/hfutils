@@ -17,7 +17,7 @@ from tqdm import tqdm
 
 from .hash import _f_sha256
 from ..operate.base import RepoTypeTyping, get_hf_client
-from ..utils import hf_normpath, BinaryProxyIO
+from ..utils import hf_normpath, BinaryProxyIO, HF_IS_VERSION_0_X_X
 
 
 class ArchiveStandaloneFileIncompleteDownload(Exception):
@@ -699,7 +699,7 @@ def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive:
 
 
 def _check_hf_transfer_conflict():
-    if constants.HF_HUB_ENABLE_HF_TRANSFER and vpip('huggingface_hub') < '0.31':
+    if HF_IS_VERSION_0_X_X and constants.HF_HUB_ENABLE_HF_TRANSFER and vpip('huggingface_hub') < '0.31':
         warnings.warn(f"You are trying to use huggingface_hub=={huggingface_hub.__version__} "
                       f"with hf_transfer enabled at the same time, this may cause unexpected error "
                       f"(see: https://github.com/huggingface/huggingface_hub/issues/2978 for more details). "
