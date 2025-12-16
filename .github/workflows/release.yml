@@ -60,7 +60,7 @@ jobs:
         os:
           - 'ubuntu-22.04'
           - 'windows-2022'
-          - 'macos-13'
+          - 'macos-14'
         python-version:
           - '3.8'
 

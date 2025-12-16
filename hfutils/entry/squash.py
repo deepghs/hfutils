@@ -8,11 +8,15 @@ The module utilizes the Click library for creating the CLI and integrates with t
 from typing import Optional
 
 import click
-from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS, command_wrap
 from ..operate.base import REPO_TYPES, RepoTypeTyping, get_hf_client
-from ..utils import get_requests_session, hf_fs_path
+from ..utils import get_requests_session, hf_fs_path, HF_IS_VERSION_0_X_X
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 def _add_squash_subcommand(cli: click.Group) -> click.Group:
@@ -59,7 +63,9 @@ def _add_squash_subcommand(cli: click.Group) -> click.Group:
         :param message: Optional commit message for the squash operation.
         :type message: Optional[str]
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
+
         hf_client = get_hf_client()
         hf_client.super_squash_history(
             repo_id=repo_id,

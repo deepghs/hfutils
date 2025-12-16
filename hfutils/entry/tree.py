@@ -22,13 +22,17 @@ from typing import Optional, List, Union
 
 import click
 from hbutils.string import format_tree
-from huggingface_hub import configure_http_backend
 from huggingface_hub.hf_api import RepoFile
 from natsort import natsorted
 
 from .base import CONTEXT_SETTINGS
 from ..operate.base import REPO_TYPES, list_files_in_repository, RepoTypeTyping, get_hf_client
-from ..utils import get_requests_session, hf_normpath, get_file_type, hf_fs_path, FileItemType
+from ..utils import get_requests_session, hf_normpath, get_file_type, hf_fs_path, FileItemType, HF_IS_VERSION_0_X_X
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 @dataclasses.dataclass
@@ -221,7 +225,8 @@ def _add_tree_subcommand(cli: click.Group) -> click.Group:
         :param show_all: Whether to show hidden files.
         :type show_all: bool
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
 
         _tree = _get_tree(
             repo_id=repo_id,

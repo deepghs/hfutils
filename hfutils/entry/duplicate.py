@@ -6,12 +6,16 @@ It includes commands and utilities to copy repositories while preserving their c
 """
 
 import click
-from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS, command_wrap
 from ..operate import hf_repo_duplicate
 from ..operate.base import REPO_TYPES, RepoTypeTyping
-from ..utils import get_requests_session
+from ..utils import get_requests_session, HF_IS_VERSION_0_X_X
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 def _add_duplicate_subcommand(cli: click.Group) -> click.Group:
@@ -59,7 +63,9 @@ def _add_duplicate_subcommand(cli: click.Group) -> click.Group:
 
         :raises: Various exceptions from huggingface_hub based on operation status
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
+
         hf_repo_duplicate(
             src_repo_id=src_repo_id,
             dst_repo_id=dst_repo_id,

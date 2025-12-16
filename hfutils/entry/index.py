@@ -18,7 +18,6 @@ from typing import Optional
 
 import click
 from hbutils.string import plural_word
-from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS
 from ..cache import delete_detached_cache
@@ -26,7 +25,12 @@ from ..index import hf_tar_validate, tar_create_index
 from ..operate import get_hf_fs, download_file_to_file, upload_directory_as_directory
 from ..operate.base import REPO_TYPES, RepoTypeTyping, get_hf_client
 from ..utils import tqdm, hf_fs_path, parse_hf_fs_path, TemporaryDirectory, hf_normpath, ColoredFormatter, \
-    get_requests_session
+    get_requests_session, HF_IS_VERSION_0_X_X
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 def _add_index_subcommand(cli: click.Group) -> click.Group:
@@ -90,7 +94,8 @@ def _add_index_subcommand(cli: click.Group) -> click.Group:
             This function is typically invoked through the CLI interface, like:
             $ python script.py index -r my_repo -x my_index_repo -t dataset -R main --min_upload_interval 120
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
 
         logger = logging.getLogger()
         logger.setLevel(logging.INFO)

@@ -13,4 +13,5 @@ from .session import TimeoutHTTPAdapter, get_requests_session, get_random_ua
 from .temp import TemporaryDirectory
 from .tqdm_ import tqdm
 from .type_ import FileItemType, get_file_type
+from .version import HF_IS_VERSION_0_X_X, HF_IS_VERSION_1_X_X
 from .walk import walk_files

@@ -15,12 +15,16 @@ import warnings
 from typing import Optional
 
 import click
-from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS, command_wrap, ClickErrorException
 from ..operate import download_file_to_file, download_archive_as_directory, download_directory_as_directory
 from ..operate.base import REPO_TYPES, RepoTypeTyping
-from ..utils import get_requests_session
+from ..utils import get_requests_session, HF_IS_VERSION_0_X_X
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 class NoRemotePathAssignedWithDownload(ClickErrorException):
@@ -122,7 +126,8 @@ def _add_download_subcommand(cli: click.Group) -> click.Group:
 
         :raises NoRemotePathAssignedWithDownload: If no remote path in repository is assigned.
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
 
         if tmpdir:
             os.environ['TMPDIR'] = tmpdir
