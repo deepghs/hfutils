@@ -14,12 +14,16 @@ import warnings
 from typing import Optional
 
 import click
-from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS, command_wrap, ClickErrorException
 from ..operate import hf_warmup_file, hf_warmup_directory
 from ..operate.base import REPO_TYPES, RepoTypeTyping
-from ..utils import get_requests_session
+from ..utils import get_requests_session, HF_IS_VERSION_0_X_X
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 class NoRemotePathAssignedWithWarmup(ClickErrorException):
@@ -100,7 +104,8 @@ def _add_warmup_subcommand(cli: click.Group) -> click.Group:
 
         :raises NoRemotePathAssignedWithWarmup: If no remote path in repository is assigned.
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
 
         if not file_in_repo and not dir_in_repo:
             raise NoRemotePathAssignedWithWarmup('No remote path in repository assigned.\n'

@@ -1,12 +1,16 @@
 import click
 from hbutils.string import plural_word
-from huggingface_hub import configure_http_backend
 from huggingface_hub.utils import LocalTokenNotFoundError
 
 from .base import CONTEXT_SETTINGS
 from ..meta import hf_site_info
 from ..operate.base import get_hf_client
-from ..utils import get_requests_session
+from ..utils import get_requests_session, HF_IS_VERSION_0_X_X
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 def _add_whoami_subcommand(cli: click.Group) -> click.Group:
@@ -31,10 +35,14 @@ def _add_whoami_subcommand(cli: click.Group) -> click.Group:
         This function retrieves the current user's identification from the Hugging Face Hub API and displays it.
 
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
 
         hf_client = get_hf_client()
         try:
+            if not hf_client.token:
+                raise LocalTokenNotFoundError
+
             info = hf_client.whoami()
             username = info['name']
             click.echo(f'Hi, {click.style(f"@{username}", fg="green", bold=True)} '

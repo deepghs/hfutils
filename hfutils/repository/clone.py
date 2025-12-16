@@ -54,6 +54,8 @@ def hf_hub_clone(repo_id: str, dst_dir: str,
     _git = _check_git(requires_lfs=not no_lfs)
     hf_client = get_hf_client(hf_token)
     try:
+        if not hf_client.token:
+            raise LocalTokenNotFoundError
         username = hf_client.whoami()['name']
     except LocalTokenNotFoundError:
         username = None  # anonymous mode
@@ -63,7 +65,7 @@ def hf_hub_clone(repo_id: str, dst_dir: str,
         repo_type=repo_type,
         endpoint=endpoint,
     ))
-    if username:
+    if username and hf_client.token:
         clone_url = clone_url.with_username(username).with_password(hf_client.token)
     clone_url = str(clone_url)
 

@@ -12,7 +12,7 @@ from hfutils.entry import hfutilscli
 @pytest.fixture()
 def no_hf_token():
     def _get_hf_client():
-        return HfApi(token='')
+        return HfApi(token=False)
 
     with patch('hfutils.entry.whoami.get_hf_client', _get_hf_client), \
             patch.dict(os.environ, {'HF_TOKEN': ''}):
@@ -25,7 +25,10 @@ class TestEntryWhoami:
         result = simulate_entry(hfutilscli, [
             'hfutils', 'whoami',
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         text = click.unstyle(result.stdout)
         lines = text.splitlines(keepends=False)
         assert 'Hi, @narugo1992 (full name: Naomi Rue Golding).' in lines
@@ -44,7 +47,10 @@ class TestEntryWhoami:
         result = simulate_entry(hfutilscli, [
             'hfutils', 'whoami',
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         text = click.unstyle(result.stdout)
         lines = text.splitlines(keepends=False)
         assert 'Hi, Guest (not authenticated).' in lines

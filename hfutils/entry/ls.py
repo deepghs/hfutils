@@ -4,12 +4,16 @@ from typing import Union, List
 
 import click
 import tzlocal
-from huggingface_hub import configure_http_backend
 from huggingface_hub.hf_api import RepoFolder, RepoFile
 
 from .base import CONTEXT_SETTINGS
 from ..operate.base import REPO_TYPES, get_hf_client
-from ..utils import get_requests_session, FileItemType, get_file_type
+from ..utils import get_requests_session, FileItemType, get_file_type, HF_IS_VERSION_0_X_X
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 class ListItem:
@@ -73,7 +77,8 @@ def _add_ls_subcommand(cli: click.Group) -> click.Group:
         :param show_detailed: Flag to indicate whether to show detailed file information.
         :type show_detailed: bool
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
 
         hf_client = get_hf_client()
         items: List[ListItem] = []

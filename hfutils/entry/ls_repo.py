@@ -2,12 +2,16 @@ import fnmatch
 from typing import Optional
 
 import click
-from huggingface_hub import configure_http_backend
 from huggingface_hub.utils import LocalTokenNotFoundError
 
 from .base import CONTEXT_SETTINGS, ClickErrorException
 from ..operate.base import REPO_TYPES, get_hf_client
-from ..utils import get_requests_session
+from ..utils import get_requests_session, HF_IS_VERSION_0_X_X
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 class NoLocalAuthentication(ClickErrorException):
@@ -48,11 +52,15 @@ def _add_ls_repo_subcommand(cli: click.Group) -> click.Group:
         :param pattern: Pattern of the repository names.
         :type pattern: str
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
 
         hf_client = get_hf_client()
         if not author:
             try:
+                if not hf_client.token:
+                    raise LocalTokenNotFoundError
+
                 info = hf_client.whoami()
                 author = author or info['name']
             except LocalTokenNotFoundError:

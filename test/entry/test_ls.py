@@ -30,7 +30,7 @@ class TestEntryLs:
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             'arknights', 'azurlane', 'bluearchive', 'fgo', 'genshin', 'girlsfrontline', 'neuralcloud', 'nikke',
-            'pathtonowhere', 'starrail']
+            'pathtonowhere', 'starrail', 'README.md']
 
     def test_simple_ls_2_all(self):
         result = simulate_entry(hfutilscli, [
@@ -41,7 +41,7 @@ class TestEntryLs:
         assert result.exitcode == 0
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             'arknights', 'azurlane', 'bluearchive', 'fgo', 'genshin', 'girlsfrontline', 'neuralcloud', 'nikke',
-            'pathtonowhere', 'starrail', '.gitattributes']
+            'pathtonowhere', 'starrail', '.gitattributes', 'README.md']
 
     def test_simple_3(self):
         result = simulate_entry(hfutilscli, [

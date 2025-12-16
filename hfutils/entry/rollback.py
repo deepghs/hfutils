@@ -5,7 +5,12 @@ import click
 from .base import CONTEXT_SETTINGS
 from ..operate.base import REPO_TYPES, RepoTypeTyping
 from ..repository import hf_hub_rollback
-from ..utils import ColoredFormatter
+from ..utils import ColoredFormatter, HF_IS_VERSION_0_X_X, get_requests_session
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 def _add_rollback_subcommand(cli: click.Group) -> click.Group:
@@ -43,6 +48,9 @@ def _add_rollback_subcommand(cli: click.Group) -> click.Group:
         :param revision: The revision of the repository to rollback.
         :param rollback_to_commit_id: The commit ID to rollback to.
         """
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
+
         # Set up logging
         logger = logging.getLogger()
         logger.setLevel(logging.INFO)

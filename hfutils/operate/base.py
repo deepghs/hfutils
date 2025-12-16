@@ -70,7 +70,7 @@ def get_hf_client(hf_token: Optional[str] = None) -> HfApi:
         >>> # Use client to interact with Hugging Face API
         >>> models = client.list_models(limit=5)
     """
-    return HfApi(token=hf_token or _get_hf_token())
+    return HfApi(token=hf_token or _get_hf_token() or None)
 
 
 @lru_cache()
@@ -96,7 +96,7 @@ def get_hf_fs(hf_token: Optional[str] = None) -> HfFileSystem:
     """
     # use_listings_cache=False is necessary
     # or the result of glob and ls will be cached, the unittest will down
-    return HfFileSystem(token=hf_token or _get_hf_token(), use_listings_cache=False)
+    return HfFileSystem(token=hf_token or _get_hf_token() or None, use_listings_cache=False)
 
 
 def _fn_path_pattern_norm(pattern: Union[List[str], str]) -> Union[List[str], str]:

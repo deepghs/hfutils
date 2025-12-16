@@ -26,13 +26,17 @@ from typing import Optional, Literal
 import click
 from hbutils.scale import size_to_bytes_str
 from hbutils.string import plural_word, titleize
-from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS
 from ..index import hf_tar_get_index, hf_tar_validate
 from ..operate.base import REPO_TYPES
-from ..utils import get_requests_session, get_file_type, FileItemType
+from ..utils import get_requests_session, get_file_type, FileItemType, HF_IS_VERSION_0_X_X
 from ..utils.path import RepoTypeTyping, hf_normpath
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 _FT_NAME_MAP = {
     FileItemType.IMAGE: 'image',
@@ -133,7 +137,8 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
 
         The function uses click styles to format the output for better readability in the terminal.
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
 
         idx_info = hf_tar_get_index(
             repo_id=repo_id,

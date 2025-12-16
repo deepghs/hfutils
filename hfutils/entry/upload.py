@@ -15,12 +15,16 @@ import warnings
 from typing import Optional
 
 import click
-from huggingface_hub import configure_http_backend
 
 from .base import CONTEXT_SETTINGS, command_wrap, ClickErrorException
 from ..operate import upload_file_to_file, upload_directory_as_archive, upload_directory_as_directory
 from ..operate.base import REPO_TYPES, RepoTypeTyping, get_hf_client
-from ..utils import get_requests_session
+from ..utils import get_requests_session, HF_IS_VERSION_0_X_X
+
+if HF_IS_VERSION_0_X_X:
+    from huggingface_hub import configure_http_backend
+else:
+    configure_http_backend = None
 
 
 class NoRemotePathAssignedWithUpload(ClickErrorException):
@@ -123,7 +127,8 @@ def _add_upload_subcommand(cli: click.Group) -> click.Group:
         :raises NoRemotePathAssignedWithUpload: If no upload mode is specified.
         :raises ValueError: If conflicting visibility settings are provided.
         """
-        configure_http_backend(get_requests_session)
+        if HF_IS_VERSION_0_X_X:
+            configure_http_backend(get_requests_session)
 
         if not file_in_repo and not archive_in_repo and not dir_in_repo:
             raise NoRemotePathAssignedWithUpload('No remote path in repository assigned.\n'
