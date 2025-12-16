@@ -40,6 +40,9 @@ def _add_whoami_subcommand(cli: click.Group) -> click.Group:
 
         hf_client = get_hf_client()
         try:
+            if not hf_client.token:
+                raise LocalTokenNotFoundError
+
             info = hf_client.whoami()
             username = info['name']
             click.echo(f'Hi, {click.style(f"@{username}", fg="green", bold=True)} '

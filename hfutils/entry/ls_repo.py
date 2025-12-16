@@ -58,6 +58,9 @@ def _add_ls_repo_subcommand(cli: click.Group) -> click.Group:
         hf_client = get_hf_client()
         if not author:
             try:
+                if not hf_client.token:
+                    raise LocalTokenNotFoundError
+
                 info = hf_client.whoami()
                 author = author or info['name']
             except LocalTokenNotFoundError:
