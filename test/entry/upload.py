@@ -38,7 +38,10 @@ class TestEntryUpload:
             '-f', 'kkk/raw_remote.tar',
             '-i', get_testfile('raw.tar'),
         ])
-        assert result.exitcode == 0x0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
 
         assert hf_fs.read_text(f'datasets/{hf_repo}/kkk/raw_remote.tar') == \
                pathlib.Path(get_testfile('raw.tar')).read_text()
@@ -50,7 +53,10 @@ class TestEntryUpload:
             '-a', 'tt/raw_remote.zip',
             '-i', raw_dir,
         ])
-        assert result.exitcode == 0x0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
 
         with isolated_directory():
             download_file(hf_hub_url(
@@ -71,7 +77,10 @@ class TestEntryUpload:
             '-i', raw_dir,
             '-c',
         ])
-        assert result.exitcode == 0x0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
 
         assert hf_fs.read_text(f'datasets/{hf_repo_with_files}/1.txt').splitlines(keepends=False) == \
                pathlib.Path(get_testfile(raw_dir, '1.txt')).read_text().splitlines(keepends=False)

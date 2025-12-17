@@ -16,7 +16,10 @@ class TestEntryDownload:
                 '-f', 'fgo/1/常夏的泳装Ver_02.png',
                 '-o', 'mashu_download.png'
             ])
-            assert result.exitcode == 0
+            assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                          f'Error: {result.error!r}\n'
+                                          f'========= Stdout =========\n{result.stdout}\n'
+                                          f'========= Stderr =========\n{result.stderr}\n')
             file_compare(target_file, 'mashu_download.png')
 
     def test_download_archive_as_directory(self):
@@ -28,7 +31,10 @@ class TestEntryDownload:
                 '-a', 'surtr_dataset.zip',
                 '-o', 'download_dir'
             ])
-            assert result.exitcode == 0
+            assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                          f'Error: {result.error!r}\n'
+                                          f'========= Stdout =========\n{result.stdout}\n'
+                                          f'========= Stderr =========\n{result.stderr}\n')
             dir_compare(target_dir, 'download_dir')
 
     def test_download_directory_as_directory(self):
@@ -40,7 +46,10 @@ class TestEntryDownload:
                 '-d', 'fgo/1',
                 '-o', 'download_dir'
             ])
-            assert result.exitcode == 0
+            assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                          f'Error: {result.error!r}\n'
+                                          f'========= Stdout =========\n{result.stdout}\n'
+                                          f'========= Stderr =========\n{result.stderr}\n')
             dir_compare(target_dir, 'download_dir')
 
     def test_no_assign(self):

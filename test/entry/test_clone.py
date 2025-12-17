@@ -29,7 +29,10 @@ class TestEntryClone:
             result = simulate_entry(hfutilscli, [
                 'hfutils', 'clone', '-r', 'deepghs/private_unittest_repo', '-o', 'repo'
             ])
-            assert result.exitcode == 0
+            assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                          f'Error: {result.error!r}\n'
+                                          f'========= Stdout =========\n{result.stdout}\n'
+                                          f'========= Stderr =========\n{result.stderr}\n')
 
             # dont delete .git/.gitattributes here
             # on windows, this will cause permission error
@@ -47,7 +50,10 @@ class TestEntryClone:
             result = simulate_entry(hfutilscli, [
                 'hfutils', 'clone', '-r', 'deepghs/public_unittest_repo',
             ])
-            assert result.exitcode == 0
+            assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                          f'Error: {result.error!r}\n'
+                                          f'========= Stdout =========\n{result.stdout}\n'
+                                          f'========= Stderr =========\n{result.stderr}\n')
 
             # dont delete .git/.gitattributes here
             # on windows, this will cause permission error

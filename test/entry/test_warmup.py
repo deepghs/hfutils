@@ -28,7 +28,10 @@ class TestEntryWarmup:
                 '-r', 'deepghs/game_character_skins',
                 '-f', 'fgo/1/常夏的泳装Ver_02.png',
             ])
-            assert result.exitcode == 0
+            assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                          f'Error: {result.error!r}\n'
+                                          f'========= Stdout =========\n{result.stdout}\n'
+                                          f'========= Stderr =========\n{result.stderr}\n')
 
             dst_file = os.path.normpath(os.path.join(hf_hub_download(
                 repo_id='deepghs/game_character_skins',
@@ -45,7 +48,10 @@ class TestEntryWarmup:
                 '-r', 'deepghs/game_character_skins',
                 '-d', 'fgo/1',
             ])
-            assert result.exitcode == 0
+            assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                          f'Error: {result.error!r}\n'
+                                          f'========= Stdout =========\n{result.stdout}\n'
+                                          f'========= Stderr =========\n{result.stderr}\n')
 
             dst_dir = os.path.normpath(os.path.join(hf_hub_download(
                 repo_id='deepghs/game_character_skins',

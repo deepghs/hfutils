@@ -13,7 +13,10 @@ class TestEntryLs:
             '-r', 'deepghs/game_character_skins',
             '-d', 'fgo/1'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             'Bright_Voyager.png', 'Grail_League_1星.png', 'Grail_League_2星.png', 'Grail_League_3星.png',
             'Grail_League_4星.png', 'Grail_League_5星.png', '奥特瑙斯.png', '奥特瑙斯_改建型.png', '常夏的泳装.png',
@@ -27,7 +30,10 @@ class TestEntryLs:
             '-r', 'deepghs/game_character_skins',
             '-d', '.'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             'arknights', 'azurlane', 'bluearchive', 'fgo', 'genshin', 'girlsfrontline', 'neuralcloud', 'nikke',
             'pathtonowhere', 'starrail', 'README.md']
@@ -38,7 +44,10 @@ class TestEntryLs:
             '-r', 'deepghs/game_character_skins',
             '-d', '.', '-a'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             'arknights', 'azurlane', 'bluearchive', 'fgo', 'genshin', 'girlsfrontline', 'neuralcloud', 'nikke',
             'pathtonowhere', 'starrail', '.gitattributes', 'README.md']
@@ -50,7 +59,10 @@ class TestEntryLs:
             '-t', 'model',
             '-d', 'mobilenetv3', '-a'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             'meta.json', 'metrics.json', 'model.ckpt', 'model.onnx', 'plot_confusion.png', 'plot_f1_curve.png',
             'plot_p_curve.png', 'plot_pr_curve.png', 'plot_r_curve.png']
@@ -62,7 +74,10 @@ class TestEntryLs:
             '-t', 'model',
             '-d', 'mobilenetv3', '-al'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         text = click.unstyle(result.stdout)
 
         assert text.count('dev(narugo): upload old mobile networkds') >= 8
@@ -78,7 +93,10 @@ class TestEntryLs:
             '-t', 'model',
             '-d', '.', '-al'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         text = click.unstyle(result.stdout)
 
         assert 'e216b0b2' in text
@@ -93,7 +111,10 @@ class TestEntryLs:
             '-r', 'deepghs/anime_classification',
             '-d', '.', '-al'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         text = click.unstyle(result.stdout)
 
         assert 'anime_cls_v1.zip' in text

@@ -13,7 +13,10 @@ class TestEntryIls:
             '-r', 'narugo1992/test_cos5t_tars',
             '-a', 'mashu_skins.tar',
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             '常夏的泳装Ver_02.png',
             '愚人节.png',
@@ -41,7 +44,10 @@ class TestEntryIls:
             '-a', 'mashu_skins.tar',
             '-o', 'desc',
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             '奥特瑙斯.png',
             '第2阶段.png',
@@ -63,8 +69,12 @@ class TestEntryIls:
         ]
 
     def test_ils_default(self):
-        result = simulate_entry(hfutilscli, ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar'])
-        assert result.exitcode == 0
+        result = simulate_entry(hfutilscli,
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar'])
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "常夏的泳装Ver_02.png",
             "愚人节.png",
@@ -89,7 +99,10 @@ class TestEntryIls:
         result = simulate_entry(hfutilscli,
                                 ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-o',
                                  'desc'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "奥特瑙斯.png",
             "第2阶段.png",
@@ -114,7 +127,10 @@ class TestEntryIls:
         result = simulate_entry(hfutilscli,
                                 ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
                                  'name'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             ".meta.json",
             "Bright_Voyager.png",
@@ -139,7 +155,10 @@ class TestEntryIls:
         result = simulate_entry(hfutilscli,
                                 ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
                                  'name', '-o', 'desc'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "第4阶段.png",
             "第3阶段.png",
@@ -164,7 +183,10 @@ class TestEntryIls:
         result = simulate_entry(hfutilscli,
                                 ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
                                  'size'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             ".meta.json",
             "愚人节.png",
@@ -189,7 +211,10 @@ class TestEntryIls:
         result = simulate_entry(hfutilscli,
                                 ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-s',
                                  'size', '-o', 'desc'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "Grail_League_5星.png",
             "Grail_League_4星.png",
@@ -213,7 +238,10 @@ class TestEntryIls:
     def test_ils_detailed_default(self):
         result = simulate_entry(hfutilscli,
                                 ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "   1536 |     常夏的泳装Ver_02.png 217.118 KiB a5e55da02440901b249f215135fb6dc2745ed7872b310989ac2426408cd2b88d",
             " 225792 |             愚人节.png 152.971 KiB 4e1539e93a82eace5f40293fb64befb85bed7b90174f54bec7e9bbbc98ce55dc",
@@ -236,9 +264,13 @@ class TestEntryIls:
 
     def test_ils_detailed_desc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-o',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l',
+                                 '-o',
                                  'desc'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "5427200 |            奥特瑙斯.png 235.501 KiB 559f05829d7454054c0ee15baefed8dc48827a2411b2b4d15f1f287b48f62db2",
             "5179392 |            第2阶段.png 240.042 KiB 3e22f16436fcfc37cd2c117d8878e592884e8b8f2e2b82c3cfa20c2c37bf7db2",
@@ -261,9 +293,13 @@ class TestEntryIls:
 
     def test_ils_detailed_name_asc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l',
+                                 '-s',
                                  'name'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "2725376 |          .meta.json   8.758 KiB 4585b01c251a496b73cb231d29fc711cfb1d682a84334d95f6f5b6c1cc5b5222",
             "4550144 |  Bright_Voyager.png 383.661 KiB bf8db943c474cd786b26eb1ec01341270aa5c6f49c9d922a76c153cfef00c9c8",
@@ -286,9 +322,13 @@ class TestEntryIls:
 
     def test_ils_detailed_name_desc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l',
+                                 '-s',
                                  'name', '-o', 'desc'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "1609216 |            第4阶段.png 214.529 KiB ce5f13bd4ed4ac9e5d3a9883e9b8c68dc7cdc109ec94b5c58816fac8bf4c3ad3",
             "2736128 |            第3阶段.png 244.402 KiB 6157f95816f92e1815f9156b74efd876d4ebb026d1573da09d9e311de0bbd435",
@@ -311,9 +351,13 @@ class TestEntryIls:
 
     def test_ils_detailed_size_asc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l',
+                                 '-s',
                                  'size'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "2725376 |          .meta.json   8.758 KiB 4585b01c251a496b73cb231d29fc711cfb1d682a84334d95f6f5b6c1cc5b5222",
             " 225792 |             愚人节.png 152.971 KiB 4e1539e93a82eace5f40293fb64befb85bed7b90174f54bec7e9bbbc98ce55dc",
@@ -336,9 +380,13 @@ class TestEntryIls:
 
     def test_ils_detailed_size_desc(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l', '-s',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-l',
+                                 '-s',
                                  'size', '-o', 'desc'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "1830912 | Grail_League_5星.png 871.836 KiB a7491adfd729f0cff742ca46571a6093fed91f46a6f28051a18424e3d991daf1",
             "2988032 | Grail_League_4星.png 689.062 KiB c04f1c4e4eead7cb6da1c99fabf39d41890885071e2e9927546ba098d83116e0",
@@ -362,7 +410,10 @@ class TestEntryIls:
     def test_ils_information(self):
         result = simulate_entry(hfutilscli,
                                 ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-I'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "Repo ID: narugo1992/test_cos5t_tars",
             "Repo Type: dataset",
@@ -395,9 +446,13 @@ class TestEntryIls:
 
     def test_ils_information_not_match(self):
         result = simulate_entry(hfutilscli,
-                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-I', '-i',
+                                ['hfutils', 'ils', '-r', 'narugo1992/test_cos5t_tars', '-a', 'mashu_skins.tar', '-I',
+                                 '-i',
                                  'ex3.json'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "Repo ID: narugo1992/test_cos5t_tars",
             "Repo Type: dataset",
@@ -432,7 +487,10 @@ class TestEntryIls:
         result = simulate_entry(hfutilscli,
                                 ['hfutils', 'ils', '-r', 'nyanko7/danbooru2023', '-a', 'original/data-0000.tar', '-I',
                                  '--idx_repository', 'deepghs/danbooru2023_index', '-i', 'original/data-0000.json'])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         assert click.unstyle(result.stdout).splitlines(keepends=False) == [
             "Repo ID: nyanko7/danbooru2023",
             "Index Repo ID: deepghs/danbooru2023_index",

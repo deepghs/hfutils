@@ -25,7 +25,10 @@ class TestEntryLsRepo:
         result = simulate_entry(hfutilscli, [
             'hfutils', 'ls_repo',
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         repos = click.unstyle(result.stdout).splitlines(keepends=False)
         assert 'narugo1992/manual_packs' in repos
         assert 'narugo1992/csip_v1_info' in repos
@@ -34,7 +37,10 @@ class TestEntryLsRepo:
         result = simulate_entry(hfutilscli, [
             'hfutils', 'ls_repo', '-t', 'space',
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         repos = click.unstyle(result.stdout).splitlines(keepends=False)
         assert 'narugo1992/jupyterlab' in repos
         assert 'narugo1992/CDC_anime_demo' in repos
@@ -43,7 +49,10 @@ class TestEntryLsRepo:
         result = simulate_entry(hfutilscli, [
             'hfutils', 'ls_repo', '-t', 'model',
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         repos = click.unstyle(result.stdout).splitlines(keepends=False)
         assert 'narugo1992/gchar_models' in repos
         assert 'narugo1992/test_v1.5_kristen' in repos

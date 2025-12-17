@@ -12,7 +12,10 @@ class TestEntryTree:
             'hfutils', 'tree',
             '-r', 'deepghs/test_nested_dataset',
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
         lines = list(filter(bool, lines))
         assert lines == [
@@ -63,7 +66,10 @@ class TestEntryTree:
             '-r', 'deepghs/test_nested_dataset',
             '--all'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
         lines = list(filter(bool, lines))
         assert lines == [
@@ -115,7 +121,10 @@ class TestEntryTree:
             '-r', 'deepghs/test_nested_dataset',
             '-d', 'images'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
         lines = list(filter(bool, lines))
         assert lines == [
@@ -145,7 +154,10 @@ class TestEntryTree:
             '-r', 'deepghs/test_nested_dataset',
             '-d', 'samples'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
         lines = list(filter(bool, lines))
         assert lines == [
@@ -172,7 +184,10 @@ class TestEntryTree:
             '-r', 'deepghs/test_nested_dataset',
             '-d', 'samples/colored'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
         lines = list(filter(bool, lines))
         assert lines == [
@@ -193,7 +208,10 @@ class TestEntryTree:
             '-r', 'deepghs/test_nested_dataset',
             '-d', 'meta.json'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
         lines = list(filter(bool, lines))
         assert lines == [
@@ -206,7 +224,10 @@ class TestEntryTree:
             '-r', 'deepghs/test_nested_dataset',
             '-d', 'not_exist'
         ])
-        assert result.exitcode == 0
+        assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
+                                      f'Error: {result.error!r}\n'
+                                      f'========= Stdout =========\n{result.stdout}\n'
+                                      f'========= Stderr =========\n{result.stderr}\n')
         lines = click.unstyle(result.stdout).strip().splitlines(keepends=False)
         lines = list(filter(bool, lines))
         assert lines == [
