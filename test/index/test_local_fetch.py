@@ -67,21 +67,15 @@ class TestIndexLocalFetch:
             )
 
     def test_tar_file_size(self, local_narugo_test_cos5t_tars):
-        assert tar_file_size(
-            archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
-            file_in_archive='.meta.json'
-        ) == 8968
-        assert tar_file_size(
-            archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
-            file_in_archive='愚人节_奥特瑙斯.png'
-        ) == 255276
-        assert tar_file_size(
-            archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
-            file_in_archive='./愚人节_奥特瑙斯.png'
-        ) == 255276
+        archive_file = os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar')
+        # the size of a file of the repository on *this* machine (git may have turned the line ends of a text file into CRLF)
+        meta, png = (os.path.getsize(get_testfile('skin_mashu', name)) for name in ('.meta.json', '愚人节_奥特瑙斯.png'))
+        assert tar_file_size(archive_file=archive_file, file_in_archive='.meta.json') == meta
+        assert tar_file_size(archive_file=archive_file, file_in_archive='愚人节_奥特瑙斯.png') == png
+        assert tar_file_size(archive_file=archive_file, file_in_archive='./愚人节_奥特瑙斯.png') == png
         with pytest.raises(FileNotFoundError):
             _ = tar_file_size(
-                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                archive_file=archive_file,
                 file_in_archive='愚人节奥特瑙斯.png'
             )
 
