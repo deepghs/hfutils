@@ -1,0 +1,1904 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": "paths=notzip%2Freal.tar&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "36"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "8de3a579-176c-45bb-9164-1651eca78a72"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"03c29b38051b7a34137cccf1c8face586311568e\",\"size\":10240,\"lfs\":{\"oid\":\"be9ae98f74065d2df47f38263644941532b6615b5a60c34db8cc864b4ade147a\",\"size\":10240,\"pointerSize\":130},\"path\":\"notzip/real.tar\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "216"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"d8-Mr/ytWu5KzzNOOB+8ueedExbxJw\""
+     ],
+     "ratelimit": [
+      "\"api\";r=902;t=220"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "range": [
+      "bytes=0-10239"
+     ],
+     "x-amzn-trace-id": [
+      "f0da0cae-44f0-4c77-99a0-6f569fcc3283"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/resolve/main/notzip/real.tar"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/be9ae98f74065d2df47f38263644941532b6615b5a60c34db8cc864b4ade147a?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27real.tar%3B+filename%3D%22real.tar%22%3B&response-content-type=application%2Fx-tar&Expires=1793125035&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "410"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "location": [
+      "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/be9ae98f74065d2df47f38263644941532b6615b5a60c34db8cc864b4ade147a?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27real.tar%3B+filename%3D%22real.tar%22%3B&response-content-type=application%2Fx-tar&Expires=1793125035&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=4933;t=219"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-linked-etag": [
+      "\"be9ae98f74065d2df47f38263644941532b6615b5a60c34db8cc864b4ade147a\""
+     ],
+     "x-linked-size": [
+      "10240"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "bf7da32e76bebced72f772f84b9acf522eabe74c"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "cdn-lfs-us-1.hf.co"
+     ],
+     "range": [
+      "bytes=0-10239"
+     ],
+     "x-amzn-trace-id": [
+      "f0da0cae-44f0-4c77-99a0-6f569fcc3283"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/be9ae98f74065d2df47f38263644941532b6615b5a60c34db8cc864b4ade147a?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27real.tar%3B+filename%3D%22real.tar%22%3B&response-content-type=application%2Fx-tar&Expires=1793125035&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+   },
+   "response": {
+    "body": {
+     "blob": "be9ae98f74065d2df47f38263644941532b6615b5a60c34db8cc864b4ade147a",
+     "size": 10240
+    },
+    "headers": {
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''real.tar; filename=\"real.tar\";"
+     ],
+     "content-length": [
+      "10240"
+     ],
+     "content-range": [
+      "bytes 0-10239/10240"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/x-tar"
+     ],
+     "etag": [
+      "\"9ea7e392a17aea226f249da9151aa0ab\""
+     ],
+     "last-modified": [
+      "Tue, 27 Oct 2026 17:17:11 GMT"
+     ],
+     "server": [
+      "AmazonS3"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-amz-server-side-encryption": [
+      "AES256"
+     ],
+     "x-amz-storage-class": [
+      "INTELLIGENT_TIERING"
+     ],
+     "x-amz-version-id": [
+      "wpoAuX8GolUz7hmr5WI1OykF60Nha_zJ"
+     ]
+    },
+    "status": {
+     "code": 206,
+     "message": "Partial Content"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "range": [
+      "bytes=0-511"
+     ],
+     "x-amzn-trace-id": [
+      "69b812ae-4043-4d7d-9eb6-ba68480af373"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/resolve/main/notzip/real.tar"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/be9ae98f74065d2df47f38263644941532b6615b5a60c34db8cc864b4ade147a?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27real.tar%3B+filename%3D%22real.tar%22%3B&response-content-type=application%2Fx-tar&Expires=1793125036&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "410"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "location": [
+      "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/be9ae98f74065d2df47f38263644941532b6615b5a60c34db8cc864b4ade147a?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27real.tar%3B+filename%3D%22real.tar%22%3B&response-content-type=application%2Fx-tar&Expires=1793125036&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=4932;t=218"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-linked-etag": [
+      "\"be9ae98f74065d2df47f38263644941532b6615b5a60c34db8cc864b4ade147a\""
+     ],
+     "x-linked-size": [
+      "10240"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "bf7da32e76bebced72f772f84b9acf522eabe74c"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "cdn-lfs-us-1.hf.co"
+     ],
+     "range": [
+      "bytes=0-511"
+     ],
+     "x-amzn-trace-id": [
+      "69b812ae-4043-4d7d-9eb6-ba68480af373"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/be9ae98f74065d2df47f38263644941532b6615b5a60c34db8cc864b4ade147a?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27real.tar%3B+filename%3D%22real.tar%22%3B&response-content-type=application%2Fx-tar&Expires=1793125036&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+   },
+   "response": {
+    "body": {
+     "text": "././@PaxHeader\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u00000000000\u00000000000\u00000000000\u000000000000034\u000000000000000\u0000011452\u0000 x\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000ustar\u000000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u00000000000\u00000000000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+    },
+    "headers": {
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''real.tar; filename=\"real.tar\";"
+     ],
+     "content-length": [
+      "512"
+     ],
+     "content-range": [
+      "bytes 0-511/10240"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/x-tar"
+     ],
+     "etag": [
+      "\"9ea7e392a17aea226f249da9151aa0ab\""
+     ],
+     "last-modified": [
+      "Tue, 27 Oct 2026 17:17:11 GMT"
+     ],
+     "server": [
+      "AmazonS3"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-amz-server-side-encryption": [
+      "AES256"
+     ],
+     "x-amz-storage-class": [
+      "INTELLIGENT_TIERING"
+     ],
+     "x-amz-version-id": [
+      "wpoAuX8GolUz7hmr5WI1OykF60Nha_zJ"
+     ]
+    },
+    "status": {
+     "code": 206,
+     "message": "Partial Content"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": "paths=notzip%2Fpointer.zip&paths=notzip%2Fpointer.z01&paths=notzip%2Fpointer.z02&paths=notzip%2Fpointer.z03&paths=notzip%2Fpointer.z04&paths=notzip%2Fpointer.z05&paths=notzip%2Fpointer.z06&paths=notzip%2Fpointer.z07&paths=notzip%2Fpointer.z08&paths=notzip%2Fpointer.z09&paths=notzip%2Fpointer.z10&paths=notzip%2Fpointer.z11&paths=notzip%2Fpointer.z12&paths=notzip%2Fpointer.z13&paths=notzip%2Fpointer.z14&paths=notzip%2Fpointer.z15&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "444"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "a7aca93b-b265-482c-af32-5fb1572e1136"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"f8f1e2585445f49578a63834863bc8129d90233b\",\"size\":130,\"lfs\":{\"oid\":\"c280f525f32d33ec92c6a6efcf50f98220515e21c8882742b42b6384ce338b7d\",\"size\":130,\"pointerSize\":128},\"path\":\"notzip/pointer.zip\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "215"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"d7-OLimCJi6BZZf60vdFoIx0P+/RSM\""
+     ],
+     "ratelimit": [
+      "\"api\";r=901;t=217"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "range": [
+      "bytes=0-129"
+     ],
+     "x-amzn-trace-id": [
+      "0d793119-7ea5-4ca1-b15f-ff45b2a9391b"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/resolve/main/notzip/pointer.zip"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/c280f525f32d33ec92c6a6efcf50f98220515e21c8882742b42b6384ce338b7d?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27pointer.zip%3B+filename%3D%22pointer.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125037&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "414"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "location": [
+      "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/c280f525f32d33ec92c6a6efcf50f98220515e21c8882742b42b6384ce338b7d?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27pointer.zip%3B+filename%3D%22pointer.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125037&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=4931;t=217"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-linked-etag": [
+      "\"c280f525f32d33ec92c6a6efcf50f98220515e21c8882742b42b6384ce338b7d\""
+     ],
+     "x-linked-size": [
+      "130"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "bf7da32e76bebced72f772f84b9acf522eabe74c"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "cdn-lfs-us-1.hf.co"
+     ],
+     "range": [
+      "bytes=0-129"
+     ],
+     "x-amzn-trace-id": [
+      "0d793119-7ea5-4ca1-b15f-ff45b2a9391b"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/c280f525f32d33ec92c6a6efcf50f98220515e21c8882742b42b6384ce338b7d?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27pointer.zip%3B+filename%3D%22pointer.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125037&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+   },
+   "response": {
+    "body": {
+     "text": "version https://git-lfs.github.com/spec/v1\noid sha256:abababababababababababababababababababababababababababababababab\nsize 12345\n"
+    },
+    "headers": {
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''pointer.zip; filename=\"pointer.zip\";"
+     ],
+     "content-length": [
+      "130"
+     ],
+     "content-range": [
+      "bytes 0-129/130"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/zip"
+     ],
+     "etag": [
+      "\"eff9514f747f0f6c98ed8c61fde7d39c\""
+     ],
+     "last-modified": [
+      "Tue, 27 Oct 2026 17:17:11 GMT"
+     ],
+     "server": [
+      "AmazonS3"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-amz-server-side-encryption": [
+      "AES256"
+     ],
+     "x-amz-storage-class": [
+      "INTELLIGENT_TIERING"
+     ],
+     "x-amz-version-id": [
+      "8KYhsvJsz1DOzBTNm9mbPmx8x8Q8xymO"
+     ]
+    },
+    "status": {
+     "code": 206,
+     "message": "Partial Content"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "range": [
+      "bytes=0-129"
+     ],
+     "x-amzn-trace-id": [
+      "66bce858-32af-4548-94bd-e43317a7b31a"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/resolve/main/notzip/pointer.zip"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/c280f525f32d33ec92c6a6efcf50f98220515e21c8882742b42b6384ce338b7d?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27pointer.zip%3B+filename%3D%22pointer.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125038&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "414"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "location": [
+      "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/c280f525f32d33ec92c6a6efcf50f98220515e21c8882742b42b6384ce338b7d?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27pointer.zip%3B+filename%3D%22pointer.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125038&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=4930;t=216"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-linked-etag": [
+      "\"c280f525f32d33ec92c6a6efcf50f98220515e21c8882742b42b6384ce338b7d\""
+     ],
+     "x-linked-size": [
+      "130"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "bf7da32e76bebced72f772f84b9acf522eabe74c"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "cdn-lfs-us-1.hf.co"
+     ],
+     "range": [
+      "bytes=0-129"
+     ],
+     "x-amzn-trace-id": [
+      "66bce858-32af-4548-94bd-e43317a7b31a"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/c280f525f32d33ec92c6a6efcf50f98220515e21c8882742b42b6384ce338b7d?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27pointer.zip%3B+filename%3D%22pointer.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125038&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+   },
+   "response": {
+    "body": {
+     "text": "version https://git-lfs.github.com/spec/v1\noid sha256:abababababababababababababababababababababababababababababababab\nsize 12345\n"
+    },
+    "headers": {
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''pointer.zip; filename=\"pointer.zip\";"
+     ],
+     "content-length": [
+      "130"
+     ],
+     "content-range": [
+      "bytes 0-129/130"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/zip"
+     ],
+     "etag": [
+      "\"eff9514f747f0f6c98ed8c61fde7d39c\""
+     ],
+     "last-modified": [
+      "Tue, 27 Oct 2026 17:17:11 GMT"
+     ],
+     "server": [
+      "AmazonS3"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-amz-server-side-encryption": [
+      "AES256"
+     ],
+     "x-amz-storage-class": [
+      "INTELLIGENT_TIERING"
+     ],
+     "x-amz-version-id": [
+      "8KYhsvJsz1DOzBTNm9mbPmx8x8Q8xymO"
+     ]
+    },
+    "status": {
+     "code": 206,
+     "message": "Partial Content"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": "paths=notzip%2Fpage.zip&paths=notzip%2Fpage.z01&paths=notzip%2Fpage.z02&paths=notzip%2Fpage.z03&paths=notzip%2Fpage.z04&paths=notzip%2Fpage.z05&paths=notzip%2Fpage.z06&paths=notzip%2Fpage.z07&paths=notzip%2Fpage.z08&paths=notzip%2Fpage.z09&paths=notzip%2Fpage.z10&paths=notzip%2Fpage.z11&paths=notzip%2Fpage.z12&paths=notzip%2Fpage.z13&paths=notzip%2Fpage.z14&paths=notzip%2Fpage.z15&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "396"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "83acaef4-15a6-42f3-b28c-e2dbf944d9f9"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"061febf49fca72864439f8365f251b572dd5b72e\",\"size\":50,\"lfs\":{\"oid\":\"8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0\",\"size\":50,\"pointerSize\":127},\"path\":\"notzip/page.zip\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "210"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"d2-HdhvRFZuOtyH7VWDwEOpbLd+4oI\""
+     ],
+     "ratelimit": [
+      "\"api\";r=900;t=216"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "range": [
+      "bytes=0-49"
+     ],
+     "x-amzn-trace-id": [
+      "16967f37-2a5b-47b1-9c1e-1e9ca60a2240"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/resolve/main/notzip/page.zip"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125038&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "408"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "location": [
+      "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125038&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=4929;t=216"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-linked-etag": [
+      "\"8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0\""
+     ],
+     "x-linked-size": [
+      "50"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "bf7da32e76bebced72f772f84b9acf522eabe74c"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "cdn-lfs-us-1.hf.co"
+     ],
+     "range": [
+      "bytes=0-49"
+     ],
+     "x-amzn-trace-id": [
+      "16967f37-2a5b-47b1-9c1e-1e9ca60a2240"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125038&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+   },
+   "response": {
+    "body": {
+     "text": "<!DOCTYPE html><html><body>Not Found</body></html>"
+    },
+    "headers": {
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''page.zip; filename=\"page.zip\";"
+     ],
+     "content-length": [
+      "50"
+     ],
+     "content-range": [
+      "bytes 0-49/50"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/zip"
+     ],
+     "etag": [
+      "\"f4705001c6cb97e4a1f61a79cafe13db\""
+     ],
+     "last-modified": [
+      "Tue, 27 Oct 2026 17:17:12 GMT"
+     ],
+     "server": [
+      "AmazonS3"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-amz-server-side-encryption": [
+      "AES256"
+     ],
+     "x-amz-storage-class": [
+      "INTELLIGENT_TIERING"
+     ],
+     "x-amz-version-id": [
+      "PsYQj4qJF5wwWZ.Kshaphk0HkZnehfT2"
+     ]
+    },
+    "status": {
+     "code": 206,
+     "message": "Partial Content"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "range": [
+      "bytes=0-49"
+     ],
+     "x-amzn-trace-id": [
+      "dd5abc1a-06cf-4ba2-90df-535e63691688"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/resolve/main/notzip/page.zip"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125039&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "408"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "location": [
+      "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125039&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=4928;t=215"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-linked-etag": [
+      "\"8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0\""
+     ],
+     "x-linked-size": [
+      "50"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "bf7da32e76bebced72f772f84b9acf522eabe74c"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "cdn-lfs-us-1.hf.co"
+     ],
+     "range": [
+      "bytes=0-49"
+     ],
+     "x-amzn-trace-id": [
+      "dd5abc1a-06cf-4ba2-90df-535e63691688"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125039&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+   },
+   "response": {
+    "body": {
+     "text": "<!DOCTYPE html><html><body>Not Found</body></html>"
+    },
+    "headers": {
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''page.zip; filename=\"page.zip\";"
+     ],
+     "content-length": [
+      "50"
+     ],
+     "content-range": [
+      "bytes 0-49/50"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/zip"
+     ],
+     "etag": [
+      "\"f4705001c6cb97e4a1f61a79cafe13db\""
+     ],
+     "last-modified": [
+      "Tue, 27 Oct 2026 17:17:12 GMT"
+     ],
+     "server": [
+      "AmazonS3"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-amz-server-side-encryption": [
+      "AES256"
+     ],
+     "x-amz-storage-class": [
+      "INTELLIGENT_TIERING"
+     ],
+     "x-amz-version-id": [
+      "PsYQj4qJF5wwWZ.Kshaphk0HkZnehfT2"
+     ]
+    },
+    "status": {
+     "code": 206,
+     "message": "Partial Content"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": "paths=notzip%2Fempty.zip&paths=notzip%2Fempty.z01&paths=notzip%2Fempty.z02&paths=notzip%2Fempty.z03&paths=notzip%2Fempty.z04&paths=notzip%2Fempty.z05&paths=notzip%2Fempty.z06&paths=notzip%2Fempty.z07&paths=notzip%2Fempty.z08&paths=notzip%2Fempty.z09&paths=notzip%2Fempty.z10&paths=notzip%2Fempty.z11&paths=notzip%2Fempty.z12&paths=notzip%2Fempty.z13&paths=notzip%2Fempty.z14&paths=notzip%2Fempty.z15&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "412"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "a6f4466d-dc5b-4a19-b207-41a051b177fb"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"e69de29bb2d1d6434b8b29ae775ad8c2e48c5391\",\"size\":0,\"path\":\"notzip/empty.zip\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "101"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"65-r28VQolj1kn8My4OD8Rek/8KAYU\""
+     ],
+     "ratelimit": [
+      "\"api\";r=899;t=215"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": "paths=notzip%2Fimage.zip&paths=notzip%2Fimage.z01&paths=notzip%2Fimage.z02&paths=notzip%2Fimage.z03&paths=notzip%2Fimage.z04&paths=notzip%2Fimage.z05&paths=notzip%2Fimage.z06&paths=notzip%2Fimage.z07&paths=notzip%2Fimage.z08&paths=notzip%2Fimage.z09&paths=notzip%2Fimage.z10&paths=notzip%2Fimage.z11&paths=notzip%2Fimage.z12&paths=notzip%2Fimage.z13&paths=notzip%2Fimage.z14&paths=notzip%2Fimage.z15&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "412"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "c956b35d-414d-4ea6-96b9-13456117c4b7"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"12136cf5b0231156ac9838d9eb2912cc29e120c1\",\"size\":208,\"lfs\":{\"oid\":\"04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6\",\"size\":208,\"pointerSize\":128},\"path\":\"notzip/image.zip\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "213"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"d5-0U9YijotEQ023c1wPOZF3mS4WIg\""
+     ],
+     "ratelimit": [
+      "\"api\";r=898;t=214"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "range": [
+      "bytes=0-207"
+     ],
+     "x-amzn-trace-id": [
+      "9942e81a-7a1f-4959-90da-e170925cffa1"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/resolve/main/notzip/image.zip"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27image.zip%3B+filename%3D%22image.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125040&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "410"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "location": [
+      "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27image.zip%3B+filename%3D%22image.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125040&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=4927;t=214"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-linked-etag": [
+      "\"04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6\""
+     ],
+     "x-linked-size": [
+      "208"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "bf7da32e76bebced72f772f84b9acf522eabe74c"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "cdn-lfs-us-1.hf.co"
+     ],
+     "range": [
+      "bytes=0-207"
+     ],
+     "x-amzn-trace-id": [
+      "9942e81a-7a1f-4959-90da-e170925cffa1"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27image.zip%3B+filename%3D%22image.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125040&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+   },
+   "response": {
+    "body": {
+     "blob": "04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6",
+     "size": 208
+    },
+    "headers": {
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''image.zip; filename=\"image.zip\";"
+     ],
+     "content-length": [
+      "208"
+     ],
+     "content-range": [
+      "bytes 0-207/208"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/zip"
+     ],
+     "etag": [
+      "\"313c7cf49ff26021b81de5e629745c35\""
+     ],
+     "last-modified": [
+      "Tue, 27 Oct 2026 17:17:12 GMT"
+     ],
+     "server": [
+      "AmazonS3"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-amz-server-side-encryption": [
+      "AES256"
+     ],
+     "x-amz-storage-class": [
+      "INTELLIGENT_TIERING"
+     ],
+     "x-amz-version-id": [
+      "or0HAqtHDndgN6a73ZLuyBUIaIBUjjOH"
+     ]
+    },
+    "status": {
+     "code": 206,
+     "message": "Partial Content"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "range": [
+      "bytes=0-207"
+     ],
+     "x-amzn-trace-id": [
+      "a8522574-ae5b-4999-8747-d3fd567d7151"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261028011702154245_c371f1d02873e2db3e34dcf565e252b66910a35f/resolve/main/notzip/image.zip"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27image.zip%3B+filename%3D%22image.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125041&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "410"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "location": [
+      "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27image.zip%3B+filename%3D%22image.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125041&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=4926;t=213"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-linked-etag": [
+      "\"04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6\""
+     ],
+     "x-linked-size": [
+      "208"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "bf7da32e76bebced72f772f84b9acf522eabe74c"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "cdn-lfs-us-1.hf.co"
+     ],
+     "range": [
+      "bytes=0-207"
+     ],
+     "x-amzn-trace-id": [
+      "a8522574-ae5b-4999-8747-d3fd567d7151"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://cdn-lfs-us-1.hf.co/repos/ff/86/ff86b1181dfb3c28de084486ef20a09dbda4733640523f97291761add3d3b05a/04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27image.zip%3B+filename%3D%22image.zip%22%3B&response-content-type=application%2Fzip&Expires=1793125041&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
+   },
+   "response": {
+    "body": {
+     "blob": "04523bfdcb1918b37b179fd3010ceabb90aabfc602ae3c867e68e5b863c93ea6",
+     "size": 208
+    },
+    "headers": {
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''image.zip; filename=\"image.zip\";"
+     ],
+     "content-length": [
+      "208"
+     ],
+     "content-range": [
+      "bytes 0-207/208"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/zip"
+     ],
+     "etag": [
+      "\"313c7cf49ff26021b81de5e629745c35\""
+     ],
+     "last-modified": [
+      "Tue, 27 Oct 2026 17:17:12 GMT"
+     ],
+     "server": [
+      "AmazonS3"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-amz-server-side-encryption": [
+      "AES256"
+     ],
+     "x-amz-storage-class": [
+      "INTELLIGENT_TIERING"
+     ],
+     "x-amz-version-id": [
+      "or0HAqtHDndgN6a73ZLuyBUIaIBUjjOH"
+     ]
+    },
+    "status": {
+     "code": 206,
+     "message": "Partial Content"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

@@ -1,0 +1,187 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": "paths=zips%2Fnot-there.zip&paths=zips%2Fnot-there.z01&paths=zips%2Fnot-there.z02&paths=zips%2Fnot-there.z03&paths=zips%2Fnot-there.z04&paths=zips%2Fnot-there.z05&paths=zips%2Fnot-there.z06&paths=zips%2Fnot-there.z07&paths=zips%2Fnot-there.z08&paths=zips%2Fnot-there.z09&paths=zips%2Fnot-there.z10&paths=zips%2Fnot-there.z11&paths=zips%2Fnot-there.z12&paths=zips%2Fnot-there.z13&paths=zips%2Fnot-there.z14&paths=zips%2Fnot-there.z15&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "444"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "6842d812-84df-4116-8def-eed0a90fec83"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261028011722517947_df0681337dd395114cdebe0f980cb989ce59b4b7/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "2"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+     ],
+     "ratelimit": [
+      "\"api\";r=870;t=199"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": "paths=a.zip&paths=a.z01&paths=a.z02&paths=a.z03&paths=a.z04&paths=a.z05&paths=a.z06&paths=a.z07&paths=a.z08&paths=a.z09&paths=a.z10&paths=a.z11&paths=a.z12&paths=a.z13&paths=a.z14&paths=a.z15&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "204"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "1c738256-8baa-4808-b879-a162fc66e213"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/this-repository-does-not-exist-zip-test/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "{\"error\":\"Repository not found\"}"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "32"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"20-bITJowpdmeRi6flSV9yCp5Fkq5k\""
+     ],
+     "ratelimit": [
+      "\"api\";r=869;t=198"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-error-code": [
+      "RepoNotFound"
+     ],
+     "x-error-message": [
+      "Repository not found"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 404,
+     "message": "Not Found"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

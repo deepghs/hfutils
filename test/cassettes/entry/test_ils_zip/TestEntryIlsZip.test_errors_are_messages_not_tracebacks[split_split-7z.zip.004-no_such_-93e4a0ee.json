@@ -1,0 +1,93 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": "paths=split%2Fsplit-7z.zip.004&paths=split%2Fsplit-7z.zip.005&paths=split%2Fsplit-7z.zip.006&paths=split%2Fsplit-7z.zip.007&paths=split%2Fsplit-7z.zip.008&paths=split%2Fsplit-7z.zip.009&paths=split%2Fsplit-7z.zip.010&paths=split%2Fsplit-7z.zip.011&paths=split%2Fsplit-7z.zip.012&paths=split%2Fsplit-7z.zip.013&paths=split%2Fsplit-7z.zip.014&paths=split%2Fsplit-7z.zip.015&paths=split%2Fsplit-7z.zip.016&paths=split%2Fsplit-7z.zip.017&paths=split%2Fsplit-7z.zip.018&paths=split%2Fsplit-7z.zip.019&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "508"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "d97160e6-9071-4766-9e0b-53a9ab968965"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261028012115797493_12f38db544f811e0389e4d7b0f37a04f4c848549/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "2"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+     ],
+     "ratelimit": [
+      "\"api\";r=930;t=267"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

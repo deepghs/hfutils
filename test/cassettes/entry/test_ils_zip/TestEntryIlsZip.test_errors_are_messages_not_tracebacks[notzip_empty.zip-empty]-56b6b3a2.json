@@ -1,0 +1,93 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": "paths=notzip%2Fempty.zip&paths=notzip%2Fempty.z01&paths=notzip%2Fempty.z02&paths=notzip%2Fempty.z03&paths=notzip%2Fempty.z04&paths=notzip%2Fempty.z05&paths=notzip%2Fempty.z06&paths=notzip%2Fempty.z07&paths=notzip%2Fempty.z08&paths=notzip%2Fempty.z09&paths=notzip%2Fempty.z10&paths=notzip%2Fempty.z11&paths=notzip%2Fempty.z12&paths=notzip%2Fempty.z13&paths=notzip%2Fempty.z14&paths=notzip%2Fempty.z15&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "412"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "fd270e70-f1d0-49e3-bfa2-de41462d31d6"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261028012047008192_b434f29c6d4e2f716d3206c9dfa0cd63b967093b/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"e69de29bb2d1d6434b8b29ae775ad8c2e48c5391\",\"size\":0,\"path\":\"notzip/empty.zip\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "101"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"65-r28VQolj1kn8My4OD8Rek/8KAYU\""
+     ],
+     "ratelimit": [
+      "\"api\";r=986;t=296"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}
