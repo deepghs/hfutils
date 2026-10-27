@@ -350,3 +350,60 @@ def test_serializer_accepts_chunked_request_bodies(tmp_path):
     }]}
     out = s.deserialize(s.serialize(data))
     assert out['interactions'][0]['request']['body'] == b'abcdefgh'
+
+
+@pytest.mark.unittest
+class TestRedaction:
+    """The rules themselves: what survives redaction is what would be committed."""
+
+    JWT = 'eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTMxMDAyNjAsImlzcyI6Imh0dHBzOi8vaHVnZ2luZ2ZhY2UuY28ifQ.c2lnbmF0dXJlLXNpZ25hdHVyZQ'
+    HF = 'hf_' + 'a' * 34
+    URL = ('https://cdn.example/xorbs/x?Expires=1793100260&Signature=abcdEFGH1234~_-abcdEFGH1234&Key-Pair-Id=K2ABCDEFGH'
+           '&X-Amz-Security-Token=FwoGZXIvYXdzE%2Bxyz&X-Amz-Credential=AKIAXXXX%2F20261027&xip=IweFDYXnN_8&partNumber=3')
+
+    def test_url_parameters_are_redacted_and_the_others_kept(self):
+        from test.testings.hfvcr import redact
+        out = redact.redact_str(self.URL)
+        assert redact.violations(out.encode()) == []
+        for secret in ('abcdEFGH1234', 'K2ABCDEFGH', 'FwoGZXIvYXdz', 'AKIAXXXX', 'IweFDYXnN_8'):
+            assert secret not in out
+        assert 'Expires=1793100260' in out and 'partNumber=3' in out  # nothing secret, and it picks an upload part
+
+    def test_the_json_escaped_separator_is_redacted_like_the_plain_one(self):
+        from test.testings.hfvcr import redact
+        escaped = self.URL.replace('&', '\\u0026')  # Go's encoding/json writes & this way
+        out = redact.redact_bytes(escaped.encode())
+        assert redact.violations(out) == []
+        assert b'abcdEFGH1234' not in out
+        # both spellings give the same URL once the client has decoded the JSON: replay finds the request
+        assert redact.redact_str(self.URL) == out.decode().replace('\\u0026', '&')
+
+    def test_tokens_mail_and_authorization_values(self):
+        from test.testings.hfvcr import redact
+        body = (f'{{"email": "someone@private.example", "accessToken": "{self.JWT}", "token": "{self.HF}", '
+                f'"header": {{"Authorization": "Bearer {self.HF}"}}}}').encode()
+        assert set(redact.violations(body)) >= {'JWT', 'hf_ token', 'e-mail address', 'Authorization value in JSON', 'accessToken value'}
+        out = redact.redact_bytes(body)
+        assert redact.violations(out) == [], redact.violations(out)
+        for secret in (self.JWT, self.HF, 'someone@private.example'):
+            assert secret.encode() not in out
+
+    def test_binary_bodies_are_left_alone(self):
+        from test.testings.hfvcr import redact
+        data = b'\x00\x01' + self.HF.encode() + bytes(range(256))
+        assert redact.redact_bytes(data) == data
+
+    def test_a_cassette_response_is_scrubbed_and_stays_consistent(self):
+        from test.testings.hfvcr.scrub import scrub_response
+        from test.testings.hfvcr import redact
+        body = f'{{"url": "{self.URL}", "jwt": "{self.JWT}"}}'.encode()
+        response = {'status': {'code': 200, 'message': 'OK'}, 'body': {'string': body},
+                    'headers': {'Location': [self.URL], 'X-Xet-Access-Token': [self.JWT], 'Content-Length': [str(len(body))],
+                                'Set-Cookie': ['a=b']}}
+        out = scrub_response(response)
+        assert redact.violations(json.dumps(out, default=str).encode()) == []
+        assert 'Set-Cookie' not in out['headers']
+        assert out['headers']['X-Xet-Access-Token'] == ['REDACTED']  # kept: hub 1.x / 2.x will not start an Xet download without it
+        assert redact.header_values('X-Xet-Token-Expiration', ['1793100260']) == ['4102444800']  # a replay must not age
+        assert out['headers']['Content-Length'] == [str(len(out['body']['string']))]
+        assert 'Signature=REDACTED' in out['headers']['Location'][0]

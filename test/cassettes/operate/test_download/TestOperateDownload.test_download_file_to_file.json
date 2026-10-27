@@ -67,7 +67,7 @@
       "<https://huggingface.co/api/datasets/deepghs/game_character_skins/xet-read-token/153e51ccfbe01f8d775e99c1ae2760567f7f8f9c>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334>; rel=\"xet-reconstruction-info\""
      ],
      "location": [
-      "https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?X-Xet-Cas-Uid=public&response-content-type=image%2Fpng&xip=IweFDYXnN_8&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&user_id=public&Expires=1793088734&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjQzOTcyZmQ1ODEzZjBmZGQ4NTJlNDEzLzU4OGEwYTEwMzRlNzU5ODFhOGFmZDEwOTM3NjJmMWM1NWMyNTBiNGVlYjRiMTY3NWI5ZWZhOGZlNTljZmYzMzRcXD9YLVhldC1DYXMtVWlkPXB1YmxpYyZyZXNwb25zZS1jb250ZW50LXR5cGU9KiZ4aXA9SXdlRkRZWG5OXzgmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qJnVzZXJfaWQ9cHVibGljIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3MzR9fX1dfQ__&Signature=MEQCIDfzVGnFzgIrZWdEY-u6xZrftuTqHhQgl1ftC7Clx%7EunAiATdeKJSCLLiMQwfTxc9s43CPvpSY9XeKLwSX%7ED7YY6MA__&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+      "https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?X-Xet-Cas-Uid=public&response-content-type=image%2Fpng&xip=REDACTED&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&user_id=REDACTED&Expires=1793088734&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
      ],
      "ratelimit": [
       "\"resolvers\";r=2943;t=62"
@@ -139,7 +139,7 @@
    },
    "response": {
     "body": {
-     "text": "Found. Redirecting to https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?xip=IweFDYXnN_8&response-content-type=image%2Fpng&user_id=public&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&Expires=1793088735&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjQzOTcyZmQ1ODEzZjBmZGQ4NTJlNDEzLzU4OGEwYTEwMzRlNzU5ODFhOGFmZDEwOTM3NjJmMWM1NWMyNTBiNGVlYjRiMTY3NWI5ZWZhOGZlNTljZmYzMzRcXD94aXA9SXdlRkRZWG5OXzgmcmVzcG9uc2UtY29udGVudC10eXBlPSomdXNlcl9pZD1wdWJsaWMmWC1YZXQtQ2FzLVVpZD1wdWJsaWMmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3MzV9fX1dfQ__&Signature=MEUCIQDEJBMArLMLDboXmeHYzDq36TpcDxFFgt1hFu2K0i%7EqoQIgT%7E6RU21lTFwI0rx53U71x9cN%7ELJeN6nEq-ORgx5NjdM_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+     "text": "Found. Redirecting to https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?xip=REDACTED&response-content-type=image%2Fpng&user_id=REDACTED&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&Expires=1793088735&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
     },
     "headers": {
      "accept-ranges": [
@@ -164,7 +164,7 @@
       "keep-alive"
      ],
      "content-length": [
-      "1156"
+      "619"
      ],
      "content-type": [
       "text/plain; charset=utf-8"
@@ -176,7 +176,7 @@
       "<https://huggingface.co/api/datasets/deepghs/game_character_skins/xet-read-token/153e51ccfbe01f8d775e99c1ae2760567f7f8f9c>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334>; rel=\"xet-reconstruction-info\""
      ],
      "location": [
-      "https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?xip=IweFDYXnN_8&response-content-type=image%2Fpng&user_id=public&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&Expires=1793088735&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjQzOTcyZmQ1ODEzZjBmZGQ4NTJlNDEzLzU4OGEwYTEwMzRlNzU5ODFhOGFmZDEwOTM3NjJmMWM1NWMyNTBiNGVlYjRiMTY3NWI5ZWZhOGZlNTljZmYzMzRcXD94aXA9SXdlRkRZWG5OXzgmcmVzcG9uc2UtY29udGVudC10eXBlPSomdXNlcl9pZD1wdWJsaWMmWC1YZXQtQ2FzLVVpZD1wdWJsaWMmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3MzV9fX1dfQ__&Signature=MEUCIQDEJBMArLMLDboXmeHYzDq36TpcDxFFgt1hFu2K0i%7EqoQIgT%7E6RU21lTFwI0rx53U71x9cN%7ELJeN6nEq-ORgx5NjdM_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+      "https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?xip=REDACTED&response-content-type=image%2Fpng&user_id=REDACTED&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&Expires=1793088735&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
      ],
      "ratelimit": [
       "\"resolvers\";r=2942;t=61"
@@ -244,7 +244,7 @@
      ]
     },
     "method": "GET",
-    "uri": "https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?xip=IweFDYXnN_8&response-content-type=image%2Fpng&user_id=public&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&Expires=1793088735&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjQzOTcyZmQ1ODEzZjBmZGQ4NTJlNDEzLzU4OGEwYTEwMzRlNzU5ODFhOGFmZDEwOTM3NjJmMWM1NWMyNTBiNGVlYjRiMTY3NWI5ZWZhOGZlNTljZmYzMzRcXD94aXA9SXdlRkRZWG5OXzgmcmVzcG9uc2UtY29udGVudC10eXBlPSomdXNlcl9pZD1wdWJsaWMmWC1YZXQtQ2FzLVVpZD1wdWJsaWMmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3MzV9fX1dfQ__&Signature=MEUCIQDEJBMArLMLDboXmeHYzDq36TpcDxFFgt1hFu2K0i%7EqoQIgT%7E6RU21lTFwI0rx53U71x9cN%7ELJeN6nEq-ORgx5NjdM_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+    "uri": "https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?xip=REDACTED&response-content-type=image%2Fpng&user_id=REDACTED&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&Expires=1793088735&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
    },
    "response": {
     "body": {

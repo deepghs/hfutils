@@ -67,7 +67,7 @@
       "<https://huggingface.co/api/datasets/deepghs/hfcache_test_target_repo/xet-read-token/572da9c9c5411189e5f9acfdf444d0c6796861f4>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a>; rel=\"xet-reconstruction-info\""
      ],
      "location": [
-      "https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&X-Xet-Cas-Uid=public&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&user_id=public&xip=IweFDYXnN_8&Expires=1793088735&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjY3YWY3YzE3ODk5OTQyNTdhMmI5MmM5Lzk3NmIyMTk1YTE1OTg1MzI2YmJiZTBiY2VkYmZlYWQ4ZTUzYTY4N2JhYTU4YTI0MTljZWJmOTgwYjNmMzhmN2FcXD9yZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPSomWC1YZXQtQ2FzLVVpZD1wdWJsaWMmcmVzcG9uc2UtY29udGVudC10eXBlPSomdXNlcl9pZD1wdWJsaWMmeGlwPUl3ZUZEWVhuTl84IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3MzV9fX1dfQ__&Signature=MEQCIGSEGeSeR27Q5hgU6uVZ35Zr3Tn3Ap9GuhH%7EZYzFrgN2AiBpyZDPtbmdRm9VYqLZE41qvZIFfs3RvwPD6GUGZS5i9Q__&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+      "https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&X-Xet-Cas-Uid=public&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&user_id=REDACTED&xip=REDACTED&Expires=1793088735&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
      ],
      "ratelimit": [
       "\"resolvers\";r=2932;t=61"
@@ -142,7 +142,7 @@
    },
    "response": {
     "body": {
-     "text": "Found. Redirecting to https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?user_id=public&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&X-Xet-Cas-Uid=public&xip=IweFDYXnN_8&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&Expires=1793088735&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjY3YWY3YzE3ODk5OTQyNTdhMmI5MmM5Lzk3NmIyMTk1YTE1OTg1MzI2YmJiZTBiY2VkYmZlYWQ4ZTUzYTY4N2JhYTU4YTI0MTljZWJmOTgwYjNmMzhmN2FcXD91c2VyX2lkPXB1YmxpYyZyZXNwb25zZS1jb250ZW50LXR5cGU9KiZYLVhldC1DYXMtVWlkPXB1YmxpYyZ4aXA9SXdlRkRZWG5OXzgmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3MzV9fX1dfQ__&Signature=MEYCIQDmVQyVpgUmRa8x3zLZ-70fUxPj4z3TqY9q7gymuEryuQIhAPZP1QMWBomauoAu32HB3XpkVkMO6LQAbiBqggt2gQ7h&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+     "text": "Found. Redirecting to https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?user_id=REDACTED&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&X-Xet-Cas-Uid=public&xip=REDACTED&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&Expires=1793088735&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
     },
     "headers": {
      "accept-ranges": [
@@ -167,7 +167,7 @@
       "keep-alive"
      ],
      "content-length": [
-      "1010"
+      "479"
      ],
      "content-type": [
       "text/plain; charset=utf-8"
@@ -179,7 +179,7 @@
       "<https://huggingface.co/api/datasets/deepghs/hfcache_test_target_repo/xet-read-token/572da9c9c5411189e5f9acfdf444d0c6796861f4>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a>; rel=\"xet-reconstruction-info\""
      ],
      "location": [
-      "https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?user_id=public&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&X-Xet-Cas-Uid=public&xip=IweFDYXnN_8&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&Expires=1793088735&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjY3YWY3YzE3ODk5OTQyNTdhMmI5MmM5Lzk3NmIyMTk1YTE1OTg1MzI2YmJiZTBiY2VkYmZlYWQ4ZTUzYTY4N2JhYTU4YTI0MTljZWJmOTgwYjNmMzhmN2FcXD91c2VyX2lkPXB1YmxpYyZyZXNwb25zZS1jb250ZW50LXR5cGU9KiZYLVhldC1DYXMtVWlkPXB1YmxpYyZ4aXA9SXdlRkRZWG5OXzgmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3MzV9fX1dfQ__&Signature=MEYCIQDmVQyVpgUmRa8x3zLZ-70fUxPj4z3TqY9q7gymuEryuQIhAPZP1QMWBomauoAu32HB3XpkVkMO6LQAbiBqggt2gQ7h&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+      "https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?user_id=REDACTED&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&X-Xet-Cas-Uid=public&xip=REDACTED&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&Expires=1793088735&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
      ],
      "ratelimit": [
       "\"resolvers\";r=2931;t=61"
@@ -244,7 +244,7 @@
      ]
     },
     "method": "GET",
-    "uri": "https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?user_id=public&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&X-Xet-Cas-Uid=public&xip=IweFDYXnN_8&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&Expires=1793088735&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjY3YWY3YzE3ODk5OTQyNTdhMmI5MmM5Lzk3NmIyMTk1YTE1OTg1MzI2YmJiZTBiY2VkYmZlYWQ4ZTUzYTY4N2JhYTU4YTI0MTljZWJmOTgwYjNmMzhmN2FcXD91c2VyX2lkPXB1YmxpYyZyZXNwb25zZS1jb250ZW50LXR5cGU9KiZYLVhldC1DYXMtVWlkPXB1YmxpYyZ4aXA9SXdlRkRZWG5OXzgmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3MzV9fX1dfQ__&Signature=MEYCIQDmVQyVpgUmRa8x3zLZ-70fUxPj4z3TqY9q7gymuEryuQIhAPZP1QMWBomauoAu32HB3XpkVkMO6LQAbiBqggt2gQ7h&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+    "uri": "https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?user_id=REDACTED&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&X-Xet-Cas-Uid=public&xip=REDACTED&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&Expires=1793088735&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
    },
    "response": {
     "body": {

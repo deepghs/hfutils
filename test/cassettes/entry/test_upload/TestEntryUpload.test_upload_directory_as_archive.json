@@ -203,8 +203,7 @@
    },
    "response": {
     "body": {
-     "blob": "9909be735b9b509b36d7ef36ae5965ef05c273b51b92d8053993aed829da817b",
-     "size": 2353
+     "text": "{\"transfer\":\"basic\",\"objects\":[{\"oid\":\"38c478caeb3792d7653758a854e6c5296402098c7fe5a7c19ae75c9a75bcbfd0\",\"size\":409,\"authenticated\":true,\"actions\":{\"upload\":{\"href\":\"https://hf-hub-lfs-us-east-1.s3-accelerate.amazonaws.com/repos/5b/aa/5baaba4762934ba840dae03388671791e07c56daeaa6bed90b83db163316a095/38c478caeb3792d7653758a854e6c5296402098c7fe5a7c19ae75c9a75bcbfd0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=REDACTED&X-Amz-Date=20261027T071345Z&X-Amz-Expires=900&X-Amz-Security-Token=REDACTED&X-Amz-Signature=REDACTED&X-Amz-SignedHeaders=host&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-amz-storage-class=INTELLIGENT_TIERING&x-id=PutObject\"},\"verify\":{\"href\":\"https://huggingface.co/datasets/narugo1992/test_repo_20261027151331668499_8d075571e37aea9d7da44f059b2bad37fff92e36.git/info/lfs/objects/verify\",\"header\":{\"Authorization\":\"REDACTED\"}}}}]}"
     },
     "headers": {
      "access-control-allow-origin": [
@@ -223,7 +222,7 @@
       "keep-alive"
      ],
      "content-length": [
-      "2353"
+      "918"
      ],
      "content-type": [
       "application/vnd.git-lfs+json; charset=utf-8"
@@ -286,7 +285,7 @@
      ]
     },
     "method": "PUT",
-    "uri": "https://hf-hub-lfs-us-east-1.s3-accelerate.amazonaws.com/repos/5b/aa/5baaba4762934ba840dae03388671791e07c56daeaa6bed90b83db163316a095/38c478caeb3792d7653758a854e6c5296402098c7fe5a7c19ae75c9a75bcbfd0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIA2JU7TKAQBG35JMD5%2F20261027%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261027T071345Z&X-Amz-Expires=900&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB8aCXVzLWVhc3QtMSJGMEQCICso%2F%2BL1DwfatLkuGmGPdZhBtlcpXbcn7NqRmDzUwqcOAiBO39Sue4Ihy9C63oe4P5F%2F5OSNf%2FKbtHGPxHE%2FcX9ZayqKBQjn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAIaDDcwNzkzMDU3NDg4MCIMLcJ0ygW9761DYqqoKt4Ets7oRl47CpU3toN9KJLlOvcui6DZ%2FqLGJfvULBhDU4JKw9d2Nz43IxCvb77ARqRD3XubZo2b1MbKDYqdDCyaEyXz7VEgYzOwv5T7ijFE%2B6o95mEkHzFHiAc8NxEnyYRijbTXRD%2Bq4GAj7NpUHKo4eqDtGEcXIrlByo1egy83YQI7qjEwHBUJ%2BB1ebLgMMFB8w2eHZrUSKtYGEP4AfPiWSp2%2F8ACWcqH%2FbHRMBPMr2eU%2BbMbx2kksZo40vxovBDS4KAjr5EZEkzJ6jKTf7q%2B6s9MBM99DAeBvYfCxty%2BznzTkAeP%2FUwVxlblb3fr71Hfu1vjsFPdYp63wiYYe7qOVwtioIYCovfDAIWDJ87xkBWmAsiFxSp238%2B0nyxhWkxTCjV2Y1or3lt2D%2FrrFVdmdXaZigaFm2U3suSbVi3LivWOLA8gU3bZhXvJI2jY6%2BAK4sUGDyivBCvX4R%2BdrH7EdpfjEubBcrS3h%2F3DbdW1PTtiUJI1E65i2MNysGoTIvNv9q%2FHijMyM84vG7xkUjUuubRm2ZKByIL%2FVtGa5vwAkJzN%2FBU%2BaoItCvhN4QKfErr%2BQ2d04Np5xrKaWgTZE%2F5aNEBpKRZ6rM57kBRx%2Btc726U9D7gNdHpO0kp%2FFhJD3eih0Go%2BR1idBuDnEVpzxty9ZEKRTs67wkuOxMw9cvEdX%2FmQg%2FldpIwh9k4HgPIR1UI2nq8AOOrohmTJKyjsutH56Dl5%2FmkQGuMx5KUxbnsI5AxxOdTEH9RVwbT%2B8ZhvbPVLqBEQiTDaZDrEdMV%2BY4c8V%2Fxx9e0%2B70%2FHrtJBhBTc3MPyYgdcGOpkB2H6yiRbGXGMpjUD%2BrqQ28sEqTsgg28KjdVVaVWzw6dz%2BR7jJQbf%2Bx8llf9XL%2BwHciHGmBk40GBc%2FgmVqP2eO2ifjWP6cMVtvLOIXnLwPXGc3bVkIM8twzBk0SPm6AQb2GgxhmFQyMiXWU227I%2FCvJz5alteSKujCr5EfR4BDIekqgMMK0mCpIDzlyR4DcUGkU85ROXo4DnCK&X-Amz-Signature=82c130705f77958983d67d5a52433dd772a7e9d81b2044b4e858e1d7279a1e0a&X-Amz-SignedHeaders=host&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-amz-storage-class=INTELLIGENT_TIERING&x-id=PutObject"
+    "uri": "https://hf-hub-lfs-us-east-1.s3-accelerate.amazonaws.com/repos/5b/aa/5baaba4762934ba840dae03388671791e07c56daeaa6bed90b83db163316a095/38c478caeb3792d7653758a854e6c5296402098c7fe5a7c19ae75c9a75bcbfd0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=REDACTED&X-Amz-Date=20261027T071345Z&X-Amz-Expires=900&X-Amz-Security-Token=REDACTED&X-Amz-Signature=REDACTED&X-Amz-SignedHeaders=host&x-amz-checksum-crc32=AAAAAA%3D%3D&x-amz-sdk-checksum-algorithm=CRC32&x-amz-storage-class=INTELLIGENT_TIERING&x-id=PutObject"
    },
    "response": {
     "body": {
@@ -522,7 +521,7 @@
    },
    "response": {
     "body": {
-     "text": "Found. Redirecting to https://cdn-lfs-us-1.hf.co/repos/5b/aa/5baaba4762934ba840dae03388671791e07c56daeaa6bed90b83db163316a095/38c478caeb3792d7653758a854e6c5296402098c7fe5a7c19ae75c9a75bcbfd0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27raw_remote.zip%3B+filename%3D%22raw_remote.zip%22%3B&response-content-type=application%2Fzip&Expires=1793088837&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5MzA4ODgzN319LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy11cy0xLmhmLmNvL3JlcG9zLzViL2FhLzViYWFiYTQ3NjI5MzRiYTg0MGRhZTAzMzg4NjcxNzkxZTA3YzU2ZGFlYWE2YmVkOTBiODNkYjE2MzMxNmEwOTUvMzhjNDc4Y2FlYjM3OTJkNzY1Mzc1OGE4NTRlNmM1Mjk2NDAyMDk4YzdmZTVhN2MxOWFlNzVjOWE3NWJjYmZkMD9yZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPSomcmVzcG9uc2UtY29udGVudC10eXBlPSoifV19&Signature=M0-KtztsqTOUwBKz-3mLh3FIgFb3QXlSn-zSA0SA5yG7SNlCSbdJaxRcOqKsKd%7E89db0K%7EcDQk14fNy9rYfCkKNkPBVv2zE1vedRap3AH2o75C0-TJkYJcQMQt34i8vfNx4c%7EwVNyMaoINaNCp5qqYKrFwfS4OwWlN4Tj331%7E5kvQnhEUIYNZq2D1AKgtuRw5sFknEQSvM5KJfqOmoqZQ%7Eb40kIet-jWTg2Rzi5PAeT49nQT1KzoR%7EEFx%7ETDMkREJQn9g3jdqp1n7zGWZZCJGfwsqminAgH-JDEoGXQ54YfCaDDFxiqW0XiYUy8osQVH3%7EGfebJFf%7EBD3DOCrzKPSA__&Key-Pair-Id=K1HG1QXK3AL3BR"
+     "text": "Found. Redirecting to https://cdn-lfs-us-1.hf.co/repos/5b/aa/5baaba4762934ba840dae03388671791e07c56daeaa6bed90b83db163316a095/38c478caeb3792d7653758a854e6c5296402098c7fe5a7c19ae75c9a75bcbfd0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27raw_remote.zip%3B+filename%3D%22raw_remote.zip%22%3B&response-content-type=application%2Fzip&Expires=1793088837&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
     },
     "headers": {
      "Accept-Ranges": [
@@ -547,13 +546,13 @@
       "keep-alive"
      ],
      "Content-Length": [
-      "1188"
+      "420"
      ],
      "Content-Type": [
       "text/plain; charset=utf-8"
      ],
      "Location": [
-      "https://cdn-lfs-us-1.hf.co/repos/5b/aa/5baaba4762934ba840dae03388671791e07c56daeaa6bed90b83db163316a095/38c478caeb3792d7653758a854e6c5296402098c7fe5a7c19ae75c9a75bcbfd0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27raw_remote.zip%3B+filename%3D%22raw_remote.zip%22%3B&response-content-type=application%2Fzip&Expires=1793088837&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5MzA4ODgzN319LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy11cy0xLmhmLmNvL3JlcG9zLzViL2FhLzViYWFiYTQ3NjI5MzRiYTg0MGRhZTAzMzg4NjcxNzkxZTA3YzU2ZGFlYWE2YmVkOTBiODNkYjE2MzMxNmEwOTUvMzhjNDc4Y2FlYjM3OTJkNzY1Mzc1OGE4NTRlNmM1Mjk2NDAyMDk4YzdmZTVhN2MxOWFlNzVjOWE3NWJjYmZkMD9yZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPSomcmVzcG9uc2UtY29udGVudC10eXBlPSoifV19&Signature=M0-KtztsqTOUwBKz-3mLh3FIgFb3QXlSn-zSA0SA5yG7SNlCSbdJaxRcOqKsKd%7E89db0K%7EcDQk14fNy9rYfCkKNkPBVv2zE1vedRap3AH2o75C0-TJkYJcQMQt34i8vfNx4c%7EwVNyMaoINaNCp5qqYKrFwfS4OwWlN4Tj331%7E5kvQnhEUIYNZq2D1AKgtuRw5sFknEQSvM5KJfqOmoqZQ%7Eb40kIet-jWTg2Rzi5PAeT49nQT1KzoR%7EEFx%7ETDMkREJQn9g3jdqp1n7zGWZZCJGfwsqminAgH-JDEoGXQ54YfCaDDFxiqW0XiYUy8osQVH3%7EGfebJFf%7EBD3DOCrzKPSA__&Key-Pair-Id=K1HG1QXK3AL3BR"
+      "https://cdn-lfs-us-1.hf.co/repos/5b/aa/5baaba4762934ba840dae03388671791e07c56daeaa6bed90b83db163316a095/38c478caeb3792d7653758a854e6c5296402098c7fe5a7c19ae75c9a75bcbfd0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27raw_remote.zip%3B+filename%3D%22raw_remote.zip%22%3B&response-content-type=application%2Fzip&Expires=1793088837&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
      ],
      "RateLimit": [
       "\"resolvers\";r=2999;t=291"
@@ -610,7 +609,7 @@
      ]
     },
     "method": "GET",
-    "uri": "https://cdn-lfs-us-1.hf.co/repos/5b/aa/5baaba4762934ba840dae03388671791e07c56daeaa6bed90b83db163316a095/38c478caeb3792d7653758a854e6c5296402098c7fe5a7c19ae75c9a75bcbfd0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27raw_remote.zip%3B+filename%3D%22raw_remote.zip%22%3B&response-content-type=application%2Fzip&Expires=1793088837&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5MzA4ODgzN319LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2RuLWxmcy11cy0xLmhmLmNvL3JlcG9zLzViL2FhLzViYWFiYTQ3NjI5MzRiYTg0MGRhZTAzMzg4NjcxNzkxZTA3YzU2ZGFlYWE2YmVkOTBiODNkYjE2MzMxNmEwOTUvMzhjNDc4Y2FlYjM3OTJkNzY1Mzc1OGE4NTRlNmM1Mjk2NDAyMDk4YzdmZTVhN2MxOWFlNzVjOWE3NWJjYmZkMD9yZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPSomcmVzcG9uc2UtY29udGVudC10eXBlPSoifV19&Signature=M0-KtztsqTOUwBKz-3mLh3FIgFb3QXlSn-zSA0SA5yG7SNlCSbdJaxRcOqKsKd~89db0K~cDQk14fNy9rYfCkKNkPBVv2zE1vedRap3AH2o75C0-TJkYJcQMQt34i8vfNx4c~wVNyMaoINaNCp5qqYKrFwfS4OwWlN4Tj331~5kvQnhEUIYNZq2D1AKgtuRw5sFknEQSvM5KJfqOmoqZQ~b40kIet-jWTg2Rzi5PAeT49nQT1KzoR~EFx~TDMkREJQn9g3jdqp1n7zGWZZCJGfwsqminAgH-JDEoGXQ54YfCaDDFxiqW0XiYUy8osQVH3~GfebJFf~BD3DOCrzKPSA__&Key-Pair-Id=K1HG1QXK3AL3BR"
+    "uri": "https://cdn-lfs-us-1.hf.co/repos/5b/aa/5baaba4762934ba840dae03388671791e07c56daeaa6bed90b83db163316a095/38c478caeb3792d7653758a854e6c5296402098c7fe5a7c19ae75c9a75bcbfd0?response-content-disposition=inline%3B+filename*%3DUTF-8%27%27raw_remote.zip%3B+filename%3D%22raw_remote.zip%22%3B&response-content-type=application%2Fzip&Expires=1793088837&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED"
    },
    "response": {
     "body": {

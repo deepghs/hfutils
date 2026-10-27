@@ -33,7 +33,7 @@ from typing import Callable, Any, Optional, Iterator
 
 import vcr
 
-from .scrub import FILTERED_REQUEST_HEADERS, match_query, match_path, scrub_response
+from .scrub import FILTERED_REQUEST_HEADERS, match_query, match_path, scrub_request, scrub_response
 from . import proxy
 from .replay import enable_safe_repeats, reset_http_sessions
 from .serializer import BlobJsonSerializer
@@ -121,6 +121,7 @@ class HfVcr:
             cassette_library_dir=cassette_dir,
             match_on=('method', 'scheme', 'host', 'port', 'hfpath', 'hfquery'),
             filter_headers=FILTERED_REQUEST_HEADERS,
+            before_record_request=scrub_request,
             before_record_response=scrub_response,
             decode_compressed_response=True,
         )

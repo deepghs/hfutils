@@ -14,6 +14,20 @@ except ImportError:  # pragma: no cover
     rarfile = None
 
 
+def _rar_tool_available():
+    if rarfile is None:  # pragma: no cover
+        return False
+    try:
+        rarfile.tool_setup()
+    except rarfile.RarCannotExec:
+        return False
+    return True
+
+
+# Homebrew disabled the `rar` cask on 2026-09-01 (it fails the macOS Gatekeeper check), so a macOS runner has no unrar tool.
+needs_rar_tool = pytest.mark.skipif(not _rar_tool_available(), reason='no unrar / unar / bsdtar / 7z tool that rarfile can run')
+
+
 @pytest.fixture()
 def raw_rar():
     return get_testfile('raw.rar')
@@ -76,6 +90,7 @@ class TestArchiveRar:
                 archive_unpack(raw_password_rar, '.')
 
     @skipUnless(rarfile, 'rarfile module required.')
+    @needs_rar_tool
     def test_archive_unpack_with_password(self, raw_password_rar, check_unpack_dir):
         with isolated_directory():
             with disable_output():

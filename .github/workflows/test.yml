@@ -89,7 +89,7 @@ jobs:
         run: |
           brew install tree cloc wget curl make zip
           brew install sevenzip
-          brew install --cask rar
+          brew install --cask rar || echo "the rar cask is disabled in Homebrew (2026-09-01): the rar tests that need a tool are skipped"
       - name: Set up python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:

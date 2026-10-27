@@ -11,6 +11,8 @@ in optional parameters (``expand``), but the server answers the same.
 import re
 from urllib.parse import urlparse, parse_qsl, unquote
 
+from . import redact
+
 #: Query parameters that only change how much the server answers, never which resource it is.
 IGNORED_QUERY_PARAMS = frozenset({'expand'})
 
@@ -20,17 +22,9 @@ VOLATILE_QUERY_PARAMS = frozenset({'xip', 'user_id', 'expires', 'signature', 'ke
                                    'response-content-disposition', 'response-content-type'})
 VOLATILE_QUERY_PREFIXES = ('x-amz-', 'x-xet-')
 
-#: Request headers never written to a cassette.
-FILTERED_REQUEST_HEADERS = ('authorization', 'cookie', 'user-agent', 'x-hf-user-agent', 'x-amz-security-token')
-
-#: Response headers never written to a cassette.
-FILTERED_RESPONSE_HEADERS = ('set-cookie', 'x-request-id', 'x-amz-cf-id', 'x-amz-request-id', 'x-amz-id-2',
-                             'x-amz-server-side-encryption-aws-kms-key-id', 'cf-ray', 'via', 'date', 'x-cache',
-                             'x-amz-cf-pop', 'age')
-
-_EMAIL_PATTERN = re.compile(rb'("email"\s*:\s*")[^"]*(")')
-_HF_TOKEN_PATTERN = re.compile(rb'hf_[A-Za-z0-9]{30,}')
-
+#: Request / response headers never written to a cassette (one list for VCR cassettes and mitmproxy flows).
+FILTERED_REQUEST_HEADERS = redact.REQUEST_HEADERS
+FILTERED_RESPONSE_HEADERS = redact.RESPONSE_HEADERS
 
 #: ``huggingface_hub`` 1.x downloads a file of a pinned commit from ``/api/resolve-cache/<type>s/<repo>/<sha>/<file>``,
 #: 2.x reaches the very same endpoint through ``/<type>s/<repo>/resolve/<sha>/<file>``.
@@ -85,19 +79,27 @@ def match_query(r1, r2):
     assert q1 == q2, f'query differs: {q1!r} != {q2!r}'
 
 
+def scrub_request(request):
+    """VCR.py ``before_record_request`` hook, also applied to the live request that is looked up while replaying."""
+    request.uri = redact.redact_str(request.uri)
+    return request
+
+
 def scrub_response(response: dict) -> dict:
-    """VCR.py ``before_record_response`` hook."""
+    """VCR.py ``before_record_response`` hook: credentials, signatures, cookies and e-mail addresses never reach a cassette."""
     headers = response.get('headers') or {}
     for name in list(headers):
         if name.lower() in FILTERED_RESPONSE_HEADERS:
             del headers[name]
+        else:
+            headers[name] = redact.header_values(name, headers[name])
     body = response.get('body') or {}
     data = body.get('string')
-    if isinstance(data, bytes) and len(data) < 1 << 20 and (b'"email"' in data or b'hf_' in data):
-        data = _EMAIL_PATTERN.sub(rb'\1redacted@example.invalid\2', data)
-        data = _HF_TOKEN_PATTERN.sub(b'hf_REDACTED', data)
-        body['string'] = data
-        for name in list(headers):
-            if name.lower() == 'content-length':
-                headers[name] = [str(len(data))]
+    if isinstance(data, bytes) and len(data) < 1 << 22:
+        new = redact.redact_bytes(data)
+        if new != data:
+            body['string'] = new
+            for name in list(headers):
+                if name.lower() == 'content-length':
+                    headers[name] = [str(len(new))]
     return response

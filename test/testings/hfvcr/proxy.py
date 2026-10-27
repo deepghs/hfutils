@@ -34,6 +34,7 @@ _TRUST_VARS = ('GIT_SSL_CAINFO', 'SSL_CERT_FILE', 'REQUESTS_CA_BUNDLE', 'CURL_CA
 _OTHER_VARS = ('NO_PROXY', 'no_proxy', 'GIT_CONFIG_GLOBAL', 'GIT_CONFIG_SYSTEM', 'GIT_TERMINAL_PROMPT')
 
 _SCRUB_ADDON = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'mitm_scrub.py')
+_BLOCK_ADDON = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'mitm_block.py')
 
 
 def find_mitmdump() -> Optional[str]:
@@ -112,6 +113,36 @@ class ProxyHome:
 
 
 @contextmanager
+def _python_clients_ignore_the_proxy() -> Iterator[None]:
+    """
+    The block routes subprocesses and native extensions through the proxy, not the Python clients of the test process: VCR
+    answers those. ``huggingface_hub`` 1.x / 2.x (httpx) are patched below the point where a proxy matters; 0.x (``requests``)
+    would show VCR the address of the proxy instead of huggingface.co, so its session ignores the environment inside the block.
+    """
+    try:
+        import huggingface_hub
+        from huggingface_hub import configure_http_backend
+        from huggingface_hub.utils._http import _default_backend_factory
+    except ImportError:
+        yield
+        return
+    if hasattr(huggingface_hub, 'set_client_factory'):  # 1.x and 2.x have no configure_http_backend to speak of
+        yield
+        return
+
+    def factory():
+        session = _default_backend_factory()
+        session.trust_env = False
+        return session
+
+    configure_http_backend(factory)
+    try:
+        yield
+    finally:
+        configure_http_backend()
+
+
+@contextmanager
 def _environment(home: ProxyHome, port: int) -> Iterator[dict]:
     """The proxy and the CA for every process started inside the block, git configuration isolated; restored after."""
     names = _PROXY_VARS + _TRUST_VARS + _OTHER_VARS
@@ -126,7 +157,8 @@ def _environment(home: ProxyHome, port: int) -> Iterator[dict]:
         os.environ['GIT_CONFIG_SYSTEM'] = os.devnull
         os.environ['GIT_TERMINAL_PROMPT'] = '0'
         home.ensure_lfs_filters(dict(os.environ))
-        yield dict(os.environ)
+        with _python_clients_ignore_the_proxy():
+            yield dict(os.environ)
     finally:
         for k, v in saved.items():
             if v is None:
@@ -172,15 +204,12 @@ def scrub(home: ProxyHome, raw: str, scrubbed: str) -> None:
 @contextmanager
 def replaying(home: ProxyHome, flows: str) -> Iterator[None]:
     """Everything the processes of the block say over HTTPS is answered from ``flows``, nothing leaves the machine."""
-    source = flows
-    if not os.path.exists(source):  # nothing recorded: an empty file, every request is killed
-        source = os.path.join(home.path, 'empty.mitm')
-        open(source, 'wb').close()
-    process, port, log = _spawn(home, ['--server-replay', source, '--set', 'connection_strategy=lazy',
-                                       '--set', 'server_replay_extra=kill', '--set', 'server_replay_reuse=false',
-                                       '--set', 'server_replay_use_headers=Range',
-                                       '--set', 'server_replay_ignore_content=true'],
-                                os.path.join(home.path, 'replay.log'))
+    if os.path.exists(flows) and os.path.getsize(flows) > 0:
+        args = ['--server-replay', flows, '--set', 'server_replay_extra=kill', '--set', 'server_replay_reuse=false',
+                '--set', 'server_replay_use_headers=Range', '--set', 'server_replay_ignore_content=true']
+    else:  # nothing recorded: refuse everything (mitmproxy would forward to the real server when it has no flow at all)
+        args = ['-s', _BLOCK_ADDON]
+    process, port, log = _spawn(home, args + ['--set', 'connection_strategy=lazy'], os.path.join(home.path, 'replay.log'))
     try:
         with _environment(home, port):
             yield

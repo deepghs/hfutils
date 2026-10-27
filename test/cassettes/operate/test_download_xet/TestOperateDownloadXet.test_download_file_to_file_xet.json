@@ -67,7 +67,7 @@
       "<https://huggingface.co/api/datasets/deepghs/game_character_skins/xet-read-token/153e51ccfbe01f8d775e99c1ae2760567f7f8f9c>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334>; rel=\"xet-reconstruction-info\""
      ],
      "location": [
-      "https://us.aws.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?X-Xet-Cas-Uid=6391f19aba933dc6fd14c618&user_id=6391f19aba933dc6fd14c618&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&response-content-type=image%2Fpng&xip=UquVZeoQze0&Expires=1793102959&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5hd3MuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjQzOTcyZmQ1ODEzZjBmZGQ4NTJlNDEzLzU4OGEwYTEwMzRlNzU5ODFhOGFmZDEwOTM3NjJmMWM1NWMyNTBiNGVlYjRiMTY3NWI5ZWZhOGZlNTljZmYzMzRcXD9YLVhldC1DYXMtVWlkPTYzOTFmMTlhYmE5MzNkYzZmZDE0YzYxOCZ1c2VyX2lkPTYzOTFmMTlhYmE5MzNkYzZmZDE0YzYxOCZyZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPWlubGluZSUzQitmaWxlbmFtZSUyQSUzRFVURi04JTI3JTI3JTI1MjVFNSUyNTI1QjglMjUyNUI4JTI1MjVFNSUyNTI1QTQlMjUyNThGJTI1MjVFNyUyNTI1OUElMjUyNTg0JTI1MjVFNiUyNTI1QjMlMjUyNUIzJTI1MjVFOCUyNTI1QTMlMjUyNTg1VmVyXzAyLnBuZyUzQitmaWxlbmFtZSUzRCUyMiUyNUU1JTI1QjglMjVCOCUyNUU1JTI1QTQlMjU4RiUyNUU3JTI1OUElMjU4NCUyNUU2JTI1QjMlMjVCMyUyNUU4JTI1QTMlMjU4NVZlcl8wMi5wbmclMjIlM0ImcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nJnhpcD1VcXVWWmVvUXplMCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiRXBvY2hUaW1lIjoxNzkzMTAyOTU5fX19XX0_&Signature=MEUCICn2mCf3ufquLzs-QKzmyL-YKComFw1B7X8b19Ub7uQqAiEAvo-qeJ4jTCes1sODbYp8DS2M8%7EAACYMu2hhRFy6VkUk_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+      "https://us.aws.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?X-Xet-Cas-Uid=6391f19aba933dc6fd14c618&user_id=REDACTED&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&response-content-type=image%2Fpng&xip=REDACTED&Expires=1793102959&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
      ],
      "ratelimit": [
       "\"resolvers\";r=4999;t=95"
@@ -139,7 +139,7 @@
    },
    "response": {
     "body": {
-     "text": "{\"casUrl\":\"https://cas-server.xethub.hf.co\",\"exp\":1793100260,\"accessToken\":\"eyJhbGciOiJIUzI1NiJ9.eyJyZXBvSWQiOiI2NDM5NzJmZDU4MTNmMGZkZDg1MmU0MTMiLCJ1c2VySWQiOiI2MzkxZjE5YWJhOTMzZGM2ZmQxNGM2MTgiLCJhY2Nlc3MiOiJSRUFEIiwiZm9yY2VTM0xpbmsiOmZhbHNlLCJoZkNkblRpZXIiOiJhdXRoZW50aWNhdGVkIiwicmVwb1N0b3JhZ2VUeXBlIjoiZ2l0IiwiaWF0IjoxNzkzMDk5MzYwLCJqdGkiOiIwNDdiMzExYS1kMjM3LTQ3NTUtYTJkNC1lYmVkMTM0OWMwYjciLCJleHAiOjE3OTMxMDAyNjAsImlzcyI6Imh0dHBzOi8vaHVnZ2luZ2ZhY2UuY28ifQ.NCPi4uY4IJEOOAX5RFf1dlgdPeCn9DtbnWTuTtmfDG4\"}"
+     "text": "{\"casUrl\":\"https://cas-server.xethub.hf.co\",\"exp\":1793100260,\"accessToken\":\"REDACTED\"}"
     },
     "headers": {
      "access-control-allow-origin": [
@@ -158,7 +158,7 @@
       "keep-alive"
      ],
      "content-length": [
-      "505"
+      "86"
      ],
      "content-type": [
       "application/json; charset=utf-8"
@@ -188,13 +188,13 @@
       "huggingface-moon"
      ],
      "x-xet-access-token": [
-      "eyJhbGciOiJIUzI1NiJ9.eyJyZXBvSWQiOiI2NDM5NzJmZDU4MTNmMGZkZDg1MmU0MTMiLCJ1c2VySWQiOiI2MzkxZjE5YWJhOTMzZGM2ZmQxNGM2MTgiLCJhY2Nlc3MiOiJSRUFEIiwiZm9yY2VTM0xpbmsiOmZhbHNlLCJoZkNkblRpZXIiOiJhdXRoZW50aWNhdGVkIiwicmVwb1N0b3JhZ2VUeXBlIjoiZ2l0IiwiaWF0IjoxNzkzMDk5MzYwLCJqdGkiOiIwNDdiMzExYS1kMjM3LTQ3NTUtYTJkNC1lYmVkMTM0OWMwYjciLCJleHAiOjE3OTMxMDAyNjAsImlzcyI6Imh0dHBzOi8vaHVnZ2luZ2ZhY2UuY28ifQ.NCPi4uY4IJEOOAX5RFf1dlgdPeCn9DtbnWTuTtmfDG4"
+      "REDACTED"
      ],
      "x-xet-cas-url": [
       "https://cas-server.xethub.hf.co"
      ],
      "x-xet-token-expiration": [
-      "1793100260"
+      "4102444800"
      ]
     },
     "status": {
