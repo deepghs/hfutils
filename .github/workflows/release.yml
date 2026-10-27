@@ -186,9 +186,10 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          dist/hfutils download -r deepghs/konachan_index -d . -o konachan_index
-          ls -al konachan_index
-          ls -al konachan_index | grep konachan.parquet
+          # a public repository: the private deepghs/konachan_index answers 403 "Private repository storage limit reached"
+          dist/hfutils download -r deepghs/public_unittest_repo -d . -o public_repo
+          ls -al public_repo
+          ls -al public_repo | grep animes.parquet
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
