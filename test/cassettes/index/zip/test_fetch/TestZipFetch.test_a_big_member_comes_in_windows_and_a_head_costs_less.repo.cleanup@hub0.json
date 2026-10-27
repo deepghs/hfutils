@@ -3,7 +3,7 @@
   {
    "request": {
     "body": {
-     "text": "{\"name\": \"test_repo_20261028024743748041_c1b53c4edac6d6a8273d177020cd38b417ecdec3\", \"organization\": \"narugo1992\", \"type\": \"dataset\"}"
+     "text": "{\"name\": \"test_repo_20261028031642904402_dbbe573e28df8415fe302ff11f855046d9c6435d\", \"organization\": \"narugo1992\", \"type\": \"dataset\"}"
     },
     "headers": {
      "Accept": [
@@ -22,7 +22,7 @@
       "application/json"
      ],
      "X-Amzn-Trace-Id": [
-      "1d13a142-b5ae-42d4-9c28-cf851ce17686"
+      "6bdc263a-075c-4363-803a-26e3eefe993c"
      ]
     },
     "method": "DELETE",
@@ -58,7 +58,7 @@
       "W/\"2-nOO9QiTIwXgNtWtBJezz8kv3SLc\""
      ],
      "RateLimit": [
-      "\"api\";r=898;t=124"
+      "\"api\";r=937;t=187"
      ],
      "RateLimit-Policy": [
       "\"fixed window\";\"api\";q=1000;w=300"

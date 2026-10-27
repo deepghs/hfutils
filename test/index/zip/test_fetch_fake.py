@@ -1,6 +1,7 @@
 """The logic of the remote zip functions (what is asked for, what is cached, whose token is used) without any network: the Hub is
 replaced by a fake that serves the fixtures of ``test/testfile/zipfiles`` and counts the requests. What the real Hub does with those
 requests is the business of ``test_fetch.py`` (recorded)."""
+import os
 from types import SimpleNamespace
 
 import pytest
@@ -150,3 +151,17 @@ class TestZipFetchFake:
         hf_zip_get_index('o/r', 'a/methods-bzip2.zip')
         hf_zip_get_index('o/r', 'a/methods-bzip2.zip')
         assert len(hub.fetches) == 3
+
+    def test_a_limit_below_the_window_does_not_fetch_a_whole_window(self, hub, tmp_path):
+        import zipfile
+        path = str(tmp_path / 'big.zip')
+        with zipfile.ZipFile(path, 'w', zipfile.ZIP_STORED) as zf:
+            zf.writestr(zipfile.ZipInfo('big.bin', date_time=(2024, 1, 2, 3, 4, 6)), os.urandom(12 << 20))
+        hub.files['a/big.zip'] = path
+        hf_zip_get_index('o/r', 'a/big.zip')
+        hub.fetches.clear()
+        assert len(hf_zip_file_read('o/r', 'a/big.zip', 'big.bin', limit=1 << 20)) == 1 << 20
+        assert sum(length for _, _, length, _ in hub.fetches) < 2 << 20  # not the 8 MiB window of a remote source
+        hub.fetches.clear()
+        assert len(hf_zip_file_read('o/r', 'a/big.zip', 'big.bin')) == 12 << 20
+        assert max(length for _, _, length, _ in hub.fetches) == 8 << 20  # a whole read still uses whole windows

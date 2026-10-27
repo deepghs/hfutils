@@ -3,7 +3,7 @@
   {
    "request": {
     "body": {
-     "text": "{\"name\":\"test_repo_20261028011737258647_feff0170b445201a318ed8ba8d7db0f16dbb0967\",\"organization\":\"narugo1992\",\"type\":\"dataset\"}"
+     "text": "{\"name\":\"test_repo_20261028031613881546_9f235b4e02c9958c3313f2e232a826188f8ad968\",\"organization\":\"narugo1992\",\"type\":\"dataset\"}"
     },
     "headers": {
      "accept": [
@@ -25,7 +25,7 @@
       "huggingface.co"
      ],
      "x-amzn-trace-id": [
-      "728b7b36-85c3-4568-bd9e-e13bf0a26f85"
+      "13f5fe1e-696a-4dac-b6c1-b12ca359eafd"
      ]
     },
     "method": "DELETE",
@@ -64,7 +64,7 @@
       "W/\"2-nOO9QiTIwXgNtWtBJezz8kv3SLc\""
      ],
      "ratelimit": [
-      "\"api\";r=837;t=175"
+      "\"api\";r=969;t=258"
      ],
      "ratelimit-policy": [
       "\"fixed window\";\"api\";q=1000;w=300"

@@ -293,7 +293,9 @@ class ZipArchive:
             first += e.csize
         elif limit is not None:
             first += 64 << 10
-        head = src.fetch_range(e.offset, min(first, src.window))
+        # a read that stops after ``limit`` bytes asks for pieces of about that size, not for a whole window of the source
+        window = src.window if limit is None else min(src.window, max(limit, 64 << 10))
+        head = src.fetch_range(e.offset, min(first, window))
         if len(head) < 30 or head[:4] != b'PK\x03\x04':
             raise ZipFormatError(f'{e.name}: no local header at offset {e.offset}: the archive is damaged, or a volume is wrong.')
         nlen, elen = struct.unpack_from('<HH', head, 26)
@@ -306,7 +308,7 @@ class ZipArchive:
         if pos < end and len(have) < min(e.csize, len(head) - start):
             raise ZipFormatError(f'{e.name}: inconsistent local header.')  # pragma: no cover
         while pos < end:
-            chunk = src.fetch_range(pos, min(src.window, end - pos))
+            chunk = src.fetch_range(pos, min(window, end - pos))
             if not chunk:
                 raise ZipFormatError(f'{e.name}: the archive ends in the middle of the member (truncated).')
             yield chunk
