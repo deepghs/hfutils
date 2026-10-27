@@ -1,0 +1,415 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "identity"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "07ec978c-e351-4d69-b1d8-9167412e4b3f"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "HEAD",
+    "uri": "https://huggingface.co/datasets/deepghs/test_nested_dataset/resolve/main/images/20240810/20240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar"
+   },
+   "response": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "1110"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "link": [
+      "<https://huggingface.co/api/datasets/deepghs/test_nested_dataset/xet-read-token/435aa3917fcab24c9b1efc763bb59032fa80e7e6>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df>; rel=\"xet-reconstruction-info\""
+     ],
+     "location": [
+      "https://us.gcp.cdn.hf.co/xet-bridge-us/66c377e1eb4f43ee8a7e6bea/474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df?xip=REDACTED&X-Xet-Cas-Uid=public&user_id=REDACTED&response-content-type=application%2Fx-tar&response-content-disposition=inline%3B+filename*%3DUTF-8%27%2720240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar%3B+filename%3D%2220240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar%22%3B&Expires=1793107141&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=2985;t=255"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=3000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-hf-warning": [
+      "unauthenticated; Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads."
+     ],
+     "x-hub-cache": [
+      "MISS"
+     ],
+     "x-linked-etag": [
+      "\"f69ef72c29def2f0f0144022903786ec9c4d59016e03a7949553327c90688e23\""
+     ],
+     "x-linked-size": [
+      "378880"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "435aa3917fcab24c9b1efc763bb59032fa80e7e6"
+     ],
+     "x-xet-hash": [
+      "474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "90a0e4b5-d76d-4c45-b43a-7fa103de47a7"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/deepghs/test_nested_dataset/resolve/main/images/20240810/20240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://us.gcp.cdn.hf.co/xet-bridge-us/66c377e1eb4f43ee8a7e6bea/474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df?user_id=REDACTED&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%2720240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar%3B+filename%3D%2220240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar%22%3B&response-content-type=application%2Fx-tar&xip=REDACTED&Expires=1793107141&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "573"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "link": [
+      "<https://huggingface.co/api/datasets/deepghs/test_nested_dataset/xet-read-token/435aa3917fcab24c9b1efc763bb59032fa80e7e6>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df>; rel=\"xet-reconstruction-info\""
+     ],
+     "location": [
+      "https://us.gcp.cdn.hf.co/xet-bridge-us/66c377e1eb4f43ee8a7e6bea/474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df?user_id=REDACTED&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%2720240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar%3B+filename%3D%2220240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar%22%3B&response-content-type=application%2Fx-tar&xip=REDACTED&Expires=1793107141&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=2984;t=255"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=3000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-hf-warning": [
+      "unauthenticated; Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads."
+     ],
+     "x-linked-etag": [
+      "\"f69ef72c29def2f0f0144022903786ec9c4d59016e03a7949553327c90688e23\""
+     ],
+     "x-linked-size": [
+      "378880"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "435aa3917fcab24c9b1efc763bb59032fa80e7e6"
+     ],
+     "x-xet-hash": [
+      "474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "us.gcp.cdn.hf.co"
+     ],
+     "x-amzn-trace-id": [
+      "90a0e4b5-d76d-4c45-b43a-7fa103de47a7"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://us.gcp.cdn.hf.co/xet-bridge-us/66c377e1eb4f43ee8a7e6bea/474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df?user_id=REDACTED&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%2720240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar%3B+filename%3D%2220240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar%22%3B&response-content-type=application%2Fx-tar&xip=REDACTED&Expires=1793107141&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+   },
+   "response": {
+    "body": {
+     "blob": "f69ef72c29def2f0f0144022903786ec9c4d59016e03a7949553327c90688e23",
+     "size": 378880
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-headers": [
+      "Content-Range, Content-Type, Content-Disposition, ETag"
+     ],
+     "access-control-allow-origin": [
+      "*"
+     ],
+     "access-control-expose-headers": [
+      "*"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''20240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar; filename=\"20240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar\";"
+     ],
+     "content-length": [
+      "378880"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/x-tar"
+     ],
+     "etag": [
+      "\"474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df\""
+     ],
+     "vary": [
+      "origin, access-control-request-method, access-control-request-headers"
+     ],
+     "x-hf-cdn-pop": [
+      "gcp-us-east1"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "identity"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "ee2f10cd-187c-48da-bab6-a006264b114d"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "HEAD",
+    "uri": "https://huggingface.co/datasets/deepghs/test_nested_dataset/resolve/main/images/20240810/20240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar"
+   },
+   "response": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "1108"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "link": [
+      "<https://huggingface.co/api/datasets/deepghs/test_nested_dataset/xet-read-token/435aa3917fcab24c9b1efc763bb59032fa80e7e6>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df>; rel=\"xet-reconstruction-info\""
+     ],
+     "location": [
+      "https://us.gcp.cdn.hf.co/xet-bridge-us/66c377e1eb4f43ee8a7e6bea/474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df?xip=REDACTED&response-content-type=application%2Fx-tar&X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%2720240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar%3B+filename%3D%2220240810025642281532_4c13dc63689d93e25a5de44bc9add04ea7d56162__narugo.tar%22%3B&user_id=REDACTED&Expires=1793107142&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=2983;t=254"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=3000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-hf-warning": [
+      "unauthenticated; Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads."
+     ],
+     "x-hub-cache": [
+      "MISS"
+     ],
+     "x-linked-etag": [
+      "\"f69ef72c29def2f0f0144022903786ec9c4d59016e03a7949553327c90688e23\""
+     ],
+     "x-linked-size": [
+      "378880"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "435aa3917fcab24c9b1efc763bb59032fa80e7e6"
+     ],
+     "x-xet-hash": [
+      "474cbc8ee9443b6a916f034a2927fa1dc0be9120e89d6e2f0eba0a99654c87df"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

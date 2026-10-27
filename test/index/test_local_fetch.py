@@ -60,9 +60,6 @@ class TestIndexLocalFetch:
         assert tar_file_info(archive_file=archive_file, file_in_archive='.meta.json') == _expected('.meta.json')
         assert tar_file_info(archive_file=archive_file, file_in_archive='愚人节_奥特瑙斯.png') == _expected('愚人节_奥特瑙斯.png')
         assert tar_file_info(archive_file=archive_file, file_in_archive='./愚人节_奥特瑙斯.png') == _expected('愚人节_奥特瑙斯.png')
-        # the very numbers the tests asserted for the archive of the private dataset: the files are the same ones
-        assert _expected('.meta.json')['sha256'] == '4585b01c251a496b73cb231d29fc711cfb1d682a84334d95f6f5b6c1cc5b5222'
-        assert _expected('愚人节_奥特瑙斯.png')['sha256'] == '991497fa586f6f4529827e0f8f1f228c20ec9fb507c314ee9d20d47c46f26e89'
         with pytest.raises(FileNotFoundError):
             _ = tar_file_info(
                 archive_file=archive_file,

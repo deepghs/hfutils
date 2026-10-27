@@ -48,7 +48,8 @@ class TestEntryIlsPublic:
         rows = _rows(index)
         asc = _ils('-s', 'size')
         assert asc == [r['file'] for r in sorted(rows, key=lambda r: (r['size'], r['offset'], r['file']))]
-        assert asc[0] == '2946001.'  # the empty member comes first
+        # the empty member comes first (Windows drops the trailing dot of a name when it normalizes a path)
+        assert asc[0].rstrip('.') == '2946001'
         assert _ils('-s', 'size', '-o', 'desc') == \
                [r['file'] for r in sorted(rows, key=lambda r: (r['size'], r['offset'], r['file']), reverse=True)]
 
