@@ -34,6 +34,7 @@ from typing import Callable, Any, Optional, Iterator
 import vcr
 
 from .scrub import FILTERED_REQUEST_HEADERS, match_query, match_path, scrub_response
+from . import proxy
 from .replay import enable_safe_repeats, reset_http_sessions
 from .serializer import BlobJsonSerializer
 
@@ -112,6 +113,7 @@ class HfVcr:
         #: Record: write ``<name>@<record_variant>.json`` instead of ``<name>.json``.
         self.record_variant = record_variant
         self.serializer = BlobJsonSerializer(os.path.join(cassette_dir, '_blobs'))
+        self._proxy_home: Optional[proxy.ProxyHome] = None
         #: Files written while recording, in order; a failed test discards its share (see :meth:`discard`).
         self.recorded = []
         self._vcr = vcr.VCR(
@@ -208,6 +210,41 @@ class HfVcr:
             return
         with self._vcr.use_cassette(os.path.join(self.cassette_dir, '_guard_never_saved.json'), record_mode='none'):
             yield
+
+    @contextmanager
+    def git_proxy(self, key: str) -> Iterator[None]:
+        """
+        Record or replay what the *subprocesses and native extensions* of the block say over HTTPS (``git``, ``git-lfs``,
+        ``hf_xet``) through a proxy, see :mod:`.proxy`. The flows live in ``<key>.mitm``; modes work as for segments
+        (``none`` replays, ``new`` records what is missing, ``rewrite`` records again, ``live`` does nothing).
+        """
+        if self.live:
+            yield
+            return
+        path = os.path.splitext(self.path_of(key))[0] + '.mitm'
+        if self.mode == 'rewrite' and os.path.exists(path):
+            os.remove(path)
+        record = self.mode in ('new', 'rewrite') and not os.path.exists(path)
+        if self._proxy_home is None:
+            self._proxy_home = proxy.ProxyHome()
+        reset_http_sessions()
+        if record:
+            self.recorded.append(path)
+        try:
+            context = proxy.recording(self._proxy_home, path) if record else proxy.replaying(self._proxy_home, path)
+            with context:
+                yield
+        except BaseException:
+            if record and os.path.exists(path):
+                os.remove(path)
+            raise
+        finally:
+            reset_http_sessions()
+
+    def close(self):
+        if self._proxy_home is not None:
+            self._proxy_home.cleanup()
+            self._proxy_home = None
 
     def world(self, name: str):
         """A segment shared between tests (read-only reference data), see the module documentation."""

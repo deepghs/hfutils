@@ -16,9 +16,14 @@ _MODE_ENV = 'HFUTILS_VCR_MODE'
 
 import pytest  # noqa: E402
 
-# VCR.py logs every recorded request at INFO, which tends to write into capture streams that are already closed
-logging.getLogger('vcr').setLevel(logging.WARNING)
+# VCR.py (and httpx, the client of huggingface_hub 1.x) log every request at INFO. Threads of the code under test (parallel
+# downloads) may log after the capture stream of their test is closed: that is noise, and the 'Logging error' text must not
+# end up in the stderr that the CLI tests decode.
+for _name in ('vcr', 'httpx', 'httpx2', 'httpcore'):
+    logging.getLogger(_name).setLevel(logging.WARNING)
+logging.raiseExceptions = False
 
+from . import proxy  # noqa: E402
 from .session import HfVcr, HfVcrTest, MODES, safe_name  # noqa: E402
 
 
@@ -42,6 +47,8 @@ def pytest_configure(config):
                 'take effect and uploads/downloads would bypass the cassettes. Import test.testings.hfvcr.env '
                 'first in every conftest.py that imports huggingface_hub (or hfutils).')
     config.addinivalue_line('markers', 'hf_live: needs the real Hugging Face and is skipped unless --hf-record=live')
+    config.addinivalue_line('markers', 'hf_git: runs git / git-lfs / hf_xet, recorded and replayed through mitmproxy '
+                                       '(skipped where mitmdump, git-lfs or Linux is missing)')
     if config.getoption('hf_record') == 'none':
         # a token from the developer's shell must not change what a replay does
         os.environ['HF_TOKEN'] = REPLAY_TOKEN
@@ -98,8 +105,11 @@ def hf_vcr_session(request):
     cassette_dir = os.path.join(str(request.config.rootpath), 'test', 'cassettes')
     session = HfVcr(cassette_dir, mode=request.config.getoption('hf_record'),
                     variant=client_variant(), record_variant=request.config.getoption('hf_variant'))
-    with session.guard():
-        yield session
+    try:
+        with session.guard():
+            yield session
+    finally:
+        session.close()
 
 
 def _test_key(request) -> str:
@@ -130,9 +140,18 @@ def hf_vcr(request, hf_vcr_session):
     everything it recorded is discarded: a cassette with a half finished (or error) conversation must not survive.
     """
     handle = HfVcrTest(hf_vcr_session, _test_key(request))
+    needs_proxy = request.node.get_closest_marker('hf_git') is not None and not hf_vcr_session.live
+    if needs_proxy:
+        reason = proxy.unavailable_reason()
+        if reason:
+            pytest.skip(reason)
     mark = len(hf_vcr_session.recorded)
     with hf_vcr_session.segment(f'{handle.test_key}') as segment:
         handle.main = segment
-        yield handle
+        if needs_proxy:
+            with hf_vcr_session.git_proxy(f'{handle.test_key}.git'):
+                yield handle
+        else:
+            yield handle
     if getattr(request.node, '_hf_vcr_failed', False):
         hf_vcr_session.discard(mark)

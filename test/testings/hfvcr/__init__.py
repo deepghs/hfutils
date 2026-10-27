@@ -7,3 +7,4 @@ from . import env  # noqa: F401  (first, see its docstring)
 from .scrub import normalize_query, match_query, match_path, canonical_path
 from .serializer import BlobJsonSerializer
 from .session import HfVcr, HfVcrTest, Segment, MODES
+from . import proxy

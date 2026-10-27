@@ -96,13 +96,38 @@ def hf_repo_with_files(hf_repo, hf_client, hf_vcr):          # the group: repo -
   an upload gives two different answers). `repeats=True` lets one answer serve every repeat; use it only for read-only data.
 * `hf_vcr.world('name')` is a segment shared by many tests (`_worlds/`), repeats allowed.
 
-## Not covered by cassettes
+## git, git-lfs and Xet: recorded through a proxy
 
-* `git` itself (clone, the force push of `rollback`): VCR patches Python HTTP clients, not subprocesses. Such tests
-  carry `@pytest.mark.hf_live` and run only with `--hf-record=live` (the weekly `hf_live.yml`).
-* Anything that must observe Xet.
+VCR patches the Python HTTP clients of the test process. `git`, `git-lfs` (subprocesses) and `hf_xet` (a native extension)
+speak HTTPS on their own, but they all honour `HTTPS_PROXY` and a per-process CA bundle, so a test marked `@pytest.mark.hf_git`
+runs inside a [mitmproxy](https://mitmproxy.org) (`test/testings/hfvcr/proxy.py`):
+
+* flows are stored next to the cassettes, `<test>.git.mitm`, after `mitm_scrub.py` removed credentials, cookies and e-mail
+  addresses (git puts the token into the clone URL, so it is in the flows before that);
+* **replay is ordered** (one answer per recorded flow: `git push` asks the same URL first without credentials, 401, then with
+  them, 200), matches the `Range` header (`hf_xet` reads three ranges of one URL in parallel) but **not the request body** (the
+  objects of a `git-lfs` batch request come in a different order on every run), never connects to the real server and refuses a
+  request that was not recorded;
+* the Python side of the same test stays with the VCR cassettes, so a test can mix both (`test_rollback.py`: the repository and
+  its commits through VCR, `git clone` / `git push -f` through the proxy);
+* nothing leaves the machine while replaying, and the system trust store is never touched: the CA is only given to the processes
+  started inside the test.
+
+`mitmdump` is a separate program because mitmproxy needs a newer Python than the oldest this package supports: it is found
+through `$HFUTILS_MITMDUMP` or `PATH` (`uv tool install mitmproxy --python 3.12` is enough). These tests are **skipped, with the
+reason printed,** when `mitmdump` or `git-lfs` is missing, and on Windows and macOS: git there uses another TLS backend that may
+ignore `GIT_SSL_CAINFO`, which was not verified. CI runs them in three Linux cells. Behind a proxy of your own, set
+`HFUTILS_MITM_UPSTREAM=http://host:port` while recording; `HFUTILS_MITM_KEEP=1` keeps the proxy logs of a test session.
 
 ## Pending
 
 `PENDING.txt` lists tests whose cassettes could not be recorded; replay mode skips them **with the reason written in the file**,
 recording modes run them. Remove an entry when its cassette is committed.
+
+Today that is 55 tests of `test/index` (`test_fetch`, `test_local_fetch`, `test_validate`), `test/entry/test_ils.py`, `test/operate` and
+`test/entry` (download, warmup). They read tar archives and index files of the **private** datasets `narugo1992/test_cos5t_tars` and
+`narugo1992/test_ds_repo`. The account has reached its private storage limit, and the Hub answers every file download of a private
+repository of it with `403 Private repository storage limit reached` (checked 2026-10-27 with the account's own token; the listing APIs
+still work). Nothing can be recorded from there until storage is freed, the plan is upgraded or the data is moved to a public
+repository; the offsets and hashes that the tests assert belong to those exact files, so equivalent data was not made up.
+The code they exercise (mainly `entry/ils.py`, `index/local_fetch.py`, parts of `index/fetch.py`) is therefore not covered in CI.

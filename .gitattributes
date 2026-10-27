@@ -1,0 +1,4 @@
+# recorded traffic: never diff, never convert line endings
+test/cassettes/**/*.mitm binary
+test/cassettes/_blobs/** binary
+test/cassettes/**/*.json text eol=lf

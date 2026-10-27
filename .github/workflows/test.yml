@@ -13,17 +13,19 @@ jobs:
     # Replay only: every request is answered from test/cassettes, nothing talks to huggingface.co,
     # so there is no token and no rate limit to share between the cells.
     # `hub` is the exact huggingface_hub requirement under test (the floor of each client generation first).
+    # `git` cells also run the tests that need git, git-lfs and the native hf_xet client: they are recorded and replayed through
+    # mitmproxy, which is installed on its own because it needs a newer Python than some cells (Linux only, see test/cassettes/README.md).
     strategy:
       fail-fast: false
       matrix:
         include:
-          - { os: 'ubuntu-latest', python-version: '3.8', hub: '==0.20.3' }
+          - { os: 'ubuntu-latest', python-version: '3.8', hub: '==0.20.3', git: true }
           - { os: 'ubuntu-latest', python-version: '3.8', hub: '==0.31.0' }
           - { os: 'ubuntu-latest', python-version: '3.9', hub: '<1' }
-          - { os: 'ubuntu-latest', python-version: '3.9', hub: '>=1,<2' }
+          - { os: 'ubuntu-latest', python-version: '3.9', hub: '>=1,<2', git: true }
           - { os: 'ubuntu-latest', python-version: '3.10', hub: '>=2' }
           - { os: 'ubuntu-latest', python-version: '3.11', hub: '>=2' }
-          - { os: 'ubuntu-latest', python-version: '3.12', hub: '>=2' }
+          - { os: 'ubuntu-latest', python-version: '3.12', hub: '>=2', git: true }
           - { os: 'ubuntu-latest', python-version: '3.13', hub: '>=2' }
           - { os: 'ubuntu-latest', python-version: '3.14', hub: '>=2' }
           - { os: 'windows-latest', python-version: '3.8', hub: '==0.20.3' }
@@ -104,6 +106,14 @@ jobs:
           pip install -r requirements-rar.txt
           # the exact client generation of this cell, whatever the requirement files resolved
           pip install "huggingface_hub${{ matrix.hub }}"
+      - name: Install mitmproxy for the git and Xet tests
+        if: ${{ matrix.git }}
+        shell: bash
+        run: |
+          pip install uv
+          uv tool install mitmproxy --python 3.12
+          echo "HFUTILS_MITMDUMP=$(uv tool dir --bin)/mitmdump" >> $GITHUB_ENV
+          git lfs version
       - name: Test the basic environment
         shell: bash
         run: |
@@ -121,12 +131,12 @@ jobs:
         run: |
           make unittest IS_WIN=${{ env.IS_WIN }} IS_MAC=${{ env.IS_MAC }}
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
+          files: ./coverage.xml
           flags: unittests
-          name: codecov-umbrella
+          name: ${{ matrix.os }}-py${{ matrix.python-version }}-hub${{ matrix.hub }}
           fail_ci_if_error: false
 
   build_cli:
