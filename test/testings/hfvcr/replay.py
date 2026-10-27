@@ -9,11 +9,14 @@ recorded answer, which is the most recent state of the resource. Anything that c
 """
 import copy
 import json
+import threading
 
 from vcr.cassette import Cassette
 from vcr.errors import UnhandledHTTPRequestError
 
 SAFE_METHODS = frozenset({'GET', 'HEAD'})
+
+_PLAY_LOCK = threading.RLock()
 
 _original_contains = Cassette.__contains__
 _original_play_response = Cassette.play_response
@@ -64,6 +67,13 @@ def _contains(self, request):
 
 
 def _play_response(self, request):
+    # "is this answer unplayed?" and "it is played now" are two steps in vcrpy: two threads asking for the same URL could both
+    # take the same recorded answer and leave another one unplayed. One lock makes the pair atomic.
+    with _PLAY_LOCK:
+        return _play_response_locked(self, request)
+
+
+def _play_response_locked(self, request):
     try:
         response = _original_play_response(self, request)
     except UnhandledHTTPRequestError:

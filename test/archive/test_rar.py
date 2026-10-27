@@ -16,13 +16,18 @@ except ImportError:  # pragma: no cover
 
 
 def _rar_tool_with_passwords_available():
-    # rarfile also accepts bsdtar, which cannot open an encrypted archive: only these can
-    return rarfile is not None and any(shutil.which(tool) for tool in ('unrar', 'unar', '7z', '7zz', '7za'))
+    # rarfile prefers unrar, then unar, then bsdtar, then 7z. bsdtar cannot open an encrypted archive, and it wins over 7z where
+    # it exists (macOS), so 7z only counts when there is no bsdtar.
+    if rarfile is None:
+        return False
+    if shutil.which('unrar') or shutil.which('unar'):
+        return True
+    return any(shutil.which(tool) for tool in ('7z', '7zz', '7za')) and not shutil.which('bsdtar')
 
 
 # Homebrew disabled the `rar` cask on 2026-09-01 (it fails the macOS Gatekeeper check), so a macOS runner has bsdtar only.
 needs_rar_tool = pytest.mark.skipif(not _rar_tool_with_passwords_available(),
-                                    reason='no unrar / unar / 7z on this machine (bsdtar cannot read an encrypted rar)')
+                                    reason='no unrar / unar (and no 7z that rarfile would pick over bsdtar): bsdtar cannot read an encrypted rar')
 
 
 @pytest.fixture()
