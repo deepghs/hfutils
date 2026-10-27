@@ -29,7 +29,7 @@ def _redact_values(headers):
             headers.set_all(name, new)
 
 
-class Scrub:
+class HfvcrScrub:
     def request(self, flow):
         _drop(flow.request.headers, redact.REQUEST_HEADERS)
         _redact_values(flow.request.headers)
@@ -45,4 +45,4 @@ class Scrub:
                 flow.response.content = new  # also updates Content-Length
 
 
-addons = [Scrub()]
+addons = [HfvcrScrub()]

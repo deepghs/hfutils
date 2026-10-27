@@ -6,9 +6,10 @@ list it lets everything through to the real server, which would break the promis
 """
 
 
-class Block:
+# mitmproxy registers an add-on under its lower-cased class name: a plain 'Block' collides with its own 'block' add-on
+class HfvcrRefuseAll:
     def request(self, flow):
         flow.kill()
 
 
-addons = [Block()]
+addons = [HfvcrRefuseAll()]

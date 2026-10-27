@@ -1,4 +1,5 @@
 import os.path
+import shutil
 from unittest import skipUnless
 
 import pytest
@@ -14,18 +15,14 @@ except ImportError:  # pragma: no cover
     rarfile = None
 
 
-def _rar_tool_available():
-    if rarfile is None:  # pragma: no cover
-        return False
-    try:
-        rarfile.tool_setup()
-    except rarfile.RarCannotExec:
-        return False
-    return True
+def _rar_tool_with_passwords_available():
+    # rarfile also accepts bsdtar, which cannot open an encrypted archive: only these can
+    return rarfile is not None and any(shutil.which(tool) for tool in ('unrar', 'unar', '7z', '7zz', '7za'))
 
 
-# Homebrew disabled the `rar` cask on 2026-09-01 (it fails the macOS Gatekeeper check), so a macOS runner has no unrar tool.
-needs_rar_tool = pytest.mark.skipif(not _rar_tool_available(), reason='no unrar / unar / bsdtar / 7z tool that rarfile can run')
+# Homebrew disabled the `rar` cask on 2026-09-01 (it fails the macOS Gatekeeper check), so a macOS runner has bsdtar only.
+needs_rar_tool = pytest.mark.skipif(not _rar_tool_with_passwords_available(),
+                                    reason='no unrar / unar / 7z on this machine (bsdtar cannot read an encrypted rar)')
 
 
 @pytest.fixture()

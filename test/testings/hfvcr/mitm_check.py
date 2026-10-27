@@ -16,7 +16,7 @@ def _headers_blob(headers):
     return '\n'.join(f'{k}: {v}' for k, v in headers.items(True)).encode('utf-8', 'replace')
 
 
-class Check:
+class HfvcrCheck:
     def request(self, flow):
         for name in redact.REQUEST_HEADERS:
             if name in flow.request.headers:
@@ -36,4 +36,4 @@ class Check:
             print(f'LEAK response {problem}', flush=True)
 
 
-addons = [Check()]
+addons = [HfvcrCheck()]
