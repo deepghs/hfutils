@@ -1,5 +1,5 @@
 hfutils.utils.arrange
-=================================
+========================================================
 
 .. currentmodule:: hfutils.utils.arrange
 
@@ -7,25 +7,20 @@ hfutils.utils.arrange
 
 
 FileItem
----------------------------
+-----------------------------------------------------
 
 .. autoclass:: FileItem
-    :members: file, size, count, from_file
-
+    :members: from_file,file,size,count
 
 
 FilesGroup
----------------------------
+-----------------------------------------------------
 
 .. autoclass:: FilesGroup
-    :members: files, size, count, new, add
+    :members: new,add,files,size,count
 
 
-
-walk_files_with_groups
----------------------------
+walk\_files\_with\_groups
+-----------------------------------------------------
 
 .. autofunction:: walk_files_with_groups
-
-
-

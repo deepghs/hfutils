@@ -1,5 +1,5 @@
 hfutils.meta
-=====================
+========================================================
 
 .. currentmodule:: hfutils.meta
 
@@ -10,4 +10,3 @@ hfutils.meta
     :maxdepth: 3
 
     version
-

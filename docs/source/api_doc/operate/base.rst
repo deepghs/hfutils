@@ -1,50 +1,60 @@
 hfutils.operate.base
-===================================
+========================================================
 
 .. currentmodule:: hfutils.operate.base
 
 .. automodule:: hfutils.operate.base
 
 
-get_hf_client
-----------------------------------------
+RepoTypeTyping
+-----------------------------------------------------
+
+.. autodata:: RepoTypeTyping
+
+
+REPO\_TYPES
+-----------------------------------------------------
+
+.. autodata:: REPO_TYPES
+
+
+DisabledRepoError
+-----------------------------------------------------
+
+.. autoclass:: DisabledRepoError
+
+
+get\_hf\_client
+-----------------------------------------------------
 
 .. autofunction:: get_hf_client
 
 
-
-get_hf_fs
-----------------------------------------
+get\_hf\_fs
+-----------------------------------------------------
 
 .. autofunction:: get_hf_fs
 
 
-
-hf_repo_glob
-----------------------------------------
+hf\_repo\_glob
+-----------------------------------------------------
 
 .. autofunction:: hf_repo_glob
 
 
-
-list_all_with_pattern
-----------------------------------------
+list\_all\_with\_pattern
+-----------------------------------------------------
 
 .. autofunction:: list_all_with_pattern
 
 
-
-list_repo_files_in_repository
-----------------------------------------
+list\_repo\_files\_in\_repository
+-----------------------------------------------------
 
 .. autofunction:: list_repo_files_in_repository
 
 
-
-list_files_in_repository
-----------------------------------------
+list\_files\_in\_repository
+-----------------------------------------------------
 
 .. autofunction:: list_files_in_repository
-
-
-

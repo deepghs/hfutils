@@ -24,14 +24,14 @@ jobs:
           - { os: 'ubuntu-latest', python-version: '3.9', hub: '<1' }
           - { os: 'ubuntu-latest', python-version: '3.9', hub: '>=1,<2', git: true }
           - { os: 'ubuntu-latest', python-version: '3.10', hub: '>=2' }
-          - { os: 'ubuntu-latest', python-version: '3.11', hub: '>=2' }
+          - { os: 'ubuntu-latest', python-version: '3.11', hub: '>=2', lean: true }
           - { os: 'ubuntu-latest', python-version: '3.12', hub: '>=2', git: true }
           - { os: 'ubuntu-latest', python-version: '3.13', hub: '>=2' }
           - { os: 'ubuntu-latest', python-version: '3.14', hub: '>=2' }
           - { os: 'windows-latest', python-version: '3.8', hub: '==0.20.3' }
           - { os: 'windows-latest', python-version: '3.12', hub: '>=2' }
           - { os: 'macos-latest', python-version: '3.9', hub: '>=1,<2' }
-          - { os: 'macos-latest', python-version: '3.12', hub: '>=2' }
+          - { os: 'macos-latest', python-version: '3.12', hub: '>=2', lean: true }
 
     steps:
       - name: Get system version for Linux
@@ -104,6 +104,9 @@ jobs:
           pip install -r requirements-transfer.txt
           pip install -r requirements-7z.txt
           pip install -r requirements-rar.txt
+          # the optional packages of the zip reader (AES, deflate64, zstd); the `lean` cells go without them, so that the
+          # "this member needs a package" paths run too
+          if [ -z "${{ matrix.lean }}" ]; then pip install -r requirements-zip.txt; fi
           # the exact client generation of this cell, whatever the requirement files resolved
           pip install "huggingface_hub${{ matrix.hub }}"
       - name: Install mitmproxy for the git and Xet tests

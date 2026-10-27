@@ -1,5 +1,6 @@
 """
-This module provides functionality for listing files from a HuggingFace repository's index tar file.
+This module provides functionality for listing files from a HuggingFace repository's index tar file, or from a zip archive
+(a zip needs no index file: its own central directory is read with a Range request).
 
 It includes a command-line interface (CLI) for interacting with HuggingFace repositories,
 specifically for listing and displaying information about files within a repository's
@@ -28,7 +29,7 @@ from hbutils.scale import size_to_bytes_str
 from hbutils.string import plural_word, titleize
 
 from .base import CONTEXT_SETTINGS
-from ..index import hf_tar_get_index, hf_tar_validate
+from ..index import hf_tar_get_index, hf_tar_validate, hf_zip_get_index, ZipIndexError, NotAZipError
 from ..operate.base import REPO_TYPES
 from ..utils import get_requests_session, get_file_type, FileItemType, HF_IS_VERSION_0_X_X
 from ..utils.path import RepoTypeTyping, hf_normpath
@@ -37,6 +38,26 @@ if HF_IS_VERSION_0_X_X:
     from huggingface_hub import configure_http_backend
 else:
     configure_http_backend = None
+
+_TAR_NAME_SUFFIXES = ('.tar', '.tgz', '.tbz2', '.txz')
+
+
+def _is_tar_name(name: str) -> bool:
+    """Only a hint for which format to try first: ``auto`` never refuses a file for its name."""
+    lower = name.lower()
+    return lower.endswith(_TAR_NAME_SUFFIXES) or '.tar.' in lower
+
+
+def _zip_index_info(zip_info: dict) -> dict:
+    """A zip's directory in the shape of a tar index, so that one code path lists and summarizes both."""
+    return {
+        'files': {path: {'offset': item['offset'], 'size': item['size'], 'sha256': f'{item["crc32"]:08x}'}
+                  for path, item in zip_info['files'].items()},
+        'filesize': zip_info['archive_size'],
+        'hash': None,
+        'hash_lfs': None,
+    }
+
 
 _FT_NAME_MAP = {
     FileItemType.IMAGE: 'image',
@@ -94,10 +115,15 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
                   help='Order of the mentioned sorting.', show_default=True)
     @click.option('-I', '--information', 'show_information', type=bool, is_flag=True, default=False,
                   help='Show information of index file.', show_default=True)
+    @click.option('-f', '--format', 'archive_format', type=click.Choice(['auto', 'tar', 'zip']), default='auto',
+                  help='Format of the archive. auto reads a zip when it is one (the content decides, not the extension) '
+                       'and a tar otherwise; the checksum column of -l is the CRC32 for a zip.', show_default=True)
+    @click.option('--encoding', 'encoding', type=str, default=None,
+                  help='Encoding of the file names of a zip that are not Unicode (shift_jis, gbk, big5, euc-kr, ibm866, ...).')
     def ls(repo_id: str, idx_repo_id: Optional[str], repo_type: RepoTypeTyping, revision: str,
            show_detailed: bool, show_information: bool,
            sort_by: Literal['offset', 'name', 'size'], order_by: Literal['asc', 'desc'],
-           archive_file: str, idx_file: Optional[str] = None):
+           archive_file: str, idx_file: Optional[str] = None, archive_format: str = 'auto', encoding: Optional[str] = None):
         """
         List files from a HuggingFace repository's index tar file.
 
@@ -125,6 +151,11 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
         :type archive_file: str
         :param idx_file: The name of the index file (if different from default).
         :type idx_file: Optional[str]
+        :param archive_format: ``'tar'``, ``'zip'``, or ``'auto'``: ``auto`` reads a zip when the file is one (the content decides, not
+            the extension) and treats it as a tar otherwise. A name ending in ``.tar`` or an index option always means a tar.
+        :type archive_format: str
+        :param encoding: The encoding of the names of a zip that are not Unicode (``shift_jis``, ``gbk``, ...).
+        :type encoding: Optional[str]
 
         :return: None
 
@@ -136,21 +167,49 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
         4. If not showing information, lists the files according to the specified sorting and filtering options.
 
         The function uses click styles to format the output for better readability in the terminal.
+
+        A zip archive needs no index file: its own central directory is read with a ``Range`` request, and the column that holds the
+        SHA-256 of a tar member holds the CRC-32 of a zip member. Split archives (``X.zip.001``, ``X.z01``) are listed from any volume.
+
+        Example::
+
+            $ hfutils ils -r your/repository -a path/in/repo/archive.zip -l
+            $ hfutils ils -r your/repository -a path/in/repo/archive.zip.002 -I
+            $ hfutils ils -r your/repository -a path/in/repo/archive.zip --encoding shift_jis
         """
         if HF_IS_VERSION_0_X_X:
             configure_http_backend(get_requests_session)
 
-        idx_info = hf_tar_get_index(
-            repo_id=repo_id,
-            repo_type=repo_type,
-            revision=revision,
-            archive_in_repo=archive_file,
+        zip_info = None
+        if archive_format == 'zip' and (idx_file or idx_repo_id):
+            raise click.UsageError('A zip archive has no index file: --idx_repository and --idx_file are for tar archives.')
+        if archive_format == 'zip' or (archive_format == 'auto' and not idx_file and not idx_repo_id
+                                       and not _is_tar_name(archive_file)):
+            try:
+                zip_info = hf_zip_get_index(repo_id=repo_id, archive_in_repo=archive_file, repo_type=repo_type,
+                                            revision=revision, encoding=encoding)
+            except NotAZipError as err:
+                if archive_format == 'auto' and err.detected == 'tar':
+                    zip_info = None  # a tar with an unusual name: the tar way
+                else:
+                    raise click.ClickException(str(err))
+            except ZipIndexError as err:
+                raise click.ClickException(str(err))
 
-            idx_repo_id=idx_repo_id or repo_id,
-            idx_repo_type=repo_type,
-            idx_revision=revision,
-            idx_file_in_repo=idx_file,
-        )
+        if zip_info is not None:
+            idx_info = _zip_index_info(zip_info)
+        else:
+            idx_info = hf_tar_get_index(
+                repo_id=repo_id,
+                repo_type=repo_type,
+                revision=revision,
+                archive_in_repo=archive_file,
+
+                idx_repo_id=idx_repo_id or repo_id,
+                idx_repo_type=repo_type,
+                idx_revision=revision,
+                idx_file_in_repo=idx_file,
+            )
         if show_information:
             print('Repo ID: ' + click.style(repo_id, underline=True, fg='blue'))
             if idx_repo_id:
@@ -158,14 +217,28 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
             print('Repo Type: ' + click.style(repo_type, underline=True, fg='blue'))
             print('Revision: ' + click.style(revision, underline=True, fg='blue'))
             print('Archive File: ' + click.style(archive_file, underline=True, fg='blue'))
+            if zip_info is not None:
+                print('Format: ' + click.style('zip', underline=True, fg='blue'))
+                if len(zip_info['volumes']) > 1:
+                    print('Volumes: ' + click.style(str(len(zip_info['volumes'])), underline=True, fg='blue') + ' ('
+                          + ', '.join(zip_info['volumes']) + ')')
+                print('Names Encoding: ' + click.style(zip_info['encoding'], underline=True, fg='blue'))
+                print('Encrypted: ' + click.style('yes' if zip_info['encrypted'] else 'no', underline=True, fg='blue'))
+                methods = {}
+                for item in zip_info['files'].values():
+                    methods[item['method_name']] = methods.get(item['method_name'], 0) + 1
+                print('Methods: ' + ', '.join(f'{name} ({count})' for name, count in sorted(methods.items())))
+                if zip_info['comment']:
+                    print('Comment: ' + click.style(zip_info['comment'], underline=True))
             if idx_file:
                 print('Index File: ' + click.style(idx_file, underline=True, fg='blue'))
             print()
 
             print('File Size: ' + click.style(size_to_bytes_str(idx_info['filesize'], precision=3), fg='blue')
                   + ' (' + click.style(plural_word(idx_info['filesize'], "Byte"), underline=True) + ')')
-            print('Native Hash: ' + click.style(idx_info['hash'], underline=True))
-            print('LFS Hash: ' + click.style(idx_info['hash_lfs'], underline=True))
+            if zip_info is None:
+                print('Native Hash: ' + click.style(idx_info['hash'], underline=True))
+                print('LFS Hash: ' + click.style(idx_info['hash_lfs'], underline=True))
             print('Files: ' + click.style(plural_word(len(idx_info['files']), 'file'), underline=True, fg='blue'))
             if idx_info['files']:
                 d_files = {}
@@ -202,7 +275,7 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
                 q1 = sorted_sizes[n // 4]
                 q3 = sorted_sizes[(3 * n) // 4]
                 iqr = q3 - q1
-                std_dev = statistics.stdev(file_sizes)
+                std_dev = statistics.stdev(file_sizes) if len(file_sizes) > 1 else 0  # one file has no deviation
 
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", UserWarning)
@@ -225,24 +298,28 @@ def _add_ils_subcommand(cli: click.Group) -> click.Group:
                     print(f"  Interquartile Range (IQR): {size_to_bytes_str(iqr, precision=3)}")
             print()
 
-            is_ready = hf_tar_validate(
-                repo_id=repo_id,
-                repo_type=repo_type,
-                revision=revision,
-                archive_in_repo=archive_file,
+            if zip_info is not None:
+                # the index of a zip is the archive's own directory: it cannot be out of date
+                print('Status: ' + click.style('Up-To-Date', fg='green', underline=True))
+            else:
+                is_ready = hf_tar_validate(
+                    repo_id=repo_id,
+                    repo_type=repo_type,
+                    revision=revision,
+                    archive_in_repo=archive_file,
 
-                idx_repo_id=idx_repo_id or repo_id,
-                idx_repo_type=repo_type,
-                idx_revision=revision,
-                idx_file_in_repo=idx_file,
-            )
+                    idx_repo_id=idx_repo_id or repo_id,
+                    idx_repo_type=repo_type,
+                    idx_revision=revision,
+                    idx_file_in_repo=idx_file,
+                )
 
-            print('Status: ' + (
-                click.style('Up-To-Date', fg='green', underline=True) if is_ready else
-                click.style('Outdated', fg='yellow', underline=True)
-            ))
-            if not is_ready:
-                print('Index file is recommended to get refreshed.')
+                print('Status: ' + (
+                    click.style('Up-To-Date', fg='green', underline=True) if is_ready else
+                    click.style('Outdated', fg='yellow', underline=True)
+                ))
+                if not is_ready:
+                    print('Index file is recommended to get refreshed.')
 
         else:
             rows = []

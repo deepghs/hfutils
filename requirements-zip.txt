@@ -1,0 +1,5 @@
+# Optional: what reading some zip archives needs beyond the standard library (pip install hfutils[zip]).
+# cryptography: WinZip AES encryption;  inflate64: the Deflate64 method;  zstandard: the Zstandard method before Python 3.14.
+cryptography>=3.1
+inflate64>=1.0
+zstandard>=0.18; python_version < "3.14"

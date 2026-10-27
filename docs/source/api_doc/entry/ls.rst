@@ -1,21 +1,19 @@
 hfutils.entry.ls
-================================
+========================================================
 
 .. currentmodule:: hfutils.entry.ls
 
 .. automodule:: hfutils.entry.ls
 
 
-FileItemType
--------------------------
+configure\_http\_backend
+-----------------------------------------------------
 
-.. autoenum:: FileItemType
-
+.. autodata:: configure_http_backend
 
 
 ListItem
-----------------------------------
+-----------------------------------------------------
 
 .. autoclass:: ListItem
-
-
+    :members: __init__

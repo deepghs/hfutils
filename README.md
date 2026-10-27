@@ -165,6 +165,35 @@ List files in repositories
 hfutils ls -r your/repository -o /your/local/file -d subdir/in/repo
 ```
 
+## Read a Single File Out of a Zip Archive
+
+A zip archive carries its own index (the central directory at its end), so no index file is needed: only the bytes of
+the directory and of the member you ask for are fetched, with `Range` requests, from a repository or from the disk.
+
+```python
+from hfutils.index import hf_zip_list_files, hf_zip_file_read, hf_zip_file_download, zip_file_read
+
+print(hf_zip_list_files('your/repository', 'path/in/repo/archive.zip'))
+data = hf_zip_file_read('your/repository', 'path/in/repo/archive.zip', 'dir/file.txt', password='secret')  # password is optional
+hf_zip_file_download('your/repository', 'path/in/repo/archive.zip', 'dir/file.txt', '/your/local/file.txt')
+head = zip_file_read('/your/local/archive.zip', 'dir/file.txt', limit=1024)  # the same functions without `hf_` read local files
+```
+
+* Split archives (`X.zip.001`, `X.zip.002`, ... made by 7-Zip, or `X.z01`, ..., `X.zip` made by Info-ZIP) open from any
+  of their volumes.
+* The format is recognized by its content, never by the extension (`.jar`, `.docx`, a self-extractor or a file with no
+  extension are fine). A file that is not a zip raises `NotAZipError` that says what it looks like (`'tar'`,
+  `'git-lfs-pointer'`, `'html'`, ...).
+* Methods: stored, deflate, deflate64, bzip2, lzma, xz, zstd, and the legacy shrink / reduce / implode. Encryption: ZipCrypto
+  and WinZip AES. PPMd, PKWARE strong encryption and an encrypted central directory are reported as `unsupported`.
+* `pip install hfutils[zip]` adds what a few of them need: `cryptography` (AES), `inflate64` (deflate64) and `zstandard` (zstd
+  before Python 3.14).
+* Names that are not Unicode are decoded with a guessed code page; give `encoding=` (`'shift_jis'`, `'gbk'`, ...) or `lang=`
+  to decide.
+* Every error is a `ZipIndexError` with a `kind`: `fetch`, `format`, `password` or `unsupported`.
+
+`hfutils ils -r your/repository -a path/in/repo/archive.zip` lists a zip like it lists an indexed tar (`-l`, `-I`, sorting).
+
 ## Supported Formats
 
 By default, we support the `zip` and `tar` formats, including `.zip`, `.tar`, `.tar.gz`, `.tar.bz2`, and `.tar.xz`.

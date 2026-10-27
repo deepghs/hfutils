@@ -1,5 +1,5 @@
 hfutils.entry
-================================
+========================================================
 
 .. currentmodule:: hfutils.entry
 
@@ -14,11 +14,14 @@ hfutils.entry
     clone
     dispatch
     download
+    duplicate
     ils
-    index_
+    index
     ls
     ls_repo
     rollback
+    squash
     tree
     upload
+    warmup
     whoami

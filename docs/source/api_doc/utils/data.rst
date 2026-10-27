@@ -1,15 +1,12 @@
 hfutils.utils.data
-=================================
+========================================================
 
 .. currentmodule:: hfutils.utils.data
 
 .. automodule:: hfutils.utils.data
 
 
-is_data_file
----------------------------
+is\_data\_file
+-----------------------------------------------------
 
 .. autofunction:: is_data_file
-
-
-
