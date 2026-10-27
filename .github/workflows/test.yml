@@ -7,24 +7,31 @@ on:
 
 jobs:
   unittest:
-    name: Code test
+    name: Code test (${{ matrix.os }}, py${{ matrix.python-version }}, hub${{ matrix.hub }})
     runs-on: ${{ matrix.os }}
     if: ${{ !contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'test skip') }}
+    # Replay only: every request is answered from test/cassettes, nothing talks to huggingface.co,
+    # so there is no token and no rate limit to share between the cells.
+    # `hub` is the exact huggingface_hub requirement under test (the floor of each client generation first).
+    # `git` cells also run the tests that need git, git-lfs and the native hf_xet client: they are recorded and replayed through
+    # mitmproxy, which is installed on its own because it needs a newer Python than some cells (Linux only, see test/cassettes/README.md).
     strategy:
       fail-fast: false
-      max-parallel: 1
       matrix:
-        os:
-          - 'ubuntu-latest'
-          - 'windows-latest'
-          - 'macos-latest'
-        python-version:
-          - '3.8'
-#          - '3.9'
-#          - '3.10'
-          - '3.11'
-#          - '3.12'
-#          - '3.13'
+        include:
+          - { os: 'ubuntu-latest', python-version: '3.8', hub: '==0.20.3', git: true }
+          - { os: 'ubuntu-latest', python-version: '3.8', hub: '==0.31.0' }
+          - { os: 'ubuntu-latest', python-version: '3.9', hub: '<1' }
+          - { os: 'ubuntu-latest', python-version: '3.9', hub: '>=1,<2', git: true }
+          - { os: 'ubuntu-latest', python-version: '3.10', hub: '>=2' }
+          - { os: 'ubuntu-latest', python-version: '3.11', hub: '>=2' }
+          - { os: 'ubuntu-latest', python-version: '3.12', hub: '>=2', git: true }
+          - { os: 'ubuntu-latest', python-version: '3.13', hub: '>=2' }
+          - { os: 'ubuntu-latest', python-version: '3.14', hub: '>=2' }
+          - { os: 'windows-latest', python-version: '3.8', hub: '==0.20.3' }
+          - { os: 'windows-latest', python-version: '3.12', hub: '>=2' }
+          - { os: 'macos-latest', python-version: '3.9', hub: '>=1,<2' }
+          - { os: 'macos-latest', python-version: '3.12', hub: '>=2' }
 
     steps:
       - name: Get system version for Linux
@@ -59,7 +66,7 @@ jobs:
         run: |
           echo "IS_PYPY=1" >> $GITHUB_ENV
       - name: Checkout code
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v4
         with:
           fetch-depth: 20
           submodules: 'recursive'
@@ -82,9 +89,9 @@ jobs:
         run: |
           brew install tree cloc wget curl make zip
           brew install sevenzip
-          brew install --cask rar
+          brew install --cask rar || echo "the rar cask is disabled in Homebrew (2026-09-01): the rar tests that need a tool are skipped"
       - name: Set up python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -97,6 +104,16 @@ jobs:
           pip install -r requirements-transfer.txt
           pip install -r requirements-7z.txt
           pip install -r requirements-rar.txt
+          # the exact client generation of this cell, whatever the requirement files resolved
+          pip install "huggingface_hub${{ matrix.hub }}"
+      - name: Install mitmproxy for the git and Xet tests
+        if: ${{ matrix.git }}
+        shell: bash
+        run: |
+          pip install uv
+          uv tool install mitmproxy --python 3.12
+          echo "HFUTILS_MITMDUMP=$(uv tool dir --bin)/mitmdump" >> $GITHUB_ENV
+          git lfs version
       - name: Test the basic environment
         shell: bash
         run: |
@@ -109,17 +126,17 @@ jobs:
       - name: Run unittest
         env:
           CI: 'true'
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HFUTILS_VCR_MODE: none
         shell: bash
         run: |
           make unittest IS_WIN=${{ env.IS_WIN }} IS_MAC=${{ env.IS_MAC }}
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
+          files: ./coverage.xml
           flags: unittests
-          name: codecov-umbrella
+          name: ${{ matrix.os }}-py${{ matrix.python-version }}-hub${{ matrix.hub }}
           fail_ci_if_error: false
 
   build_cli:
@@ -248,6 +265,7 @@ jobs:
           dist/hfutils -v
           dist/hfutils -h
       - name: Check Whoami
+        continue-on-error: true  # live smoke test, see hf_live.yml for the real thing
         shell: bash
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -259,9 +277,10 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          dist/hfutils download -r deepghs/konachan_index -d . -o konachan_index
-          ls -al konachan_index
-          ls -al konachan_index | grep konachan.parquet
+          # a public repository: the private deepghs/konachan_index answers 403 "Private repository storage limit reached"
+          dist/hfutils download -r deepghs/public_unittest_repo -d . -o public_repo
+          ls -al public_repo
+          ls -al public_repo | grep animes.parquet
       - uses: actions/upload-artifact@v4
         with:
           name: hfutils-v${{ env.PACKAGE_VERSION }}-${{ env.OS_NAME }}-${{ env.CPU_ARCH }}-${{ env.GIT_COMMIT_ID }}

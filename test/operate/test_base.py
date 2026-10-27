@@ -1,5 +1,5 @@
 import pytest
-from huggingface_hub.errors import RepositoryNotFoundError
+from huggingface_hub.utils import RepositoryNotFoundError
 from huggingface_hub.hf_api import RepoFile
 from natsort import natsorted
 

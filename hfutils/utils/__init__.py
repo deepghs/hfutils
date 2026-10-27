@@ -6,6 +6,8 @@ from .data import is_data_file
 from .download import download_file
 from .ext import splitext_with_composite
 from .heap import Heap
+from .commit import last_commit_attr
+from .lfs import lfs_attr
 from .logging import ColoredFormatter
 from .number import number_to_tag
 from .path import hf_normpath, hf_fs_path, parse_hf_fs_path, HfFileSystemPath

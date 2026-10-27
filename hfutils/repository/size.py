@@ -26,7 +26,7 @@ from huggingface_hub.hf_api import RepoFile
 
 from ..operate import list_all_with_pattern
 from ..operate.base import RepoTypeTyping
-from ..utils import hf_normpath, hf_fs_path
+from ..utils import hf_normpath, hf_fs_path, lfs_attr
 
 
 @dataclass
@@ -87,9 +87,9 @@ class RepoFileItem:
         subdir = subdir or '.'
         return cls(
             path=hf_normpath(os.path.relpath(repo_file.path, subdir)),
-            size=repo_file.lfs.size if repo_file.lfs else repo_file.size,
+            size=lfs_attr(repo_file.lfs, 'size') if repo_file.lfs else repo_file.size,
             is_lfs=bool(repo_file.lfs),
-            lfs_sha256=repo_file.lfs.sha256 if repo_file.lfs else None,
+            lfs_sha256=lfs_attr(repo_file.lfs, 'sha256'),
             blob_id=repo_file.blob_id,
         )
 

@@ -1,0 +1,87 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": "{\"name\": \"test_repo_20261027160542209354_30ca66bee065833726402c2f28b6b8a4ba72d4ef\", \"organization\": null, \"type\": \"dataset\"}"
+    },
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "124"
+     ],
+     "Content-Type": [
+      "application/json"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/repos/create"
+   },
+   "response": {
+    "body": {
+     "text": "{\"url\":\"https://huggingface.co/datasets/narugo1992/test_repo_20261027160542209354_30ca66bee065833726402c2f28b6b8a4ba72d4ef\",\"name\":\"narugo1992/test_repo_20261027160542209354_30ca66bee065833726402c2f28b6b8a4ba72d4ef\",\"id\":\"6ae05b56b8f08544bf7aec69\",\"filesCopyPending\":false}"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "273"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"111-4aUrqT4J+ZTeEHeVNLKHCvTeyZA\""
+     ],
+     "RateLimit": [
+      "\"api\";r=892;t=12"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

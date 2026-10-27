@@ -8,7 +8,7 @@ from huggingface_hub.hf_api import RepoFolder, RepoFile
 
 from .base import CONTEXT_SETTINGS
 from ..operate.base import REPO_TYPES, get_hf_client
-from ..utils import get_requests_session, FileItemType, get_file_type, HF_IS_VERSION_0_X_X
+from ..utils import get_requests_session, FileItemType, get_file_type, HF_IS_VERSION_0_X_X, last_commit_attr
 
 if HF_IS_VERSION_0_X_X:
     from huggingface_hub import configure_http_backend
@@ -112,14 +112,14 @@ def _add_ls_subcommand(cli: click.Group) -> click.Group:
                     size_text = str(item.item.size)
                 max_size_length = max(max_size_length, len(size_text))
 
-                commit_text = (item.item.last_commit.title or '').splitlines(keepends=False)[0]
+                commit_text = (last_commit_attr(item.item.last_commit, 'title') or '').splitlines(keepends=False)[0]
                 max_commit_info_length = max(max_commit_info_length, len(commit_text))
 
             for item in items:
                 print('d' if item.type == FileItemType.FOLDER else '-', end='')
                 print('L' if item.type != FileItemType.FOLDER and item.item.lfs else '-', end='')
 
-                commit_text = (item.item.last_commit.title or '').splitlines(keepends=False)[0]
+                commit_text = (last_commit_attr(item.item.last_commit, 'title') or '').splitlines(keepends=False)[0]
                 print(
                     ' ' + ' ' * (max_commit_info_length - len(commit_text)) +
                     click.style(commit_text, underline=True),
@@ -133,8 +133,8 @@ def _add_ls_subcommand(cli: click.Group) -> click.Group:
                 size_text = ' ' * (max_size_length - len(size_text)) + size_text
                 print(' ' + size_text, end='')
 
-                print(' ' + item.item.last_commit.oid[:8], end='')
-                commit_time = item.item.last_commit.date.astimezone(tzlocal.get_localzone())
+                print(' ' + last_commit_attr(item.item.last_commit, 'oid')[:8], end='')
+                commit_time = last_commit_attr(item.item.last_commit, 'date').astimezone(tzlocal.get_localzone())
                 print(' ' + commit_time.strftime('%Y-%m-%d %H:%M %Z'), end='')
 
                 print(' ' + click.style(

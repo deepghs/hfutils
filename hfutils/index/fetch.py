@@ -1,3 +1,4 @@
+import inspect
 import json
 import os.path
 import threading
@@ -655,13 +656,23 @@ def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive:
     :raises ArchiveStandaloneFileHashNotMatch: If the SHA256 hash of the downloaded file doesn't match the expected hash
     """
     url_to_download = hf_hub_url(repo_id, archive_in_repo, repo_type=repo_type, revision=revision, endpoint=endpoint)
-    headers = build_hf_headers(
-        token=hf_token,
-        library_name=None,
-        library_version=None,
-        user_agent=user_agent,
-        headers=headers,
-    )
+    try:
+        headers = build_hf_headers(
+            token=hf_token,
+            library_name=None,
+            library_version=None,
+            user_agent=user_agent,
+            headers=headers,
+        )
+    except TypeError:  # huggingface_hub 0.20 has no `headers` parameter
+        extra_headers = headers
+        headers = build_hf_headers(
+            token=hf_token,
+            library_name=None,
+            library_version=None,
+            user_agent=user_agent,
+        )
+        headers.update(extra_headers or {})
     start_bytes = info['offset']
     end_bytes = info['offset'] + info['size'] - 1
     headers['Range'] = f'bytes={start_bytes}-{end_bytes}'
@@ -677,8 +688,10 @@ def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive:
                     resume_size=0,
                     headers=headers,
                     expected_size=info['size'],
-                    displayed_filename=file_in_archive,
-                    _tqdm_bar=empty_tqdm if silent else None,
+                    **_http_get_optional_kwargs(
+                        displayed_filename=file_in_archive,
+                        _tqdm_bar=empty_tqdm if silent else None,
+                    ),
                 )
 
         if proxy.tell() != info['size']:
@@ -696,6 +709,12 @@ def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive:
 
     finally:
         proxy.close()
+
+
+def _http_get_optional_kwargs(**kwargs):
+    """The keyword arguments of ``http_get`` that this version of ``huggingface_hub`` knows (0.20 has no ``displayed_filename``)."""
+    supported = inspect.signature(http_get).parameters
+    return {key: value for key, value in kwargs.items() if key in supported}
 
 
 def _check_hf_transfer_conflict():

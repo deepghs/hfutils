@@ -19,7 +19,13 @@ from functools import lru_cache
 from typing import Literal, List, Optional, Union, Tuple
 
 from huggingface_hub import HfApi, HfFileSystem
-from huggingface_hub.errors import RepositoryNotFoundError, GatedRepoError, DisabledRepoError, RevisionNotFoundError
+from huggingface_hub.utils import RepositoryNotFoundError, GatedRepoError, RevisionNotFoundError
+
+try:
+    from huggingface_hub.utils import DisabledRepoError
+except ImportError:  # huggingface_hub 0.20 has no such error at all, so nothing can ever raise it
+    class DisabledRepoError(Exception):
+        pass
 from huggingface_hub.hf_api import RepoFolder, RepoFile
 from wcmatch import glob
 

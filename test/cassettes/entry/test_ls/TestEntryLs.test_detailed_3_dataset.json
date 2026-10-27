@@ -1,0 +1,91 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "0b1fefea-5a91-4c25-8037-1837f298ab30"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/deepghs/anime_classification/tree/main?recursive=false&expand=true"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"f4f3945bd7150d3e12988485c42da1f8c29c59f8\",\"size\":2265,\"path\":\".gitattributes\",\"lastCommit\":{\"id\":\"1def0fe05ebf11831b531c462e1c41e91223294c\",\"title\":\"initial commit\",\"date\":\"2023-05-24T06:54:25.000Z\"},\"securityFileStatus\":{\"status\":\"safe\",\"protectAiScan\":{\"status\":\"unscanned\"},\"avScan\":{\"status\":\"safe\",\"message\":\"\",\"version\":\"1.5.2/27951\"},\"pickleImportScan\":{\"status\":\"unscanned\",\"pickleImports\":[],\"version\":\"0.0.0\"},\"virusTotalScan\":{\"status\":\"unscanned\"}}},{\"type\":\"file\",\"oid\":\"a04affda8ce82cc4cb302c3cbb08705ac0ef3eff\",\"size\":736,\"path\":\"README.md\",\"lastCommit\":{\"id\":\"4f38660e2e817ee73b07613e22ba1d900245268f\",\"title\":\"Update README.md\",\"date\":\"2023-05-24T07:15:05.000Z\"},\"securityFileStatus\":{\"status\":\"safe\",\"protectAiScan\":{\"status\":\"unscanned\"},\"avScan\":{\"status\":\"safe\",\"message\":\"\"},\"pickleImportScan\":{\"status\":\"unscanned\",\"pickleImports\":[],\"version\":\"0.0.0\"},\"virusTotalScan\":{\"status\":\"unscanned\"}}},{\"type\":\"file\",\"oid\":\"c0b34bd12fa3f17fbf4f7931b829b4dfb856bae6\",\"size\":2230124000,\"lfs\":{\"oid\":\"c3dbc52e589242d4af314ad5788b3dd10298d6b92cf49c09c4d58a135e7c6019\",\"size\":2230124000,\"pointerSize\":135},\"xetHash\":\"878e9e79de91b3b3293fa68569c90be59ea4bc8fd0f7fda2d10f83f8d2317f7f\",\"path\":\"anime_cls_v1.zip\",\"lastCommit\":{\"id\":\"ade036d9401fece59f0000f7e765ab67ee516104\",\"title\":\"Upload anime_cls_v1.zip\",\"date\":\"2023-05-24T07:09:15.000Z\"},\"securityFileStatus\":{\"status\":\"safe\",\"protectAiScan\":{\"status\":\"unscanned\"},\"avScan\":{\"status\":\"unscanned\",\"message\":\"\"},\"pickleImportScan\":{\"status\":\"safe\",\"pickleImports\":[],\"version\":\"0.0.20\"},\"virusTotalScan\":{\"status\":\"unscanned\"}}}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "1613"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"64d-7Dwry2BKfqeFFQbE5/GDqfV0ItA\""
+     ],
+     "ratelimit": [
+      "\"api\";r=999;t=145"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "transfer-encoding": [
+      "chunked"
+     ],
+     "vary": [
+      "Origin",
+      "Accept-Encoding"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

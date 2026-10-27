@@ -24,6 +24,7 @@ def no_hf_token():
 
 @pytest.mark.unittest
 class TestRepositoryClone:
+    @pytest.mark.hf_git  # git and git-lfs are recorded and replayed through mitmproxy, see test/cassettes/README.md
     def test_hf_hub_clone(self):
         with isolated_directory(), TemporaryDirectory() as td:
             hf_hub_clone(
@@ -42,6 +43,7 @@ class TestRepositoryClone:
                         shutil.copytree(file, os.path.join(td, f))
             dir_compare(get_testfile('clone'), td)
 
+    @pytest.mark.hf_git  # git and git-lfs are recorded and replayed through mitmproxy, see test/cassettes/README.md
     def test_hf_hub_clone_no_token(self, no_hf_token):
         with isolated_directory(), TemporaryDirectory() as td:
             hf_hub_clone(

@@ -1,3 +1,4 @@
+import warnings
 import os
 
 import pytest
@@ -26,7 +27,8 @@ class TestArchiveBase:
 
     def test_pack_with_warning(self, raw_dir):
         with isolated_directory():
-            with pytest.warns(None), disable_output():
+            with warnings.catch_warnings(), disable_output():
+                warnings.simplefilter('error')  # packing to a known extension must not warn
                 archive_pack('zip', raw_dir, 'file.zip')
             with pytest.warns(UserWarning), disable_output():
                 archive_pack('zip', raw_dir, 'file.mp3')

@@ -1,0 +1,208 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "identity"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "4f357110-fe24-4732-a872-80eafc6d7ca4"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "HEAD",
+    "uri": "https://huggingface.co/datasets/deepghs/game_character_skins/resolve/main/fgo/1/%E5%B8%B8%E5%A4%8F%E7%9A%84%E6%B3%B3%E8%A3%85Ver_02.png"
+   },
+   "response": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "1592"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "link": [
+      "<https://huggingface.co/api/datasets/deepghs/game_character_skins/xet-read-token/153e51ccfbe01f8d775e99c1ae2760567f7f8f9c>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334>; rel=\"xet-reconstruction-info\""
+     ],
+     "location": [
+      "https://us.aws.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334?X-Xet-Cas-Uid=6391f19aba933dc6fd14c618&user_id=REDACTED&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E5%2525B8%2525B8%2525E5%2525A4%25258F%2525E7%25259A%252584%2525E6%2525B3%2525B3%2525E8%2525A3%252585Ver_02.png%3B+filename%3D%22%25E5%25B8%25B8%25E5%25A4%258F%25E7%259A%2584%25E6%25B3%25B3%25E8%25A3%2585Ver_02.png%22%3B&response-content-type=image%2Fpng&xip=REDACTED&Expires=1793102959&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=4999;t=95"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-hub-cache": [
+      "MISS"
+     ],
+     "x-linked-etag": [
+      "\"a5e55da02440901b249f215135fb6dc2745ed7872b310989ac2426408cd2b88d\""
+     ],
+     "x-linked-size": [
+      "222329"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "153e51ccfbe01f8d775e99c1ae2760567f7f8f9c"
+     ],
+     "x-xet-hash": [
+      "588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "e4cb03b6-63be-40d9-902e-44ae989877fc"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/deepghs/game_character_skins/xet-read-token/153e51ccfbe01f8d775e99c1ae2760567f7f8f9c"
+   },
+   "response": {
+    "body": {
+     "text": "{\"casUrl\":\"https://cas-server.xethub.hf.co\",\"exp\":1793100260,\"accessToken\":\"REDACTED\"}"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "86"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"1f9-BXCKr7zO7VF/+Y4CYKAPe6QaMjg\""
+     ],
+     "ratelimit": [
+      "\"api\";r=986;t=94"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-xet-access-token": [
+      "REDACTED"
+     ],
+     "x-xet-cas-url": [
+      "https://cas-server.xethub.hf.co"
+     ],
+     "x-xet-token-expiration": [
+      "4102444800"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

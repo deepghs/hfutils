@@ -24,6 +24,7 @@ def no_hf_token():
 
 @pytest.mark.unittest
 class TestEntryClone:
+    @pytest.mark.hf_git  # git and git-lfs are recorded and replayed through mitmproxy, see test/cassettes/README.md
     def test_clone_private(self):
         with isolated_directory(), TemporaryDirectory() as td:
             result = simulate_entry(hfutilscli, [
@@ -45,6 +46,7 @@ class TestEntryClone:
                         shutil.copytree(file, os.path.join(td, f))
             dir_compare(get_testfile('clone'), td)
 
+    @pytest.mark.hf_git  # git and git-lfs are recorded and replayed through mitmproxy, see test/cassettes/README.md
     def test_clone_public(self, no_hf_token):
         with isolated_directory(), TemporaryDirectory() as td:
             result = simulate_entry(hfutilscli, [

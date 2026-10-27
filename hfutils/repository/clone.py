@@ -12,7 +12,7 @@ import subprocess
 import sys
 from typing import Optional
 
-from huggingface_hub.errors import LocalTokenNotFoundError
+from huggingface_hub.utils import LocalTokenNotFoundError
 from urlobject import URLObject
 
 from .base import hf_hub_repo_url, _check_git

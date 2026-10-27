@@ -1,0 +1,353 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "2f1c7ede-1a8c-4685-b20e-ef0299b4d2ce"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/deepghs/danbooru_newest/tree/main?recursive=true&expand=false"
+   },
+   "response": {
+    "body": {
+     "text": "Temporary Redirect. Redirecting to /api/datasets/deepghs/danbooru_newest-all/tree/main?recursive=true&expand=false"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "114"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "location": [
+      "/api/datasets/deepghs/danbooru_newest-all/tree/main?recursive=true&expand=false"
+     ],
+     "ratelimit": [
+      "\"api\";r=980;t=136"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 307,
+     "message": "Temporary Redirect"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "2f1c7ede-1a8c-4685-b20e-ef0299b4d2ce"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/deepghs/danbooru_newest-all/tree/main?recursive=true&expand=false"
+   },
+   "response": {
+    "body": {
+     "blob": "9ad03fad47a985951894f5b5c57b6dc8433c2be2f4f4809023cdcde433e839a9",
+     "size": 297895
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "297895"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"48ba7-IdODj+YXXRibHOCPzHAIcLFSnYE\""
+     ],
+     "link": [
+      "<https://huggingface.co/api/datasets/deepghs/danbooru_newest-all/tree/main?expand=false&recursive=true&limit=1000&cursor=ZXlKbWFXeGxYMjVoYldVaU9pSnBiV0ZuWlhNdk1EUTVPQzVxYzI5dUlpd2lkSEpsWlY5dmFXUWlPaUl4T1dVek1tTm1OVE16TldJeU5qazVOR1EwWlRKa09EaG1ZVGc0TURBd09HSTFOV1k1T0dJd0luMD06MTAwMA%3D%3D>; rel=\"next\""
+     ],
+     "ratelimit": [
+      "\"api\";r=979;t=135"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "transfer-encoding": [
+      "chunked"
+     ],
+     "vary": [
+      "Origin",
+      "Accept-Encoding"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "c9f7d732-e73f-4b16-9da2-bfe3a7f3aeb8"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/deepghs/danbooru_newest-all/tree/main?expand=false&recursive=true&limit=1000&cursor=ZXlKbWFXeGxYMjVoYldVaU9pSnBiV0ZuWlhNdk1EUTVPQzVxYzI5dUlpd2lkSEpsWlY5dmFXUWlPaUl4T1dVek1tTm1OVE16TldJeU5qazVOR1EwWlRKa09EaG1ZVGc0TURBd09HSTFOV1k1T0dJd0luMD06MTAwMA%3D%3D"
+   },
+   "response": {
+    "body": {
+     "blob": "822b6c52301eb0d24a40259885bec26f12c5b51e1db8bd7bc448d571ff90b876",
+     "size": 298501
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "298501"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"48e05-f53AUP00iG8uhFIW0CxhAKDH38c\""
+     ],
+     "link": [
+      "<https://huggingface.co/api/datasets/deepghs/danbooru_newest-all/tree/main?expand=false&recursive=true&limit=1000&cursor=ZXlKbWFXeGxYMjVoYldVaU9pSnBiV0ZuWlhNdk1EazVPQzVxYzI5dUlpd2lkSEpsWlY5dmFXUWlPaUl4T1dVek1tTm1OVE16TldJeU5qazVOR1EwWlRKa09EaG1ZVGc0TURBd09HSTFOV1k1T0dJd0luMD06MjAwMA%3D%3D>; rel=\"next\""
+     ],
+     "ratelimit": [
+      "\"api\";r=976;t=134"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "transfer-encoding": [
+      "chunked"
+     ],
+     "vary": [
+      "Origin",
+      "Accept-Encoding"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "ece8ea02-580c-4a34-8dfb-600398aec811"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/deepghs/danbooru_newest-all/tree/main?expand=false&recursive=true&limit=1000&cursor=ZXlKbWFXeGxYMjVoYldVaU9pSnBiV0ZuWlhNdk1EazVPQzVxYzI5dUlpd2lkSEpsWlY5dmFXUWlPaUl4T1dVek1tTm1OVE16TldJeU5qazVOR1EwWlRKa09EaG1ZVGc0TURBd09HSTFOV1k1T0dJd0luMD06MjAwMA%3D%3D"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"211becb646e6c03a4694ca1d55e0db5be931d66e\",\"size\":5423196160,\"lfs\":{\"oid\":\"89e4244e62e98be19f526dae1e5656786a1d72416d77c30d55a872e3127dd695\",\"size\":5423196160,\"pointerSize\":135},\"xetHash\":\"fd3b5beb7ff4f089079fb0259f7d6014d8078671bfb3750ed41521f45c4fcf8d\",\"path\":\"images/0998.tar\"},{\"type\":\"file\",\"oid\":\"36e8d73eb04329e600ad1bcfcc06834e8808eae3\",\"size\":353924,\"lfs\":{\"oid\":\"fe480e6c7a76ca09938c8e28818637a7d6f41f54ce2317fbf588dfdeceb973b7\",\"size\":353924,\"pointerSize\":131},\"xetHash\":\"daa5306c11e8a8c93d71799e9c1992c334a4301bbcf8ff4eb75f89ca2e568906\",\"path\":\"images/0999.json\"},{\"type\":\"file\",\"oid\":\"d73429f132085ed9db7ad86d4e9fbb40a9d7e284\",\"size\":5332367360,\"lfs\":{\"oid\":\"327c0b54625e4726202d0c5d462393e7ad32fe60c0ca1724b194a797950ccdd2\",\"size\":5332367360,\"pointerSize\":135},\"xetHash\":\"0bea7ef95e38e49e65a1a997dacd8d756cec641354c6477fa1f531eb273a7902\",\"path\":\"images/0999.tar\"},{\"type\":\"file\",\"oid\":\"c8bd55ecaac1ecd384c198dd6d5d3aab9dd8e575\",\"size\":352,\"lfs\":{\"oid\":\"a30f39bbb727191cab89b82040368cdb5362b289197be2e82814d755b5062430\",\"size\":352,\"pointerSize\":128},\"xetHash\":\"6965f3a5d4964d5bdd8e3138016de679126b75d6e6b2d54c00cb4dcaa82d5c28\",\"path\":\"meta.json\"},{\"type\":\"file\",\"oid\":\"e763a789c7d791742fe9479a179261793cb0c503\",\"size\":1776817744,\"lfs\":{\"oid\":\"86932e962ef177f05fa1271a5da707eaf5fb5b78b4160f5cc0d47336189f3bc6\",\"size\":1776817744,\"pointerSize\":135},\"xetHash\":\"3d0898d42fc3a822d6d95f00320a9d791ee69ba826d0ea22fcac8dc5dc85a3d4\",\"path\":\"table.parquet\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "1482"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"5ca-rQoD1XU+M4I0Q2FvVv0kadimJSU\""
+     ],
+     "ratelimit": [
+      "\"api\";r=972;t=133"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "transfer-encoding": [
+      "chunked"
+     ],
+     "vary": [
+      "Origin",
+      "Accept-Encoding"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

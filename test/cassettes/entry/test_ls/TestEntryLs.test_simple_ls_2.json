@@ -1,0 +1,91 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "05508776-67d1-4625-bb93-e465b1dd08b6"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/deepghs/game_character_skins/tree/main?recursive=false&expand=false"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"directory\",\"oid\":\"1f0cfd7cbb778e1c47bc52a0ddf5adf85ccfa448\",\"size\":0,\"path\":\"arknights\"},{\"type\":\"directory\",\"oid\":\"782c92b8fb025c8a8460df8d5ae62e5f3f65edf5\",\"size\":0,\"path\":\"azurlane\"},{\"type\":\"directory\",\"oid\":\"d3f68627650d4c181385cb2408651abaa1908296\",\"size\":0,\"path\":\"bluearchive\"},{\"type\":\"directory\",\"oid\":\"03c7f1e277173dba2f0a9558f039c92483642a37\",\"size\":0,\"path\":\"fgo\"},{\"type\":\"directory\",\"oid\":\"0034d14d325926159e876a05809d021d8af207d0\",\"size\":0,\"path\":\"genshin\"},{\"type\":\"directory\",\"oid\":\"e3e9d320c648a949b103d835468b73c632c7e443\",\"size\":0,\"path\":\"girlsfrontline\"},{\"type\":\"directory\",\"oid\":\"90b4ea979775d0104dd39e4c2e0af8e53ded9e08\",\"size\":0,\"path\":\"neuralcloud\"},{\"type\":\"directory\",\"oid\":\"180c3bf8923fba8e5e5efa20a5d50777d8393fa1\",\"size\":0,\"path\":\"nikke\"},{\"type\":\"directory\",\"oid\":\"afa5ea0d0118eb450fe12b57a36db89f9a4167a8\",\"size\":0,\"path\":\"pathtonowhere\"},{\"type\":\"directory\",\"oid\":\"603f18def04491c9687ded8998c0024e870399a5\",\"size\":0,\"path\":\"starrail\"},{\"type\":\"file\",\"oid\":\"f4f3945bd7150d3e12988485c42da1f8c29c59f8\",\"size\":2265,\"path\":\".gitattributes\"},{\"type\":\"file\",\"oid\":\"ba3006ab08547a79f66adb6ff5978ffd0dc00212\",\"size\":11048,\"path\":\"README.md\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "1178"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"49a-asc2jqDa0snLs08HY4nXGJDpRCM\""
+     ],
+     "ratelimit": [
+      "\"api\";r=366;t=55"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=500;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "transfer-encoding": [
+      "chunked"
+     ],
+     "vary": [
+      "Origin",
+      "Accept-Encoding"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

@@ -5,6 +5,7 @@ from huggingface_hub.utils import EntryNotFoundError, RepositoryNotFoundError
 
 from .fetch import hf_tar_get_index
 from ..operate.base import RepoTypeTyping, get_hf_client
+from ..utils import lfs_attr
 
 
 def hf_tar_item_validate(file_item: RepoFile, size: int, hash_: Optional[str] = None, hash_lfs: Optional[str] = None):
@@ -25,14 +26,14 @@ def hf_tar_item_validate(file_item: RepoFile, size: int, hash_: Optional[str] = 
     :rtype: bool
     """
     # size not match
-    if (file_item.lfs and size != file_item.lfs.size) or \
+    if (file_item.lfs and size != lfs_attr(file_item.lfs, 'size')) or \
             (not file_item.lfs and size != file_item.size):
         return False
 
     # compare tar file hash
     item_hashes = [file_item.blob_id]
     if file_item.lfs:
-        item_hashes.append(file_item.lfs.sha256)
+        item_hashes.append(lfs_attr(file_item.lfs, 'sha256'))
     item_hashes = set(filter(bool, item_hashes))
     cmp_hashes = [hash_, hash_lfs]
     cmp_hashes = set(filter(bool, cmp_hashes))

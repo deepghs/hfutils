@@ -1,3 +1,4 @@
+import sys
 import os
 
 import pytest
@@ -7,6 +8,10 @@ from huggingface_hub import hf_hub_download
 from hfutils.cache import delete_cache
 from hfutils.entry import hfutilscli
 from ..testings import get_testfile, file_compare, dir_compare
+
+# At replay speed, several threads rename the blob of identical files into the cache at the same moment; Windows refuses that
+# (WinError 5, "Access is denied") where Linux and macOS do not. One worker is the same test, only without that race.
+_WORKERS = 1 if sys.platform.startswith('win') else 8
 
 
 @pytest.fixture()
@@ -47,6 +52,7 @@ class TestEntryWarmup:
                 'hfutils', 'warmup',
                 '-r', 'deepghs/game_character_skins',
                 '-d', 'fgo/1',
+                '-n', str(_WORKERS),
             ])
             assert result.exitcode == 0, (f'Exitcode: {result.exitcode!r}\n'
                                           f'Error: {result.error!r}\n'

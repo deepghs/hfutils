@@ -12,8 +12,8 @@ from test.testings import get_testfile
 
 
 @pytest.fixture()
-def hf_repo_with_files(hf_repo, hf_client):
-    with disable_output():
+def hf_repo_with_files(hf_repo, hf_client, hf_vcr):
+    with hf_vcr.segment('files'), disable_output():
         hf_client.upload_file(
             repo_id=hf_repo,
             repo_type='dataset',
