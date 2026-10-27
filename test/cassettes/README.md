@@ -124,10 +124,19 @@ ignore `GIT_SSL_CAINFO`, which was not verified. CI runs them in three Linux cel
 `PENDING.txt` lists tests whose cassettes could not be recorded; replay mode skips them **with the reason written in the file**,
 recording modes run them. Remove an entry when its cassette is committed.
 
-Today that is 55 tests of `test/index` (`test_fetch`, `test_local_fetch`, `test_validate`), `test/entry/test_ils.py`, `test/operate` and
-`test/entry` (download, warmup). They read tar archives and index files of the **private** datasets `narugo1992/test_cos5t_tars` and
-`narugo1992/test_ds_repo`. The account has reached its private storage limit, and the Hub answers every file download of a private
-repository of it with `403 Private repository storage limit reached` (checked 2026-10-27 with the account's own token; the listing APIs
-still work). Nothing can be recorded from there until storage is freed, the plan is upgraded or the data is moved to a public
-repository; the offsets and hashes that the tests assert belong to those exact files, so equivalent data was not made up.
-The code they exercise (mainly `entry/ils.py`, `index/local_fetch.py`, parts of `index/fetch.py`) is therefore not covered in CI.
+Today that is 36 tests (`entry/test_download.py` 1, `entry/test_ils.py` 16, `index/test_fetch.py` 14, `index/test_validate.py` 1, `operate/test_download.py` 1, `operate/test_validate.py` 3). They read tar archives, index files and
+zip archives of the **private** datasets `narugo1992/test_cos5t_tars` and `narugo1992/test_ds_repo`. The account has reached its private
+storage limit, and the Hub answers every file download of a private repository of it with
+`403 Private repository storage limit reached` (checked 2026-10-27 with the account's own token; the listing APIs still work). Nothing can
+be recorded from there until storage is freed, the plan is upgraded or the data is moved to a public repository.
+
+What was **not** given up with them:
+
+* the 19 tests of `index/test_local_fetch.py` only ever read a *local* archive, so their fixture now builds the same archives from the files
+  of `test/testfile` (the expected values were already those files; the offsets of `test_tar_file_info` come from `tarfile`);
+* the remote half of `hfutils.index` and `hfutils ils` is tested against a **public** indexed tar, `nyanko7/danbooru2023`
+  (`original/data-0001.tar`) with its index in `deepghs/danbooru2023_index`, whose members, offsets, sizes and hashes are the expected
+  values (`test/index/test_fetch_public.py`, `test_validate_public.py`, `test/entry/test_ils_public.py`).
+
+The originals stay listed here, with their exact assertions, for the day the private data is back.
+

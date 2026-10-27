@@ -1,6 +1,8 @@
+import hashlib
 import io
 import os.path
 import pathlib
+import tarfile
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -45,33 +47,25 @@ class TestIndexLocalFetch:
         )
 
     def test_tar_file_info(self, local_narugo_test_cos5t_tars):
-        assert tar_file_info(
-            archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
-            file_in_archive='.meta.json'
-        ) == {
-                   'offset': 2725376,
-                   'sha256': '4585b01c251a496b73cb231d29fc711cfb1d682a84334d95f6f5b6c1cc5b5222',
-                   'size': 8968
-               }
-        assert tar_file_info(
-            archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
-            file_in_archive='愚人节_奥特瑙斯.png'
-        ) == {
-                   'offset': 3954176,
-                   'sha256': '991497fa586f6f4529827e0f8f1f228c20ec9fb507c314ee9d20d47c46f26e89',
-                   'size': 255276
-               }
-        assert tar_file_info(
-            archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
-            file_in_archive='./愚人节_奥特瑙斯.png'
-        ) == {
-                   'offset': 3954176,
-                   'sha256': '991497fa586f6f4529827e0f8f1f228c20ec9fb507c314ee9d20d47c46f26e89',
-                   'size': 255276
-               }
+        archive_file = os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar')
+
+        def _expected(name):
+            # three independent sources: where tarfile says the data starts, the hash of the file in the repository, its size
+            with tarfile.open(archive_file) as tf:
+                offset = tf.getmember(name).offset_data
+            with open(get_testfile('skin_mashu', name), 'rb') as f:
+                data = f.read()
+            return {'offset': offset, 'sha256': hashlib.sha256(data).hexdigest(), 'size': len(data)}
+
+        assert tar_file_info(archive_file=archive_file, file_in_archive='.meta.json') == _expected('.meta.json')
+        assert tar_file_info(archive_file=archive_file, file_in_archive='愚人节_奥特瑙斯.png') == _expected('愚人节_奥特瑙斯.png')
+        assert tar_file_info(archive_file=archive_file, file_in_archive='./愚人节_奥特瑙斯.png') == _expected('愚人节_奥特瑙斯.png')
+        # the very numbers the tests asserted for the archive of the private dataset: the files are the same ones
+        assert _expected('.meta.json')['sha256'] == '4585b01c251a496b73cb231d29fc711cfb1d682a84334d95f6f5b6c1cc5b5222'
+        assert _expected('愚人节_奥特瑙斯.png')['sha256'] == '991497fa586f6f4529827e0f8f1f228c20ec9fb507c314ee9d20d47c46f26e89'
         with pytest.raises(FileNotFoundError):
             _ = tar_file_info(
-                archive_file=os.path.join(local_narugo_test_cos5t_tars, 'mashu_skins.tar'),
+                archive_file=archive_file,
                 file_in_archive='愚人节奥特瑙斯.png'
             )
 

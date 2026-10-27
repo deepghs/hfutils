@@ -1,0 +1,193 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": "paths=original%2Fdata-0001.tar&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "43"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "d4231c3d-5706-46cd-80da-f12094adb495"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/nyanko7/danbooru2023/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"ca0d1497ee59635a75212b6feb409dc963d55e22\",\"size\":8524482560,\"lfs\":{\"oid\":\"11ad2d2693b8a92eed0d3100423fd1a867ca30ba2b4b48f6b682c488fcd3d4b0\",\"size\":8524482560,\"pointerSize\":135},\"xetHash\":\"f9b079343a3ff55d5de046ae9cd6b561774e7255a838f3cb06a2dd709fd53e65\",\"path\":\"original/data-0001.tar\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "310"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"136-52Z+LNoh09cl1nqIwh/bYN5JZC0\""
+     ],
+     "ratelimit": [
+      "\"api\";r=495;t=169"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=500;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "identity"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "f5a3ee6b-fee0-4a25-940f-ce3ed3577028"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "HEAD",
+    "uri": "https://huggingface.co/datasets/deepghs/danbooru2023_index/resolve/main/original/not-there.json"
+   },
+   "response": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "15"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"f-mY2VvLxuxB7KhsoOdQTlMTccuAQ\""
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=2969;t=169"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=3000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-error-code": [
+      "EntryNotFound"
+     ],
+     "x-error-message": [
+      "Entry not found"
+     ],
+     "x-hub-cache": [
+      "MISS"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "1519a0805724ff03d3cd99e496338bcf2eb799c2"
+     ]
+    },
+    "status": {
+     "code": 404,
+     "message": "Not Found"
+    }
+   }
+  }
+ ],
+ "version": 1
+}
