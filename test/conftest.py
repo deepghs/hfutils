@@ -1,3 +1,7 @@
+import test.testings.hfvcr.env  # noqa: F401  (must stay the first import: it prepares huggingface_hub's environment)
+
+pytest_plugins = ['test.testings.hfvcr.plugin']
+
 import re
 
 import pytest
@@ -40,11 +44,19 @@ def hf_fs():
 
 
 @pytest.fixture()
-def hf_repo(hf_client):
-    repo_name = f'test_repo_{random_sha1_with_timestamp()}'
-    url = hf_client.create_repo(repo_name, repo_type='dataset', exist_ok=True)
-    repo_name = _REPO_URL_PATTERN.fullmatch(url).group('repo')
+def hf_repo(hf_client, hf_vcr):
+    """
+    A throw-away dataset repository, the first fixture of the multi-step scenarios.
+
+    Its traffic lives in two segments of its own (``repo`` and ``repo.cleanup``); the random name is a recorded
+    variable, so a replay talks about exactly the repository the recording created.
+    """
+    with hf_vcr.segment('repo') as seg:
+        repo_name = seg.var('name', lambda: f'test_repo_{random_sha1_with_timestamp()}')
+        url = hf_client.create_repo(repo_name, repo_type='dataset', exist_ok=True)
+        repo_name = _REPO_URL_PATTERN.fullmatch(url).group('repo')
     try:
         yield repo_name
     finally:
-        hf_client.delete_repo(repo_name, repo_type='dataset')
+        with hf_vcr.segment('repo.cleanup'):
+            hf_client.delete_repo(repo_name, repo_type='dataset')

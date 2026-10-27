@@ -1,4 +1,4 @@
-.PHONY: docs test unittest resource
+.PHONY: docs test unittest record live resource
 
 PYTHON := $(shell which python)
 
@@ -39,7 +39,15 @@ unittest:
 		--cov="${RANGE_SRC_DIR}" \
 		$(if ${MIN_COVERAGE},--cov-fail-under=${MIN_COVERAGE},) \
 		$(if ${WORKERS},-n ${WORKERS},) \
-		--reruns 8 --reruns-delay 2 --only-rerun '(OSError|Timeout|HTTPError.*429|HTTPError.*502|HTTPError.*504|check your connection|429 error|CAS service error)'
+		${PYTEST_ARGS}
+
+# Re-record the cassettes of the tests under RANGE_DIR against the real Hugging Face (needs HF_TOKEN), see test/cassettes/README.md
+record:
+	UNITTEST=1 pytest "${RANGE_TEST_DIR}" -sv -m unittest --hf-record=rewrite ${PYTEST_ARGS}
+
+# Run the tests against the real Hugging Face without any cassette (drift detection)
+live:
+	UNITTEST=1 pytest "${RANGE_TEST_DIR}" -sv -m unittest --hf-record=live ${PYTEST_ARGS}
 
 docs:
 	$(MAKE) -C "${DOC_DIR}" build

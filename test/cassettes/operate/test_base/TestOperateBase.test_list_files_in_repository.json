@@ -1,0 +1,91 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "c9182686-cb77-4dac-8554-259ead54d0b5"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/deepghs/highres_datasets/tree/main?recursive=true&expand=false"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"28df5f900b358436f0267334b3e3e9af33f917ba\",\"size\":2307,\"path\":\".gitattributes\"},{\"type\":\"file\",\"oid\":\"2973563106bc43564a7d593e5bb75632af775ae1\",\"size\":37,\"path\":\"README.md\"},{\"type\":\"file\",\"oid\":\"d6939f179542562436bd26d5d5c324d79375acdd\",\"size\":28390055848,\"lfs\":{\"oid\":\"b850f1ffe836f34fde3b1b755b4e2d8e2d2b88b5627f6e88820b2f5a20880b80\",\"size\":28390055848,\"pointerSize\":136},\"xetHash\":\"ab70231614044517fe962eec534cc29d9136c8acd6620a4836fb9f05fa951225\",\"path\":\"sankaku_highres_uncensored_webp_42692.zip\"},{\"type\":\"file\",\"oid\":\"02f5eb90b22004ec5a4c31f9da861566c59fe884\",\"size\":39184568636,\"lfs\":{\"oid\":\"17a64a526acfbd8dd94c6f8be46cfb5dd7aebaca4c0d631f12395c0f48167b8d\",\"size\":39184568636,\"pointerSize\":136},\"xetHash\":\"64b5c87ca6989c831a50944642a2482979d0fad3d0d78e3bd860152c4730f4cf\",\"path\":\"unsplash_elite_webp_q80.zip\"},{\"type\":\"file\",\"oid\":\"18420888df783400fb522aee9fb726a1a51a40d4\",\"size\":22016876408,\"lfs\":{\"oid\":\"1588380702c6545d21c6bde6f9874dfa7189bb96dd15cf689865ae90669f2b69\",\"size\":22016876408,\"pointerSize\":136},\"xetHash\":\"3eac227fb9bf559450347e8a77359f3047e6b1034096e5fe23893228a4531498\",\"path\":\"yande_highres_uncensored_webp_26035.zip\"},{\"type\":\"file\",\"oid\":\"f1e5c3d0dc1824772e891bcacc75717328060afd\",\"size\":34436795572,\"lfs\":{\"oid\":\"ddc2e06dacc491572e3e6bf11e2f47ef48163f3a7a05aaff94db18440a39e3f2\",\"size\":34436795572,\"pointerSize\":136},\"xetHash\":\"b0cb34d3635e7112b8157c2a43d8a70ecdbe92c145a4f7199bb7c37fc45b46ee\",\"path\":\"yande_highres_webp_36772.zip\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "1487"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"5cf-UKbyLYcv+oMojYrV9JwBv1F/jyo\""
+     ],
+     "ratelimit": [
+      "\"api\";r=975;t=134"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "transfer-encoding": [
+      "chunked"
+     ],
+     "vary": [
+      "Origin",
+      "Accept-Encoding"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

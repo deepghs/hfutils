@@ -1,0 +1,93 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": "paths=fgo%2F1%2F%E5%B8%B8%E5%A4%8F%E7%9A%84%E6%B3%B3%E8%A3%85Ver_02.png&expand=false"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "84"
+     ],
+     "content-type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "b1da0a73-0df7-43bd-a44e-5346abd3f4bb"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/deepghs/game_character_skins/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"3662a9631735218f56499cb46f35ccf4fe479b56\",\"size\":222329,\"lfs\":{\"oid\":\"a5e55da02440901b249f215135fb6dc2745ed7872b310989ac2426408cd2b88d\",\"size\":222329,\"pointerSize\":131},\"xetHash\":\"588a0a1034e75981a8afd1093762f1c55c250b4eeb4b1675b9efa8fe59cff334\",\"path\":\"fgo/1/\u5e38\u590f\u7684\u6cf3\u88c5Ver_02.png\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "311"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"137-K8Xfu598X01Z/XsjDfvXqCH5fFw\""
+     ],
+     "ratelimit": [
+      "\"api\";r=455;t=61"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=500;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

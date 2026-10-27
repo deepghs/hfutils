@@ -1,0 +1,166 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/deepghs/game_character_skins/resolve/main/arknights/NM01/%E4%B9%90%E9%80%8D%E9%81%A5.png"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/61c25ecdb58281a08cc1ea9e182e11a3988e2a93b2f8c623284f543609b51975?xip=IweFDYXnN_8&response-content-type=image%2Fpng&user_id=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E4%2525B9%252590%2525E9%252580%25258D%2525E9%252581%2525A5.png%3B+filename%3D%22%25E4%25B9%2590%25E9%2580%258D%25E9%2581%25A5.png%22%3B&X-Xet-Cas-Uid=public&Expires=1793088742&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjQzOTcyZmQ1ODEzZjBmZGQ4NTJlNDEzLzYxYzI1ZWNkYjU4MjgxYTA4Y2MxZWE5ZTE4MmUxMWEzOTg4ZTJhOTNiMmY4YzYyMzI4NGY1NDM2MDliNTE5NzVcXD94aXA9SXdlRkRZWG5OXzgmcmVzcG9uc2UtY29udGVudC10eXBlPSomdXNlcl9pZD1wdWJsaWMmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qJlgtWGV0LUNhcy1VaWQ9cHVibGljIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3NDJ9fX1dfQ__&Signature=MEUCIQCO4-8jMbl0Y76j1OMq-MpPTDDjETaCTVEbJ2GcQcqwhQIgDyVubnq9Yr5R1iXjM8iq3oMvmhyKxiRQspFSRGOIj-c_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+    },
+    "headers": {
+     "Accept-Ranges": [
+      "bytes"
+     ],
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Cache-Control": [
+      "no-store"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "1066"
+     ],
+     "Content-Type": [
+      "text/plain; charset=utf-8"
+     ],
+     "Link": [
+      "<https://huggingface.co/api/datasets/deepghs/game_character_skins/xet-read-token/153e51ccfbe01f8d775e99c1ae2760567f7f8f9c>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/61c25ecdb58281a08cc1ea9e182e11a3988e2a93b2f8c623284f543609b51975>; rel=\"xet-reconstruction-info\""
+     ],
+     "Location": [
+      "https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/61c25ecdb58281a08cc1ea9e182e11a3988e2a93b2f8c623284f543609b51975?xip=IweFDYXnN_8&response-content-type=image%2Fpng&user_id=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E4%2525B9%252590%2525E9%252580%25258D%2525E9%252581%2525A5.png%3B+filename%3D%22%25E4%25B9%2590%25E9%2580%258D%25E9%2581%25A5.png%22%3B&X-Xet-Cas-Uid=public&Expires=1793088742&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjQzOTcyZmQ1ODEzZjBmZGQ4NTJlNDEzLzYxYzI1ZWNkYjU4MjgxYTA4Y2MxZWE5ZTE4MmUxMWEzOTg4ZTJhOTNiMmY4YzYyMzI4NGY1NDM2MDliNTE5NzVcXD94aXA9SXdlRkRZWG5OXzgmcmVzcG9uc2UtY29udGVudC10eXBlPSomdXNlcl9pZD1wdWJsaWMmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qJlgtWGV0LUNhcy1VaWQ9cHVibGljIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3NDJ9fX1dfQ__&Signature=MEUCIQCO4-8jMbl0Y76j1OMq-MpPTDDjETaCTVEbJ2GcQcqwhQIgDyVubnq9Yr5R1iXjM8iq3oMvmhyKxiRQspFSRGOIj-c_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+     ],
+     "RateLimit": [
+      "\"resolvers\";r=2786;t=54"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"resolvers\";q=3000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin, Accept"
+     ],
+     "X-Linked-ETag": [
+      "\"3333af134d03375958b54d88193dcddfad3a0dd3135bbfd3a6c0988938049073\""
+     ],
+     "X-Linked-Size": [
+      "3832280"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "X-Repo-Commit": [
+      "153e51ccfbe01f8d775e99c1ae2760567f7f8f9c"
+     ],
+     "X-Xet-Hash": [
+      "61c25ecdb58281a08cc1ea9e182e11a3988e2a93b2f8c623284f543609b51975"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://us.gcp.cdn.hf.co/xet-bridge-us/643972fd5813f0fdd852e413/61c25ecdb58281a08cc1ea9e182e11a3988e2a93b2f8c623284f543609b51975?xip=IweFDYXnN_8&response-content-type=image%2Fpng&user_id=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27%2525E4%2525B9%252590%2525E9%252580%25258D%2525E9%252581%2525A5.png%3B+filename%3D%22%25E4%25B9%2590%25E9%2580%258D%25E9%2581%25A5.png%22%3B&X-Xet-Cas-Uid=public&Expires=1793088742&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjQzOTcyZmQ1ODEzZjBmZGQ4NTJlNDEzLzYxYzI1ZWNkYjU4MjgxYTA4Y2MxZWE5ZTE4MmUxMWEzOTg4ZTJhOTNiMmY4YzYyMzI4NGY1NDM2MDliNTE5NzVcXD94aXA9SXdlRkRZWG5OXzgmcmVzcG9uc2UtY29udGVudC10eXBlPSomdXNlcl9pZD1wdWJsaWMmcmVzcG9uc2UtY29udGVudC1kaXNwb3NpdGlvbj0qJlgtWGV0LUNhcy1VaWQ9cHVibGljIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3NDJ9fX1dfQ__&Signature=MEUCIQCO4-8jMbl0Y76j1OMq-MpPTDDjETaCTVEbJ2GcQcqwhQIgDyVubnq9Yr5R1iXjM8iq3oMvmhyKxiRQspFSRGOIj-c_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+   },
+   "response": {
+    "body": {
+     "blob": "3333af134d03375958b54d88193dcddfad3a0dd3135bbfd3a6c0988938049073",
+     "size": 3832280
+    },
+    "headers": {
+     "Alt-Svc": [
+      "h3=\":443\"; ma=2592000"
+     ],
+     "Content-Length": [
+      "3832280"
+     ],
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-headers": [
+      "Content-Range, Content-Type, Content-Disposition, ETag"
+     ],
+     "access-control-allow-origin": [
+      "*"
+     ],
+     "access-control-expose-headers": [
+      "*"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''%25E4%25B9%2590%25E9%2580%258D%25E9%2581%25A5.png; filename=\"%E4%B9%90%E9%80%8D%E9%81%A5.png\";"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "image/png"
+     ],
+     "etag": [
+      "\"61c25ecdb58281a08cc1ea9e182e11a3988e2a93b2f8c623284f543609b51975\""
+     ],
+     "vary": [
+      "origin, access-control-request-method, access-control-request-headers"
+     ],
+     "x-hf-cdn-pop": [
+      "gcp-us-east1"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

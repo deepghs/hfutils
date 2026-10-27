@@ -1,0 +1,595 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "identity"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "22338899-47b3-4fa0-8c36-09d1ea507ecf"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "HEAD",
+    "uri": "https://huggingface.co/datasets/deepghs/hfcache_test_target_repo/resolve/main/index_tag_aliases.csv"
+   },
+   "response": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "1016"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "link": [
+      "<https://huggingface.co/api/datasets/deepghs/hfcache_test_target_repo/xet-read-token/572da9c9c5411189e5f9acfdf444d0c6796861f4>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a>; rel=\"xet-reconstruction-info\""
+     ],
+     "location": [
+      "https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?X-Xet-Cas-Uid=public&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&user_id=public&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&xip=IweFDYXnN_8&Expires=1793088737&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjY3YWY3YzE3ODk5OTQyNTdhMmI5MmM5Lzk3NmIyMTk1YTE1OTg1MzI2YmJiZTBiY2VkYmZlYWQ4ZTUzYTY4N2JhYTU4YTI0MTljZWJmOTgwYjNmMzhmN2FcXD9YLVhldC1DYXMtVWlkPXB1YmxpYyZyZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPSomdXNlcl9pZD1wdWJsaWMmcmVzcG9uc2UtY29udGVudC10eXBlPSomeGlwPUl3ZUZEWVhuTl84IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3Mzd9fX1dfQ__&Signature=MEYCIQDqe9fZkQUwosSwmeOTrQ-FCvcE-N2chcpppL45D%7EwHFgIhAJXDnon0O6RDb-oM%7Eu61TDvwCh-8%7EnPAsUwObxcICchf&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=2881;t=59"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=3000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-hf-warning": [
+      "unauthenticated; Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads."
+     ],
+     "x-hub-cache": [
+      "MISS"
+     ],
+     "x-linked-etag": [
+      "\"66e5da7eb1fb14b0f3b86a7b7093c4cfa5c3d842d90f2ecafb8e3be2538fd9a9\""
+     ],
+     "x-linked-size": [
+      "1395976"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "572da9c9c5411189e5f9acfdf444d0c6796861f4"
+     ],
+     "x-xet-hash": [
+      "976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "3518e7d7-6c56-4f83-8d6d-604e102f1fd0"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/deepghs/hfcache_test_target_repo/resolve/main/index_tag_aliases.csv"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?X-Xet-Cas-Uid=public&user_id=public&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&xip=IweFDYXnN_8&Expires=1793088737&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjY3YWY3YzE3ODk5OTQyNTdhMmI5MmM5Lzk3NmIyMTk1YTE1OTg1MzI2YmJiZTBiY2VkYmZlYWQ4ZTUzYTY4N2JhYTU4YTI0MTljZWJmOTgwYjNmMzhmN2FcXD9YLVhldC1DYXMtVWlkPXB1YmxpYyZ1c2VyX2lkPXB1YmxpYyZyZXNwb25zZS1jb250ZW50LXR5cGU9KiZyZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPSomeGlwPUl3ZUZEWVhuTl84IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3Mzd9fX1dfQ__&Signature=MEUCIA%7Eiejkaa34eY8rd02Balb5tAhJLeTXosquCloTveEP9AiEA430qPWuLUNjv-yePxn4wcB4EjkeKz822KynnGTjn5uM_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "cache-control": [
+      "no-store"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "1012"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "link": [
+      "<https://huggingface.co/api/datasets/deepghs/hfcache_test_target_repo/xet-read-token/572da9c9c5411189e5f9acfdf444d0c6796861f4>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a>; rel=\"xet-reconstruction-info\""
+     ],
+     "location": [
+      "https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?X-Xet-Cas-Uid=public&user_id=public&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&xip=IweFDYXnN_8&Expires=1793088737&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjY3YWY3YzE3ODk5OTQyNTdhMmI5MmM5Lzk3NmIyMTk1YTE1OTg1MzI2YmJiZTBiY2VkYmZlYWQ4ZTUzYTY4N2JhYTU4YTI0MTljZWJmOTgwYjNmMzhmN2FcXD9YLVhldC1DYXMtVWlkPXB1YmxpYyZ1c2VyX2lkPXB1YmxpYyZyZXNwb25zZS1jb250ZW50LXR5cGU9KiZyZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPSomeGlwPUl3ZUZEWVhuTl84IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3Mzd9fX1dfQ__&Signature=MEUCIA%7Eiejkaa34eY8rd02Balb5tAhJLeTXosquCloTveEP9AiEA430qPWuLUNjv-yePxn4wcB4EjkeKz822KynnGTjn5uM_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=2880;t=59"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=3000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-hf-warning": [
+      "unauthenticated; Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads."
+     ],
+     "x-linked-etag": [
+      "\"66e5da7eb1fb14b0f3b86a7b7093c4cfa5c3d842d90f2ecafb8e3be2538fd9a9\""
+     ],
+     "x-linked-size": [
+      "1395976"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "572da9c9c5411189e5f9acfdf444d0c6796861f4"
+     ],
+     "x-xet-hash": [
+      "976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "us.gcp.cdn.hf.co"
+     ],
+     "x-amzn-trace-id": [
+      "3518e7d7-6c56-4f83-8d6d-604e102f1fd0"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://us.gcp.cdn.hf.co/xet-bridge-us/667af7c1789994257a2b92c9/976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a?X-Xet-Cas-Uid=public&user_id=public&response-content-type=text%2Fcsv%3B+charset%3Dutf-8&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27index_tag_aliases.csv%3B+filename%3D%22index_tag_aliases.csv%22%3B&xip=IweFDYXnN_8&Expires=1793088737&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly91cy5nY3AuY2RuLmhmLmNvL3hldC1icmlkZ2UtdXMvNjY3YWY3YzE3ODk5OTQyNTdhMmI5MmM5Lzk3NmIyMTk1YTE1OTg1MzI2YmJiZTBiY2VkYmZlYWQ4ZTUzYTY4N2JhYTU4YTI0MTljZWJmOTgwYjNmMzhmN2FcXD9YLVhldC1DYXMtVWlkPXB1YmxpYyZ1c2VyX2lkPXB1YmxpYyZyZXNwb25zZS1jb250ZW50LXR5cGU9KiZyZXNwb25zZS1jb250ZW50LWRpc3Bvc2l0aW9uPSomeGlwPUl3ZUZEWVhuTl84IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJFcG9jaFRpbWUiOjE3OTMwODg3Mzd9fX1dfQ__&Signature=MEUCIA%7Eiejkaa34eY8rd02Balb5tAhJLeTXosquCloTveEP9AiEA430qPWuLUNjv-yePxn4wcB4EjkeKz822KynnGTjn5uM_&Key-Pair-Id=01KXEF4KZ1B6FV465MAWR4M21F&Hash-Algorithm=SHA256"
+   },
+   "response": {
+    "body": {
+     "blob": "66e5da7eb1fb14b0f3b86a7b7093c4cfa5c3d842d90f2ecafb8e3be2538fd9a9",
+     "size": 1395976
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-headers": [
+      "Content-Range, Content-Type, Content-Disposition, ETag"
+     ],
+     "access-control-allow-origin": [
+      "*"
+     ],
+     "access-control-expose-headers": [
+      "*"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=2592000"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''index_tag_aliases.csv; filename=\"index_tag_aliases.csv\";"
+     ],
+     "content-length": [
+      "1395976"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "text/csv; charset=utf-8"
+     ],
+     "etag": [
+      "\"976b2195a15985326bbbe0bcedbfead8e53a687baa58a2419cebf980b3f38f7a\""
+     ],
+     "vary": [
+      "origin, access-control-request-method, access-control-request-headers"
+     ],
+     "x-hf-cdn-pop": [
+      "gcp-us-east1"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "identity"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "339071e2-f98f-4c8b-bae8-5421e79f29d1"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "HEAD",
+    "uri": "https://huggingface.co/datasets/deepghs/hfcache_test_target_repo/resolve/6705b4fec34fafa232602d473a30ebefc468fd55/index_tag_aliases.csv"
+   },
+   "response": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''index_tag_aliases.csv; filename=\"index_tag_aliases.csv\";"
+     ],
+     "content-length": [
+      "337"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; sandbox"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "location": [
+      "/api/resolve-cache/datasets/deepghs/hfcache_test_target_repo/6705b4fec34fafa232602d473a30ebefc468fd55/index_tag_aliases.csv?%2Fdatasets%2Fdeepghs%2Fhfcache_test_target_repo%2Fresolve%2F6705b4fec34fafa232602d473a30ebefc468fd55%2Findex_tag_aliases.csv=&etag=%22ce7c0a961b0ad82d84441c599ca187c1e1b604a4%22"
+     ],
+     "ratelimit": [
+      "\"resolvers\";r=2879;t=58"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"resolvers\";q=3000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin, Accept"
+     ],
+     "x-hub-cache": [
+      "MISS"
+     ],
+     "x-linked-etag": [
+      "\"ce7c0a961b0ad82d84441c599ca187c1e1b604a4\""
+     ],
+     "x-linked-size": [
+      "1395798"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "6705b4fec34fafa232602d473a30ebefc468fd55"
+     ]
+    },
+    "status": {
+     "code": 307,
+     "message": "Temporary Redirect"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "identity"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "b42fec85-d5f9-4036-bdf2-ea1da9037358"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "HEAD",
+    "uri": "https://huggingface.co/api/resolve-cache/datasets/deepghs/hfcache_test_target_repo/6705b4fec34fafa232602d473a30ebefc468fd55/index_tag_aliases.csv?%2Fdatasets%2Fdeepghs%2Fhfcache_test_target_repo%2Fresolve%2F6705b4fec34fafa232602d473a30ebefc468fd55%2Findex_tag_aliases.csv=&etag=%22ce7c0a961b0ad82d84441c599ca187c1e1b604a4%22"
+   },
+   "response": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''index_tag_aliases.csv; filename=\"index_tag_aliases.csv\";"
+     ],
+     "content-length": [
+      "1395798"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; sandbox"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "\"ce7c0a961b0ad82d84441c599ca187c1e1b604a4\""
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-hub-cache": [
+      "MISS"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "6705b4fec34fafa232602d473a30ebefc468fd55"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "95bbfebb-20b8-441b-a4dc-1e9fdcecf0f8"
+     ],
+     "x-hf-download-counter": [
+      "1"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/resolve-cache/datasets/deepghs/hfcache_test_target_repo/6705b4fec34fafa232602d473a30ebefc468fd55/index_tag_aliases.csv?%2Fdatasets%2Fdeepghs%2Fhfcache_test_target_repo%2Fresolve%2F6705b4fec34fafa232602d473a30ebefc468fd55%2Findex_tag_aliases.csv=&etag=%22ce7c0a961b0ad82d84441c599ca187c1e1b604a4%22"
+   },
+   "response": {
+    "body": {
+     "blob": "6315fb90d1c32d5d5aeb1dbfbfba3ede473cc94f950968571e8d85fa80533dc5",
+     "size": 1395798
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''index_tag_aliases.csv; filename=\"index_tag_aliases.csv\";"
+     ],
+     "content-length": [
+      "1395798"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; sandbox"
+     ],
+     "content-type": [
+      "text/plain; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"ce7c0a961b0ad82d84441c599ca187c1e1b604a4\""
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "transfer-encoding": [
+      "chunked"
+     ],
+     "vary": [
+      "Origin,Accept-Encoding"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ],
+     "x-repo-commit": [
+      "6705b4fec34fafa232602d473a30ebefc468fd55"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

@@ -7,6 +7,7 @@ from huggingface_hub.hf_api import RepoFile
 from huggingface_hub.utils import EntryNotFoundError
 
 from .base import RepoTypeTyping, get_hf_client
+from ..utils import lfs_attr
 
 
 def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: int = 1 << 20,
@@ -36,7 +37,7 @@ def _raw_check_local_file(repo_file: RepoFile, local_file: str, chunk_for_hash: 
 
     if repo_file.lfs:
         sha = sha256()
-        expected_hash = repo_file.lfs.sha256
+        expected_hash = lfs_attr(repo_file.lfs, 'sha256')
     else:
         sha = sha1()
         sha.update(f'blob {filesize}\0'.encode('utf-8'))

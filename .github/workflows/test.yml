@@ -7,24 +7,29 @@ on:
 
 jobs:
   unittest:
-    name: Code test
+    name: Code test (${{ matrix.os }}, py${{ matrix.python-version }}, hub${{ matrix.hub }})
     runs-on: ${{ matrix.os }}
     if: ${{ !contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'test skip') }}
+    # Replay only: every request is answered from test/cassettes, nothing talks to huggingface.co,
+    # so there is no token and no rate limit to share between the cells.
+    # `hub` is the exact huggingface_hub requirement under test (the floor of each client generation first).
     strategy:
       fail-fast: false
-      max-parallel: 1
       matrix:
-        os:
-          - 'ubuntu-latest'
-          - 'windows-latest'
-          - 'macos-latest'
-        python-version:
-          - '3.8'
-#          - '3.9'
-#          - '3.10'
-          - '3.11'
-#          - '3.12'
-#          - '3.13'
+        include:
+          - { os: 'ubuntu-latest', python-version: '3.8', hub: '==0.20.3' }
+          - { os: 'ubuntu-latest', python-version: '3.8', hub: '==0.31.0' }
+          - { os: 'ubuntu-latest', python-version: '3.9', hub: '<1' }
+          - { os: 'ubuntu-latest', python-version: '3.9', hub: '>=1,<2' }
+          - { os: 'ubuntu-latest', python-version: '3.10', hub: '>=2' }
+          - { os: 'ubuntu-latest', python-version: '3.11', hub: '>=2' }
+          - { os: 'ubuntu-latest', python-version: '3.12', hub: '>=2' }
+          - { os: 'ubuntu-latest', python-version: '3.13', hub: '>=2' }
+          - { os: 'ubuntu-latest', python-version: '3.14', hub: '>=2' }
+          - { os: 'windows-latest', python-version: '3.8', hub: '==0.20.3' }
+          - { os: 'windows-latest', python-version: '3.12', hub: '>=2' }
+          - { os: 'macos-latest', python-version: '3.9', hub: '>=1,<2' }
+          - { os: 'macos-latest', python-version: '3.12', hub: '>=2' }
 
     steps:
       - name: Get system version for Linux
@@ -59,7 +64,7 @@ jobs:
         run: |
           echo "IS_PYPY=1" >> $GITHUB_ENV
       - name: Checkout code
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v4
         with:
           fetch-depth: 20
           submodules: 'recursive'
@@ -84,7 +89,7 @@ jobs:
           brew install sevenzip
           brew install --cask rar
       - name: Set up python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -97,6 +102,8 @@ jobs:
           pip install -r requirements-transfer.txt
           pip install -r requirements-7z.txt
           pip install -r requirements-rar.txt
+          # the exact client generation of this cell, whatever the requirement files resolved
+          pip install "huggingface_hub${{ matrix.hub }}"
       - name: Test the basic environment
         shell: bash
         run: |
@@ -109,7 +116,7 @@ jobs:
       - name: Run unittest
         env:
           CI: 'true'
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HFUTILS_VCR_MODE: none
         shell: bash
         run: |
           make unittest IS_WIN=${{ env.IS_WIN }} IS_MAC=${{ env.IS_MAC }}
@@ -248,6 +255,7 @@ jobs:
           dist/hfutils -v
           dist/hfutils -h
       - name: Check Whoami
+        continue-on-error: true  # live smoke test, see hf_live.yml for the real thing
         shell: bash
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -255,6 +263,7 @@ jobs:
           dist/hfutils whoami
           dist/hfutils whoami | grep narugo1992
       - name: Check Downloading
+        continue-on-error: true
         shell: bash
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}

@@ -1,0 +1,1331 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": "{\"files\": [{\"path\": \"ttt/README.md\", \"sample\": \"VGhlc2UgYXJlIHNvbWUgZmlsZXMgZm9yIHRlc3RpbmcgdGhlIHBhY2thZ2VzLgoKbG9s\", \"size\": 51}, {\"path\": \"ttt/1.txt\", \"sample\": \"dGhpcyBpcyAxLnR4dA==\", \"size\": 13}, {\"path\": \"ttt/subdir/script.py\", \"sample\": \"aW1wb3J0IG9zCgpwcmludChvcy5jcHVfY291bnQoKSkK\", \"size\": 33}]}"
+    },
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "305"
+     ],
+     "Content-Type": [
+      "application/json"
+     ],
+     "X-Amzn-Trace-Id": [
+      "eaf3dd54-d2cb-4dc3-9c19-9068de48b1ff"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/preupload/main"
+   },
+   "response": {
+    "body": {
+     "text": "{\"files\":[{\"path\":\"ttt/README.md\",\"uploadMode\":\"regular\",\"shouldIgnore\":false},{\"path\":\"ttt/1.txt\",\"uploadMode\":\"regular\",\"shouldIgnore\":false},{\"path\":\"ttt/subdir/script.py\",\"uploadMode\":\"regular\",\"shouldIgnore\":false}],\"commitOid\":\"663a01a8cddea4da341ff9f1c1bf9863eedb8c1b\"}"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "276"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"114-o7eHk4P388Tv2EMbUgmCszkAsT0\""
+     ],
+     "RateLimit": [
+      "\"api\";r=922;t=71"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "c5eb8a88-ed86-4a7d-ade3-b7ab015b26e7"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/revision/main?expand=xetEnabled"
+   },
+   "response": {
+    "body": {
+     "text": "{\"_id\":\"6ae05b129b86b1d6b207b98c\",\"id\":\"narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825\",\"xetEnabled\":true}"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "142"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"8e-uTtrTui6AKGMdaNwjvAm6CiJ9b4\""
+     ],
+     "RateLimit": [
+      "\"api\";r=921;t=70"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": "{\"key\": \"header\", \"value\": {\"summary\": \"Upload directory 'ttt' with hfutils v0.13.0, on 2026-10-27 16:04:43 CST\", \"description\": \"\"}}\n{\"key\": \"file\", \"value\": {\"content\": \"VGhlc2UgYXJlIHNvbWUgZmlsZXMgZm9yIHRlc3RpbmcgdGhlIHBhY2thZ2VzLgoKbG9s\", \"path\": \"ttt/README.md\", \"encoding\": \"base64\"}}\n{\"key\": \"file\", \"value\": {\"content\": \"dGhpcyBpcyAxLnR4dA==\", \"path\": \"ttt/1.txt\", \"encoding\": \"base64\"}}\n{\"key\": \"file\", \"value\": {\"content\": \"aW1wb3J0IG9zCgpwcmludChvcy5jcHVfY291bnQoKSkK\", \"path\": \"ttt/subdir/script.py\", \"encoding\": \"base64\"}}\n"
+    },
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "536"
+     ],
+     "Content-Type": [
+      "application/x-ndjson"
+     ],
+     "X-Amzn-Trace-Id": [
+      "37562976-df5b-473a-b1da-d0fc2e18e4d6"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/commit/main"
+   },
+   "response": {
+    "body": {
+     "text": "{\"success\":true,\"commitOid\":\"f4787a220751d0dedeb3d6cf464a03783091fd49\",\"commitUrl\":\"https://huggingface.co/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/commit/f4787a220751d0dedeb3d6cf464a03783091fd49\",\"hookOutput\":\"\"}"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "264"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"108-SWcmh1F7hbc8sjxrOUw5agTo2+g\""
+     ],
+     "RateLimit": [
+      "\"api\";r=920;t=69"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "ab1303ee-3ea6-4d17-aa04-56af347184a5"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825"
+   },
+   "response": {
+    "body": {
+     "text": "{\"_id\":\"6ae05b129b86b1d6b207b98c\",\"id\":\"narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825\",\"author\":\"narugo1992\",\"sha\":\"f4787a220751d0dedeb3d6cf464a03783091fd49\",\"lastModified\":\"2026-10-27T08:04:45.000Z\",\"private\":false,\"gated\":false,\"disabled\":false,\"tags\":[\"region:us\"],\"description\":\"this is 1.txt\\n\",\"downloads\":0,\"likes\":0,\"siblings\":[{\"rfilename\":\".gitattributes\"},{\"rfilename\":\"README.md\"},{\"rfilename\":\"bullshit.txt\"},{\"rfilename\":\"ttt/1.txt\"},{\"rfilename\":\"ttt/README.md\"},{\"rfilename\":\"ttt/subdir/script.py\"}],\"createdAt\":\"2026-10-27T08:04:34.000Z\",\"usedStorage\":0}"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "608"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"260-34hzFSWqkorp3UVaODBkbp0mUNQ\""
+     ],
+     "RateLimit": [
+      "\"api\";r=919;t=67"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "17f1b287-5ff2-4005-9dee-c94e35bb1544"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/tree/main/ttt?recursive=False&expand=False"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"directory\",\"oid\":\"14ab9d57e8bea00ecf4e6fcd9dc679c1bdfb2935\",\"size\":0,\"path\":\"ttt/subdir\"},{\"type\":\"file\",\"oid\":\"c410b86d38bd7de0e306a142633f821badd8e006\",\"size\":13,\"path\":\"ttt/1.txt\"},{\"type\":\"file\",\"oid\":\"2356864be2cdeefd6bd3f0496ade7a12c8131968\",\"size\":51,\"path\":\"ttt/README.md\"}]"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "292"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"124-mH3db67/4P+da1QsNlzCtM5LmWU\""
+     ],
+     "RateLimit": [
+      "\"api\";r=918;t=66"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": "paths=ttt%2F1.txt&expand=False"
+    },
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "30"
+     ],
+     "Content-Type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "X-Amzn-Trace-Id": [
+      "82a648f2-56d2-453c-add7-3c99644886a0"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"c410b86d38bd7de0e306a142633f821badd8e006\",\"size\":13,\"path\":\"ttt/1.txt\"}]"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "95"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"5f-jJ/D8jtr07v2x+nrnlVymQGH1Hg\""
+     ],
+     "RateLimit": [
+      "\"api\";r=917;t=65"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "3f7b3779-6a60-43c7-abd4-25ed60ff69e6"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/resolve/main/ttt/1.txt"
+   },
+   "response": {
+    "body": {
+     "text": "Temporary Redirect. Redirecting to /api/resolve-cache/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/f4787a220751d0dedeb3d6cf464a03783091fd49/ttt%2F1.txt?%2Fdatasets%2Fnarugo1992%2Ftest_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825%2Fresolve%2Fmain%2Fttt%2F1.txt=&etag=%22c410b86d38bd7de0e306a142633f821badd8e006%22"
+    },
+    "headers": {
+     "Accept-Ranges": [
+      "bytes"
+     ],
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "381"
+     ],
+     "Content-Type": [
+      "text/plain; charset=utf-8"
+     ],
+     "Location": [
+      "/api/resolve-cache/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/f4787a220751d0dedeb3d6cf464a03783091fd49/ttt%2F1.txt?%2Fdatasets%2Fnarugo1992%2Ftest_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825%2Fresolve%2Fmain%2Fttt%2F1.txt=&etag=%22c410b86d38bd7de0e306a142633f821badd8e006%22"
+     ],
+     "RateLimit": [
+      "\"resolvers\";r=4980;t=64"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin, Accept"
+     ],
+     "X-Linked-ETag": [
+      "\"c410b86d38bd7de0e306a142633f821badd8e006\""
+     ],
+     "X-Linked-Size": [
+      "13"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "X-Repo-Commit": [
+      "f4787a220751d0dedeb3d6cf464a03783091fd49"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 307,
+     "message": "Temporary Redirect"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "3f7b3779-6a60-43c7-abd4-25ed60ff69e6"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/resolve-cache/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/f4787a220751d0dedeb3d6cf464a03783091fd49/ttt%2F1.txt?%2Fdatasets%2Fnarugo1992%2Ftest_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825%2Fresolve%2Fmain%2Fttt%2F1.txt=&etag=%22c410b86d38bd7de0e306a142633f821badd8e006%22"
+   },
+   "response": {
+    "body": {
+     "text": "this is 1.txt"
+    },
+    "headers": {
+     "Accept-Ranges": [
+      "bytes"
+     ],
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Disposition": [
+      "inline; filename*=UTF-8''1.txt; filename=\"1.txt\";"
+     ],
+     "Content-Length": [
+      "13"
+     ],
+     "Content-Security-Policy": [
+      "default-src 'none'; sandbox"
+     ],
+     "Content-Type": [
+      "text/plain; charset=utf-8"
+     ],
+     "ETag": [
+      "\"c410b86d38bd7de0e306a142633f821badd8e006\""
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "X-Repo-Commit": [
+      "f4787a220751d0dedeb3d6cf464a03783091fd49"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "423c5c29-883a-44be-bbf6-594e997a7bab"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/tree/main/ttt?recursive=False&expand=False"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"directory\",\"oid\":\"14ab9d57e8bea00ecf4e6fcd9dc679c1bdfb2935\",\"size\":0,\"path\":\"ttt/subdir\"},{\"type\":\"file\",\"oid\":\"c410b86d38bd7de0e306a142633f821badd8e006\",\"size\":13,\"path\":\"ttt/1.txt\"},{\"type\":\"file\",\"oid\":\"2356864be2cdeefd6bd3f0496ade7a12c8131968\",\"size\":51,\"path\":\"ttt/README.md\"}]"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "292"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"124-mH3db67/4P+da1QsNlzCtM5LmWU\""
+     ],
+     "RateLimit": [
+      "\"api\";r=916;t=62"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": "paths=ttt%2FREADME.md&expand=False"
+    },
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "34"
+     ],
+     "Content-Type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "X-Amzn-Trace-Id": [
+      "83f41ee4-8065-4d74-8468-4c1684e6eb3f"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"2356864be2cdeefd6bd3f0496ade7a12c8131968\",\"size\":51,\"path\":\"ttt/README.md\"}]"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "99"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"63-7KBQA0QTwA2g0mTAQMrfQ/qkkco\""
+     ],
+     "RateLimit": [
+      "\"api\";r=915;t=61"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "e79078fb-2d83-411c-9a48-83172709f46c"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/resolve/main/ttt/README.md"
+   },
+   "response": {
+    "body": {
+     "text": "Temporary Redirect. Redirecting to /api/resolve-cache/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/f4787a220751d0dedeb3d6cf464a03783091fd49/ttt%2FREADME.md?%2Fdatasets%2Fnarugo1992%2Ftest_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825%2Fresolve%2Fmain%2Fttt%2FREADME.md=&etag=%222356864be2cdeefd6bd3f0496ade7a12c8131968%22"
+    },
+    "headers": {
+     "Accept-Ranges": [
+      "bytes"
+     ],
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "389"
+     ],
+     "Content-Type": [
+      "text/plain; charset=utf-8"
+     ],
+     "Location": [
+      "/api/resolve-cache/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/f4787a220751d0dedeb3d6cf464a03783091fd49/ttt%2FREADME.md?%2Fdatasets%2Fnarugo1992%2Ftest_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825%2Fresolve%2Fmain%2Fttt%2FREADME.md=&etag=%222356864be2cdeefd6bd3f0496ade7a12c8131968%22"
+     ],
+     "RateLimit": [
+      "\"resolvers\";r=4978;t=60"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin, Accept"
+     ],
+     "X-Linked-ETag": [
+      "\"2356864be2cdeefd6bd3f0496ade7a12c8131968\""
+     ],
+     "X-Linked-Size": [
+      "51"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "X-Repo-Commit": [
+      "f4787a220751d0dedeb3d6cf464a03783091fd49"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 307,
+     "message": "Temporary Redirect"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "e79078fb-2d83-411c-9a48-83172709f46c"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/resolve-cache/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/f4787a220751d0dedeb3d6cf464a03783091fd49/ttt%2FREADME.md?%2Fdatasets%2Fnarugo1992%2Ftest_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825%2Fresolve%2Fmain%2Fttt%2FREADME.md=&etag=%222356864be2cdeefd6bd3f0496ade7a12c8131968%22"
+   },
+   "response": {
+    "body": {
+     "text": "These are some files for testing the packages.\n\nlol"
+    },
+    "headers": {
+     "Accept-Ranges": [
+      "bytes"
+     ],
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Disposition": [
+      "inline; filename*=UTF-8''README.md; filename=\"README.md\";"
+     ],
+     "Content-Length": [
+      "51"
+     ],
+     "Content-Security-Policy": [
+      "default-src 'none'; sandbox"
+     ],
+     "Content-Type": [
+      "text/plain; charset=utf-8"
+     ],
+     "ETag": [
+      "\"2356864be2cdeefd6bd3f0496ade7a12c8131968\""
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "X-Repo-Commit": [
+      "f4787a220751d0dedeb3d6cf464a03783091fd49"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "ae4d10ee-e917-452b-8a37-6704b0e84667"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/tree/main/ttt%2Fsubdir?recursive=False&expand=False"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"a81d96bc16ab1d778ee41d6fe90450a56dfff20d\",\"size\":33,\"path\":\"ttt/subdir/script.py\"}]"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "106"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"6a-TuVp4ELJPRp0UEV0yMy3iHnYubI\""
+     ],
+     "RateLimit": [
+      "\"api\";r=914;t=58"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": {
+     "text": "paths=ttt%2Fsubdir%2Fscript.py&expand=False"
+    },
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "43"
+     ],
+     "Content-Type": [
+      "application/x-www-form-urlencoded"
+     ],
+     "X-Amzn-Trace-Id": [
+      "28413561-5546-48b3-9ed8-debdd532c92c"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"a81d96bc16ab1d778ee41d6fe90450a56dfff20d\",\"size\":33,\"path\":\"ttt/subdir/script.py\"}]"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "106"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"6a-TuVp4ELJPRp0UEV0yMy3iHnYubI\""
+     ],
+     "RateLimit": [
+      "\"api\";r=913;t=57"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "7e23eb30-6596-49f3-b555-29ca8c0fd354"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/resolve/main/ttt/subdir/script.py"
+   },
+   "response": {
+    "body": {
+     "text": "Temporary Redirect. Redirecting to /api/resolve-cache/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/f4787a220751d0dedeb3d6cf464a03783091fd49/ttt%2Fsubdir%2Fscript.py?%2Fdatasets%2Fnarugo1992%2Ftest_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825%2Fresolve%2Fmain%2Fttt%2Fsubdir%2Fscript.py=&etag=%22a81d96bc16ab1d778ee41d6fe90450a56dfff20d%22"
+    },
+    "headers": {
+     "Accept-Ranges": [
+      "bytes"
+     ],
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "407"
+     ],
+     "Content-Type": [
+      "text/plain; charset=utf-8"
+     ],
+     "Location": [
+      "/api/resolve-cache/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/f4787a220751d0dedeb3d6cf464a03783091fd49/ttt%2Fsubdir%2Fscript.py?%2Fdatasets%2Fnarugo1992%2Ftest_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825%2Fresolve%2Fmain%2Fttt%2Fsubdir%2Fscript.py=&etag=%22a81d96bc16ab1d778ee41d6fe90450a56dfff20d%22"
+     ],
+     "RateLimit": [
+      "\"resolvers\";r=4976;t=56"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin, Accept"
+     ],
+     "X-Linked-ETag": [
+      "\"a81d96bc16ab1d778ee41d6fe90450a56dfff20d\""
+     ],
+     "X-Linked-Size": [
+      "33"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "X-Repo-Commit": [
+      "f4787a220751d0dedeb3d6cf464a03783091fd49"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 307,
+     "message": "Temporary Redirect"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "X-Amzn-Trace-Id": [
+      "7e23eb30-6596-49f3-b555-29ca8c0fd354"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/resolve-cache/datasets/narugo1992/test_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825/f4787a220751d0dedeb3d6cf464a03783091fd49/ttt%2Fsubdir%2Fscript.py?%2Fdatasets%2Fnarugo1992%2Ftest_repo_20261027160434018206_ecd458232846c0ee115df3ab54503860912df825%2Fresolve%2Fmain%2Fttt%2Fsubdir%2Fscript.py=&etag=%22a81d96bc16ab1d778ee41d6fe90450a56dfff20d%22"
+   },
+   "response": {
+    "body": {
+     "text": "import os\n\nprint(os.cpu_count())\n"
+    },
+    "headers": {
+     "Accept-Ranges": [
+      "bytes"
+     ],
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Disposition": [
+      "inline; filename*=UTF-8''script.py; filename=\"script.py\";"
+     ],
+     "Content-Length": [
+      "33"
+     ],
+     "Content-Security-Policy": [
+      "default-src 'none'; sandbox"
+     ],
+     "Content-Type": [
+      "text/plain; charset=utf-8"
+     ],
+     "ETag": [
+      "\"a81d96bc16ab1d778ee41d6fe90450a56dfff20d\""
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "X-Repo-Commit": [
+      "f4787a220751d0dedeb3d6cf464a03783091fd49"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

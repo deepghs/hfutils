@@ -1,0 +1,57 @@
+#file: noinspection YAMLSchemaValidation
+name: Hugging Face Live
+
+# The unit tests run against recorded cassettes (test/cassettes) and never touch huggingface.co.
+# This workflow is the other half: it runs them against the *real* service, to find out when
+#   * the Hugging Face API drifted away from what the cassettes say, or
+#   * a new huggingface_hub release behaves differently,
+# and it runs the tests that cannot be recorded at all (marker `hf_live`: git clone, ...).
+# It is slow, uses the shared HF_TOKEN and is therefore scheduled weekly, never per push.
+
+on:
+  schedule:
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
+    inputs:
+      hub:
+        description: 'huggingface_hub requirement'
+        default: '>=2'
+        required: false
+
+jobs:
+  live:
+    name: Live (py${{ matrix.python-version }}, hub${{ matrix.hub || inputs.hub }})
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'deepghs/hfutils' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - { python-version: '3.8', hub: '==0.20.3' }
+          - { python-version: '3.12', hub: '>=2' }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 20
+      - name: Set up system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tree git-lfs p7zip-full rar unrar
+          git lfs install
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-test.txt -r requirements-transfer.txt \
+            -r requirements-7z.txt -r requirements-rar.txt
+          pip install "huggingface_hub${{ matrix.hub || inputs.hub }}"
+          pip list
+      - name: Run the unit tests against the real service
+        env:
+          CI: 'true'
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          make live

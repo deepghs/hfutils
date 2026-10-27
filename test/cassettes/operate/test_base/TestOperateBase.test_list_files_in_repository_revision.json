@@ -1,0 +1,87 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": ""
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "126ff852-f328-4345-b37e-2e3629d4f6b2"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_ds_repo/tree/another_branch?recursive=true&expand=false"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"b7b53d7099b3cf0734be739160ee83d46e2cb9b4\",\"size\":2363,\"path\":\".gitattributes\"},{\"type\":\"file\",\"oid\":\"2dc336fc8aa81350fbe9a03c543927734ff00c2b\",\"size\":2493,\"path\":\"cloc.sh\"},{\"type\":\"file\",\"oid\":\"efa557a4038e4f31b8cfd070cf1e3c74881a7304\",\"size\":2363,\"path\":\"raw_text\"},{\"type\":\"file\",\"oid\":\"03b7e9231750f3a3af83a29097e4efcaae81f61f\",\"size\":12918229,\"lfs\":{\"oid\":\"147024eb925cfb698fa402dcea040c8b9fc8195bc3134e63d157af7cf1b5eacc\",\"size\":12918229,\"pointerSize\":133},\"xetHash\":\"9e470c76e20bfe1edcb3108a11e56622e4f59d688c8a685a622e4281436504ac\",\"path\":\"surtr_dataset.zip\"},{\"type\":\"file\",\"oid\":\"5743a03f0039ed2309873825ae3fce0c7b63683c\",\"size\":12918229,\"lfs\":{\"oid\":\"b57ec2a5eac8793a93a7a1cd9a9b0f7fa12df5ea14233f245d10b083d82a5ea5\",\"size\":12918229,\"pointerSize\":133},\"xetHash\":\"76d180c3630cd4b55599f7b8f05b331909672147bfc48ed93e48cbb97f6adf80\",\"path\":\"surtr_dataset.zip_x\"}]"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "893"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"37d-c5Q+k5AkiBSXTtegbUURmCdSo54\""
+     ],
+     "ratelimit": [
+      "\"api\";r=973;t=134"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

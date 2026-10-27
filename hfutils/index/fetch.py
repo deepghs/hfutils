@@ -655,13 +655,23 @@ def _hf_tar_file_info_write(repo_id: str, archive_in_repo: str, file_in_archive:
     :raises ArchiveStandaloneFileHashNotMatch: If the SHA256 hash of the downloaded file doesn't match the expected hash
     """
     url_to_download = hf_hub_url(repo_id, archive_in_repo, repo_type=repo_type, revision=revision, endpoint=endpoint)
-    headers = build_hf_headers(
-        token=hf_token,
-        library_name=None,
-        library_version=None,
-        user_agent=user_agent,
-        headers=headers,
-    )
+    try:
+        headers = build_hf_headers(
+            token=hf_token,
+            library_name=None,
+            library_version=None,
+            user_agent=user_agent,
+            headers=headers,
+        )
+    except TypeError:  # huggingface_hub 0.20 has no `headers` parameter
+        extra_headers = headers
+        headers = build_hf_headers(
+            token=hf_token,
+            library_name=None,
+            library_version=None,
+            user_agent=user_agent,
+        )
+        headers.update(extra_headers or {})
     start_bytes = info['offset']
     end_bytes = info['offset'] + info['size'] - 1
     headers['Range'] = f'bytes={start_bytes}-{end_bytes}'
