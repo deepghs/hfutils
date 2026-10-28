@@ -1,5 +1,5 @@
-hfutils.utils.binary_proxy
-=================================
+hfutils.utils.binary\_proxy
+========================================================
 
 .. currentmodule:: hfutils.utils.binary_proxy
 
@@ -7,9 +7,7 @@ hfutils.utils.binary_proxy
 
 
 BinaryProxyIO
-----------------------------------------------------------
+-----------------------------------------------------
 
 .. autoclass:: BinaryProxyIO
-    :members: __enter__, __exit__, __iter__, close, fileno, flush, isatty, read, readable, readline, readlines, seek, seekable, tell, truncate, writable, write, writelines
-
-
+    :members: __init__,__enter__,close,fileno,flush,isatty,read,readable,readline,readlines,seek,seekable,tell,truncate,writable,write,writelines,__next__,__iter__,__exit__

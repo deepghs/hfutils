@@ -27,15 +27,7 @@ Overview
     :maxdepth: 2
     :caption: API Documentation
 
-    api_doc/archive/index
-    api_doc/cache/index
-    api_doc/config/index
-    api_doc/entry/index
-    api_doc/index/index
-    api_doc/meta/index
-    api_doc/operate/index
-    api_doc/repository/index
-    api_doc/utils/index
+    api_doc
 
 .. toctree::
     :maxdepth: 2

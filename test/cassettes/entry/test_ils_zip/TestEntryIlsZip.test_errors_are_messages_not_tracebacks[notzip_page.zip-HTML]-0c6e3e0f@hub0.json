@@ -1,0 +1,419 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": "paths=notzip%2Fpage.zip&paths=notzip%2Fpage.z01&paths=notzip%2Fpage.z02&paths=notzip%2Fpage.z03&paths=notzip%2Fpage.z04&paths=notzip%2Fpage.z05&paths=notzip%2Fpage.z06&paths=notzip%2Fpage.z07&paths=notzip%2Fpage.z08&paths=notzip%2Fpage.z09&paths=notzip%2Fpage.z10&paths=notzip%2Fpage.z11&paths=notzip%2Fpage.z12&paths=notzip%2Fpage.z13&paths=notzip%2Fpage.z14&paths=notzip%2Fpage.z15&expand=False"
+    },
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "396"
+     ],
+     "Content-Type": [
+      "application/x-www-form-urlencoded"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/datasets/narugo1992/test_repo_20261028025430702004_0100465a56b73a3963e03bf4fd1c1c3b1b3e787c/paths-info/main"
+   },
+   "response": {
+    "body": {
+     "text": "[{\"type\":\"file\",\"oid\":\"061febf49fca72864439f8365f251b572dd5b72e\",\"size\":50,\"lfs\":{\"oid\":\"8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0\",\"size\":50,\"pointerSize\":127},\"path\":\"notzip/page.zip\"}]"
+    },
+    "headers": {
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "210"
+     ],
+     "Content-Type": [
+      "application/json; charset=utf-8"
+     ],
+     "ETag": [
+      "W/\"d2-HdhvRFZuOtyH7VWDwEOpbLd+4oI\""
+     ],
+     "RateLimit": [
+      "\"api\";r=817;t=50"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Range": [
+      "bytes=0-49"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261028025430702004_0100465a56b73a3963e03bf4fd1c1c3b1b3e787c/resolve/main/notzip/page.zip"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://us.aws.cdn.hf.co/xet-bridge-us/6ae0f3672a88a2be60567ff7/318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0?response-content-type=application%2Fzip&xip=REDACTED&user_id=REDACTED&X-Xet-Cas-Uid=6391f19aba933dc6fd14c618&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&Expires=1793130905&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+    },
+    "headers": {
+     "Accept-Ranges": [
+      "bytes"
+     ],
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Cache-Control": [
+      "no-store"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "459"
+     ],
+     "Content-Type": [
+      "text/plain; charset=utf-8"
+     ],
+     "Link": [
+      "<https://huggingface.co/api/datasets/narugo1992/test_repo_20261028025430702004_0100465a56b73a3963e03bf4fd1c1c3b1b3e787c/xet-read-token/39d56bae6fbf08b4442e8a3fd2738f76a86fe3de>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0>; rel=\"xet-reconstruction-info\""
+     ],
+     "Location": [
+      "https://us.aws.cdn.hf.co/xet-bridge-us/6ae0f3672a88a2be60567ff7/318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0?response-content-type=application%2Fzip&xip=REDACTED&user_id=REDACTED&X-Xet-Cas-Uid=6391f19aba933dc6fd14c618&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&Expires=1793130905&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+     ],
+     "RateLimit": [
+      "\"resolvers\";r=4982;t=49"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin, Accept"
+     ],
+     "X-Linked-ETag": [
+      "\"8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0\""
+     ],
+     "X-Linked-Size": [
+      "50"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "X-Repo-Commit": [
+      "39d56bae6fbf08b4442e8a3fd2738f76a86fe3de"
+     ],
+     "X-Xet-Hash": [
+      "318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Range": [
+      "bytes=0-49"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://us.aws.cdn.hf.co/xet-bridge-us/6ae0f3672a88a2be60567ff7/318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0?response-content-type=application%2Fzip&xip=REDACTED&user_id=REDACTED&X-Xet-Cas-Uid=6391f19aba933dc6fd14c618&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&Expires=1793130905&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+   },
+   "response": {
+    "body": {
+     "text": "<!DOCTYPE html><html><body>Not Found</body></html>"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-headers": [
+      "Content-Range, Content-Type, Content-Disposition, ETag"
+     ],
+     "access-control-allow-origin": [
+      "*"
+     ],
+     "access-control-expose-headers": [
+      "*"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''page.zip; filename=\"page.zip\";"
+     ],
+     "content-length": [
+      "50"
+     ],
+     "content-range": [
+      "bytes 0-49/50"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/zip"
+     ],
+     "etag": [
+      "\"318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0\""
+     ],
+     "vary": [
+      "origin, access-control-request-method, access-control-request-headers"
+     ],
+     "x-hf-cdn-pop": [
+      "aws-us-west-2"
+     ]
+    },
+    "status": {
+     "code": 206,
+     "message": "Partial Content"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Range": [
+      "bytes=0-49"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://huggingface.co/datasets/narugo1992/test_repo_20261028025430702004_0100465a56b73a3963e03bf4fd1c1c3b1b3e787c/resolve/main/notzip/page.zip"
+   },
+   "response": {
+    "body": {
+     "text": "Found. Redirecting to https://us.aws.cdn.hf.co/xet-bridge-us/6ae0f3672a88a2be60567ff7/318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0?user_id=REDACTED&response-content-type=application%2Fzip&xip=REDACTED&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&X-Xet-Cas-Uid=6391f19aba933dc6fd14c618&Expires=1793130908&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+    },
+    "headers": {
+     "Accept-Ranges": [
+      "bytes"
+     ],
+     "Access-Control-Allow-Origin": [
+      "https://huggingface.co"
+     ],
+     "Access-Control-Expose-Headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "Access-Control-Max-Age": [
+      "86400"
+     ],
+     "Alt-Svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "Cache-Control": [
+      "no-store"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Content-Length": [
+      "459"
+     ],
+     "Content-Type": [
+      "text/plain; charset=utf-8"
+     ],
+     "Link": [
+      "<https://huggingface.co/api/datasets/narugo1992/test_repo_20261028025430702004_0100465a56b73a3963e03bf4fd1c1c3b1b3e787c/xet-read-token/39d56bae6fbf08b4442e8a3fd2738f76a86fe3de>; rel=\"xet-auth\", <https://cas-server.xethub.hf.co/v1/reconstructions/318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0>; rel=\"xet-reconstruction-info\""
+     ],
+     "Location": [
+      "https://us.aws.cdn.hf.co/xet-bridge-us/6ae0f3672a88a2be60567ff7/318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0?user_id=REDACTED&response-content-type=application%2Fzip&xip=REDACTED&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&X-Xet-Cas-Uid=6391f19aba933dc6fd14c618&Expires=1793130908&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+     ],
+     "RateLimit": [
+      "\"resolvers\";r=4981;t=46"
+     ],
+     "RateLimit-Policy": [
+      "\"fixed window\";\"resolvers\";q=5000;w=300"
+     ],
+     "Referrer-Policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "Strict-Transport-Security": [
+      "max-age=31536000"
+     ],
+     "Vary": [
+      "Origin, Accept"
+     ],
+     "X-Linked-ETag": [
+      "\"8692780fb6f16f3c62c5a5a7786e1875f2c5d7caa92767744f349c22d8a1b7c0\""
+     ],
+     "X-Linked-Size": [
+      "50"
+     ],
+     "X-Powered-By": [
+      "huggingface-moon"
+     ],
+     "X-Repo-Commit": [
+      "39d56bae6fbf08b4442e8a3fd2738f76a86fe3de"
+     ],
+     "X-Xet-Hash": [
+      "318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ]
+    },
+    "status": {
+     "code": 302,
+     "message": "Found"
+    }
+   }
+  },
+  {
+   "request": {
+    "body": null,
+    "headers": {
+     "Accept": [
+      "*/*"
+     ],
+     "Accept-Encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "Connection": [
+      "keep-alive"
+     ],
+     "Range": [
+      "bytes=0-49"
+     ]
+    },
+    "method": "GET",
+    "uri": "https://us.aws.cdn.hf.co/xet-bridge-us/6ae0f3672a88a2be60567ff7/318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0?user_id=REDACTED&response-content-type=application%2Fzip&xip=REDACTED&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27page.zip%3B+filename%3D%22page.zip%22%3B&X-Xet-Cas-Uid=6391f19aba933dc6fd14c618&Expires=1793130908&Policy=REDACTED&Signature=REDACTED&Key-Pair-Id=REDACTED&Hash-Algorithm=SHA256"
+   },
+   "response": {
+    "body": {
+     "text": "<!DOCTYPE html><html><body>Not Found</body></html>"
+    },
+    "headers": {
+     "accept-ranges": [
+      "bytes"
+     ],
+     "access-control-allow-headers": [
+      "Content-Range, Content-Type, Content-Disposition, ETag"
+     ],
+     "access-control-allow-origin": [
+      "*"
+     ],
+     "access-control-expose-headers": [
+      "*"
+     ],
+     "content-disposition": [
+      "inline; filename*=UTF-8''page.zip; filename=\"page.zip\";"
+     ],
+     "content-length": [
+      "50"
+     ],
+     "content-range": [
+      "bytes 0-49/50"
+     ],
+     "content-security-policy": [
+      "default-src 'none'; media-src 'self'; sandbox allow-same-origin"
+     ],
+     "content-type": [
+      "application/zip"
+     ],
+     "etag": [
+      "\"318dcfd7ce7c234c64bcea35677c24ec679d5e678474c9b363b6c3dd6ba12dd0\""
+     ],
+     "vary": [
+      "origin, access-control-request-method, access-control-request-headers"
+     ],
+     "x-hf-cdn-pop": [
+      "aws-us-west-2"
+     ]
+    },
+    "status": {
+     "code": 206,
+     "message": "Partial Content"
+    }
+   }
+  }
+ ],
+ "version": 1
+}

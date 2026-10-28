@@ -1,5 +1,5 @@
 hfutils.utils.type\_
-=================================
+========================================================
 
 .. currentmodule:: hfutils.utils.type_
 
@@ -7,17 +7,13 @@ hfutils.utils.type\_
 
 
 FileItemType
---------------------------
+-----------------------------------------------------
 
-.. autoenum:: FileItemType
-    :members: render_color
+.. autoclass:: FileItemType
+    :members: render_color,FILE,FOLDER,IMAGE,ARCHIVE,MODEL,DATA
 
 
-
-get_file_type
----------------------------
+get\_file\_type
+-----------------------------------------------------
 
 .. autofunction:: get_file_type
-
-
-

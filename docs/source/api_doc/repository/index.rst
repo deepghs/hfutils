@@ -1,5 +1,5 @@
 hfutils.repository
-=====================
+========================================================
 
 .. currentmodule:: hfutils.repository
 
@@ -14,4 +14,3 @@ hfutils.repository
     rollback
     size
     url
-

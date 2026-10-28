@@ -1,5 +1,5 @@
 hfutils.utils
-=====================
+========================================================
 
 .. currentmodule:: hfutils.utils
 
@@ -13,15 +13,19 @@ hfutils.utils
     arrange
     binary
     binary_proxy
+    commit
     data
+    download
     ext
     heap
-    download
+    lfs
+    logging
     model
     number
     path
     session
+    temp
     tqdm_
     type_
+    version
     walk
-

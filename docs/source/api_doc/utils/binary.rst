@@ -1,15 +1,12 @@
 hfutils.utils.binary
-=================================
+========================================================
 
 .. currentmodule:: hfutils.utils.binary
 
 .. automodule:: hfutils.utils.binary
 
 
-is_binary_file
----------------------------
+is\_binary\_file
+-----------------------------------------------------
 
 .. autofunction:: is_binary_file
-
-
-

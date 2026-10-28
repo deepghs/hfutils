@@ -2,3 +2,6 @@
 test/cassettes/**/*.mitm binary
 test/cassettes/_blobs/** binary
 test/cassettes/**/*.json text eol=lf
+
+# zip fixtures are binary: git must not touch their line endings
+test/testfile/zipfiles/** binary

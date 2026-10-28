@@ -1,53 +1,45 @@
 hfutils.entry.base
-================================
+========================================================
 
 .. currentmodule:: hfutils.entry.base
 
 .. automodule:: hfutils.entry.base
 
 
-CONTEXT_SETTINGS
---------------------------
+CONTEXT\_SETTINGS
+-----------------------------------------------------
 
 .. autodata:: CONTEXT_SETTINGS
 
 
-
 ClickWarningException
---------------------------------
+-----------------------------------------------------
 
 .. autoclass:: ClickWarningException
-    :members: exit_code, show
-
+    :members: show
 
 
 ClickErrorException
-------------------------------------
+-----------------------------------------------------
 
 .. autoclass:: ClickErrorException
-    :members: exit_code, show
+    :members: show
 
 
+KeyboardInterrupted
+-----------------------------------------------------
 
-print_exception
-----------------------------------
+.. autoclass:: KeyboardInterrupted
+    :members: __init__,exit_code
+
+
+print\_exception
+-----------------------------------------------------
 
 .. autofunction:: print_exception
 
 
-
-KeyboardInterrupted
-------------------------------------
-
-.. autoclass:: KeyboardInterrupted
-    :members: __init__, exit_code, show
-
-
-
-command_wrap
--------------------------------
+command\_wrap
+-----------------------------------------------------
 
 .. autofunction:: command_wrap
-
-
-

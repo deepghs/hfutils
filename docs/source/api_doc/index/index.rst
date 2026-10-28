@@ -1,5 +1,5 @@
 hfutils.index
-================================
+========================================================
 
 .. currentmodule:: hfutils.index
 
@@ -10,7 +10,8 @@ hfutils.index
     :maxdepth: 3
 
     fetch
+    hash
     local_fetch
     make
     validate
-
+    zip/index

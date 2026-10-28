@@ -1,5 +1,5 @@
 hfutils.cache
-================================
+========================================================
 
 .. currentmodule:: hfutils.cache
 
@@ -10,4 +10,3 @@ hfutils.cache
     :maxdepth: 3
 
     delete
-

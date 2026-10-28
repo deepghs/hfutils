@@ -1,65 +1,54 @@
-hfutils.index.local_fetch
-================================
+hfutils.index.local\_fetch
+========================================================
 
 .. currentmodule:: hfutils.index.local_fetch
 
 .. automodule:: hfutils.index.local_fetch
 
 
-
-tar_get_index
-----------------------------------------------
+tar\_get\_index
+-----------------------------------------------------
 
 .. autofunction:: tar_get_index
 
 
-
-tar_list_files
-----------------------------------------------
+tar\_list\_files
+-----------------------------------------------------
 
 .. autofunction:: tar_list_files
 
 
-
-tar_file_exists
-----------------------------------------------
+tar\_file\_exists
+-----------------------------------------------------
 
 .. autofunction:: tar_file_exists
 
 
-
-tar_file_size
-----------------------------------------------
-
-.. autofunction:: tar_file_size
-
-
-
-tar_file_info
-----------------------------------------------
+tar\_file\_info
+-----------------------------------------------------
 
 .. autofunction:: tar_file_info
 
 
+tar\_file\_size
+-----------------------------------------------------
 
-tar_file_write_bytes
-----------------------------------------------
+.. autofunction:: tar_file_size
+
+
+tar\_file\_write\_bytes
+-----------------------------------------------------
 
 .. autofunction:: tar_file_write_bytes
 
 
-
-tar_file_download
-----------------------------------------------
+tar\_file\_download
+-----------------------------------------------------
 
 .. autofunction:: tar_file_download
 
 
-
-tar_cache_reset
-----------------------------------------------
+tar\_cache\_reset
+-----------------------------------------------------
 
 .. autofunction:: tar_cache_reset
-
-
-

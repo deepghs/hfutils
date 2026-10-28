@@ -1,5 +1,5 @@
 hfutils.meta.version
-===================================
+========================================================
 
 .. currentmodule:: hfutils.meta.version
 
@@ -7,17 +7,13 @@ hfutils.meta.version
 
 
 HfSiteInfo
-----------------------------------------------------------
+-----------------------------------------------------
 
 .. autoclass:: HfSiteInfo
-    :members: site,version
+    :members: name,api,version,endpoint
 
 
-
-hf_site_info
-----------------------------------------------------------
+hf\_site\_info
+-----------------------------------------------------
 
 .. autofunction:: hf_site_info
-
-
-

@@ -1,5 +1,5 @@
 hfutils.operate
-=====================
+========================================================
 
 .. currentmodule:: hfutils.operate
 
@@ -15,4 +15,3 @@ hfutils.operate
     upload
     validate
     warmup
-

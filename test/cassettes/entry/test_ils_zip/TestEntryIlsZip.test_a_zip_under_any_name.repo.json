@@ -1,0 +1,93 @@
+{
+ "interactions": [
+  {
+   "request": {
+    "body": {
+     "text": "{\"name\":\"test_repo_20261028011957883793_f11d4e020661ea03c75bb07fc252dae73c898fa3\",\"organization\":null,\"type\":\"dataset\"}"
+    },
+    "headers": {
+     "accept": [
+      "*/*"
+     ],
+     "accept-encoding": [
+      "gzip, deflate, br, zstd"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "119"
+     ],
+     "content-type": [
+      "application/json"
+     ],
+     "host": [
+      "huggingface.co"
+     ],
+     "x-amzn-trace-id": [
+      "01a9ba00-0601-4e40-b117-71648124ce8a"
+     ]
+    },
+    "method": "POST",
+    "uri": "https://huggingface.co/api/repos/create"
+   },
+   "response": {
+    "body": {
+     "text": "{\"url\":\"https://huggingface.co/datasets/narugo1992/test_repo_20261028011957883793_f11d4e020661ea03c75bb07fc252dae73c898fa3\",\"name\":\"narugo1992/test_repo_20261028011957883793_f11d4e020661ea03c75bb07fc252dae73c898fa3\",\"id\":\"6ae0dd3edf87bc9e01223f71\",\"filesCopyPending\":false}"
+    },
+    "headers": {
+     "access-control-allow-origin": [
+      "https://huggingface.co"
+     ],
+     "access-control-expose-headers": [
+      "X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash,RateLimit,RateLimit-Policy"
+     ],
+     "access-control-max-age": [
+      "86400"
+     ],
+     "alt-svc": [
+      "h3=\":443\"; ma=86400"
+     ],
+     "connection": [
+      "keep-alive"
+     ],
+     "content-length": [
+      "273"
+     ],
+     "content-type": [
+      "application/json; charset=utf-8"
+     ],
+     "cross-origin-opener-policy": [
+      "same-origin"
+     ],
+     "etag": [
+      "W/\"111-83asDE4EYFi9x0XaMC711FZ7Tck\""
+     ],
+     "ratelimit": [
+      "\"api\";r=630;t=56"
+     ],
+     "ratelimit-policy": [
+      "\"fixed window\";\"api\";q=1000;w=300"
+     ],
+     "referrer-policy": [
+      "strict-origin-when-cross-origin"
+     ],
+     "strict-transport-security": [
+      "max-age=31536000"
+     ],
+     "vary": [
+      "Origin"
+     ],
+     "x-powered-by": [
+      "huggingface-moon"
+     ]
+    },
+    "status": {
+     "code": 200,
+     "message": "OK"
+    }
+   }
+  }
+ ],
+ "version": 1
+}
