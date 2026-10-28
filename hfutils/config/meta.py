@@ -7,7 +7,7 @@ Overview:
 __TITLE__ = 'hfutils'
 
 #: Version of this project.
-__VERSION__ = '0.14.0'
+__VERSION__ = '0.15.0'
 
 #: Short description of the project, will be included in ``setup.py``.
 __DESCRIPTION__ = 'Useful utilities for huggingface'
